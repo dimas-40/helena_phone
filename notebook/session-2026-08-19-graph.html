@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026-08-19 판의 전환 — 관계도</title>
+<meta name="description" content="오버레이 키트(녹화 중) + 런타임 후보정(녹화 후) + AI 디렉터 3층 아키텍처 관계도">
+<style>
+  :root { color-scheme: dark; }
+  .viz-root {
+    color-scheme: dark;
+    --surface-1: #1a1a19; --page: #0d0d0d;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --border: rgba(255,255,255,0.10);
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #9085e9;
+  }
+  .viz-root[data-theme="light"] {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+    --grid: #e1e0d9; --border: rgba(11,11,11,0.10);
+    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --s6: #4a3aa7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--page); color: var(--ink); }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 20px; }
+  header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
+  h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+  .sub { color: var(--ink-2); font-size: 14px; margin-top: 4px; max-width: 640px; line-height: 1.5; }
+  .controls { display: flex; gap: 8px; align-items: center; }
+  button { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface-1); color: var(--ink); cursor: pointer; }
+  button:hover { border-color: var(--muted); }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 10px; padding: 10px 0; border-top: 1px solid var(--grid); border-bottom: 1px solid var(--grid); }
+  .lg { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .stage { position: relative; background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  svg { display: block; width: 100%; height: 640px; cursor: grab; }
+  svg:active { cursor: grabbing; }
+  .edge { stroke: var(--grid); stroke-width: 1.2px; }
+  .node-label { font-size: 11px; fill: var(--ink-2); pointer-events: none; text-anchor: middle; }
+  .node circle { cursor: pointer; }
+  .tooltip { position: absolute; pointer-events: none; background: var(--ink); color: var(--page); font-size: 12.5px; line-height: 1.4; padding: 8px 10px; border-radius: 8px; max-width: 260px; opacity: 0; transition: opacity 0.12s; box-shadow: 0 6px 24px rgba(0,0,0,0.3); }
+  .tooltip b { display: block; margin-bottom: 2px; }
+  footer { color: var(--muted); font-size: 12px; margin-top: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap viz-root" data-theme="dark" id="root">
+  <header>
+    <div>
+      <h1>2026-08-19 · 판의 전환 — 관계도</h1>
+      <div class="sub">오버레이 키트 APK(녹화 중 · 사람 손) + 런타임 브라우저 후보정(녹화 후 · 빌린 연산) + FFmpeg(접착제)를 AI 디렉터가 지휘하는 3층 아키텍처. 노드를 끌고, 호버해 보세요.</div>
+    </div>
+    <div class="controls">
+      <button id="themeBtn" onclick="toggleTheme()">☀️ 라이트</button>
+      <button onclick="resetSim()">↺ 재배치</button>
+    </div>
+  </header>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="stage">
+    <svg id="svg"></svg>
+    <div class="tooltip" id="tip"></div>
+  </div>
+
+  <footer>agent mark _Claude · 관계도 = 세션 회의록 <code>session-2026-08-19_Claude.md</code>의 시각화</footer>
+</div>
+
+<script>
+const CATS = {
+  person:    { label: '사람',     color: 'var(--s6)', icon: '👤' },
+  agent:     { label: '에이전트', color: 'var(--s1)', icon: '🤖' },
+  device:    { label: '기기',     color: 'var(--s4)', icon: '📱' },
+  repo:      { label: '레포',     color: 'var(--s2)', icon: '📦' },
+  app:       { label: '앱·자산',  color: 'var(--s3)', icon: '🧩' },
+  principle: { label: '원칙',     color: 'var(--s5)', icon: '🧭' }
+};
+
+const NODES = [
+  {id:'boss',    label:'Boss', cat:'person', desc:'디렉터 · 최종 결정 · 방향 지시'},
+  {id:'claude',  label:'Claude Code', cat:'agent', desc:'출판부 · 상주($0) · 공장 80%'},
+  {id:'grok',    label:'Grok', cat:'agent', desc:'용병($30) · 디자이너 · 천장 20%(4장)'},
+  {id:'aider',   label:'DeepSeek Aider', cat:'agent', desc:'친구 에이전트 · 시공(패치)'},
+  {id:'tablet',  label:'태블릿 Tab S9', cat:'device', desc:'dimas-40 · 교육방송 스튜디오'},
+  {id:'s21',     label:'S21', cat:'device', desc:'helena751107 · 누나폰 · 출판 원조'},
+  {id:'eae-video', cat:'repo', label:'eae-video', desc:'숏폼 공장 + 강의 후보정'},
+  {id:'eae-image', cat:'repo', label:'eae-image', desc:'웹툰·스틸 창고'},
+  {id:'eae-music', cat:'repo', label:'eae-music', desc:'BGM 공장 (MIDI→WAV)'},
+  {id:'eaekr',   cat:'repo', label:'eaekr', desc:'허브·방송국 (업로드)'},
+  {id:'eaeuniv', cat:'repo', label:'eaeuniv', desc:'교재 출판사'},
+  {id:'apk-lab', cat:'repo', label:'dtslib-apk-lab', desc:'오버레이 키트 APK 모노레포'},
+  {id:'store',   cat:'repo', label:'dtslib-cloud-appstore', desc:'런타임 브라우저 후보정'},
+  {id:'axis',    cat:'app', label:'parksy-axis', desc:'방송 단계 오버레이 (FSM·6테마)'},
+  {id:'laser',   cat:'app', label:'laser-pen-overlay', desc:'S Pen 판서 오버레이'},
+  {id:'studio',  cat:'app', label:'parksy-studio', desc:'방송 스튜디오 전체 APK (녹화+오버레이+트리머+런처)'},
+  {id:'llong',   cat:'app', label:'lecture-long', desc:'강의 롱폼 후보정 v4.0 (FFmpeg.wasm)'},
+  {id:'lshort',  cat:'app', label:'lecture-shorts', desc:'강의→숏 v2.2 (WebCodecs 10~30x)'},
+  {id:'p-auth',  cat:'principle', label:'AI 쓰되 AI 같지 않게', desc:'진정성이 해자. 사람 흉내가 목표'},
+  {id:'p-bucket',cat:'principle', label:'2버킷 (녹화 중/후)', desc:'오버레이(중) / 후보정(후)'},
+  {id:'p-shift', cat:'principle', label:'판의 전환', desc:'GUI 수작업 → AI 디렉터'}
+];
+
+const EDGES = [
+  ['boss','claude'], ['boss','grok'], ['boss','p-auth'],
+  ['claude','tablet'], ['grok','tablet'],
+  ['tablet','eae-video'], ['tablet','eae-image'], ['tablet','eae-music'], ['tablet','eaekr'], ['tablet','eaeuniv'],
+  ['apk-lab','axis'], ['apk-lab','laser'], ['apk-lab','studio'],
+  ['store','llong'], ['store','lshort'],
+  ['eae-video','llong'], ['eae-video','lshort'], ['eae-video','axis'],
+  ['p-auth','studio'], ['p-auth','llong'],
+  ['p-bucket','studio'], ['p-bucket','llong'],
+  ['p-shift','claude'],
+  ['studio','store'],
+  ['s21','claude']
+];
+
+// ── 렌더 준비 ────────────────────────────────────────────────
+const svg = document.getElementById('svg');
+const NS = 'http://www.w3.org/2000/svg';
+const tip = document.getElementById('tip');
+const stage = tip.parentElement;
+const W = () => stage.clientWidth;
+const H = 640;
+
+// legend
+const legend = document.getElementById('legend');
+for (const [k,v] of Object.entries(CATS)) {
+  const d = document.createElement('span'); d.className='lg';
+  d.innerHTML = `<span class="dot" style="background:${v.color}"></span>${v.icon} ${v.label}`;
+  legend.appendChild(d);
+}
+
+// seed: 같은 카테고리끼리 뭉쳐서 시작
+const catIdx = Object.keys(CATS);
+const cx = {}, cy = {};
+const seedPos = (i, n) => {
+  const ang = (i / n) * Math.PI * 2;
+  return [ (W()||1280)/2 + Math.cos(ang) * 260, H/2 + Math.sin(ang) * 220 ];
+};
+const nodeMap = {};
+NODES.forEach((n, i) => {
+  const [x, y] = seedPos(i, NODES.length);
+  nodeMap[n.id] = { ...n, x, y, vx: 0, vy: 0, r: n.cat === 'principle' ? 16 : n.cat === 'agent' ? 13 : 10 };
+});
+const edgeList = EDGES.map(([a,b]) => [nodeMap[a], nodeMap[b]]);
+
+// SVG 엘리먼트
+const edgesG = document.createElementNS(NS,'g');
+const nodesG = document.createElementNS(NS,'g');
+svg.appendChild(edgesG); svg.appendChild(nodesG);
+
+const edgeEls = edgeList.map(([a,b]) => {
+  const l = document.createElementNS(NS,'line'); l.setAttribute('class','edge'); edgesG.appendChild(l); return l;
+});
+const nodeEls = NODES.map(n => {
+  const g = document.createElementNS(NS,'g');
+  const c = document.createElementNS(NS,'circle'); c.setAttribute('r', n.r); c.setAttribute('fill', CATS[n.cat].color); c.setAttribute('stroke','var(--surface-1)'); c.setAttribute('stroke-width','2');
+  const t = document.createElementNS(NS,'text'); t.setAttribute('class','node-label'); t.setAttribute('y', n.r + 14); t.textContent = `${CATS[n.cat].icon} ${n.label}`;
+  g.appendChild(c); g.appendChild(t); nodesG.appendChild(g);
+  return { g, c, t, n };
+});
+
+// ── 시뮬레이션 ────────────────────────────────────────────────
+let alpha = 1;
+function tick() {
+  // repulsion
+  const nodes = Object.values(nodeMap);
+  for (let i=0;i<nodes.length;i++) for (let j=i+1;j<nodes.length;j++) {
+    const a=nodes[i], b=nodes[j];
+    let dx=a.x-b.x, dy=a.y-b.y; let d2=dx*dx+dy*dy; if(d2<1)d2=1;
+    const f = 1400 / d2;
+    const d = Math.sqrt(d2);
+    dx/=d; dy/=d;
+    a.vx += dx*f*0.02; a.vy += dy*f*0.02;
+    b.vx -= dx*f*0.02; b.vy -= dy*f*0.02;
+  }
+  // springs
+  for (const [a,b] of edgeList) {
+    const dx=b.x-a.x, dy=b.y-a.y; const d=Math.hypot(dx,dy)||1;
+    const f = (d - 120) * 0.02;
+    a.vx += dx/d*f; a.vy += dy/d*f;
+    b.vx -= dx/d*f; b.vy -= dy/d*f;
+  }
+  // centering
+  for (const n of nodes) {
+    n.vx += ((W()/2 - n.x) * 0.002); n.vy += ((H/2 - n.y) * 0.002);
+    n.vx *= 0.86; n.vy *= 0.86;
+    n.x += n.vx; n.y += n.vy;
+    n.x = Math.max(40, Math.min(W()-40, n.x)); n.y = Math.max(30, Math.min(H-30, n.y));
+  }
+  alpha *= 0.995;
+}
+
+function draw() {
+  edgeEls.forEach((l,i) => { const [a,b]=edgeList[i]; l.setAttribute('x1',a.x); l.setAttribute('y1',a.y); l.setAttribute('x2',b.x); l.setAttribute('y2',b.y); });
+  nodeEls.forEach(o => { o.g.setAttribute('transform',`translate(${o.n.x},${o.n.y})`); });
+}
+
+function loop() {
+  tick(); draw();
+  requestAnimationFrame(loop);
+}
+
+function resetSim() {
+  NODES.forEach((n,i) => { const [x,y]=seedPos(i,NODES.length); const o=nodeMap[n.id]; o.x=x; o.y=y; o.vx=0; o.vy=0; });
+  alpha = 1;
+}
+
+// ── 인터랙션: 드래그 / 호버 ──────────────────────────────────
+let drag = null;
+svg.addEventListener('pointerdown', e => {
+  const t = e.target;
+  const o = nodeEls.find(o => o.c === t || o.t === t);
+  if (o) { drag = o.n; svg.setPointerCapture(e.pointerId); }
+});
+svg.addEventListener('pointermove', e => {
+  const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+  const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+  if (drag) { drag.x = p.x; drag.y = p.y; drag.vx = drag.vy = 0; }
+  else {
+    const o = nodeEls.find(o => Math.hypot(o.n.x-p.x, o.n.y-p.y) < o.n.r + 4);
+    if (o) {
+      tip.innerHTML = `<b>${CATS[o.n.cat].icon} ${o.n.label}</b>${o.n.desc}<br><span style="opacity:.7">${CATS[o.n.cat].label}</span>`;
+      tip.style.opacity = 1;
+      tip.style.left = (e.clientX - stage.getBoundingClientRect().left + 14) + 'px';
+      tip.style.top = (e.clientY - stage.getBoundingClientRect().top + 14) + 'px';
+    } else tip.style.opacity = 0;
+  }
+});
+svg.addEventListener('pointerup', () => { drag = null; });
+svg.addEventListener('pointerleave', () => { tip.style.opacity = 0; });
+
+function toggleTheme() {
+  const root = document.getElementById('root');
+  const light = root.dataset.theme === 'dark';
+  root.dataset.theme = light ? 'light' : 'dark';
+  document.getElementById('themeBtn').textContent = light ? '🌙 다크' : '☀️ 라이트';
+}
+
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

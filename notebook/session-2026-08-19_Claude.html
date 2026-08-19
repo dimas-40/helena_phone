@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="오늘 대화의 핵심을 한 장으로. 두 트랙 웹페이지의 원본. — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>세션 회의록 — 판의 전환 · 오버레이 키트 + 런타임 후보정 (2026-08-19) — S21 Phone Webzine</title>
+<link rel="canonical" href="https://helena751107.github.io/helena_phone/notebook/session-2026-08-19_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/helena751107#person",
+      "name": "Helena Park",
+      "url": "https://github.com/helena751107",
+      "description": "Made in Korea — not a developer. One Galaxy S21, built by voice, for a sister.",
+      "sameAs": [
+        "https://github.com/helena751107",
+        "https://helena751107.github.io/helena_phone/",
+        "https://www.youtube.com/@helena_phone",
+        "https://www.youtube.com/@HelenaPark-e7c"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://helena751107.github.io/helena_phone/notebook/session-2026-08-19_Claude.html#webpage",
+      "url": "https://helena751107.github.io/helena_phone/notebook/session-2026-08-19_Claude.html",
+      "name": "세션 회의록 — 판의 전환 · 오버레이 키트 + 런타임 후보정 (2026-08-19)",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/helena751107#person"
+      },
+      "author": {
+        "@id": "https://github.com/helena751107#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>세션 회의록 — 판의 전환 · 오버레이 키트 + 런타임 후보정 (2026-08-19)</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · 2026-08-19</div>
+    <h1>세션 회의록 — 판의 전환 · 오버레이 키트 + 런타임 후보정 (2026-08-19)</h1>
+    <p class="deck">오늘 대화의 핵심을 한 장으로. 두 트랙 웹페이지의 원본.</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/session-2026-08-19_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#0">0. 한 줄</a></li>
+<li><a href="#1">1. 시간순 흐름</a><ul>
+<li><a href="#1_1">① 업무 수첩 리마인더 — 우리 어디까지</a></li>
+<li><a href="#2">② 티스토리 자동화 리뷰</a></li>
+<li><a href="#3-bayaba">③ bayaba 이식 사고 분석 + 지침 전송</a></li>
+<li><a href="#4">④ 태블릿 전용 보고 봇</a></li>
+<li><a href="#5-eae-video">⑤ eae-video 구조 + 강의 후보정</a></li>
+<li><a href="#6">⑥ 두 레포 파싱 — 오버레이 키트 + 런타임 후보정</a></li>
+<li><a href="#7">⑦ 판의 전환 (오늘의 핵심)</a></li>
+<li><a href="#8">⑧ 최종 원칙 확정</a></li>
+</ul>
+</li>
+<li><a href="#2-3">2. 최종 아키텍처 — 3층 (확정)</a><ul>
+<li><a href="#2_1">2버킷 (시점으로 분리)</a></li>
+<li><a href="#_1">브라우저 런타임의 진짜 이유 (정정)</a></li>
+<li><a href="#apk">APK를 터미널에서 조종하는 근거 (이미 뚫려 있음)</a></li>
+</ul>
+</li>
+<li><a href="#3-_import">3. 자산 지도 (파싱·이식 완료 → _import/)</a></li>
+<li><a href="#4_1">4. 결론 — 설정이 아니라 실행층이 바뀐다</a></li>
+<li><a href="#5">5. 다음 행동 (팬딩)</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <hr>
+<p>date: 2026-08-19<br>
+agent: Claude Code (출판부 · 상주)<br>
+mark: _Claude<br>
+type: session<br>
+status: active<br>
+related:<br>
+  - session-2026-08-18_Claude.md<br>
+  - tablet-broadcast-studio_Claude.md<br>
+  - 83-momentum-2026-08-14_Grok.md<br>
+  - 102-tablet-hw-parse_Grok.md</p>
+<hr>
+<h1 id="2026-08-19">세션 회의록 — 판의 전환 · 오버레이 키트 + 런타임 후보정 (2026-08-19)</h1>
+<blockquote>
+<p>오늘 대화의 핵심을 한 장으로. 두 트랙 웹페이지의 원본.<br>
+인터랙티브 관계도: <a href="../notebook/session-2026-08-19-graph.html"><code>session-2026-08-19-graph.html</code></a></p>
+</blockquote>
+<hr>
+<h2 id="0">0. 한 줄</h2>
+<pre><code>옛날: 사람이 GUI 앱(APK/PWA)을 클릭해서 수작업 → 매끈한 자동화는 오히려 기계 같음
+지금: AI 디렉터(Claude Code + Grok)가 CLI에서 판을 짜고, APK를 &quot;사람 손&quot;처럼 조작
+목표: &quot;AI를 쓰되 AI 같지 않은&quot; 연출 — 진짜 사람이 실수하면서 만든 것처럼
+</code></pre>
+<p>오늘 대화는 <strong>판(보드)이 뒤집히는 전환점</strong>이었다. 이전까지 태블릿의 영상 일은 &ldquo;숏폼 공장(eae-video)&rdquo; 하나로 봤는데, 오늘 Boss가 그 아래 깔린 <strong>진짜 그림</strong>을 꺼냈다.</p>
+<hr>
+<h2 id="1">1. 시간순 흐름</h2>
+<h3 id="1_1">① 업무 수첩 리마인더 — 우리 어디까지</h3>
+<p>태블릿(Tab S9 · dimas-40) = <strong>교육방송 스튜디오</strong>. 5개 EAE 레포 생성 완료, Claude(상주 $0)=공장 80% / Grok($30)=천장 20% 분담이 <code>STUDIO.md</code>에 <strong>잠금</strong> 상태. 다음은 D0(스캐폴드 → 자산 이식 → 파일럿 ep01).</p>
+<h3 id="2">② 티스토리 자동화 리뷰</h3>
+<p>티스토리 Open API는 죽었다(2024-02). 그래서 <strong>스킨 자동화</strong>(리버스엔지니어링한 숨은 API <code>html.json</code>/<code>set.json</code>) + <strong>Paste Pipeline</strong>(사람 복붙)으로 갈랐다. 글 발행은 사람, 포장(스킨)은 로봇.</p>
+<h3 id="3-bayaba">③ bayaba 이식 사고 분석 + 지침 전송</h3>
+<p>친구(딥시크 에이더)가 카카오 지도 캡차를 OCR/xvfb로 풀려다 막힘. <strong>근본 오판 = &ldquo;사람 게이트(캡차)를 기계로 뚫으려 함.&rdquo;</strong> 정답은 로그인 1회(사람) → 이후 자동. 만회 지침 <code>bayaba-tistory-recovery.md</code> 작성 → 텔레그램 전송.</p>
+<h3 id="4">④ 태블릿 전용 보고 봇</h3>
+<p><code>@dtslib_tablet_bot</code> 생성. 태블릿의 모든 보고는 <strong>이 한 채널로만</strong> (S21의 @S21Phone_Bot과 분리).</p>
+<h3 id="5-eae-video">⑤ eae-video 구조 + 강의 후보정</h3>
+<p>eae-video는 지금 &ldquo;설계만 있고 빈 껍데기&rdquo;. 숏폼(한 렌즈 한 무브) 전용이 아니라 <strong>강의 영상 후보정</strong>도 넣어야 한다는 Boss 방향.</p>
+<h3 id="6">⑥ 두 레포 파싱 — 오버레이 키트 + 런타임 후보정</h3>
+<ul>
+<li><code>dtslib-apk-lab</code> → <strong>오버레이 키트 APK</strong> (parksy-axis · laser-pen-overlay · parksy-studio)</li>
+<li><code>dtslib-cloud-appstore</code> → <strong>런타임 브라우저 후보정</strong> (lecture-long · lecture-shorts)</li>
+</ul>
+<h3 id="7">⑦ 판의 전환 (오늘의 핵심)</h3>
+<p>옛날 이 앱들은 <strong>AI 없이 사람이 GUI를 클릭</strong>하던 시대의 산물. 지금은 CLI에서 AI가 디렉터, Android 브릿지로 장치·저장소 왕복.</p>
+<h3 id="8">⑧ 최종 원칙 확정</h3>
+<p><strong>&ldquo;AI를 쓰되 AI 같지 않게.&rdquo;</strong> FFmpeg는 너무 매끈하고 기계 같다. 진짜 사람이 실수하며 움직이는 것처럼 보이려면 오버레이 키트 APK를 터미널에서 조작해야 한다.</p>
+<hr>
+<h2 id="2-3">2. 최종 아키텍처 — 3층 (확정)</h2>
+<pre><code>목표 = &quot;AI를 쓰되 AI 같지 않은&quot; 연출 (진정성이 해자)
+
+AI 디렉터 (Claude Code + Grok)
+   │  판을 짜고 세 판을 지휘
+   ├─ ① APK 오버레이 키트   = &quot;사람 손&quot;   (터미널 조종 → 인간 같은 실시간 움직임)
+   ├─ ② 브라우저 런타임      = &quot;빌린 연산&quot;  (공짜 + GPU로 태블릿보다 빠름)
+   └─ ③ FFmpeg (proot)      = &quot;접착제&quot;    (이어붙이기·인코딩·자막만)
+
+진짜 육성 녹화 = Boss 직접 (필요할 때 라이브)
+</code></pre>
+<h3 id="2_1">2버킷 (시점으로 분리)</h3>
+<table>
+<thead>
+<tr>
+<th>버킷</th>
+<th>시점</th>
+<th>실행층</th>
+<th>자산</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>방송 효과 오버레이 키트</strong></td>
+<td><strong>녹화 중</strong></td>
+<td>APK (온디바이스)</td>
+<td>parksy-axis · laser-pen-overlay · parksy-studio</td>
+</tr>
+<tr>
+<td><strong>후보정 (프로 마감)</strong></td>
+<td><strong>녹화 후</strong></td>
+<td>런타임 브라우저 (FFmpeg.wasm/WebCodecs)</td>
+<td>lecture-long · lecture-shorts</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_1">브라우저 런타임의 진짜 이유 (정정)</h3>
+<p>&ldquo;ffmpeg 없어서&rdquo;가 아니라 <strong>공짜 플랫폼 API + 브라우저 GPU(WebCodecs)를 빌려 태블릿 CPU 한도보다 빠르게</strong> 돌리는 전략. 우회가 아니라 <strong>연산 아웃소싱</strong> (Vercel $0).</p>
+<h3 id="apk">APK를 터미널에서 조종하는 근거 (이미 뚫려 있음)</h3>
+<table>
+<thead>
+<tr>
+<th>APK</th>
+<th>에이전트 조종 통로</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>parksy-axis</td>
+<td>설정 파일 <code>/data/data/kr.parksy.axis/files/axis_overlay_config.json</code> 직접 쓰기</td>
+</tr>
+<tr>
+<td>parksy-glot</td>
+<td><code>PC glot.py (Web Speech) + WebSocket → WebView</code></td>
+</tr>
+<tr>
+<td>laser-pen-overlay</td>
+<td><code>TouchInjectionService.kt</code> (터치 주입)</td>
+</tr>
+<tr>
+<td>일반</td>
+<td>proot ↔ Android 브릿지 + adb/Shizuku</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-_import">3. 자산 지도 (파싱·이식 완료 → <code>_import/</code>)</h2>
+<table>
+<thead>
+<tr>
+<th>레포</th>
+<th>자산</th>
+<th>정체</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dtslib-apk-lab</td>
+<td><code>parksy-axis</code> v11.1</td>
+<td>방송 단계 오버레이 (FSM, 6테마, 4방향)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>laser-pen-overlay</code></td>
+<td>S Pen 판서 오버레이 (stylus/finger 패스스루)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>parksy-studio</code></td>
+<td><strong>방송 스튜디오 전체 APK</strong> (녹화+카메라오버레이3종+BGM+트리머+cloud-appstore 런처)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>parksy-glot</code></td>
+<td>자막 오버레이 (WebSocket)</td>
+</tr>
+<tr>
+<td>dtslib-cloud-appstore</td>
+<td><code>lecture-long</code> v4.0</td>
+<td>강의 롱폼 후보정 (16분→12분, FFmpeg.wasm)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>lecture-shorts</code> v2.2</td>
+<td>강의→숏 (9:16, WebCodecs 10~30x)</td>
+</tr>
+</tbody>
+</table>
+<p>핵심 발견: <strong><code>parksy-studio</code>가 이미 &ldquo;녹화 → 트림(FFmpeg HW) → cloud-appstore 런처&rdquo;로 두 버킷을 연결</strong>하고 있었다.</p>
+<hr>
+<h2 id="4_1">4. 결론 — 설정이 아니라 실행층이 바뀐다</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>옛날</th>
+<th>지금</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>디렉터</td>
+<td>Boss 손</td>
+<td><strong>AI 디렉터</strong></td>
+</tr>
+<tr>
+<td>실행층</td>
+<td>APK/PWA GUI</td>
+<td><strong>CLI + FFmpeg 스크립트</strong></td>
+</tr>
+<tr>
+<td>오버레이 조작</td>
+<td>사람 손가락</td>
+<td><strong>AI (파일·WebSocket·터치주입)</strong></td>
+</tr>
+<tr>
+<td>후보정 연산</td>
+<td>태블릿 CPU</td>
+<td><strong>브라우저 GPU 빌려쓰기</strong></td>
+</tr>
+<tr>
+<td>매끈함</td>
+<td>목표</td>
+<td><strong>피할 것 — 사람 흉내가 목표</strong></td>
+</tr>
+<tr>
+<td>육성</td>
+<td>항상</td>
+<td>필요할 때 Boss 라이브</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="5">5. 다음 행동 (팬딩)</h2>
+<ul>
+<li>[ ] 에이전트→APK 조종 프로토콜 확정 (axis 설정파일 vs glot WebSocket 표준)</li>
+<li>[ ] 오버레이 키트 APK → 온디바이스 도구 슬롯 (eaekr 또는 별도 tools/)</li>
+<li>[ ] 브라우저 런타임 vs FFmpeg 사용 경계 확정</li>
+<li>[ ] lecture-long/shorts 마감 규격 → eae-video <code>config/post/</code> 규격서</li>
+<li>[ ] 태블릿 ffmpeg 설치 (접착제용)</li>
+</ul>
+<p><em>회의록 · agent mark <code>_Claude</code> · 2026-08-19 · 관계도: <code>session-2026-08-19-graph.html</code></em></p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="session-2026-08-18_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">세션 수첩 — 환경·과금·GitHub 계정 점검 (2026-08-18)</span>
+        </a>
+    <a class="next" href="tablet-broadcast-studio_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">tablet broadcast studio Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>구축: 2026-07-23 ~ 2026-08-14 (23일)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine 2026-08-19</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>
