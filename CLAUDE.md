@@ -276,10 +276,12 @@ helena_phone/
 ├── care/            ← 트랙1 돌봄 데몬
 ├── scripts/         ← 자동화 스크립트
 ├── configs/         ← 설정 파일
-├── 01~05/           ← GUIDE.md 챕터
+├── 01~05/           ← GUIDE.md 챕터 (MD 원본)
 ├── mcp-servers/     ← dtslib MCP
 └── tistory-naver/   ← dtslib 블로그코드(보존)
 ```
+
+> ⚠️ **01~05와 무번호 폴더는 중복이 아니다!** `01-foundation/*.md` 같은 **번호 폴더 = MD 원본**, `foundation/*.html` 같은 **무번호 폴더 = build_webzine.py가 자동 생성하는 웹페이지 출력**. 둘 다 지우면 안 되고, 둘 다 git 트래킹됨 (매핑: `scripts/build_webzine.py` 116~141·309~316행).
 
 > 이게 우리 집 구조야. 마치 집 안에 방마다 이름 붙이듯이:
 > - **CONSTITUTION.md** = 규칙책 (왜 이 일을 하는지)
