@@ -6566,3 +6566,22 @@ Boss: 아이디어를 프로포절로 구체화, Comfy 이상, 80% A까지 다 �
 - 상세: `_notebook/session-2026-08-22_youtube-oauth_Claude.md`
 
 **리마인더 등록:** 유튜브 콘텐츠 "**평균이 이슈**" — OAuth 연결 후 퀄리티·성과 재점검 (Boss 확정 문구).
+
+### 🎫 YouTube API 쿼터 승인 현황 — 2계정 확정 + 스케줄링 (_Claude · 2026-08-22)
+
+**papyrus 기록 (2026-04-01 컨펌) + Boss 실측 (2026-08-22):**
+
+| 계정 | 세계 | 할당량 | 상태 |
+|------|------|--------|------|
+| dtslib1979@gmail.com (b) | 경제방송 dtslib.kr | 60,000 units/day | ✅ 승인 |
+| thomas.tj.park@gmail.com (c) | 교육방송 EAE | 60,000 units/day | ✅ 승인 |
+| dimas.thomas.sancho@gmail.com (a) | parksy.kr 페르소나 | — | ❌ 반송 = "이메일 발송 실패(자동화 토큰 문제?)" → 구글 도달 안 됨 (거절 아님) |
+
+**유효기간 2026-09-23까지** — 08-22 기준 한 달 남음.
+
+**결정 (Boss "2개 받고 1개 아직" → 시퀀싱):**
+- **업로드 스케줄 = 2계정(b/c) 확정 전제.** 일일 배치: dtslib1979(주·새벽) → thomas.tj.park(보조·낮) → 하루 끝 sync.cjs quota 카운터 기록. 버퍼 20% (리트라이 시 videos.insert 1600×2).
+- **a계정 재신청 보류** — DEVICE-ACCOUNTS상 a계정 = 글래스 세계(로드맵), 지금 생산 라인 밖. 반송이 발송 실패라 재신청 가능성은 있지만, 콘솔에서 현재 할당량 확인(유튜브 OAuth 클라이언트 발급 때 1분) 후 결정.
+- **09-23 만료 = 하드 데드라인** → 재승인 리마인더 durable 등록 (1acb8f9c, 09-20 09:05).
+
+**메모리:** `youtube-api-quota-approval.md` 저장.
