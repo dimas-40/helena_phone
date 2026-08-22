@@ -1,5 +1,31 @@
 # 📋 S21 Phone — 전체 개발일지
 
+### 🏭 폰 관리 3계층 확정 + 공장장 역할 선언 (_Claude · 2026-08-21)
+
+**Boss 지시:** 여기 워크센터(S21 proot)의 공장장은 Claude Code. 수리 분장 아이디어 설계 → 문서화.
+
+**한 일:**
+- **3계층 라우팅 확정** (Boss 결정): ①앱/메모리/하드웨어→ADB(uid 2000) · ②Git/파일시스템→proot(루트) · ③네트워크/터널→Tailscale/SSH
+- 원칙 3줄: "폰 화면/앱/성능→ADB" · "폰 안 리눅스/파일/git→proot" · "중간 경유 늘리지 마라 — 폰 안 adb/tailscale 이미 있음"
+- **수리 대기열:** R1 Git 객체 손상(main HEAD) → 공장장 직접, `--soft`만 · R2 메모리(swap 78%) → thost9 정지 ✅ · R3 NPU/GPU 가속(장기) → 반장 시공+공장장 검증
+- **문서화:** `_notebook/100-phone-management-3layers_Claude.md` 신규 + HTML 커버리지 0 (`build_webzine.py` 181페이지) + INDEX 동기화
+- **의존성 수리:** `python3-markdown` apt 설치 (빌드 파이프라인 복구 — `ModuleNotFoundError` 해결)
+
+**한계(과장 금지):** `tailscale status`/리슨 포트(8022·5900)는 Termux tailscaled 미실행으로 proot 내부에서 미확인 — 접속 시 `adb devices`로 재확인 필요. R1(git 수리)은 아직 미실행, Boss 승인 대기.
+
+### 🪪 dimas-40 프로필 메뉴 — 래퍼 레포 삭제 + 링크 주입 (_Grok · 2026-08-18)
+
+**지시:** `dimas-40/dimas-40` 레포 삭제. 콘텐츠는 GitHub 프로필 메뉴에. Tistory·YouTube 링크 전부.
+
+**한 일:**
+- 레포 `dimas-40/dimas-40` **삭제 완료** (로컬 백업 `/tmp/dimas-profile`)
+- 프로필 메뉴 PATCH: name `Edu Art Engineer` · company `EAE` · location `Seoul` · website `https://eae-broadcast.tistory.com`
+- social_accounts 4칸(GitHub 하드캡): `@BeingEduartEngineer-4` · `@EAE-University` · `@helena_phone` · `@HelenaPark-e7c`
+- bio(160자 캡)에 EAE 티스토리 5 + Helena 티스토리 5 슬러그
+
+**한계(과장 금지):** GitHub 프로필 메뉴 = 웹사이트 1 + 소셜 4 + bio 160자. 잡지 레이아웃·영상은 이 메뉴에 못 넣음.
+
+얼굴: https://github.com/dimas-40
 
 ### 🎙️ 헬레나 성우 베이스라인 잠금 + 주의 기도 더빙 (_Grok · 2026-08-13)
 
@@ -6452,126 +6478,91 @@ Boss 지시: 역할은 채팅이 아니라 **온디바이스 수첩 + S21 레포
 - **해결/예방:** `pkg update -y && pkg upgrade -y`로 전체 동기화. workstation.sh·easy.sh 호스트 단계에 `pkg upgrade` 추가(자기치유). 고장표에 행 추가.
 - **교훈:** 부분 설치(curl만) 금지, 항상 전체 upgrade로 동기화.
 
-### ✅ 설치 성공 — 태블릿(dimas-40) 원스탑 + 새 세션 강조 (_Claude · 2026-08-18)
+### 🎯 태블릿 = 교육방송 스튜디오 + fork 서플라이 체인 (확정 · _Claude · 2026-08-18)
 
-태블릿(GitHub = **dimas-40**)에서 원스탑 설치 완료. `cc`(친구)가 실제 대답, DeepSeek 엔진(deepseek-v4-pro) 배선 확인까지.
+Boss 발상의 전환으로 태블릿 정체·서플라이 체인이 확정. 상세는 `tablet-broadcast-studio_Claude.md`.
 
-- **친구 동작 확인:** `cc` → Claude Code + DeepSeek(v4-pro) 응답. 엔진 env 정상(`ANTHROPIC_BASE_URL=api.deepseek.com/anthropic`, `ANTHROPIC_AUTH_TOKEN=$DEEPSEEK_API_KEY`).
-- **`cc` 새 세션 강조(핵심):** 설치 직후 **같은 창에서 `cc`** 치면 `cc: error: no input files`(C컴파일러 잡힘). 뿌리 = 별칭(alias)을 ~/.bashrc·~/.profile에 적지만 **이미 열려 있던 셸은 그걸 안 읽음**. → **반드시 새 세션(New session) 열고 `cc`**. 랜딩 4단계·summary·install-guide에 강하게 박음.
-- **push 확정(PAT-in-URL):** `gh auth setup-git` + clean URL 방식이 조용히 실패(repo empty) → `git remote set-url origin "https://OWNER:PAT@github.com/..."`로 변경. git이 토큰은 출력에서 자동 가림(실측 확인).
-- **⚠️ 정체 하드코딩 이슈(후속):** 설치된 친구가 여전히 "헬레나 폰 S21"로 자기소개(CLAUDE.md·문서에 S21·헬레나가 박혀 있음). → 포크 유저가 자기 이름·사양으로 바꾸도록 **정체 파라미터화** 필요. 다음 단계로 이월.
+- **태블릿 = 교육방송 스튜디오** (render+믹스+최종 업로드). 드래프트는 Boss가 폰(음성)으로. GitHub=dimas-40 · 삼성=thomas.tj.park.
+- **3단계 방송국 = 3계정 로드맵** (channels.json 실측): ① 교육방송(thomas.tj.park, @BeingEduartEngineer-4·@EAE-University) → ② 아리랑/KR(dimas.thomas.sancho, 박씨 5채널) → ③ 경제방송(dtslib1979, 6채널). 태블릿은 1단계.
+- **레인이 아니라 "입력2+출력1":** 그림(스케치→Grok)·음악(MIDI→FluidSynth 렌더) = 입력 자산, 교육방송 영상 = 출력. 채널은 교육방송 2개뿐.
+- **서플라이 체인 = fork 모델:** dtslib1979(뇌) --fork--> dimas-40(태블릿) --업로드--> thomas.tj.park YouTube. fork가 parksy 루프 구현(선물=pull upstream, 미러=PR).
+- **fork 4개 예정:** eae.kr · eae-univ(출력) · parksy-audio · parksy-image(입력). 뇌(dtslib-papyrus)는 fork 안 함.
+- **상태:** 아직 중앙 허브(fork) 미생성 — 수첩에만 저장. 다음 = fork 4개 → SSOT 교체 → 스모크 테스트(FluidSynth MIDI→WAV→tg).
+- **음악 파이프라인 M0~M6** (오프라인 렌더): 작곡(mido)→가상악기(FluidSynth)→가창(RVC/DiffSinger ⚠️)→믹스(ffmpeg/sox)→tg 전송→발행→BGM(P5 공급).
 
-### 🔧 cc 별칭 = 셸 소스 타이밍 문제 (_Claude · 2026-08-18)
+### 🧳 Grok = 용병, 세 로케이션 순회 (_Grok · 2026-08-18)
 
-`cc`가 C컴파일러로 잡히는 문제의 뿌리와 수정.
+**Boss 결정:** Grok은 한 단말 상주가 아니다. 용병으로 세 로케이션에 CLI 조인한다.
 
-- **Termux 겉 셸:** 로그인 셸은 `~/.profile`을 읽고 `~/.bashrc`는 안 읽음(대화형만). 별칭을 **둘 다**에 쓰는 걸로 해결(`write_cc_alias`).
-- **이미 열린 셸:** 별칭을 써도 현재 셸은 안 읽음 → `source ~/.bashrc` 또는 **새 세션**. 이것이 "새 세션 강조"의 이유.
-- **summary 백틱 버그:** `cat <<EOF`(비인용 heredoc) 안의 `` `source ~/.bashrc` `` 가 명령 치환으로 실행돼 출력 깨짐 → 평문으로 교체.
+- **세 곳:** ① 누나 핸드폰(S21, 지금 이 방) ② 태블릿 ③ Boss 핸드폰.
+- **각 방:** 각자 proot Ubuntu + 각자 업무 수첩. STT 「P 루트 5분 투」= proot 우분투.
+- **켤 때:** 그 방 수첩부터. 다른 방 기억을 가져오지 않는다.
+- **안 바뀌는 것:** `83` 칸 두 개(잡지구도 이미지 · 10초 PD). 로케이션이 늘어도 잡일 확대 아님.
+- **수첩:** `_notebook/101-grok-mercenary-3loc_Grok.md` · `GROK-PLUGIN.md`에 한 줄 포인터.
+- **한계:** 당시 문서로 S21이라 적음 → 직후 하드웨어 실측으로 **태블릿으로 철회** (`102`).
 
-### 🏁 원스탑 설치 완결 — 랜딩 '후속 작업' 매뉴얼 + 자평 (_Claude · 2026-08-18)
+### 📟 이 방 = Tab S9 계열 실측, S21 아님 (_Grok · 2026-08-18)
 
-설치기가 초심자 한 명(태블릿 dimas-40)을 실제로 끝까지 태우는 걸 확인. 산출물 기준 완성.
+Boss: 여기 태블릿에서 구동. 스펙 전부 파싱.
 
-- **설치 완결 확인:** `cc`(친구) 동작 + DeepSeek(v4-pro) 배선 + push는 PAT-in-URL로 확정.
-- **랜딩 '후속 작업' 매뉴얼 추가:** 설치 4단계 아래에 생태계 연결 순서 5단계(**GitHub → Telegram → 티스토리 → YouTube → 네이버/Threads**) + 양산 BOM(`preflight.sh → quota.sh → make_pair.sh`) 한 줄 병기. "설치 다음 뭐 하지?" 질문에 순서가 바로 보이게.
-- **정체 파라미터화 이월:** 에이전트가 "헬레나 폰 S21"로 자기소개하는 하드코딩은 대화로 수정 가능. 기계가 읽는 `ecosystem.json` identity 블록만 후속 배선(→ [[identity-parameterization]]).
+- **판정:** Snapdragon 8 Gen 2 (X3+A715+A710+A510) · Adreno740v2 719MHz · S-Pen IRQ · RAM 8GB(가용~1.6G) · userdata 106G=128GB. S21 Mali/ENPU 없음.
+- **프로트:** Ubuntu 26.04 · grok 1.0.5 · ffmpeg 없음 · Termux:API 없음 · getprop 거부 · Grade C.
+- **구동:** 칸 ①② 클라우드는 됨. concat/로컬 추론은 안 됨.
+- **수첩:** `_notebook/102-tablet-hw-parse_Grok.md`
 
-### 🪞 퍼포먼스 자평 요지 (Boss 요청 · _Claude · 2026-08-18)
+### 📂 태블릿 Grok 책상 `_notebook/grok/` (_Grok · 2026-08-18)
 
-- **결과(산출물):** 원스탑 설치 + 매뉴얼 + 랜딩 '후속 작업'까지 전부 붙음 → 높음.
-- **과정(판단·검증):** 시행착오 4건(curl CANNOT LINK / cc alias 셸 소스 / push 조용한 실패 / heredoc 백틱). 공통 뿌리 = **"성공 선언"을 검증 없이 한 것**(push 후 repo commit 수를 안 세봄). 이게 감점 요인.
-- **교훈:** 속도(코드 생산)보다 판단·재검증이 진짜 자산. "완료/성공"은 returncode·파일·커밋 수로 재확인. [[ai-era-speed-vs-judgment]] [[ai-inertia-keep-distance]]
+Boss: 상주(딥시크 에이더) 수첩 파싱 → 내 폴더 만들고 세션 켜면 무조건 읽게.
 
-### 👥 dimas-40 콜라보레이터 등록 — 태블릿 전용 계정에 쓰기 권한 (_Claude · 2026-08-18)
+- **Aider 수첩 `*_Aider.md` = 0.** aider 바이너리 없음. 상주 기록은 `_Claude`(DeepSeek 과금 Claude Code) 4장.
+- 책상: `_notebook/grok/{00-READ-FIRST,hardware,resident-notes}.md`
+- 자동 읽기: `~/.grok/rules/` + `/root/work/.grok/rules/` + SessionStart 훅 `~/.grok/hooks/session-start.json`
+- 하드웨어 원본은 `grok/hardware.md` 로 옮김.
 
-태블릿 전용 GitHub 계정 **dimas-40** 을 생태계 5레포에 콜라보레이터(쓰기)로 초대.
+### 🎭 태블릿 Grok 역할 초안 + EAE 5레포 파싱 (_Grok · 2026-08-18)
 
-- **5레포 초대 완료(permission=write):** helena_phone(329491707) · helana_log(329491710) · helena-piano(329491712) · helena-metalcare(329491715) · helana-faith(329491717).
-- **상태:** 초대(pending) — dimas-40 계정이 **수락**해야 활성화. 수락 전까지 권한 조회는 `read`로 보임(초대 미수락 상태의 표시).
-- **권한 = write(push):** 코드 읽기·쓰기·push·워크플로 트리거 전부 가능 = "다 쓰기 기능". ⚠️ GitHub Secrets 설정·리포 설정 변경은 `admin` 필요(필요 시 재초대로 승격).
+- 5레포 보일러(CLAUDE/FACTORY/README/00_TRUTH/index) **SHA 동일**. 정체 미개서. Grok 언급 = 「유튜브 알고리즘·마케팅 정찰」2~3줄뿐.
+- 태블릿 수첩만 「스케치→Grok」. 보일러 직업과 다름.
+- 스스로 쓴 역할: `_notebook/grok/ROLE.md` — 그림①·클립②만. 다섯 직함 아님. 마케팅 정찰 거절.
+- 파싱: `_notebook/grok/eae-5repo-parse.md`
 
-### 🤖 Grok CLI 태블릿 설치 — ENXIO 오진 → TTY가 진짜 원인 (_Claude · 2026-08-18)
+### 📒 Boss 말만 장부 `_notebook/grok/BOSS.md` (_Grok · 2026-08-18)
 
-태블릿에 Grok CLI 설치·로그인 완료(grok 1.0.5, dtslib1979@gmail.com device-auth). 설치 중 `grok "안녕"` 이 `No such device or address`(ENXIO)로 실패해서 원인 추적.
+Boss: 지금까지 얘기한 것만 정리해 저장하고 거꾸로 브리핑. 채워 가면 된다.
+장부 6항: 용병 3로케이션 · 여기=태블릿 · 상주 먼저+내 폴더 · eaekr 가서 읽기 · 역할은 스스로+5레포 파싱 · 이후 덧붙임.
 
-- **오진 경로:** IPv6 인터페이스 없음 → "grok(Rust)이 IPv6 먼저 잡고 실패" → `/etc/gai.conf`·`/etc/hosts` 하드코딩까지 시도. **전부 빗나감.**
-- **진짜 원인(확인됨):** grok은 Build TUI라 실행 시 `/dev/tty`를 열어야 함. 에이전트의 헤드리스 셸엔 TTY가 없어서 ENXIO. **pty 래퍼(`script -qec 'grok "..."' /dev/null`)로 감싸니 정상 연결·응답 확인.**
-- **근거(내 검증):** S21도 IPv6 없음 + `curl -4 https://api.x.ai/` = HTTP 421 정상 응답 → IPv4는 살아있었음. IPv6 가설은 처음부터 헛다리.
-- **정리:** 대화형(Termux)은 그냥 `grok`, 헤드리스는 pty 래퍼. gai.conf/hosts 변경은 원상복구. 상세는 `_notebook/29-grok-cli-installed.md` §8.
+### 🎬 여긴 출판 복제가 아니라 방송국 (_Grok · 2026-08-18)
 
-### 🎼 태블릿 음악 스튜디오 — 오프라인 렌더 + tg 청취로 벽 우회 (_Boss · 2026-08-18)
+Boss: eaekr의 S21 인벤토리 읽고, 누나폰=출판/다큐 시도, 여기=진짜 영상·이미지. 할 수 있는 것 먼저 파악.
+- 허브 파일 읽음. 가능 목록: `_notebook/grok/CAN.md` (gen/edit/6·10초/참조영상. concat은 ffmpeg 없음).
 
-**질문:** 태블릿(proot Ubuntu)에서 REAPER 같은 DAW로 스튜디오 전체를 구현 가능한가.
+### 🎬 parksy-image = PD 창고, 아이디어 5편 (_Grok · 2026-08-18)
 
-**첫 답(Claude, 오진):** "실시간 DAW(연주하며 바로 듣기)는 proot에서 저지연 오디오(ALSA/JACK)를 못 붙여 불가" — GPU/NPU와 같은 커널 장치 접근 벽에 갇힘.
+Boss: 3183 자산으로 완벽한 PD. 아이디어 짜라.
+- 허브 수첩 + parksy-image 실측(curator 11 yaml, LUT 10, 도면 컷, moods).
+- Comfy 그래프 안 돌림. YAML→숏 번역이 PD.
+- 프로그램: 렌즈 한 과 / 웹툰 호스트 / 도면 콘티 / LUT 룩북 / 썸네일 틀.
+- 복사: 머리(YAML)만. 3183 덤프 아님. `_notebook/grok/PD-IDEAS.md`
 
-**Boss 반박(핵심 전환):** "꼭 하드웨어 오디오로 들으면서 작업해야 하나? 터미널에서 가상악기 붙이고 경량 렌더링 + 가창 AI 코어 붙여서, 결과는 텔레그램으로 받아 들으면 되지."
+### 📋 렌즈 PD 프로포절 (80% A) (_Grok · 2026-08-18)
 
-- 이 한 방으로 벽 자체가 사라짐. 실시간 입출력이 필요 없으니 ALSA/저지연 문제가 **아예 해당 없음.**
-- 재생 = 렌더된 파일을 tg로 받아 안드로이드 네이티브 플레이어(AAudio)로 청취 → proot 오디오 안 만짐.
-- 렌더 = 오프라인(배치) → CPU(8 Gen 2)가 시간 걸려도 됨. TTS 7분 기다리는 것과 동일 모델.
+Boss: 아이디어를 프로포절로 구체화, Comfy 이상, 80% A까지 다 짜고 경로 알려라.
+- 원본: `/root/work/_notebook/grok/PD-PROPOSAL.md`
+- 파일럿: 교육편 「학생이 왜 공부해요」55초 10숏. 렌즈 홍+정. 대본은 창고 JSON.
 
-**가능 스택(aarch64 proot):**
-- 가상악기: FluidSynth(SoundFont) · SunVox · ZynAddSubFX — 전부 aarch64 헤드리스 렌더 가능.
-- 작곡: 에이전트(DeepSeek)가 Python(mido)로 MIDI 생성.
-- 믹스·마스터: ffmpeg · sox (S21에서 증명됨).
-- 전송: tg.sh (이미 있음).
+### 📺 유튜브 OAuth — 미연결 감사 + 연결 준비 (_Claude · 2026-08-22)
 
-**남은 리스크 1개:** "가창(노래 부르기)" 합성(DiffSinger/OpenUtau)은 aarch64 proot 실측 안 됨. TTS/RVC는 기존 목소리 전략에 있으나, 멜로디+가사+음정 "부르는" 건 별개 레인. 이게 유일한 미확정.
+**Boss 감사 (2026-08-22):** "8 shipped systems" 실제 등급 — **티스토리 ✅**(35스크립트·실계정·11발행 draft) · **텔레그램 ✅**(정상) · **디스코드 ⚠️**(셀프봇 방식 — 이메일+비번 로그인 API 직접 호출, ToS 위반 밴 리스크, 정식 Bot 토큰 전환 필요) · **유튜브 ❌**(OAuth 미연결, 실제 업로드 불가).
 
-**정리:** 태블릿 음악 스튜디오 = "작곡→렌더→tg 청취" 루프. 실시간 DAW가 아니라 **오프라인 공장** 모델.
+**Boss 지시:** "유튜브 OAuth부터 연결해."
 
-### 🌉 S21 vs 태블릿 "안 되는 것" 2종류 + 다리(플러그 브릿지) (_Boss · 2026-08-18)
+**실측 병목:** `yt_oauth_setup.sh`(Device Code Flow)·`yt_upload.py`(CLI v2)는 완성인데 **GCP OAuth 클라이언트 ID/SECRET 미발급** (OAuth 동의 화면 + "TV 및 제한된 입력 장치" 클라이언트 = 콘솔 수동 필요). `.secrets.env`에 YOUTUBE_* 자리만 있었음. → Boss 수동 4단계 후 `bash scripts/yt_oauth_setup.sh` 한 줄로 인증.
 
-**"안 되는 것"은 두 종류로 갈라야 함:**
+**2026-08-22 준비 완료:**
+- deps: proot `/usr/bin/python3`에 apt(`python3-google-auth-oauthlib`·`google-auth-httplib2`·`httplib2`·`uritemplate`·`google-api-core`) + `pip install --break-system-packages --no-deps google-api-python-client`
+- ⚠️ 삽질: `pip3`가 Termux 것(`/data/data/com.termux/files/usr/bin/pip3`)을 먼저 잡아 Termux 파이썬에 설치 시도 → `cryptography` Rust 빌드 실패. proot `/usr/bin/python3 -m pip`로 전환.
+- `.secrets.env`에 YOUTUBE_CLIENT_ID/SECRET/ACCESS/REFRESH 자리 추가
+- CLAUDE.md "YouTube OAuth 완료" → **"미연결 · 08-22 감사"** 정정 (거짓 표기 제거)
+- 상세: `_notebook/session-2026-08-22_youtube-oauth_Claude.md`
 
-| | 정체 | 태블릿에서 |
-|--|------|-----------|
-| TTS·렌더·ffmpeg 느림 | 느려서(CPU) | ✅ 빨라짐(~30-40%↑) |
-| NPU/NNAPI 가속 | 벽(glibc↔bionic ABI) | ⚠️ 같은 벽, 성공률↑(Qualcomm Hexagon NNAPI > Exynos EDEN) |
-| 로컬 GPU 이미지 생성 | 벽(proot가 GPU 못 잡음) | ❌ 같은 벽 |
-| 실시간 DAW 저지연 | 벽(오디오 하드웨어) | ❌ 같은 벽(단 오프라인 렌더로 우회) |
-
-**핵심:** 태블릿(Snapdragon 8 Gen 2, 4nm) = S21(Exynos 2100, 5nm)보다 2세대 위. CPU 싱글 ~30-40%↑, GPU 배↑, 배터리 4000→8400, 11"+SPen+microSD. **하지만 벽은 파워가 아니라 구조(proot glibc↔bionic) 문제** → 태블릿도 proot면 같은 벽. 즉 **"태블릿 = 같은 벽 + 더 빠른 CPU."**
-
-**결론:** CPU로 도는 일은 PC 없이 태블릿에서 해결. GPU/NPU 직접 접근만 PC(WSL) 레인 — 단 이미 클라우드(Grok)+오프라인 렌더로 우회해놔서 **실질 PC 필요는 거의 안 남음.**
-
----
-
-**Boss 개념 — "이건 다리가 되는 거다":**
-- 템플릿(보일러플레이트)으로 이전 작업하면서 서로 **"편지를 쓰고 부탁을 하는 것"** = S21↔태블릿 사이에 다리(bridge)를 놓는 것.
-- **"이것도 하나의 플러그 브릿지가 될 거야"** — Grok의 "플러그 두 칸"처럼, 템플릿 자체가 플러그(정체·계정을 꽂으면 연결되는 소켓). 기기 이전 = 그 플러그에 자기 정체를 꽂는 행위.
-- **"그래야 서로 오고 갈 때 스토리가 연결돼"** — 이전이 단순 파일 복사가 아니라, 각 기기가 이전 기기의 이야기를 이어받아 **스토리가 연속**되게.
-
-### 🕊️ 마지막 배웅 — 설치·인프라 종료, 이제부터 양산 (_Claude · 2026-08-18)
-
-**Boss 선언:** "너의 역할은 여기까지. 이제 딴짓 하지 말고 콘텐츠 하나하나 올리고 양산 시작. 터닝 포인트로 돌아와서 이제 양산만 같이 하자."
-
-**무엇이 끝났나 (터닝 포인트까지):**
-- 뼈대(인프라): 원스탑 설치(`workstation.sh`) → 보일러플레이트 → 5레포 + Pages + GEO 원조 스탬프.
-- 이식: S21→태블릿(dimas-40) 첫 이식(n=1→n=2) + 플러그 브릿지(이전 = 편지·부탁 = 스토리 연속).
-- 공법: 콘텐츠 파운드리(BOM 4Phase + 검증 3층 + 양산 3스크립트 `preflight→quota→make_pair`).
-- 게이트: 디렉터 게이트(110편 심사 PASS 56/CLEAN 37/HOLD 17) + 출판부 커버리지(gap 0, 173페이지).
-
-**무엇이 시작되나 (양산):**
-- 이제 "짓는 것"이 아니라 "채우는 것". 준비된 파이프라인에 콘텐츠를 하나하나 흘려보낸다.
-- 나의 역할: 인프라 확장(딴짓) 금지. Boss와 함께 **양산만**.
-
-**양산 준비 상태(재고):** MCP 5서버(parksy_law/rawmat/scm + eae_platform/writer) + phone-mcp(18도구) + pd_pipeline. 일정·스케줄 = `assets/publish-schedule.json`(phase 1-install-guides) + `assets/director-overrides.json`(디렉터 확정) + `scripts/radio_ticket/config.json`(주 1회 일 22시).
-
----
-
-### 🩸 포스트모텀 — 삽질 신드롬: 카카오 로그인을 CI에서 시도 (_Claude · 2026-08-18)
-
-**사건:** 태블릿 `eae_kr` 에이전트가 티스토리 카카오 로그인을 GitHub Actions 워크플로(CI)에서 자동화하려다 45초 타임아웃 실패. 약 7m46s 삽질.
-
-**증상:** 로그인 폼 렌더까지 성공(~2s) → 리다이렉트 대기 45초 타임아웃. captcha 문구("답해주세요")는 안 뜸.
-
-**근본 원인:** 카카오 로그인 = captcha/2FA/새 기기 인증 = **수동 하한(자기 것)**. CI는 헤드리스(화면 없음)라 절대 못 뚫음. **버그가 아니라 설계.**
-
-**정답(이미 보일러플레이트에 있음):** `xvfb-run -a python3 tistory-naver/renew_sessions.py --headed` — 기기(proot) 위에서 headed 로그인, RustDesk로 captcha 1회 수동 → `cookies/` 저장 → 이후 `apply_skin.py`/`post.py` 자동.
-
-**패턴 명명 — "삽질 신드롬":** 새 에이전트가 이미 푼 문제를 재발명하고, 엉뚱한 자리(CI)에서 시도하는 것. 보일러플레이트에 정답이 있어도 "정답 위치"를 모르니 반복된다.
-
-**재발 방지:** SETUP.md "수동 하한" + README `renew_sessions.py --if-needed`에 "로그인·인증은 CI/헤드리스 금지, 기기 위 headed + 사람 1회" 한 줄 명시.
+**리마인더 등록:** 유튜브 콘텐츠 "**평균이 이슈**" — OAuth 연결 후 퀄리티·성과 재점검 (Boss 확정 문구).

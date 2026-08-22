@@ -301,7 +301,7 @@ helena_phone/
 ├── Discord S25 Phone 서버 (#로비, #ai-보고)
 ├── Telegram @Proot_25ultra_bot (tg.sh 보고)
 ├── 티스토리 5종 (수동 업무일지)
-├── YouTube @helena_phone (OAuth 완료)
+├── YouTube @helena_phone (OAuth 미연결 · 08-22 감사 → 수동 발급 대기)
 └── 네이버 helena1975 (웹진·미끼)
 ```
 
