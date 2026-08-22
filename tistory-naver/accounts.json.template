@@ -1,15 +1,17 @@
 {
   "password": "your-kakao-password",
+  "version": "2026-08-22-v2-final",
+  "note": "v2 최종: dtslib1k=본사그룹(HQ+직영점4, 회사 직영) · dtslib2k=지사그룹(브랜치5, 개인 운영). koosy↔korean-parksy(지사 대표), midmath→buckleychang(본사). SSOT: papyrus hq/TISTORY-ENDPRODUCT-MAPPING-2026-08-22.md (Boss 확정 · 미해결 0건)",
   "accounts": [
-    {"id": "dtslib1k", "email": "dtslib1k@kakao.com", "blog": "dtslib1k"},
-    {"id": "hitop", "email": "dtslib1k@kakao.com", "blog": "hitop"},
-    {"id": "midmath", "email": "dtslib1k@kakao.com", "blog": "midmath"},
-    {"id": "midsocial", "email": "dtslib1k@kakao.com", "blog": "midsocial"},
-    {"id": "lafilosofia", "email": "dtslib1k@kakao.com", "blog": "lafilosofia"},
-    {"id": "korean-parksy", "email": "dtslib2k@kakao.com", "blog": "korean-parksy"},
-    {"id": "kr-merit-bluff", "email": "dtslib2k@kakao.com", "blog": "kr-merit-bluff"},
-    {"id": "kr-merit-halfblood", "email": "dtslib2k@kakao.com", "blog": "kr-merit-halfblood"},
-    {"id": "kr-merit-aggro", "email": "dtslib2k@kakao.com", "blog": "kr-merit-aggro"},
-    {"id": "kr-merit-shaman", "email": "dtslib2k@kakao.com", "blog": "kr-merit-shaman"}
+    {"id": "dtslib1k", "email": "dtslib1k@kakao.com", "blog": "dtslib1k", "unit": "dtslib-branch", "tier": "HQ"},
+    {"id": "hitop", "email": "dtslib1k@kakao.com", "blog": "hitop", "unit": "phoneparis", "tier": "브랜치"},
+    {"id": "lafilosofia", "email": "dtslib1k@kakao.com", "blog": "lafilosofia", "unit": "alexandria-sanctuary", "tier": "브랜치"},
+    {"id": "midmath", "email": "dtslib1k@kakao.com", "blog": "midmath", "unit": "buckleychang.com", "tier": "브랜치"},
+    {"id": "midsocial", "email": "dtslib1k@kakao.com", "blog": "midsocial", "unit": "buddies.kr", "tier": "브랜치"},
+    {"id": "korean-parksy", "email": "dtslib2k@kakao.com", "blog": "korean-parksy", "unit": "koosy", "tier": "브랜치"},
+    {"id": "kr-merit-bluff", "email": "dtslib2k@kakao.com", "blog": "kr-merit-bluff", "unit": "gohsy", "tier": "브랜치"},
+    {"id": "kr-merit-shaman", "email": "dtslib2k@kakao.com", "blog": "kr-merit-shaman", "unit": "artrew", "tier": "브랜치"},
+    {"id": "kr-merit-halfblood", "email": "dtslib2k@kakao.com", "blog": "kr-merit-halfblood", "unit": "papafly", "tier": "브랜치"},
+    {"id": "kr-merit-aggro", "email": "dtslib2k@kakao.com", "blog": "kr-merit-aggro", "unit": "abraham", "tier": "브랜치"}
   ]
 }

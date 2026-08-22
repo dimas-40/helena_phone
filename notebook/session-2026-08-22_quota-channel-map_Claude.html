@@ -93,9 +93,9 @@
 <li><a href="#3-boss">3. 갭 + 설치 순서 (Boss 재편 확정)</a></li>
 <li><a href="#4-boss-2026-08-22">4. 기기×계정×방송 토폴로지 확정 (Boss · 2026-08-22)</a></li>
 <li><a href="#5-boss-2026-08-22-2">5. 티스토리 → 비즈니스 방송 연계 — 재편 확정 (Boss · 2026-08-22 2차)</a></li>
-<li><a href="#6-3-github-repo-youtube-tistory-2026-08-22">6. 3단 매핑 — GitHub repo ↔ YouTube ↔ Tistory (다대일 수렴 · 2026-08-22 확정)</a><ul>
-<li><a href="#3">3단 구조</a></li>
-<li><a href="#t3-b">T3 — 다대일 수렴 (폰/b계정 비즈니스)</a></li>
+<li><a href="#6-3-github-repo-youtube-tistory-v2-boss">6. 3단 매핑 — GitHub repo ↔ YouTube ↔ Tistory (v2 최종 · Boss 확정)</a><ul>
+<li><a href="#boss">계정 단위 원칙 (Boss)</a></li>
+<li><a href="#11">1:1 매핑 — 최종 확정</a></li>
 </ul>
 </li>
 </ul>
@@ -348,61 +348,110 @@ related:<br>
 <p><strong>실행:</strong> <code>tistory-naver/accounts.json</code> = <strong>dtslib1k·dtslib2k 10블로그</strong> (id=슬러그 유니크, post.py acc_map 요구). 비밀번호 = 기존 공유 (papyrus와 동일). template 동기화 완료.</p>
 <p><strong>구성:</strong> post.py 계정별 로그인(각 email + 공유 pw) ✅ · verify_accounts.py는 accounts[0]만 로그인 → <strong>계정별 실행 필요</strong> (알려진 한계).</p>
 <hr>
-<h2 id="6-3-github-repo-youtube-tistory-2026-08-22">6. 3단 매핑 — GitHub repo ↔ YouTube ↔ Tistory (다대일 수렴 · 2026-08-22 확정)</h2>
+<h2 id="6-3-github-repo-youtube-tistory-v2-boss">6. 3단 매핑 — GitHub repo ↔ YouTube ↔ Tistory (v2 최종 · Boss 확정)</h2>
 <blockquote>
-<p><strong>자료 전수 확인:</strong> 블로그↔채널 1:1로 적힌 문서는 아무 데도 없음. (TISTORY_25_SLOTS = blog→카카오계정, channel-repo-map = 채널→레포, distributor channel_map = blog→계정). 연계 지점은 <strong>세계(계정) 단위</strong>뿐.</p>
+<p><strong>SSOT:</strong> papyrus <code>hq/TISTORY-ENDPRODUCT-MAPPING-2026-08-22.md</code> (Boss 확정 · 미해결 0건 · 실제 채널 스크린샷 재검증, 6bc11ed).<br>
+<strong>v2 전환:</strong> 초안(직영4/브랜치5)은 실제 채널 보유 현황과 안 맞아서(직영점 buddies.kr·buckleychang.com은 채널 자체가 없음) <strong>HQ 제외 전부를 &ldquo;브랜치&rdquo;로 통합하는 2티어</strong>로 재확정. Tier3/Tier4 공식 분류는 papyrus <code>CLAUDE.md</code> 5-Tier에 유지.</p>
 </blockquote>
-<h3 id="3">3단 구조</h3>
+<h3 id="boss">계정 단위 원칙 (Boss)</h3>
+<blockquote>
+<p><strong>dtslib1k 계정 = 본사그룹 (HQ+직영점4, 회사 직영) · dtslib2k 계정 = 지사그룹 (브랜치5, 개인 운영).</strong></p>
+</blockquote>
+<h3 id="11">1:1 매핑 — 최종 확정</h3>
 <table>
 <thead>
 <tr>
-<th>단</th>
-<th>매핑</th>
-<th>1:1?</th>
-<th>근거 문서</th>
+<th>그룹</th>
+<th>Blog</th>
+<th>Unit</th>
+<th>YouTube</th>
+<th>확신</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>T1</strong></td>
-<td>GitHub repo ↔ YouTube 채널</td>
-<td>✅ 1:1</td>
-<td><code>channel-repo-map.json</code> v2.0 (채널 15 = 레포 묶음)</td>
+<td>본사 dtslib1k</td>
+<td>dtslib1k</td>
+<td>dtslib-branch (HQ)</td>
+<td>@dtslib-branch</td>
+<td>🔒강</td>
 </tr>
 <tr>
-<td><strong>T2</strong></td>
-<td>티스토리 blog ↔ 카카오 계정</td>
-<td>✅ 1:1</td>
-<td><code>accounts.json</code> · <code>TISTORY_25_SLOTS.md</code> (21슬롯)</td>
+<td>본사 dtslib1k</td>
+<td>hitop</td>
+<td>phoneparis</td>
+<td>@phoneparis-r6q</td>
+<td>중</td>
 </tr>
 <tr>
-<td><strong>T3</strong></td>
-<td>티스토리 세계 ↔ YouTube 세계</td>
-<td>❌ <strong>계정 단위 연계</strong></td>
-<td>Boss 확정 · 본 수첩 §2/§4/§5</td>
+<td>본사 dtslib1k</td>
+<td>lafilosofia</td>
+<td>alexandria-sanctuary</td>
+<td>@alexandria-y6k</td>
+<td>🔒강 (요양원=인생철학)</td>
+</tr>
+<tr>
+<td>본사 dtslib1k</td>
+<td>midmath</td>
+<td>buckleychang.com</td>
+<td>@dtslib-branch 경유</td>
+<td>🔒강 (컨설팅=논리체계)</td>
+</tr>
+<tr>
+<td>본사 dtslib1k</td>
+<td>midsocial</td>
+<td>buddies.kr</td>
+<td>@dtslib-branch 경유</td>
+<td>🔒강 (소상공인=지역사회)</td>
+</tr>
+<tr>
+<td>지사 dtslib2k</td>
+<td>korean-parksy</td>
+<td>koosy</td>
+<td>@dtslib-branch 경유</td>
+<td>중 (최고참 지사=대표)</td>
+</tr>
+<tr>
+<td>지사 dtslib2k</td>
+<td>kr-merit-bluff</td>
+<td>gohsy</td>
+<td>@dtslib-branch 경유</td>
+<td>🔒강 (연예계=허세문화)</td>
+</tr>
+<tr>
+<td>지사 dtslib2k</td>
+<td>kr-merit-shaman</td>
+<td>artrew</td>
+<td>@artrew-i1w</td>
+<td>⚠️약 (샤먼=예술적 영감 재해석)</td>
+</tr>
+<tr>
+<td>지사 dtslib2k</td>
+<td>kr-merit-halfblood</td>
+<td>papafly</td>
+<td>@dtslib-branch 경유</td>
+<td>🔒강 (K맛×세계입맛 혼종)</td>
+</tr>
+<tr>
+<td>지사 dtslib2k</td>
+<td>kr-merit-aggro</td>
+<td>abraham</td>
+<td>@justino-fashion</td>
+<td>🔒강 (크리에이터=어그로)</td>
 </tr>
 </tbody>
 </table>
-<h3 id="t3-b">T3 — 다대일 수렴 (폰/b계정 비즈니스)</h3>
-<pre><code>[티스토리 세계]                      [유튜브 세계 — 폰/b계정]
-dtslib1k 5블로그 ─┐
- (문학·과·수·사·철) ├→  dtslib.kr 비즈니스방송 ─→ @dtslib-branch  ← 주력 깔때기
-dtslib2k 5블로그 ─┘      (SEO·텍스트 코퍼스)     (dtslib.kr 등 11레포)
-                                                @espiritu-tango (보류)
-                                                @artrew · @phoneparis
-                                                @alexandria · @justino  ← 별개 버티컬(레포·도메인 각자)
-</code></pre>
-<ul>
-<li><strong>10개 블로그 = 비즈니스 세계의 텍스트·SEO 코퍼스</strong> → 주력 채널 <code>@dtslib-branch</code>로 수렴</li>
-<li>나머지 5채널(탱고·artrew·phoneparis·alexandria·justino)은 각자 레포·도메인 세계 → 블로그와 무관</li>
-<li><strong>왜 1:1이 아니냐:</strong> dtslib1k/2k 콘텐츠(문학·과학·수학·사회·철학·KR메리트)는 6채널의 버티컬(탱고·AI미대생·모바일유통·요양원·패션)과 내용 불일치. 1:1은 창작에 불과.</li>
-</ul>
-<p><em><code>_Claude</code> · 2026-08-22 · 출처: papyrus SSOT + TISTORY_25_SLOTS + Boss 재편 확정</em></p>
+<blockquote>
+<p><strong>v1→v2 재배정 핵심:</strong> koosy↔midmath(확정) 폐기 → koosy는 지사 대표(korean-parksy), midmath는 본사 buckleychang(논리체계)으로 이동. 계정 단위 원칙에 정합.<br>
+<strong>채널 미확인 5곳 → 해소:</strong> buddies.kr·buckleychang.com·koosy·gohsy·papafly는 &ldquo;개별 채널 없음&rdquo;이 맞는 상태 — @dtslib-branch 통합 업로드 정책(램프업 후 각자 채널 개설, CLAUDE.md 4060행). youtube-data.json으로 교차검증 완료.<br>
+<strong>확신 요약:</strong> 강 7 · 중 2 · 약(승인) 1. accounts.json v2 unit/tier 필드 반영.</p>
+</blockquote>
+<p><em><code>_Claude</code> · 2026-08-22 · 출처: papyrus SSOT v2 (6bc11ed) + Boss 최종 확정</em></p>
   </article>
   <nav class="wz-pager">
-    <a class="" href="session-2026-08-18_Claude.html">
+    <a class="" href="session-2026-08-19_Claude.html">
           <span class="dir">Previous</span>
-          <span class="title">세션 수첩 — 환경·과금·GitHub 계정 점검 (2026-08-18)</span>
+          <span class="title">세션 회의록 — 판의 전환 · 오버레이 키트 + 런타임 후보정 (2026-08-19)</span>
         </a>
     <a class="next" href="session-2026-08-22_youtube-oauth_Claude.html">
           <span class="dir">Next</span>

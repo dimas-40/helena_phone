@@ -101,32 +101,32 @@ related:
 
 ---
 
-## 6. 3단 매핑 — GitHub repo ↔ YouTube ↔ Tistory (다대일 수렴 · 2026-08-22 확정)
+## 6. 3단 매핑 — GitHub repo ↔ YouTube ↔ Tistory (v2 최종 · Boss 확정)
 
-> **자료 전수 확인:** 블로그↔채널 1:1로 적힌 문서는 아무 데도 없음. (TISTORY_25_SLOTS = blog→카카오계정, channel-repo-map = 채널→레포, distributor channel_map = blog→계정). 연계 지점은 **세계(계정) 단위**뿐.
+> **SSOT:** papyrus `hq/TISTORY-ENDPRODUCT-MAPPING-2026-08-22.md` (Boss 확정 · 미해결 0건 · 실제 채널 스크린샷 재검증, 6bc11ed).
+> **v2 전환:** 초안(직영4/브랜치5)은 실제 채널 보유 현황과 안 맞아서(직영점 buddies.kr·buckleychang.com은 채널 자체가 없음) **HQ 제외 전부를 "브랜치"로 통합하는 2티어**로 재확정. Tier3/Tier4 공식 분류는 papyrus `CLAUDE.md` 5-Tier에 유지.
 
-### 3단 구조
+### 계정 단위 원칙 (Boss)
 
-| 단 | 매핑 | 1:1? | 근거 문서 |
-|----|------|------|----------|
-| **T1** | GitHub repo ↔ YouTube 채널 | ✅ 1:1 | `channel-repo-map.json` v2.0 (채널 15 = 레포 묶음) |
-| **T2** | 티스토리 blog ↔ 카카오 계정 | ✅ 1:1 | `accounts.json` · `TISTORY_25_SLOTS.md` (21슬롯) |
-| **T3** | 티스토리 세계 ↔ YouTube 세계 | ❌ **계정 단위 연계** | Boss 확정 · 본 수첩 §2/§4/§5 |
+> **dtslib1k 계정 = 본사그룹 (HQ+직영점4, 회사 직영) · dtslib2k 계정 = 지사그룹 (브랜치5, 개인 운영).**
 
-### T3 — 다대일 수렴 (폰/b계정 비즈니스)
+### 1:1 매핑 — 최종 확정
 
-```
-[티스토리 세계]                      [유튜브 세계 — 폰/b계정]
-dtslib1k 5블로그 ─┐
- (문학·과·수·사·철) ├→  dtslib.kr 비즈니스방송 ─→ @dtslib-branch  ← 주력 깔때기
-dtslib2k 5블로그 ─┘      (SEO·텍스트 코퍼스)     (dtslib.kr 등 11레포)
-                                                @espiritu-tango (보류)
-                                                @artrew · @phoneparis
-                                                @alexandria · @justino  ← 별개 버티컬(레포·도메인 각자)
-```
+| 그룹 | Blog | Unit | YouTube | 확신 |
+|------|------|------|---------|------|
+| 본사 dtslib1k | dtslib1k | dtslib-branch (HQ) | @dtslib-branch | 🔒강 |
+| 본사 dtslib1k | hitop | phoneparis | @phoneparis-r6q | 중 |
+| 본사 dtslib1k | lafilosofia | alexandria-sanctuary | @alexandria-y6k | 🔒강 (요양원=인생철학) |
+| 본사 dtslib1k | midmath | buckleychang.com | @dtslib-branch 경유 | 🔒강 (컨설팅=논리체계) |
+| 본사 dtslib1k | midsocial | buddies.kr | @dtslib-branch 경유 | 🔒강 (소상공인=지역사회) |
+| 지사 dtslib2k | korean-parksy | koosy | @dtslib-branch 경유 | 중 (최고참 지사=대표) |
+| 지사 dtslib2k | kr-merit-bluff | gohsy | @dtslib-branch 경유 | 🔒강 (연예계=허세문화) |
+| 지사 dtslib2k | kr-merit-shaman | artrew | @artrew-i1w | ⚠️약 (샤먼=예술적 영감 재해석) |
+| 지사 dtslib2k | kr-merit-halfblood | papafly | @dtslib-branch 경유 | 🔒강 (K맛×세계입맛 혼종) |
+| 지사 dtslib2k | kr-merit-aggro | abraham | @justino-fashion | 🔒강 (크리에이터=어그로) |
 
-- **10개 블로그 = 비즈니스 세계의 텍스트·SEO 코퍼스** → 주력 채널 `@dtslib-branch`로 수렴
-- 나머지 5채널(탱고·artrew·phoneparis·alexandria·justino)은 각자 레포·도메인 세계 → 블로그와 무관
-- **왜 1:1이 아니냐:** dtslib1k/2k 콘텐츠(문학·과학·수학·사회·철학·KR메리트)는 6채널의 버티컬(탱고·AI미대생·모바일유통·요양원·패션)과 내용 불일치. 1:1은 창작에 불과.
+> **v1→v2 재배정 핵심:** koosy↔midmath(확정) 폐기 → koosy는 지사 대표(korean-parksy), midmath는 본사 buckleychang(논리체계)으로 이동. 계정 단위 원칙에 정합.
+> **채널 미확인 5곳 → 해소:** buddies.kr·buckleychang.com·koosy·gohsy·papafly는 "개별 채널 없음"이 맞는 상태 — @dtslib-branch 통합 업로드 정책(램프업 후 각자 채널 개설, CLAUDE.md 4060행). youtube-data.json으로 교차검증 완료.
+> **확신 요약:** 강 7 · 중 2 · 약(승인) 1. accounts.json v2 unit/tier 필드 반영.
 
-*`_Claude` · 2026-08-22 · 출처: papyrus SSOT + TISTORY_25_SLOTS + Boss 재편 확정*
+*`_Claude` · 2026-08-22 · 출처: papyrus SSOT v2 (6bc11ed) + Boss 최종 확정*

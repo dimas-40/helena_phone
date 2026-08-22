@@ -1,12 +1,13 @@
 {
-  "generated": "2026-08-22T06:25:02Z",
-  "notebook_md_count": 140,
-  "notebook_html_count": 143,
-  "catalog_count": 183,
+  "generated": "2026-08-22T08:02:42Z",
+  "notebook_md_count": 141,
+  "notebook_html_count": 145,
+  "catalog_count": 185,
   "missing_html": [],
   "orphan_html": [
     "notebook/40-lecture-chalkboard-vol0.html",
-    "notebook/53-self-eval.html"
+    "notebook/53-self-eval.html",
+    "notebook/session-2026-08-19-graph.html"
   ],
   "catalog_missing_on_disk": [],
   "gap_count": 0,
