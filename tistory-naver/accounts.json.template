@@ -1,16 +1,6 @@
 {
   "password": "your-kakao-password",
   "accounts": [
-    {"id": "eae-kr", "email": "eae_kr@kakao.com", "blog": "eae-kr"},
-    {"id": "eae-broadcast", "email": "eae_kr@kakao.com", "blog": "eae-broadcast"},
-    {"id": "eae-music", "email": "eae_kr@kakao.com", "blog": "eae-music"},
-    {"id": "eae-image", "email": "eae_kr@kakao.com", "blog": "eae-image"},
-    {"id": "eae-video", "email": "eae_kr@kakao.com", "blog": "eae-video"},
-    {"id": "polyglot14", "email": "dtslib@kakao.com", "blog": "polyglot14"},
-    {"id": "dtslib", "email": "dtslib@kakao.com", "blog": "dtslib"},
-    {"id": "webtoon-park", "email": "dtslib@kakao.com", "blog": "webtoon-park"},
-    {"id": "programmer-park", "email": "dtslib@kakao.com", "blog": "programmer-park"},
-    {"id": "musician-park", "email": "dtslib@kakao.com", "blog": "musician-park"},
     {"id": "dtslib1k", "email": "dtslib1k@kakao.com", "blog": "dtslib1k"},
     {"id": "hitop", "email": "dtslib1k@kakao.com", "blog": "hitop"},
     {"id": "midmath", "email": "dtslib1k@kakao.com", "blog": "midmath"},

@@ -89,10 +89,15 @@
 <li><a href="#c-thomastjparkgmailcom-60000-unitsday">c — thomas.tj.park@gmail.com · 교육방송 · 60,000 units/day</a></li>
 </ul>
 </li>
-<li><a href="#2-11-papyrus-21">2. 역산 — 채널 ↔ 티스토리 1:1 매핑 (papyrus 21슬롯)</a></li>
-<li><a href="#3">3. 갭 + 설치 순서 (추천)</a></li>
-<li><a href="#5-boss-2026-08-22">5. 티스토리 → 비즈니스 방송 연계 (Boss 질문 → 실행 · 2026-08-22)</a></li>
+<li><a href="#2-papyrus-21">2. 역산 — 채널 ↔ 티스토리 세계 매핑 (papyrus 21슬롯 · 세계 단위)</a></li>
+<li><a href="#3-boss">3. 갭 + 설치 순서 (Boss 재편 확정)</a></li>
 <li><a href="#4-boss-2026-08-22">4. 기기×계정×방송 토폴로지 확정 (Boss · 2026-08-22)</a></li>
+<li><a href="#5-boss-2026-08-22-2">5. 티스토리 → 비즈니스 방송 연계 — 재편 확정 (Boss · 2026-08-22 2차)</a></li>
+<li><a href="#6-3-github-repo-youtube-tistory-2026-08-22">6. 3단 매핑 — GitHub repo ↔ YouTube ↔ Tistory (다대일 수렴 · 2026-08-22 확정)</a><ul>
+<li><a href="#3">3단 구조</a></li>
+<li><a href="#t3-b">T3 — 다대일 수렴 (폰/b계정 비즈니스)</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav>
@@ -141,7 +146,7 @@ related:<br>
 <td>2</td>
 <td>@espiritu-tango</td>
 <td>espiritu-tango</td>
-<td>물성 HQ</td>
+<td>물성 HQ · 보류</td>
 </tr>
 <tr>
 <td>3</td>
@@ -198,7 +203,7 @@ related:<br>
 <p>⚠️ 15CH 레지스트리 구버전에 &ldquo;@EAE-<em> → dtslib 계정(?)&rdquo; 혼동 줄이 있음 — </em><em>SSOT(channel-repo-map v2.0) + youtube-data.json 둘 다 EAE = c 계정</em>* 확정. 구버전 대체.</p>
 </blockquote>
 <hr>
-<h2 id="2-11-papyrus-21">2. 역산 — 채널 ↔ 티스토리 1:1 매핑 (papyrus 21슬롯)</h2>
+<h2 id="2-papyrus-21">2. 역산 — 채널 ↔ 티스토리 세계 매핑 (papyrus 21슬롯 · 세계 단위)</h2>
 <table>
 <thead>
 <tr>
@@ -212,88 +217,56 @@ related:<br>
 </thead>
 <tbody>
 <tr>
-<td><strong>parksy (a)</strong></td>
-<td>dimas.thomas.sancho</td>
-<td>5 (blogger/philosopher/visualizer/musician/technician-parksy)</td>
-<td>parksy_kr</td>
-<td>5 (parksy 전용)</td>
-<td>❌ 미연결</td>
-</tr>
-<tr>
 <td><strong>EAE (c)</strong></td>
 <td>thomas.tj.park</td>
 <td>2 (EAE-Univ · BeingEduartEngineer)</td>
 <td>eae_kr</td>
-<td><strong>5 (eae-kr/broadcast/music/image/video)</strong></td>
+<td><strong>5 (eae-kr·broadcast·music·image·video)</strong></td>
+<td>❌ <strong>탭 전용</strong> (이 폰서 제거)</td>
+</tr>
+<tr>
+<td><strong>dtslib1k (b)</strong></td>
+<td>dtslib1979</td>
+<td>경제방송 6채널</td>
+<td>dtslib1k</td>
+<td><strong>5 (dtslib1k·hitop·midmath·midsocial·lafilosofia)</strong></td>
 <td>✅ <strong>연결됨</strong></td>
 </tr>
 <tr>
-<td><strong>dtslib (b)</strong></td>
+<td><strong>dtslib2k (b)</strong></td>
 <td>dtslib1979</td>
-<td>6 (dtslib-branch 외)</td>
-<td>dtslib·dtslib1k·dtslib2k</td>
-<td><strong>15 (dtslib·polyglot14·webtoon-park·programmer-park·musician-park · dtslib1k·hitop·midmath·midsocial·lafilosofia · korean-parksy·kr-merit×4)</strong></td>
-<td>❌ 미연결</td>
+<td>경제방송 6채널</td>
+<td>dtslib2k</td>
+<td><strong>5 (korean-parksy·kr-merit×4)</strong></td>
+<td>✅ <strong>연결됨</strong></td>
+</tr>
+<tr>
+<td><strong>dtslib (a·보류)</strong></td>
+<td>dimas.thomas.sancho</td>
+<td>KR방송</td>
+<td>dtslib</td>
+<td><strong>5 (polyglot14·dtslib·webtoon-park·programmer-park·musician-park)</strong></td>
+<td>❌ <strong>아리랑 맨 마지막</strong></td>
+</tr>
+<tr>
+<td><strong>parksy (a·보류)</strong></td>
+<td>dimas.thomas.sancho</td>
+<td>KR방송 5채널</td>
+<td>parksy_kr</td>
+<td><strong>5 (parksy 전용)</strong></td>
+<td>❌ <strong>아리랑 맨 마지막</strong></td>
 </tr>
 </tbody>
 </table>
-<p><strong>핵심:</strong> 이 폰(<code>tistory-naver/accounts.json</code>)엔 <strong>c 세계(eae 5블로그)만</strong> 연결돼 있음. b 세계 15블로그·a 세계 5블로그는 papyrus automation에 존재하지만 이 폰에서 안 닿음.</p>
+<p><strong>핵심:</strong> 이 폰(<code>tistory-naver/accounts.json</code>)엔 <strong>b 세계 dtslib1k·dtslib2k 10블로그만</strong> 연결돼 있음. eae(교육)는 탭 전용, dtslib·parksy_kr(아리랑)은 a계정 쿼터 미승인 → 맨 마지막 보류.</p>
 <hr>
-<h2 id="3">3. 갭 + 설치 순서 (추천)</h2>
+<h2 id="3-boss">3. 갭 + 설치 순서 (Boss 재편 확정)</h2>
 <ol>
-<li><strong>b 세계 티스토리 (dtslib 15블로그) 우선</strong> — 쿼터 60k 있는 주 계정 세계. 주력 = <code>dtslib.tistory.com</code>(철학자박씨, 39편)·<code>polyglot14</code>(31편)·<code>programmer-park</code>(37편)</li>
-<li><strong>필요 크레덴셜:</strong> <code>dtslib@kakao.com</code> · <code>dtslib1k@kakao.com</code> · <code>dtslib2k@kakao.com</code> (papyrus <code>tools/tistory/accounts.json</code>에 있음)</li>
-<li>a 세계(parksy)는 a계정 쿼터 미승인 + 글래스 로드맵 → 보류 (쿼터 확정 후)</li>
+<li><strong>b 세계 티스토리 (dtslib1k·dtslib2k 10블로그) = 지금</strong> — 쿼터 60k 있는 주 계정 세계. 폰/b계정 비즈니스방송과 연계.</li>
+<li><strong>eae (교육방송) = 탭 전용으로 분리</strong> — 이 폰에서 제거. 태블릿 에이전트 담당.</li>
+<li><strong>dtslib·parksy_kr (아리랑방송) = 맨 마지막</strong> — a계정 쿼터 미승인 + 글래스 로드맵. 쿼터 확정 후.</li>
 </ol>
-<p><strong>원칙:</strong> 세계(계정)별 미디어 구분 — 채널·블로그·레포가 같은 세계 안에서만 1:1 짝. 세계 간 섞지 않음.</p>
-<hr>
-<h2 id="5-boss-2026-08-22">5. 티스토리 → 비즈니스 방송 연계 (Boss 질문 → 실행 · 2026-08-22)</h2>
-<p><strong>Boss:</strong> &ldquo;이 두 가지 계정으로 여기 핸드폰 히스토리 월드(비즈니스 방송)와 연계해야 되지 않냐?&rdquo;</p>
-<p><strong>papyrus <code>tools/tistory/accounts.json</code> 마스터 확정 (4계정 20블로그):</strong></p>
-<table>
-<thead>
-<tr>
-<th>카카오 계정</th>
-<th>컨셉</th>
-<th>블로그 (5)</th>
-<th>세계</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>dtslib@kakao.com</td>
-<td>🧬 한글 OJT (수입)</td>
-<td>polyglot14·dtslib·webtoon-park·programmer-park·musician-park</td>
-<td><strong>경제 (폰)</strong></td>
-</tr>
-<tr>
-<td>dtslib1k@kakao.com</td>
-<td>📚 대학개론서→고딩언어</td>
-<td>dtslib1k·hitop·midmath·midsocial·lafilosofia</td>
-<td><strong>경제 (폰)</strong></td>
-</tr>
-<tr>
-<td>dtslib2k@kakao.com</td>
-<td>🏆 KR메리트/한국인특질</td>
-<td>korean-parksy·kr-merit×4</td>
-<td><strong>경제 (폰)</strong></td>
-</tr>
-<tr>
-<td>eae_kr@kakao.com</td>
-<td>교육방송</td>
-<td>eae-kr·broadcast·music·image·video</td>
-<td>교육 (탭)</td>
-</tr>
-<tr>
-<td>parksy_kr@kakao.com</td>
-<td>🧬 영문 OJT (수출·1:1 대칭)</td>
-<td>blogger·technician·philosopher·visualizer·musician-parksy</td>
-<td><strong>맨 마지막</strong> (Boss)</td>
-</tr>
-</tbody>
-</table>
-<p><strong>실행:</strong> <code>tistory-naver/accounts.json</code>에 <strong>dtslib·dtslib1k·dtslib2k 15블로그 연계</strong> (eae 5 유지 = 총 20). id=슬러그 유니크 (post.py acc_map 요구). 비밀번호 = 기존 공유 (papyrus와 동일 11자 확인). template 동기화. parksy_kr 보류.</p>
-<p><strong>구성:</strong> post.py 계정별 로그인(각 email + 공유 pw) ✅ · verify_accounts.py는 accounts[0]만 로그인 → <strong>계정별 실행 필요</strong> (알려진 한계).</p>
+<p><strong>원칙:</strong> 세계(계정)별 미디어 구분 — 채널·블로그·레포가 같은 세계 안에서만 짝. 세계 간 섞지 않음. 티스토리↔유튜브는 <strong>계정 단위 연계</strong> (블로그↔채널 1:1 아님, §6).</p>
 <hr>
 <h2 id="4-boss-2026-08-22">4. 기기×계정×방송 토폴로지 확정 (Boss · 2026-08-22)</h2>
 <table>
@@ -309,20 +282,20 @@ related:<br>
 <tr>
 <td><strong>탭(태블릿)</strong></td>
 <td>c (thomas.tj.park)</td>
-<td>교육방송 2채널</td>
+<td>교육방송 2채널 + <strong>eae 티스토리 5</strong></td>
 <td>스튜디오 완성 후 론칭</td>
 </tr>
 <tr>
 <td><strong>폰(S25 Ultra)</strong></td>
 <td>b (dtslib1979)</td>
-<td>경제방송 6채널</td>
+<td>경제방송 6채널 + <strong>dtslib1k·dtslib2k 티스토리 10</strong></td>
 <td><strong>시작 = 여기</strong> (쿼터 60k)</td>
 </tr>
 <tr>
 <td>a (dimas.thomas.sancho)</td>
-<td>KR방송</td>
+<td>KR방송 + dtslib·parksy_kr 티스토리</td>
 <td>쿼터 미승인 · 기기 미매칭</td>
-<td>별도 처리</td>
+<td>별도 처리 · 맨 마지막</td>
 </tr>
 <tr>
 <td><strong>S21 (proot Ubuntu 2)</strong></td>
@@ -337,7 +310,94 @@ related:<br>
 <li><strong>proot Ubuntu 2 = S21</strong> (papyrus <code>ecosystem.json.template</code> devices tier1) — 이 폰(S25)=proot Ubuntu 1. S21 = 경제방송 양산 공장 노드로 매칭.</li>
 <li>메모리: <code>device-account-broadcast-topology.md</code> 저장.</li>
 </ul>
-<p><em><code>_Claude</code> · 2026-08-22 · 출처: papyrus SSOT + TISTORY_25_SLOTS</em></p>
+<hr>
+<h2 id="5-boss-2026-08-22-2">5. 티스토리 → 비즈니스 방송 연계 — 재편 확정 (Boss · 2026-08-22 2차)</h2>
+<p><strong>Boss 1차:</strong> &ldquo;이 두 가지 계정으로 폰 히스토리 월드(비즈니스 방송)와 연계해야 되지 않냐?&rdquo;<br>
+<strong>Boss 2차 재편:</strong> &ldquo;eae는 태블릿 전용으로 뺄 거야. 그리고 1k 2k 계정을 비즈니스와 연동해서 다시 재편.&rdquo;</p>
+<p><strong>papyrus <code>tools/tistory/accounts.json</code> 마스터 → 이 폰 최종 매핑 (10블로그):</strong></p>
+<table>
+<thead>
+<tr>
+<th>카카오 계정</th>
+<th>컨셉</th>
+<th>블로그 (5)</th>
+<th>세계</th>
+<th>이 폰</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dtslib1k@kakao.com</td>
+<td>📚 대학개론서→고딩언어</td>
+<td>dtslib1k·hitop·midmath·midsocial·lafilosofia</td>
+<td><strong>경제 (폰/b)</strong></td>
+<td>✅ 연결</td>
+</tr>
+<tr>
+<td>dtslib2k@kakao.com</td>
+<td>🏆 KR메리트/한국인특질</td>
+<td>korean-parksy·kr-merit-bluff·kr-merit-halfblood·kr-merit-aggro·kr-merit-shaman</td>
+<td><strong>경제 (폰/b)</strong></td>
+<td>✅ 연결</td>
+</tr>
+</tbody>
+</table>
+<p><strong>제외 (이 폰에서):</strong><br>
+- <code>eae_kr@kakao.com</code> (교육방송 5) → <strong>탭 전용</strong> 분리. 태블릿 에이전트 담당.<br>
+- <code>dtslib@kakao.com</code> (한글 OJT 5) · <code>parksy_kr@kakao.com</code> (영문 OJT 5) → <strong>a계정/아리랑방송</strong>, 맨 마지막. 쿼터 미승인과 일치.</p>
+<p><strong>실행:</strong> <code>tistory-naver/accounts.json</code> = <strong>dtslib1k·dtslib2k 10블로그</strong> (id=슬러그 유니크, post.py acc_map 요구). 비밀번호 = 기존 공유 (papyrus와 동일). template 동기화 완료.</p>
+<p><strong>구성:</strong> post.py 계정별 로그인(각 email + 공유 pw) ✅ · verify_accounts.py는 accounts[0]만 로그인 → <strong>계정별 실행 필요</strong> (알려진 한계).</p>
+<hr>
+<h2 id="6-3-github-repo-youtube-tistory-2026-08-22">6. 3단 매핑 — GitHub repo ↔ YouTube ↔ Tistory (다대일 수렴 · 2026-08-22 확정)</h2>
+<blockquote>
+<p><strong>자료 전수 확인:</strong> 블로그↔채널 1:1로 적힌 문서는 아무 데도 없음. (TISTORY_25_SLOTS = blog→카카오계정, channel-repo-map = 채널→레포, distributor channel_map = blog→계정). 연계 지점은 <strong>세계(계정) 단위</strong>뿐.</p>
+</blockquote>
+<h3 id="3">3단 구조</h3>
+<table>
+<thead>
+<tr>
+<th>단</th>
+<th>매핑</th>
+<th>1:1?</th>
+<th>근거 문서</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>T1</strong></td>
+<td>GitHub repo ↔ YouTube 채널</td>
+<td>✅ 1:1</td>
+<td><code>channel-repo-map.json</code> v2.0 (채널 15 = 레포 묶음)</td>
+</tr>
+<tr>
+<td><strong>T2</strong></td>
+<td>티스토리 blog ↔ 카카오 계정</td>
+<td>✅ 1:1</td>
+<td><code>accounts.json</code> · <code>TISTORY_25_SLOTS.md</code> (21슬롯)</td>
+</tr>
+<tr>
+<td><strong>T3</strong></td>
+<td>티스토리 세계 ↔ YouTube 세계</td>
+<td>❌ <strong>계정 단위 연계</strong></td>
+<td>Boss 확정 · 본 수첩 §2/§4/§5</td>
+</tr>
+</tbody>
+</table>
+<h3 id="t3-b">T3 — 다대일 수렴 (폰/b계정 비즈니스)</h3>
+<pre><code>[티스토리 세계]                      [유튜브 세계 — 폰/b계정]
+dtslib1k 5블로그 ─┐
+ (문학·과·수·사·철) ├→  dtslib.kr 비즈니스방송 ─→ @dtslib-branch  ← 주력 깔때기
+dtslib2k 5블로그 ─┘      (SEO·텍스트 코퍼스)     (dtslib.kr 등 11레포)
+                                                @espiritu-tango (보류)
+                                                @artrew · @phoneparis
+                                                @alexandria · @justino  ← 별개 버티컬(레포·도메인 각자)
+</code></pre>
+<ul>
+<li><strong>10개 블로그 = 비즈니스 세계의 텍스트·SEO 코퍼스</strong> → 주력 채널 <code>@dtslib-branch</code>로 수렴</li>
+<li>나머지 5채널(탱고·artrew·phoneparis·alexandria·justino)은 각자 레포·도메인 세계 → 블로그와 무관</li>
+<li><strong>왜 1:1이 아니냐:</strong> dtslib1k/2k 콘텐츠(문학·과학·수학·사회·철학·KR메리트)는 6채널의 버티컬(탱고·AI미대생·모바일유통·요양원·패션)과 내용 불일치. 1:1은 창작에 불과.</li>
+</ul>
+<p><em><code>_Claude</code> · 2026-08-22 · 출처: papyrus SSOT + TISTORY_25_SLOTS + Boss 재편 확정</em></p>
   </article>
   <nav class="wz-pager">
     <a class="" href="session-2026-08-18_Claude.html">
