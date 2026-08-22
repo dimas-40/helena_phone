@@ -1,4 +1,4 @@
-# S21 Phone — 로봇 친구들 사용 설명서
+# S25 Phone — 로봇 친구들 사용 설명서
 
 > ⚠️ **일 시작하기 전에 꼭 `CONSTITUTION.md` (규칙책) 먼저 읽기!**
 > 규칙책에는 "우리가 왜 이 일을 하는지"가 적혀 있어. 이 설명서는 "어떻게 하는지"를 알려주는 거야.
@@ -6,10 +6,10 @@
 
 ---
 
-## 🚨 ParksyTTS on S21 — 일 시작할 때 꼭 읽기! (2026-08-07~)
+## 🚨 ParksyTTS on S25 Ultra — 일 시작할 때 꼭 읽기! (2026-08-07~)
 
 ### 우리 컴퓨터(환경)
-- **실행 위치:** proot Ubuntu on Galaxy S21 (aarch64), WSL 아님
+- **실행 위치:** proot Ubuntu on Galaxy S25 Ultra (aarch64), WSL 아님
 - **텔레그램:** `.secrets.env`에 TG_TOKEN/TG_CHAT 있음, 5개 봇 활성
 - **모델:** parksy_v2 checkpoints 314MB 전부 로컬에 있음 (`/root/work/helena-programming/tools/voice/`)
 - **TTS_ENGINE 기본값 = `local`** (grok은 폴백, 현재 403 상태라 무의미)
@@ -19,22 +19,22 @@
 
 ### 지금 하고 있는 일 — NPU/GPU 가속 (2026-08-11 갱신)
 - **CPU-only 한계 확인됨.** ParksyTTS 추론 471초는 실사용 불가.
-- **GPU (Mali-G78 MP14):** `/dev/mali0` 존재, OpenCL lib 있음. proot(glibc) → bionic ABI 불일치로 직통 불가.
-- **NPU (Exynos 2100, 26 TOPS):** ENPU 런타임 전체 존재. NNAPI HAL 1.3 + EDEN 드라이버 정의됨.
+- **GPU (Adreno 830):** `/dev/kgsl-3d0` 존재, OpenCL lib 있음. proot(glibc) → bionic ABI 불일치로 직통 불가.
+- **NPU (Qualcomm Hexagon/SM8750):** QNN 런타임 존재. NNAPI HAL + 드라이버 정의됨.
 - **핵심 발견 — Termux가 열쇠 (2026-08-11 정정):**
   - 이전 기록 "sysfs permission 문제" → **틀림**. 실제 원인은 **glibc/bionic ABI 불일치**.
   - proot(glibc)에서는 `libneuralnetworks.so`(bionic)를 dlopen할 수 없음. 권한이 아니라 링킹 문제.
   - Termux는 `untrusted_app` SELinux 도메인으로 실행 → 일반 앱과 동일한 NDK API(NNAPI 포함) 접근 가능. **루팅 불필요.**
-  - sherpa-onnx NNAPI: **STT 근거 충분** (Pixel 6 벤치마크 RTF 0.035, sherpa-onnx 공식) — ⚠️ **S21 실측은 아직 안 함**. **TTS는 모델별 실패 사례** 있음 (Piper 텐서 차원 불일치 이슈).
+  - sherpa-onnx NNAPI: **STT 근거 충분** (Pixel 6 벤치마크 RTF 0.035, sherpa-onnx 공식) — ⚠️ **S25 Ultra 실측은 아직 안 함**. **TTS는 모델별 실패 사례** 있음 (Piper 텐서 차원 불일치 이슈).
 - **단기 전략 (2026-08-11 재정정):**
   - ❌ ~~`pip install sherpa-onnx` → NNAPI~~ — **불가능**. PyPI wheel은 `manylinux2014_aarch64`(glibc) 전용, NNAPI 프로바이더 미포함.
   - ✅ **실제 경로:** Termux에 Android NDK 설치 → `build-android-arm64-v8a.sh`로 크로스컴파일 (`-DANDROID_PLATFORM=android-27` → NNAPI 활성화)
   - 결과물: `install/bin/sherpa-onnx` CLI 바이너리 + `libonnxruntime.so`(NNAPI 포함) + `libsherpa-onnx-jni.so`
   - VoxSherpa(TTS 앱) 선례: Kokoro=CPU/NNAPI, Piper/VITS=CPU only — TTS 모델별 NNAPI 호환성 차이 확인됨
   - proot → localhost HTTP 브릿지로 CLI 바이너리 호출
-- **TTS 리스크:** ParksyTTS가 쓰는 구체적 TTS 아키텍처가 NNAPI에서 실제로 돌아가는지는 실기기 테스트로만 확인 가능. **STT도 S21 실측은 아직 — Pixel 6 벤치마크 근거만 있음.** TTS는 미확정.
+- **TTS 리스크:** ParksyTTS가 쓰는 구체적 TTS 아키텍처가 NNAPI에서 실제로 돌아가는지는 실기기 테스트로만 확인 가능. **STT도 S25 Ultra 실측은 아직 — Pixel 6 벤치마크 근거만 있음.** TTS는 미확정.
 
-> 우리 폰 안에는 AI 계산기(NPU, 26 TOPS)와 그림 그리는 부품(GPU, Mali-G78)이 모두 있어!
+> 우리 폰 안에는 AI 계산기(NPU, ~45 TOPS)와 그림 그리는 부품(GPU, Adreno 830)이 모두 있어!
 > 근데 proot은 glibc 언어를 쓰고 안드로이드는 bionic 언어를 써서 서로 말이 안 통해.
 > Termux는 bionic 언어를 네이티브로 쓰니까 안드로이드랑 바로 대화할 수 있어.
 > 그래서 "Termux에서 NDK로 AI 두뇌(sherpa-onnx)를 직접 컴파일하고, NNAPI 가속 넣어서 CLI로 실행" 전략!
@@ -85,7 +85,7 @@
 
 ## AI 에이전트 4종 — 우리 팀 로봇 친구들! (Boss 2026-07-26, 확장 2026-08-08, 기점 2026-08-14)
 
-> **가치 = 돌봄 (누나 S21).** **일 = 출판·미디어 인프라.**  
+> **가치 = 돌봄 (누나) · 양산 (S25 Ultra).** **일 = 출판·미디어 인프라.**  
 > Grok은 플러그 두 칸만 — 기점 `_notebook/83-momentum-2026-08-14_Grok.md`.
 
 | 호출 | 마크 | 직함 | 영역 | 비용 | 설치 |
@@ -236,7 +236,7 @@ bash ~/work/tg.sh '✅ 작업명 — 결과'
 | **P4c** | ffmpeg | ASS 자막을 VO body에 burn-in |
 | **P5** | `_pd_assemble.py` | Bridge 연결 + full-timeline BGM (sidechain ducking) |
 | **P5b** | `_make_srt.py` | YouTube caption용 SRT 생성 (xfade timing 보정) |
-| **P6** | ffmpeg + curl | 720p TG 인코딩 + @S21Phone_Bot 전송 |
+| **P6** | ffmpeg + curl | 720p TG 인코딩 + @Proot_25ultra_bot 전송 |
 
 **V10 시각 스타일:**
 - 검은 막대(drawbox) 제거 → 하단 그라데이션 오버레이 (텍스트 가독성)
@@ -292,24 +292,24 @@ helena_phone/
 ## 현재 인프라 — 우리가 가진 도구들
 
 ```
-📱 S21 (Android + Termux + proot Ubuntu)
+📱 S25 Ultra (Android + Termux + proot Ubuntu)
 ├── Claude Code (DeepSeek) — 메인 코딩
 ├── Grok CLI (xAI SuperGrok) — 시각·Naver
 ├── Aider (DeepSeek) — 보조 코딩
 ├── phone-mcp-server (18 도구, 포트 3456)
 ├── 5개 GitHub 레포 → Pages + Giscus + WidgetBot
-├── Discord S21 Phone 서버 (#로비, #ai-보고)
-├── Telegram @S21Phone_Bot (tg.sh 보고)
+├── Discord S25 Phone 서버 (#로비, #ai-보고)
+├── Telegram @Proot_25ultra_bot (tg.sh 보고)
 ├── 티스토리 5종 (수동 업무일지)
 ├── YouTube @helena_phone (OAuth 완료)
 └── 네이버 helena1975 (웹진·미끼)
 ```
 
 > 한눈에 보는 우리 작업실!
-> - **S21 폰**: 우리 메인 컴퓨터. Termux+proot으로 우분투를 돌리고 있어.
+> - **S25 Ultra 폰**: 우리 메인 컴퓨터. Termux+proot으로 우분투를 돌리고 있어.
 > - **로봇 세 마리**: Claude Code(글짓기), Grok(그림), Aider(고치기)가 DeepSeek 두뇌로 일해.
 > - **무료 전시장 5곳(GitHub)**: Pages로 웹페이지 보여주고, Giscus로 댓글도 달 수 있어.
-> - **무전기(Telegram)**: @S21Phone_Bot으로 작업 보고.
+> - **무전기(Telegram)**: @Proot_25ultra_bot으로 작업 보고.
 > - **유튜브, 네이버, 티스토리**: 우리 작품 전시하는 여러 곳!
 > - **Discord**: 로비랑 AI 보고방 있음.
 > - **phone-mcp-server**: 18가지 도구, 포트 3456으로 연결.
@@ -325,7 +325,7 @@ helena_phone/
 - **원칙:** 미러(랩) → 재수정(뇌) → 선물(양산) 한 방향. 시크릿은 `.secrets.env`(gitignored)만, 레포엔 template만. 상주 데몬 없이(on-demand + cron).
 - **SSOT:** `configs/ecosystem.json.template` + `scripts/load_ecosystem.py` — 계정·디바이스·레포 매핑(4계정4세계)은 여기서 읽음.
 
-> **허브**는 우리 셋을 잇는 **뇌**야. Boss가 방향을 정하고, Claude Code가 S21에서 일하고, 누나의 돌봄 상태가 허브로 흘러 들어와. 누나한테는 아무것도 내려보내지 않아 — 누나는 지켜보기만 해.
+> **허브**는 우리 셋을 잇는 **뇌**야. Boss가 방향을 정하고, Claude Code가 S25 Ultra에서 일하고, 누나의 돌봄 상태가 허브로 흘러 들어와. 누나한테는 아무것도 내려보내지 않아 — 누나는 지켜보기만 해.
 
 ## GEO 원조 스탬프 — 정체 인식 출판 파이프라인 (헌법 제17조 · 2026-08-17~)
 

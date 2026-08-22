@@ -1,17 +1,17 @@
 # Mobile-First Multi-Platform Content Foundry — Boilerplate
 
-![One phone, the whole studio — a content foundry running on a single Galaxy S21](assets/social-preview.jpg)
+![One phone, the whole studio — a content foundry running on a single Galaxy S25 Ultra](assets/social-preview.jpg)
 
-> **One Galaxy S21. ~$20/month. A one-person media studio — and a 24/7 care system.**
+> **One Galaxy S25 Ultra. ~$20/month. A one-person media studio — and a 24/7 care system.**
 > Powered by Termux/PRoot & MCP. Every step hard-verified by `returncode == 0` — no agent hallucinations.
-> **548 commits · 905 files · 129 notebooks · 8 shipped systems · 3 weeks.**
+> **489 commits · 893 files · 129 notebooks · 8 shipped systems · 3 weeks.**
 > Zero PC · resilience-first · multi-channel (Git SSOT → PWA / Tistory / YouTube / Telegram).
 >
 > **Made in Korea — not a developer.** I don't sit easy at a keyboard; I can't stand that kind of building. Fourteen-hour days of physical labor, and in the cracks of it, all of this — spoken into a terminal, not typed. The nobles take a walk to rest. I rest by working.
 >
 > **The build is done. Now I open it and teach.** Fork it, cite it, run it on the phone in your pocket.
 
-![hardware](https://img.shields.io/badge/hardware-1%C3%97%20Galaxy%20S21-9cf) ![cost](https://img.shields.io/badge/cost-~%2420%2Fmonth-success) ![commits](https://img.shields.io/badge/commits-548-blue) ![systems](https://img.shields.io/badge/systems-8%20shipped-brightgreen) ![license](https://img.shields.io/badge/license-MIT-lightgrey)
+![hardware](https://img.shields.io/badge/hardware-1%C3%97%20Galaxy%20S25%20Ultra-9cf) ![cost](https://img.shields.io/badge/cost-~%2420%2Fmonth-success) ![commits](https://img.shields.io/badge/commits-489-blue) ![systems](https://img.shields.io/badge/systems-8%20shipped-brightgreen) ![license](https://img.shields.io/badge/license-MIT-lightgrey)
 
 ## The origin — proof, not a poster
 
@@ -42,7 +42,7 @@ Three weeks of building (2026-07-23 → 08-16). No new features. What's left is 
 ┌─────────────────────────────────────────────────────┐
 │         Words only · One phone · For my sister       │
 │                                                     │
-│  📱 Galaxy S21  →  the secret room (Termux + proot) │
+│  📱 Galaxy S25 Ultra → the secret room (Termux + proot) │
 │                          │                          │
 │         ┌────────────────┼──────────────────┐       │
 │         │                │                  │       │
@@ -60,7 +60,7 @@ Three weeks of building (2026-07-23 → 08-16). No new features. What's left is 
 │                    │ Telegram        │               │
 │                    └────────────────┘               │
 │                                                     │
-│  548 commits · 905 files · 129 notebooks · 8 systems│
+│  489 commits · 893 files · 129 notebooks · 8 systems│
 │  Build is done → now I open it and teach            │
 └─────────────────────────────────────────────────────┘
 ```
@@ -70,20 +70,20 @@ Three weeks of building (2026-07-23 → 08-16). No new features. What's left is 
 | Metric | Value |
 |--------|-------|
 | Build time | 3 weeks (2026-07-23 → 08-16) |
-| Commits | 548 |
-| Files | 905 |
+| Commits | 489 |
+| Files | 893 |
 | Notebooks | 129 |
 | Shipped systems | 8 (webzine · care daemon · textbook · publishing · video · …) |
 | AI agents | 3 (writer · designer/PD · patcher) |
 | Repos | 5, all public |
 | Monthly cost | ~$20 (one Netflix subscription) |
-| Hardware | 1 old Galaxy S21 (PRoot as a PC) |
+| Hardware | 1 Galaxy S25 Ultra (PRoot as a PC) |
 
 ## The roadmap — seed → spread → sublimate
 
 The direction isn't technical. It's human — the lowest hardware, the warmest purpose, the widest reach.
 
-**Act I · Seed (done).** One Galaxy S21 on Termux/PRoot. A care daemon for my sister + a mobile content foundry — running today.
+**Act I · Seed (done).** One Galaxy S25 Ultra on Termux/PRoot. A care daemon for my sister + a mobile content foundry — running today.
 
 **Act II · Spread (next).** Global open source — forks, issues, citations from Reddit · GitHub · Hacker News. Then public-good proof: national / public R&D validation, so "it works" is a verified fact, not a claim.
 
