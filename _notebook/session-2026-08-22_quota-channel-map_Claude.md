@@ -60,4 +60,19 @@ related:
 
 **원칙:** 세계(계정)별 미디어 구분 — 채널·블로그·레포가 같은 세계 안에서만 1:1 짝. 세계 간 섞지 않음.
 
+---
+
+## 4. 기기×계정×방송 토폴로지 확정 (Boss · 2026-08-22)
+
+| 기기 | 계정 | 방송 | 상태 |
+|------|------|------|------|
+| **탭(태블릿)** | c (thomas.tj.park) | 교육방송 2채널 | 스튜디오 완성 후 론칭 |
+| **폰(S25 Ultra)** | b (dtslib1979) | 경제방송 6채널 | **시작 = 여기** (쿼터 60k) |
+| a (dimas.thomas.sancho) | KR방송 | 쿼터 미승인 · 기기 미매칭 | 별도 처리 |
+| **S21 (proot Ubuntu 2)** | — | 경제방송 **양산 공장 노드** | 매칭 (papyrus: 누나폰 공장·자체 생산) |
+
+- **경제방송 콘텐츠 모델 (Boss):** dtslib-branch(브랜치들)와 함께 스토리 제작 · 그 사람들 도움 · 비즈니스 소설. **이 방송부터 시작.**
+- **proot Ubuntu 2 = S21** (papyrus `ecosystem.json.template` devices tier1) — 이 폰(S25)=proot Ubuntu 1. S21 = 경제방송 양산 공장 노드로 매칭.
+- 메모리: `device-account-broadcast-topology.md` 저장.
+
 *`_Claude` · 2026-08-22 · 출처: papyrus SSOT + TISTORY_25_SLOTS*
