@@ -2,7 +2,7 @@
   {
     "src": "CONSTITUTION.md",
     "out": "constitution.html",
-    "title": "CONSTITUTION.md — S21 Phone 헌법",
+    "title": "CONSTITUTION.md — S25 Phone 헌법",
     "section": "Core",
     "kind": "md",
     "deck": "불변 원칙 · Chain of Command"
@@ -10,7 +10,7 @@
   {
     "src": "CLAUDE.md",
     "out": "claude.html",
-    "title": "S21 Phone — 로봇 친구들 사용 설명서",
+    "title": "S25 Phone — 로봇 친구들 사용 설명서",
     "section": "Core",
     "kind": "md",
     "deck": "AI 3종 · Paste Pipeline · 인프라"
@@ -26,7 +26,7 @@
   {
     "src": "GUIDE.md",
     "out": "guide.html",
-    "title": "📖 S21 Phone 마법 공방 — 설치 설명서",
+    "title": "📖 S25 Phone 마법 공방 — 설치 설명서",
     "section": "Core",
     "kind": "md",
     "deck": "Termux부터 방송까지"
@@ -62,14 +62,6 @@
     "section": "Core",
     "kind": "md",
     "deck": "붙여넣기 3번이면 친구 생김"
-  },
-  {
-    "src": "SETUP.md",
-    "out": "setup.html",
-    "title": "설치 후 — 생태계 셋업 런북",
-    "section": "Core",
-    "kind": "md",
-    "deck": "계정·토큰 갈아끼워 S21과 동일하게"
   },
   {
     "src": "01-foundation/termux-setup.md",
@@ -181,7 +173,7 @@
     "title": "배터리 최적화",
     "section": "Optimization",
     "kind": "md",
-    "deck": "S21을 24/7 가까이 쓸 때의 충전·발열 관리"
+    "deck": "S25 Ultra를 24/7 가까이 쓸 때의 충전·발열 관리"
   },
   {
     "src": "05-optimization/performance.md",
@@ -1144,12 +1136,44 @@
     "deck": ""
   },
   {
+    "src": "_notebook/100-phone-management-3layers_Claude.md",
+    "out": "notebook/100-phone-management-3layers_Claude.html",
+    "title": "📱 폰 관리 3계층 — 수리 라우팅 원칙 (2026-08-21)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss 결정 (2026-08-21)** · 기록: **_Claude**"
+  },
+  {
     "src": "_notebook/101-ending-page_Claude.md",
     "out": "notebook/101-ending-page_Claude.html",
     "title": "엔딩 페이지 — 설치 이후, 이 작업실에 탑재된 모든 것 · 삽질 기록",
     "section": "Notebook",
     "kind": "md",
     "deck": "**랜딩 페이지가 \"여기 뭐가 있나\"라면, 엔딩 페이지는 \"여기까지 오면서 뭘 탑재했고, 뭘 헤맸나\".**"
+  },
+  {
+    "src": "_notebook/101-grok-mercenary-3loc_Grok.md",
+    "out": "notebook/101-grok-mercenary-3loc_Grok.html",
+    "title": "Grok은 용병 — 세 로케이션을 돈다 (2026-08-18)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss 결정 (2026-08-18)**"
+  },
+  {
+    "src": "_notebook/102-tablet-hw-parse_Grok.md",
+    "out": "notebook/102-tablet-hw-parse_Grok.html",
+    "title": "태블릿 로케이션 — 하드웨어·프로트 실측 (2026-08-18)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**원본 이전:** `_notebook/grok/hardware.md` (세션 시작 때 읽는 책상)."
+  },
+  {
+    "src": "_notebook/103-adb-mesh-revive_Claude.md",
+    "out": "notebook/103-adb-mesh-revive_Claude.html",
+    "title": "ADB Mesh 자동 복구 — 태블릿(tab-s9) ADB 무선 연결 지식 (2026-08-20)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "한 장 정리. 나중에 \"ADB 설정\" 얘기 나오면 이걸 먼저 읽으면 됨."
   },
   {
     "src": "_notebook/78-pd-pipeline-whitepaper_Claude.md",
@@ -1224,6 +1248,14 @@
     "deck": "**Boss 확정 기점.** 오늘까지 \"만들기\"였다면, 오늘부터 \"열고 가르치기\"다."
   },
   {
+    "src": "_notebook/grok-cli-install-troubleshooting_Claude.md",
+    "out": "notebook/grok-cli-install-troubleshooting_Claude.html",
+    "title": "Grok CLI 설치 · 삽질 기록 (2026-08-18)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss 지시: 내가 설치 과정에서 삽질한 것 + 원상복구한 것을 기록. (삭제·변경한 것 + 그 이유)"
+  },
+  {
     "src": "_notebook/rvc-environment-gap_Claude.md",
     "out": "notebook/rvc-environment-gap_Claude.html",
     "title": "RVC 환경 차이 진단 — WSL vs S21",
@@ -1238,6 +1270,46 @@
     "section": "Notebook",
     "kind": "md",
     "deck": ""
+  },
+  {
+    "src": "_notebook/session-2026-08-18_Claude.md",
+    "out": "notebook/session-2026-08-18_Claude.html",
+    "title": "세션 수첩 — 환경·과금·GitHub 계정 점검 (2026-08-18)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss 지시: (1) proot 환경에 내 업무 수첩 생성, (2) 이 계정의 GitHub 레포 개수 확인,"
+  },
+  {
+    "src": "_notebook/session-2026-08-22_quota-channel-map_Claude.md",
+    "out": "notebook/session-2026-08-22_quota-channel-map_Claude.html",
+    "title": "🗺️ YouTube 쿼터 2계정 → 채널 확정 + 역산 플랫폼 매핑 (_Claude · 2026-08-22)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss 지시:** \"dtslib1979(60k) · thomas.tj.park(60k)에 해당하는 출판 방송 미디어를 각각 구분해서, 주력 폰에서 두 계정의 YouTube 채널을 확정짓고 역산해서 티스토리 등 플랫폼을 깔아야 한다.\""
+  },
+  {
+    "src": "_notebook/session-2026-08-22_youtube-oauth_Claude.md",
+    "out": "notebook/session-2026-08-22_youtube-oauth_Claude.html",
+    "title": "📺 2026-08-22 — 유튜브 OAuth 연결 준비 · 시스템 감사 · 3대 우선순위",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss 지시 (2026-08-22):** \"유튜브 OAuth부터 연결해. 이것도 평균이 이슈니까 리마인더하고 업무 스토리 다 저장.\""
+  },
+  {
+    "src": "_notebook/tablet-broadcast-studio_Claude.md",
+    "out": "notebook/tablet-broadcast-studio_Claude.html",
+    "title": "태블릿 교육방송 스튜디오 — 서플라이 체인 (확정)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss 방향 정리본. 태블릿(Tab S9)의 정체·역할·서플라이 체인을 한 장으로."
+  },
+  {
+    "src": "_notebook/tablet-setup-parksy-method_Claude.md",
+    "out": "notebook/tablet-setup-parksy-method_Claude.html",
+    "title": "태블릿 워크센터 설정 — parksy 공법 파싱 (dtslib-papyrus → 수첩)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss 지시: 허브(dtslib-papyrus)에 어제·그제 저장된 \"터닝 포인트 기점\" 기준으로"
   },
   {
     "src": "g/install.sh",
@@ -1389,6 +1461,6 @@
     "title": "5단계: 최적화 — 오래된 폰 최대한 오래 쓰기",
     "section": "Guides",
     "kind": "md",
-    "deck": "갤럭시 S21을 24/7 서버로 돌리기 위한 꿀팁"
+    "deck": "갤럭시 S25 Ultra를 24/7 서버로 돌리기 위한 꿀팁"
   }
 ]
