@@ -91,6 +91,7 @@
 </li>
 <li><a href="#2-11-papyrus-21">2. 역산 — 채널 ↔ 티스토리 1:1 매핑 (papyrus 21슬롯)</a></li>
 <li><a href="#3">3. 갭 + 설치 순서 (추천)</a></li>
+<li><a href="#5-boss-2026-08-22">5. 티스토리 → 비즈니스 방송 연계 (Boss 질문 → 실행 · 2026-08-22)</a></li>
 <li><a href="#4-boss-2026-08-22">4. 기기×계정×방송 토폴로지 확정 (Boss · 2026-08-22)</a></li>
 </ul>
 </div>
@@ -245,6 +246,54 @@ related:<br>
 <li>a 세계(parksy)는 a계정 쿼터 미승인 + 글래스 로드맵 → 보류 (쿼터 확정 후)</li>
 </ol>
 <p><strong>원칙:</strong> 세계(계정)별 미디어 구분 — 채널·블로그·레포가 같은 세계 안에서만 1:1 짝. 세계 간 섞지 않음.</p>
+<hr>
+<h2 id="5-boss-2026-08-22">5. 티스토리 → 비즈니스 방송 연계 (Boss 질문 → 실행 · 2026-08-22)</h2>
+<p><strong>Boss:</strong> &ldquo;이 두 가지 계정으로 여기 핸드폰 히스토리 월드(비즈니스 방송)와 연계해야 되지 않냐?&rdquo;</p>
+<p><strong>papyrus <code>tools/tistory/accounts.json</code> 마스터 확정 (4계정 20블로그):</strong></p>
+<table>
+<thead>
+<tr>
+<th>카카오 계정</th>
+<th>컨셉</th>
+<th>블로그 (5)</th>
+<th>세계</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dtslib@kakao.com</td>
+<td>🧬 한글 OJT (수입)</td>
+<td>polyglot14·dtslib·webtoon-park·programmer-park·musician-park</td>
+<td><strong>경제 (폰)</strong></td>
+</tr>
+<tr>
+<td>dtslib1k@kakao.com</td>
+<td>📚 대학개론서→고딩언어</td>
+<td>dtslib1k·hitop·midmath·midsocial·lafilosofia</td>
+<td><strong>경제 (폰)</strong></td>
+</tr>
+<tr>
+<td>dtslib2k@kakao.com</td>
+<td>🏆 KR메리트/한국인특질</td>
+<td>korean-parksy·kr-merit×4</td>
+<td><strong>경제 (폰)</strong></td>
+</tr>
+<tr>
+<td>eae_kr@kakao.com</td>
+<td>교육방송</td>
+<td>eae-kr·broadcast·music·image·video</td>
+<td>교육 (탭)</td>
+</tr>
+<tr>
+<td>parksy_kr@kakao.com</td>
+<td>🧬 영문 OJT (수출·1:1 대칭)</td>
+<td>blogger·technician·philosopher·visualizer·musician-parksy</td>
+<td><strong>맨 마지막</strong> (Boss)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>실행:</strong> <code>tistory-naver/accounts.json</code>에 <strong>dtslib·dtslib1k·dtslib2k 15블로그 연계</strong> (eae 5 유지 = 총 20). id=슬러그 유니크 (post.py acc_map 요구). 비밀번호 = 기존 공유 (papyrus와 동일 11자 확인). template 동기화. parksy_kr 보류.</p>
+<p><strong>구성:</strong> post.py 계정별 로그인(각 email + 공유 pw) ✅ · verify_accounts.py는 accounts[0]만 로그인 → <strong>계정별 실행 필요</strong> (알려진 한계).</p>
 <hr>
 <h2 id="4-boss-2026-08-22">4. 기기×계정×방송 토폴로지 확정 (Boss · 2026-08-22)</h2>
 <table>

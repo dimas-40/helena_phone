@@ -62,6 +62,26 @@ related:
 
 ---
 
+## 5. 티스토리 → 비즈니스 방송 연계 (Boss 질문 → 실행 · 2026-08-22)
+
+**Boss:** "이 두 가지 계정으로 여기 핸드폰 히스토리 월드(비즈니스 방송)와 연계해야 되지 않냐?"
+
+**papyrus `tools/tistory/accounts.json` 마스터 확정 (4계정 20블로그):**
+
+| 카카오 계정 | 컨셉 | 블로그 (5) | 세계 |
+|------------|------|-----------|------|
+| dtslib@kakao.com | 🧬 한글 OJT (수입) | polyglot14·dtslib·webtoon-park·programmer-park·musician-park | **경제 (폰)** |
+| dtslib1k@kakao.com | 📚 대학개론서→고딩언어 | dtslib1k·hitop·midmath·midsocial·lafilosofia | **경제 (폰)** |
+| dtslib2k@kakao.com | 🏆 KR메리트/한국인특질 | korean-parksy·kr-merit×4 | **경제 (폰)** |
+| eae_kr@kakao.com | 교육방송 | eae-kr·broadcast·music·image·video | 교육 (탭) |
+| parksy_kr@kakao.com | 🧬 영문 OJT (수출·1:1 대칭) | blogger·technician·philosopher·visualizer·musician-parksy | **맨 마지막** (Boss) |
+
+**실행:** `tistory-naver/accounts.json`에 **dtslib·dtslib1k·dtslib2k 15블로그 연계** (eae 5 유지 = 총 20). id=슬러그 유니크 (post.py acc_map 요구). 비밀번호 = 기존 공유 (papyrus와 동일 11자 확인). template 동기화. parksy_kr 보류.
+
+**구성:** post.py 계정별 로그인(각 email + 공유 pw) ✅ · verify_accounts.py는 accounts[0]만 로그인 → **계정별 실행 필요** (알려진 한계).
+
+---
+
 ## 4. 기기×계정×방송 토폴로지 확정 (Boss · 2026-08-22)
 
 | 기기 | 계정 | 방송 | 상태 |
