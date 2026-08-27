@@ -98,7 +98,45 @@ function loginInstagram() {
     return "SUBMITTED";
 }
 
-var result = loginInstagram();
-files.write("/sdcard/Download/ax6-ig-threads-result.json", JSON.stringify({ instagram_login: result }));
-log("=== 완료: " + result + " ===");
-toast("ax6-ig-threads done: " + result);
+// Threads는 별도 로그인이 필요 없음 — Instagram 세션이 살아있으면
+// threads.com 접속 시 "Instagram으로 계속하기(edu_art_engineer)" 브릿지
+// 버튼이 자동으로 뜨고, 클릭 한 번으로 완전히 로그인됨(2026-08-27 실측 —
+// 캡차/OTP 벽 전혀 없음). 그래서 Instagram 로그인 완주 후 이 함수만
+// 이어 붙이면 됨.
+function loginThreadsViaInstagramBridge() {
+    log("=== Threads Instagram 브릿지 로그인 시작 ===");
+    app.startActivity({
+        action: "android.intent.action.VIEW",
+        data: "https://www.threads.com/",
+        packageName: "com.android.chrome"
+    });
+    sleep(4000);
+    var bridge = hit("Instagram으로 계속하기", 3000);
+    if (!bridge) {
+        // 이미 로그인된 상태로 바로 피드가 뜨는 경우도 있음(재실행 시)
+        if (hit("추천", 1500) || hit("새로운 스레드", 1500)) {
+            log("Threads → 이미 로그인 상태로 피드 진입됨");
+            return "ALREADY_LOGGED_IN";
+        }
+        log("FAIL: Instagram 브릿지 버튼 없음");
+        return "FAIL_NO_BRIDGE_BUTTON";
+    }
+    bridge.click();
+    sleep(4000);
+    if (hit("추천", 2000) || hit("새로운 스레드", 1500)) {
+        log("Threads → 브릿지 로그인 완주, 피드 진입 확인");
+        return "SUBMITTED";
+    }
+    log("Threads → 브릿지 클릭 완료(결과 스크린샷으로 확인 필요)");
+    return "SUBMITTED_UNCONFIRMED";
+}
+
+var igResult = loginInstagram();
+var results = { instagram_login: igResult };
+// Instagram 로그인이 완주됐거나 이미 세션이 있는 경우에만 Threads 이어서 진행
+if (igResult === "SUBMITTED" || igResult === "WALL_RECAPTCHA" || igResult === "WALL_CODE") {
+    results.threads_login = loginThreadsViaInstagramBridge();
+}
+files.write("/sdcard/Download/ax6-ig-threads-result.json", JSON.stringify(results));
+log("=== 완료: " + JSON.stringify(results) + " ===");
+toast("ax6-ig-threads done: " + JSON.stringify(results));

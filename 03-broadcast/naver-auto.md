@@ -161,3 +161,17 @@ reCAPTCHA/OTP 벽 도달 시 `WALL_RECAPTCHA`/`WALL_CODE` 리턴 후 스크립�
 - 실제 게시물 발행 자동화(캡션+이미지 or 텍스트 포스트) 스크립트 작성
 - 폰(S25U)에는 이미 네이티브 앱으로 로그인되어 있음(같은 계정) — 태블릿은
   브라우저 세션, 폰은 상태 체크 전용으로 역할 분리(사용자 지정)
+
+
+### Threads 로그인 — 별도 인증 불필요 (2026-08-27 실측)
+
+Instagram 세션이 태블릿 브라우저에 살아있는 상태에서 `threads.com` 접속 시,
+캡차/OTP 벽 전혀 없이 **"Instagram으로 계속하기(edu_art_engineer)" 브릿지 버튼
+클릭 한 번으로 완전히 로그인됨.** 실제 피드(추천 탭), "게시" 버튼까지 확인.
+
+즉 Instagram 로그인만 한 번 완주해두면 Threads는 별도 아이디/비번 스크립팅이
+필요 없다 — `ax6-ig-threads.js`의 `loginThreadsViaInstagramBridge()` 함수가
+이 브릿지 클릭만 자동화함(hit("Instagram으로 계속하기") → click).
+
+마스터 스크립트는 Instagram 로그인 → Threads 브릿지 순서로 이어붙여 실행되도록
+업데이트됨(`tistory-naver/ax6-ig-threads.js`).
