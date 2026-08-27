@@ -269,6 +269,10 @@ Grok 플러그인 슬롯, 영상 표준 v1, PD Pipeline v2 LOCK.
 |------|------|
 | **`83-momentum-2026-08-14_Grok.md`** | **기점** — 잡지→즉시 웹코드 / 누나사진+대사→10초 다큐 |
 | **`85-grok-plugin-where-saved_Grok.md`** | **듀얼 저장 지도** — 온디바이스 수첩 + helena_phone 레포 |
+| **`101-grok-mercenary-3loc_Grok.md`** | 용병 · 세 로케이션 (어디에 붙나). 2026-08-24: 이 CLI=S25 |
+| **`104-grok-3device-roles_Grok.md`** | **세 기기 역할 통합** — S21 집 / 탭 방송국 / S25 크로스 GUI |
+| **`105-comfy-grokvideo-graft_Grok.md`** | Comfy 피로 → GrokVideoNode. 접목은 API지 Comfy 설치 아님 |
+| **`106-imagine-canvas-18_Grok.md`** | Imagine 캔버스 18기능 — 제공 화면 기준, 모바일 미지원 (_Grok) |
 
 ---
 
@@ -300,6 +304,7 @@ Claude Code 세션 시작 시 `/root/.claude/projects/-root-work/memory/` 에서
 | `health/` | phone-health.sh 건강검진 JSON — 19건 (2026-07-24 ~ 08-07) |
 | `publishing/` | 출판부 HTML 산출물 7종 — stepdown-cascade·publishing-scheduler 등 |
 | `termux-keyboard-optimization/` | Termux 기능키 최적화 설정파일 (Open) |
+| `grok/` | **태블릿·S25 용병 책상** — ROLE / CROSS / ROLE-DEVICES / BOSS |
 
 ---
 
