@@ -265,6 +265,11 @@ NOTEBOOK_TITLES = {
     "ai-workstation-setup-manual_Boss.md": "폰 하나로 AI 워크스테이션 짓기 (설치 매뉴얼)",
     "S21-Grok-plugin_Grok.md": "S21 Grok 플러그 역할 (온디바이스 카드)",
     "101-ending-page_Claude.md": "엔딩 페이지 — 설치 이후 탑재된 모든 것 · 삽질 기록",
+    "101-grok-mercenary-3loc_Grok.md": "Grok 용병 — 세 로케이션",
+    "104-grok-3device-roles_Grok.md": "Grok 용병 — 세 기기 역할이 다르다",
+    "105-comfy-grokvideo-graft_Grok.md": "ComfyUI 피로 → GrokVideoNode 접목 판정",
+    "infra-whitepaper-2026-08-27_Claude.md": "proot Ubuntu 1인 미디어 공장 기술백서",
+    "session-2026-08-27_Claude.md": "세션 — S25 경제방송 배선 + 파이프라인 갭 평가",
 }
 
 # Auto-discover every _notebook/*.md (overrides in NOTEBOOK_TITLES)

@@ -64,6 +64,14 @@
     "deck": "붙여넣기 3번이면 친구 생김"
   },
   {
+    "src": "SETUP.md",
+    "out": "setup.html",
+    "title": "설치 후 — 생태계 셋업 런북",
+    "section": "Core",
+    "kind": "md",
+    "deck": "계정·토큰 갈아끼워 S21과 동일하게"
+  },
+  {
     "src": "01-foundation/termux-setup.md",
     "out": "foundation/termux-setup.html",
     "title": "1.1 Termux 설치",
@@ -1136,14 +1144,6 @@
     "deck": ""
   },
   {
-    "src": "_notebook/100-phone-management-3layers_Claude.md",
-    "out": "notebook/100-phone-management-3layers_Claude.html",
-    "title": "📱 폰 관리 3계층 — 수리 라우팅 원칙 (2026-08-21)",
-    "section": "Notebook",
-    "kind": "md",
-    "deck": "**Boss 결정 (2026-08-21)** · 기록: **_Claude**"
-  },
-  {
     "src": "_notebook/101-ending-page_Claude.md",
     "out": "notebook/101-ending-page_Claude.html",
     "title": "엔딩 페이지 — 설치 이후, 이 작업실에 탑재된 모든 것 · 삽질 기록",
@@ -1158,6 +1158,46 @@
     "section": "Notebook",
     "kind": "md",
     "deck": "**Boss 결정 (2026-08-18)**"
+  },
+  {
+    "src": "_notebook/104-grok-3device-roles_Grok.md",
+    "out": "notebook/104-grok-3device-roles_Grok.html",
+    "title": "Grok 용병 — 세 기기, 역할이 다르다 (2026-08-24)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss 결정 (2026-08-24)**"
+  },
+  {
+    "src": "_notebook/105-comfy-grokvideo-graft_Grok.md",
+    "out": "notebook/105-comfy-grokvideo-graft_Grok.html",
+    "title": "ComfyUI 피로 → GrokVideoNode — 커뮤니티 실측과 접목 판정",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/infra-whitepaper-2026-08-27_Claude.md",
+    "out": "notebook/infra-whitepaper-2026-08-27_Claude.html",
+    "title": "🏭 proot Ubuntu (Galaxy S25) — 1인 미디어 공장 기술백서",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "작성: _Claude · 2026-08-27 · SSOT: dtslib-papyrus · 이 CLI = S25 Ultra"
+  },
+  {
+    "src": "_notebook/session-2026-08-27_Claude.md",
+    "out": "notebook/session-2026-08-27_Claude.html",
+    "title": "세션 수첩 — S25 경제방송 배선 공사 + 파이프라인 갭 평가 (2026-08-27)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss 지시 4단계:** ① 헬레나 보일러플레이트를 b세계(경제방송) 변수로 재배선 ② 스킨 10개 교체 ③ 레포→유튜브 동선을 10개 블로그에 반영 ④ 웹툰 솔루션 두 옵션 적용."
+  },
+  {
+    "src": "_notebook/100-phone-management-3layers_Claude.md",
+    "out": "notebook/100-phone-management-3layers_Claude.html",
+    "title": "📱 폰 관리 3계층 — 수리 라우팅 원칙 (2026-08-21)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss 결정 (2026-08-21)** · 기록: **_Claude**"
   },
   {
     "src": "_notebook/102-tablet-hw-parse_Grok.md",
@@ -1278,6 +1318,14 @@
     "section": "Notebook",
     "kind": "md",
     "deck": "Boss 지시: (1) proot 환경에 내 업무 수첩 생성, (2) 이 계정의 GitHub 레포 개수 확인,"
+  },
+  {
+    "src": "_notebook/session-2026-08-19_Claude.md",
+    "out": "notebook/session-2026-08-19_Claude.html",
+    "title": "세션 회의록 — 판의 전환 · 오버레이 키트 + 런타임 후보정 (2026-08-19)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "오늘 대화의 핵심을 한 장으로. 두 트랙 웹페이지의 원본."
   },
   {
     "src": "_notebook/session-2026-08-22_quota-channel-map_Claude.md",
