@@ -1176,6 +1176,22 @@
     "deck": ""
   },
   {
+    "src": "_notebook/106-imagine-canvas-18_Grok.md",
+    "out": "notebook/106-imagine-canvas-18_Grok.html",
+    "title": "Imagine 캔버스 18기능 — 제공 화면 기준",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "모바일에서 안 열리는 Grok Imagine 캔버스. Boss가 준 화면에서 확인된 템플릿 18개를 업무수첩에 잠근다. 원본은 책상 `_notebook/grok/CANVAS.md`."
+  },
+  {
+    "src": "_notebook/107-gallery-cli-vs-canvas_Grok.md",
+    "out": "notebook/107-gallery-cli-vs-canvas_Grok.html",
+    "title": "갤러리 CLI vs 웹 캔버스 — 처리 가능·품질 층",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "S25 갤러리 사진을 이 CLI에서 처리해 저장소에 되돌릴 수 있는지, 웹/PC Imagine 캔버스와 품질이 얼마나 다른지 실측과 공식 입구를 잠근다. 책상 원본: `_notebook/grok/GALLERY-CLI.md`."
+  },
+  {
     "src": "_notebook/infra-whitepaper-2026-08-27_Claude.md",
     "out": "notebook/infra-whitepaper-2026-08-27_Claude.html",
     "title": "🏭 proot Ubuntu (Galaxy S25) — 1인 미디어 공장 기술백서",

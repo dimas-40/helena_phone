@@ -27,7 +27,7 @@ related:
 | 3 | @artrew-i1w | artrew (artrew.com) | AI 미대생 |
 | 4 | @phoneparis-r6q | phoneparis.kr · termux-bridge | 모바일 유통 |
 | 5 | @alexandria-y6k | alexandria-sanctuary | 요양원 |
-| 6 | @justino-fashion | abraham (dtslib1979.github.io/abraham) | 쇼핑몰 프랜차이즈 |
+| 6 | @justino-fashion | justino (dtslib1979.github.io/justino) | 쇼핑몰 프랜차이즈 |
 
 ### c — thomas.tj.park@gmail.com · 교육방송 · 60,000 units/day
 
@@ -123,7 +123,7 @@ related:
 | 지사 dtslib2k | kr-merit-bluff | gohsy | @dtslib-branch 경유 | 🔒강 (연예계=허세문화) |
 | 지사 dtslib2k | kr-merit-shaman | artrew | @artrew-i1w | ⚠️약 (샤먼=예술적 영감 재해석) |
 | 지사 dtslib2k | kr-merit-halfblood | papafly | @dtslib-branch 경유 | 🔒강 (K맛×세계입맛 혼종) |
-| 지사 dtslib2k | kr-merit-aggro | abraham | @justino-fashion | 🔒강 (크리에이터=어그로) |
+| 지사 dtslib2k | kr-merit-aggro | justino | @justino-fashion | 🔒강 (크리에이터=어그로) |
 
 > **v1→v2 재배정 핵심:** koosy↔midmath(확정) 폐기 → koosy는 지사 대표(korean-parksy), midmath는 본사 buckleychang(논리체계)으로 이동. 계정 단위 원칙에 정합.
 > **채널 미확인 5곳 → 해소:** buddies.kr·buckleychang.com·koosy·gohsy·papafly는 "개별 채널 없음"이 맞는 상태 — @dtslib-branch 통합 업로드 정책(램프업 후 각자 채널 개설, CLAUDE.md 4060행). youtube-data.json으로 교차검증 완료.
