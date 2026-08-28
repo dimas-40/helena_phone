@@ -20,35 +20,45 @@ COOKIES_DIR   = BASE / "cookies"
 GEO_START = "<!-- HELENA-GEO-START -->"
 GEO_END   = "<!-- HELENA-GEO-END -->"
 
-# 블로그별 메타 (WebSite name + GitHub 대응 레포) — accounts.json 의 id 키
+# 블로그별 메타 (WebSite name + GitHub 대응 레포 + YouTube 채널) — accounts.json 의 id 키
+# SSOT: dtslib-papyrus hq/TISTORY-ENDPRODUCT-MAPPING-2026-08-22.md §2.5 (16레포 전수, v3 08-27)
 BLOG_META = {
-    "galaxys21": ("S21 Phone — 말로만 · 폰 하나로 · 누나를 위해", "helena_phone"),
-    "mynote":    ("돌봄 데몬 교재 — mynote", "helana_log"),
-    "faith":     ("Helana Faith — 종교 판타지", "helana-faith"),
-    "piano":     ("Helena Piano — 클래식 웹진", "helena-piano"),
-    "metalcare": ("Helena MetalCare — 멘탈케어", "helena-metalcare"),
+    "dtslib1k":          ("dtslib 대표·문학 — 경제방송 HQ", "dtslib-branch", "@dtslib-branch"),
+    "hitop":             ("phoneparis 과학", "phoneparis", "@phoneparis-r6q"),
+    "lafilosofia":       ("alexandria 철학·요양원", "alexandria-sanctuary", "@alexandria-y6k"),
+    "midmath":           ("buckleychang 수학·논리", "buckleychang.com", "@dtslib-branch"),
+    "midsocial":         ("buddies 사회·소상공인", "buddies.kr", "@dtslib-branch"),
+    "korean-parksy":     ("koosy 지사 대표", "koosy", "@dtslib-branch"),
+    "kr-merit-bluff":    ("gohsy 허세교양", "gohsy", "@dtslib-branch"),
+    "kr-merit-shaman":   ("artrew 샤먼·예술", "artrew", "@artrew-i1w"),
+    "kr-merit-halfblood":("papafly 혼종어학", "papafly", "@dtslib-branch"),
+    "kr-merit-aggro":    ("justino 어그로", "justino", "@justino-fashion"),
 }
 
-PERSON_ID = "https://github.com/helena751107#person"
+PERSON_ID = "https://github.com/dtslib1979#person"
 
 
-def render_geold(blog_name, blog_url):
-    """JSON-LD 정체 그래프 블록. Person(@id=GitHub) + WebSite(publisher→Person)."""
+def render_geold(blog_name, blog_url, repo, channel):
+    """JSON-LD 정체 그래프 블록. Person(@id=GitHub dtslib1979) + WebSite(publisher→Person) + 레포→채널 동선."""
+    same_as = [
+        "https://github.com/dtslib1979",
+        "https://dtslib.kr",
+        "https://www.youtube.com/@dtslib-branch",
+        "https://www.youtube.com/@phoneparis-r6q",
+        "https://www.youtube.com/@alexandria-y6k",
+        "https://www.youtube.com/@artrew-i1w",
+        "https://www.youtube.com/@justino-fashion",
+    ]
     ld = {
         "@context": "https://schema.org",
         "@graph": [
             {
                 "@type": "Person",
                 "@id": PERSON_ID,
-                "name": "Helena Park",
-                "url": "https://github.com/helena751107",
-                "description": "Made in Korea — not a developer. One Galaxy S21, built by voice, for a sister.",
-                "sameAs": [
-                    "https://github.com/helena751107",
-                    "https://helena751107.github.io/helena_phone/",
-                    "https://www.youtube.com/@helena_phone",
-                    "https://www.youtube.com/@HelenaPark-e7c",
-                ],
+                "name": "dtslib",
+                "url": "https://github.com/dtslib1979",
+                "description": "경제방송 — 16레포×10블로그×6채널, 1인 미디어 출판·방송",
+                "sameAs": same_as,
             },
             {
                 "@type": "WebSite",
@@ -57,6 +67,12 @@ def render_geold(blog_name, blog_url):
                 "url": blog_url,
                 "inLanguage": "ko",
                 "publisher": {"@id": PERSON_ID},
+                "about": {
+                    "@type": "SoftwareSourceCode",
+                    "name": repo,
+                    "codeRepository": f"https://github.com/dtslib1979/{repo}",
+                },
+                "sameAs": [f"https://www.youtube.com/{channel}"],
             },
         ],
     }
@@ -132,36 +148,15 @@ def inject_head(html, block):
     return block + "\n" + html
 
 
-async def run_account(ctx, page, account_id, dry_run):
-    data = json.loads(ACCOUNTS_FILE.read_text(encoding="utf-8"))
-    acc = next(a for a in data["accounts"] if a["id"] == account_id)
-    acc["password"] = data["password"]
+async def inject_geo(page, acc, dry_run):
+    """로그인된 세션에서 한 블로그에 GEO 블록 주입."""
+    account_id = acc["id"]
     slug = acc["blog"]
     blog_url = f"https://{slug}.tistory.com/"
-    blog_name, github = BLOG_META.get(account_id, (slug, ""))
+    blog_name, repo, channel = BLOG_META.get(account_id, (slug, "", ""))
 
     log(f"=== GEO 주입 (account={account_id}, blog={slug}) ===")
-
     html_url = f"https://{slug}.tistory.com/manage/design/skin/html.json"
-
-    # state 쿠키 복원 (TSSESSION 세션쿠키는 프로파일에 영속 안 됨)
-    st_path = COOKIES_DIR / f"{account_id}_state.json"
-    if st_path.exists():
-        st = json.loads(st_path.read_text())
-        now = int(time.time())
-        cks = []
-        for c in st.get("cookies", []):
-            if c.get("domain") in (".tistory.com", ".www.tistory.com", "www.tistory.com", ".daum.net"):
-                if c.get("expires", -1) == -1:
-                    c["expires"] = now + 86400 * 7
-                cks.append(c)
-        if cks:
-            await ctx.add_cookies(cks)
-
-    if not await ensure_logged_in(page, acc["email"], acc["password"], html_url):
-        log("❌ 로그인 실패 — 종료")
-        return False
-    await ctx.storage_state(path=str(st_path))
 
     resp = await page.request.get(html_url)
     if resp.status != 200:
@@ -172,7 +167,7 @@ async def run_account(ctx, page, account_id, dry_run):
     css = j.get("css", "")
     log(f"  skinname={j.get('skinname')} | html={len(html)}자 | css={len(css)}자")
 
-    block = render_geold(blog_name, blog_url)
+    block = render_geold(blog_name, blog_url, repo, channel)
     replaced = replace_block(html, GEO_START, GEO_END, block)
     if replaced is not None:
         new_html = replaced
@@ -204,30 +199,63 @@ async def run_account(ctx, page, account_id, dry_run):
 
 async def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--account", type=str, default="galaxys21")
+    parser.add_argument("--account", type=str, default="", help="콤마구분 계정 id (예: dtslib1k,hitop)")
     parser.add_argument("--all", action="store_true", help="accounts.json 전 계정 순회")
     parser.add_argument("--dry-run", action="store_true", help="GET만 하고 저장 안 함")
     args = parser.parse_args()
 
     data = json.loads(ACCOUNTS_FILE.read_text(encoding="utf-8"))
-    ids = [a["id"] for a in data["accounts"]] if args.all else [args.account]
+    pw = data["password"]
+    only = {x.strip() for x in args.account.split(",") if x.strip()}
+
+    # email 기준 그룹핑 — 계정마다 로그인 1회 → 그 계정 소속 블로그만 순회 (batch_apply.py 와 동일)
+    groups: dict[str, list[dict]] = {}
+    for a in data["accounts"]:
+        if only and a["id"] not in only:
+            continue
+        groups.setdefault(a["email"], []).append(a)
 
     async with async_playwright() as pw:
-        for account_id in ids:
+        for email, members in groups.items():
+            ctx_key = email.split("@")[0]
+            log(f"\n=== 계정 {email} ({len(members)}개 블로그) ===")
             ctx = await pw.chromium.launch_persistent_context(
-                str(COOKIES_DIR / account_id),
+                str(COOKIES_DIR / ctx_key),
                 headless=True,
                 viewport={"width": 1280, "height": 900},
                 locale="ko-KR",
                 args=["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],
             )
             page = ctx.pages[0] if ctx.pages else await ctx.new_page()
-            try:
-                await run_account(ctx, page, account_id, args.dry_run)
-            except Exception as e:
-                log(f"  ❌ 예외: {e}")
-            finally:
+
+            # state 쿠키 복원 (per-email — batch_apply.py 와 공유)
+            st_path = COOKIES_DIR / f"{ctx_key}_state.json"
+            if st_path.exists():
+                st = json.loads(st_path.read_text())
+                now = int(time.time())
+                cks = []
+                for c in st.get("cookies", []):
+                    if c.get("domain") in (".tistory.com", ".www.tistory.com", "www.tistory.com", ".daum.net"):
+                        if c.get("expires", -1) == -1:
+                            c["expires"] = now + 86400 * 7
+                        cks.append(c)
+                if cks:
+                    await ctx.add_cookies(cks)
+
+            # 로그인 1회 (첫 블로그 html_url 로 세션 검증)
+            first_url = f"https://{members[0]['blog']}.tistory.com/manage/design/skin/html.json"
+            if not await ensure_logged_in(page, email, pw, first_url):
+                log(f"❌ 로그인 실패({email}) — 다음 계정으로")
                 await ctx.close()
+                continue
+            await ctx.storage_state(path=str(st_path))
+
+            for a in members:
+                try:
+                    await inject_geo(page, a, args.dry_run)
+                except Exception as e:
+                    log(f"  ❌ 예외 ({a['id']}): {e}")
+            await ctx.close()
 
 
 if __name__ == "__main__":
