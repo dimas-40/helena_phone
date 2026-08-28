@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="S25 갤러리 사진을 이 CLI에서 처리해 저장소에 되돌릴 수 있는지, 웹/PC Imagine 캔버스와 품질이 얼마나 다른지 실측과 공식 입구를 잠근다. 책상 원본: `_notebook/grok/GALLERY-CLI.md`. — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>갤러리 CLI vs 웹 캔버스 — 처리 가능·품질 층 — S21 Phone Webzine</title>
+<link rel="canonical" href="https://dtslib1979.github.io//notebook/107-gallery-cli-vs-canvas_Grok.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/dtslib1979#person",
+      "name": "dtslib",
+      "url": "https://github.com/dtslib1979",
+      "description": "경제방송 — 16레포×10블로그×6채널, 1인 미디어 출판·방송",
+      "sameAs": [
+        "https://github.com/dtslib1979",
+        "https://dtslib.kr",
+        "https://www.youtube.com/@dtslib-branch",
+        "https://www.youtube.com/@phoneparis-r6q",
+        "https://www.youtube.com/@alexandria-y6k",
+        "https://www.youtube.com/@artrew-i1w",
+        "https://www.youtube.com/@justino-fashion"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://dtslib1979.github.io//notebook/107-gallery-cli-vs-canvas_Grok.html#webpage",
+      "url": "https://dtslib1979.github.io//notebook/107-gallery-cli-vs-canvas_Grok.html",
+      "name": "갤러리 CLI vs 웹 캔버스 — 처리 가능·품질 층",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/dtslib1979#person"
+      },
+      "author": {
+        "@id": "https://github.com/dtslib1979#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>갤러리 CLI vs 웹 캔버스 — 처리 가능·품질 층</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · lakme-audio</div>
+    <h1>갤러리 CLI vs 웹 캔버스 — 처리 가능·품질 층</h1>
+    <p class="deck">S25 갤러리 사진을 이 CLI에서 처리해 저장소에 되돌릴 수 있는지, 웹/PC Imagine 캔버스와 품질이 얼마나 다른지 실측과 공식 입구를 잠근다. 책상 원본: `_notebook/grok/GALLERY-CLI.md`.</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/107-gallery-cli-vs-canvas_Grok.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#_1">한 줄</a></li>
+<li><a href="#_2">갤러리 파이프 (실측)</a></li>
+<li><a href="#_3">품질 두 층</a></li>
+<li><a href="#18-cli">18개 중 CLI</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <hr>
+<p>date: 2026-08-28<br>
+agent: Grok<br>
+mark: _Grok<br>
+type: inventory<br>
+location: s25-ultra</p>
+<hr>
+<h1 id="cli-vs">갤러리 CLI vs 웹 캔버스 — 처리 가능·품질 층</h1>
+<blockquote>
+<p>S25 갤러리 사진을 이 CLI에서 처리해 저장소에 되돌릴 수 있는지, 웹/PC Imagine 캔버스와 품질이 얼마나 다른지 실측과 공식 입구를 잠근다. 책상 원본: <code>_notebook/grok/GALLERY-CLI.md</code>.</p>
+</blockquote>
+<h2 id="_1">한 줄</h2>
+<pre><code>갤러리 왕복: 됨.
+픽셀 = 같은 Imagine 집. 큰 구멍 = 손.
+SKU가 2.0이 아니면 픽셀도 한 체급. 같은 장 A/B는 아직 없음.
+</code></pre>
+<h2 id="_2">갤러리 파이프 (실측)</h2>
+<p>이 CLI = S25 Ultra SM-S938N. <code>/sdcard</code> bind <strong>rw</strong>. write test OK. <code>termux-media-scan</code> 있음.</p>
+<table>
+<thead>
+<tr>
+<th>저장소</th>
+<th>실측</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DCIM/Camera</code></td>
+<td>있음</td>
+</tr>
+<tr>
+<td><code>Pictures/</code></td>
+<td>있음</td>
+</tr>
+<tr>
+<td><code>Download/</code> · <code>grok-cross/</code></td>
+<td>있음</td>
+</tr>
+<tr>
+<td>원본</td>
+<td>안 덮음. 새 파일</td>
+</tr>
+</tbody>
+</table>
+<pre><code>원본 /sdcard/…  →  image_edit  →  Pictures/ 또는 Download/grok-cross/
+                →  termux-media-scan  → 갤러리
+</code></pre>
+<h2 id="_3">품질 두 층</h2>
+<table>
+<thead>
+<tr>
+<th>층</th>
+<th>이 CLI</th>
+<th>웹/PC 캔버스</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>엔진</td>
+<td>Imagine <code>image_gen</code>/<code>image_edit</code></td>
+<td>Imagine Quality = Image 2.0</td>
+</tr>
+<tr>
+<td>SKU 선택</td>
+<td>도구에 칸 없음. 소스 기본 <code>grok-imagine-image-quality</code></td>
+<td><code>grok-imagine-image-2.0</code></td>
+</tr>
+<tr>
+<td>통짜 한 장</td>
+<td>됨</td>
+<td>됨 + 영역</td>
+</tr>
+<tr>
+<td>마스크·Magic Wand·슬라이더</td>
+<td>없음</td>
+<td>여기만</td>
+</tr>
+<tr>
+<td>배치·그리드·포스터 글자</td>
+<td>깨지기 쉬움</td>
+<td>캔버스 본업</td>
+</tr>
+</tbody>
+</table>
+<p><code>@grok</code>: 코어 생성·Quality·참조는 앱=웹. 고급 캔버스만 데스크톱.</p>
+<h2 id="18-cli">18개 중 CLI</h2>
+<table>
+<thead>
+<tr>
+<th>CLI로 비슷</th>
+<th>CLI가 짐</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reimagine, 배경, 이커머스, 프로필, 히어로, 상품색, UGC, 헤드샷, 룸, 마스코트</td>
+<td>Photo Edit 부분, Smart Resize, Collage, Sprite, Editorial 글자, Icon, Props &amp; UI Kit</td>
+</tr>
+</tbody>
+</table>
+<p>18 전부 웹만큼이라고 말하면 과장. 칸 지정·A/B는 아직 없음.</p>
+<p>관련: <a href="106-imagine-canvas-18_Grok.html"><code>106-imagine-canvas-18_Grok.md</code></a> · <a href="grok/CANVAS.html"><code>grok/CANVAS.md</code></a> · <a href="grok/CAN.html"><code>grok/CAN.md</code></a></p>
+<ul>
+<li>[x] 갤러리 rw · media-scan 실측</li>
+<li>[x] 품질을 모델/손으로 갈라 저장</li>
+<li>[ ] 같은 장 A/B</li>
+<li>[ ] 18 중 쓸 칸</li>
+</ul>
+<p><em>agent mark <code>_Grok</code> · 2026-08-28</em></p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="106-imagine-canvas-18_Grok.html">
+          <span class="dir">Previous</span>
+          <span class="title">Imagine 캔버스 18기능 — 제공 화면 기준</span>
+        </a>
+    <a class="next" href="infra-whitepaper-2026-08-27_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">proot Ubuntu 1인 미디어 공장 기술백서</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>구축: 2026-07-23 ~ 2026-08-14 (23일)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine lakme-audio</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

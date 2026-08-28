@@ -273,6 +273,7 @@ Grok 플러그인 슬롯, 영상 표준 v1, PD Pipeline v2 LOCK.
 | **`104-grok-3device-roles_Grok.md`** | **세 기기 역할 통합** — S21 집 / 탭 방송국 / S25 크로스 GUI |
 | **`105-comfy-grokvideo-graft_Grok.md`** | Comfy 피로 → GrokVideoNode. 접목은 API지 Comfy 설치 아님 |
 | **`106-imagine-canvas-18_Grok.md`** | Imagine 캔버스 18기능 — 제공 화면 기준, 모바일 미지원 (_Grok) |
+| **`107-gallery-cli-vs-canvas_Grok.md`** | 갤러리 CLI 왕복 vs 웹 캔버스 품질 층 (_Grok) |
 
 ---
 

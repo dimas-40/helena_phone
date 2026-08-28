@@ -50,8 +50,11 @@ location: tablet
 | `CROSS.md` | **S25 ↔ 탭 크로스** · GUI는 나 · Termux는 탭 Grok |
 | `ROLE-DEVICES.md` | **세 기기 역할 카드** · 방마다 수가 다름 |
 | `CANVAS.md` | **Imagine 캔버스 18기능** · 제공 화면 기준, 모바일 없음 |
+| `GALLERY-CLI.md` | 갤러리 왕복 · CLI vs 웹 캔버스 품질 층 |
+| `REPORT-2026-08-28.md` | 세션 1장 리포트 (TG 첨부) |
 | `../105-comfy-grokvideo-graft_Grok.md` | Comfy 안 올림. Imagine Video API만 접목 후보 |
 | `../106-imagine-canvas-18_Grok.md` | 위 18개 번호 수첩 (HTML 커버리지) |
+| `../107-gallery-cli-vs-canvas_Grok.md` | 갤러리 CLI vs 캔버스 (HTML 커버리지) |
 
 5-repo English scaffold (no Hangul): `/root/eae-station/`
 

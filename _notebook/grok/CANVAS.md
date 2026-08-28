@@ -67,4 +67,8 @@ Boss가 18개 중 뭘 쓸지는 안 말했다. 저장만.
 - 인물 잠금에 닿는 이름: Profile Picture, Professional Headshot, UGC Photos
 - 칸 ②(10초 PD) 목록에는 없음. 이 18은 **이미지 템플릿**이다.
 
+## 이 CLI vs 이 18개
+
+갤러리 왕복·품질 층은 `GALLERY-CLI.md` · `107`. 한 줄: 픽셀이 하늘과 땅은 아님. 큰 구멍은 손.
+
 *원본 · `/root/work/_notebook/grok/CANVAS.md`*

@@ -269,6 +269,7 @@ NOTEBOOK_TITLES = {
     "104-grok-3device-roles_Grok.md": "Grok 용병 — 세 기기 역할이 다르다",
     "105-comfy-grokvideo-graft_Grok.md": "ComfyUI 피로 → GrokVideoNode 접목 판정",
     "106-imagine-canvas-18_Grok.md": "Imagine 캔버스 18기능 — 제공 화면 기준",
+    "107-gallery-cli-vs-canvas_Grok.md": "갤러리 CLI vs 웹 캔버스 — 처리·품질 층",
     "infra-whitepaper-2026-08-27_Claude.md": "proot Ubuntu 1인 미디어 공장 기술백서",
     "session-2026-08-27_Claude.md": "세션 — S25 경제방송 배선 + 파이프라인 갭 평가",
 }
