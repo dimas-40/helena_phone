@@ -82,7 +82,7 @@ TOOLS: list[dict[str, Any]] = [
                 "url": {"type": "string", "description": "캡처할 페이지 URL. 기본값: https://helena751107.github.io/helena_phone/"},
                 "bgm_source": {"type": "string", "description": "BGM 음원 경로 또는 YouTube URL. YouTube URL이면 yt-dlp로 자동 다운로드. 생략 시 기본 BGM."},
                 "bgm_volume": {"type": "number", "description": "BGM 볼륨 (0.0~1.0). 기본값 0.025 (golden whisper)"},
-                "voice": {"type": "string", "description": "TTS 음성. 기본값: ko-KR-YuJinNeural"},
+                "voice": {"type": "string", "description": "TTS 음성. 기본값: ko-KR-SunHiNeural"},
                 "force": {"type": "boolean", "description": "기존 출력 덮어쓰기 (기본: false)"},
             },
             "required": ["ep_id"],
@@ -200,7 +200,7 @@ def list_episodes() -> list[dict]:
         })
     return episodes
 
-def produce(ep_id: str, url: str, bgm_volume: float, bgm_source: str = "", voice: str = "ko-KR-YuJinNeural", force: bool = False) -> dict:
+def produce(ep_id: str, url: str, bgm_volume: float, bgm_source: str = "", voice: str = "ko-KR-SunHiNeural", force: bool = False) -> dict:
     outdir = OUT_BASE / ep_id
     playable = outdir / f"{ep_id}_playable.mp4"
     if playable.exists() and not force:
@@ -486,7 +486,7 @@ def handle_request(method: str, params: dict | None = None) -> dict:
                     url=args.get("url", "https://helena751107.github.io/helena_phone/"),
                     bgm_volume=float(args.get("bgm_volume", 0.025)),
                     bgm_source=args.get("bgm_source", ""),
-                    voice=args.get("voice", "ko-KR-YuJinNeural"),
+                    voice=args.get("voice", "ko-KR-SunHiNeural"),
                     force=bool(args.get("force", False)),
                 )
                 return {"content": [{"type": "text", "text": json.dumps(result, indent=2, ensure_ascii=False)}]}
@@ -571,7 +571,7 @@ if __name__ == "__main__":
         print(json.dumps({"episodes": list_episodes()}, indent=2, ensure_ascii=False))
     elif "--produce" in sys.argv:
         ep = sys.argv[sys.argv.index("--produce") + 1] if "--produce" in sys.argv and sys.argv.index("--produce") + 1 < len(sys.argv) else "pd_intro"
-        result = produce(ep, "https://helena751107.github.io/helena_phone/", 0.025, "", "ko-KR-YuJinNeural", True)
+        result = produce(ep, "https://helena751107.github.io/helena_phone/", 0.025, "", "ko-KR-SunHiNeural", True)
         print(json.dumps(result, indent=2, ensure_ascii=False))
     else:
         run_stdio()

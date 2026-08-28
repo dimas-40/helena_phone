@@ -4,12 +4,12 @@
 # 역할:
 #   Factory(공짜) = Playwright 페이지 캡처 + FFmpeg Ken Burns + xfade multi-transition
 #   Boss(수동)   = Gemini/공짜LLM으로 bridge 영상 제작 → Android 갤러리에 저장
-#   성우          = Edge TTS YuJinNeural (ko-KR 유진 · 차분한 내레이션) · 완전 공짜
+#   성우          = Edge TTS SunHiNeural (ko-KR 선히 · 차분한 내레이션) · 완전 공짜
 # V9: CNN Breaking News animated subtitles (72pt bold · per-word \t() scale pop 200%→100%)
 # V8: channel stinger · pattern interrupt · loop closing · ASS karaoke subtitles
 # V7: breathing pauses · zoom variety · per-slide grade · BGM swell · staggered end card
 # V6: audio ducking · xfade multi-transition · end card · chrono-pair bridge
-# 고정 상수: BGM_VOLUME=0.025 · TTS=edge(YuJin) · CJK 폰트 · QA gate 필수
+# 고정 상수: BGM_VOLUME=0.025 · TTS=edge(SunHi) · CJK 폰트 · QA gate 필수
 #
 # Bridge 워크플로 (Grok 제로):
 #   1. Gemini로 open/close 영상 만들기
@@ -41,9 +41,9 @@ done
 OUTDIR="${OUTDIR:-$ROOT/out/$EP}"
 export OUTDIR EP URL ROOT
 export BGM_VOLUME="${BGM_VOLUME:-0.025}"  # Golden whisper — 들릴락 말락 은은
-export TTS_ENGINE="${TTS_ENGINE:-edge}"   # edge=YuJin(유진 · 차분한 내레이션), local=Kokoro(폐기), grok=403
+export TTS_ENGINE="${TTS_ENGINE:-edge}"   # edge=SunHi(선히 · 차분한 내레이션), local=Kokoro(폐기), grok=403
 export GROK_TTS_VOICE="${GROK_TTS_VOICE:-ara}"
-export VOICE="${VOICE:-ko-KR-YuJinNeural}"   # Edge TTS 한국어 여성 (유진 · 차분한 내레이션)
+export VOICE="${VOICE:-ko-KR-SunHiNeural}"   # Edge TTS 한국어 여성 (선히 · 차분한 내레이션)
 export PYTHONIOENCODING=utf-8
 
 # ── BGM source: YouTube download or local path ──
@@ -210,13 +210,13 @@ for beat in bible["beats"]:
             print(f"  ! voice engine fail {bid}: {e}")
             # fallback edge
             import subprocess as sp2
-            edge_v = os.environ.get("VOICE", "ko-KR-YuJinNeural")
+            edge_v = os.environ.get("VOICE", "ko-KR-SunHiNeural")
             sp2.run(["edge-tts", "-f", str(txt), "--voice", edge_v, "--write-media", str(mp3)],
                     capture_output=True, check=False)
             print(f"  [{bid}] edge-FALLBACK/{edge_v}")
     else:
         import subprocess as sp2
-        edge_v = os.environ.get("VOICE", "ko-KR-YuJinNeural")
+        edge_v = os.environ.get("VOICE", "ko-KR-SunHiNeural")
         sp2.run(["edge-tts", "-f", str(txt), "--voice", edge_v, "--write-media", str(mp3)],
                 capture_output=True, check=False)
         print(f"  [{bid}] edge/{edge_v}")
