@@ -73,7 +73,7 @@
     <span>📋 S21 Phone — 전체 개발일지</span>
   </div>
   <header class="wz-hero">
-    <div class="wz-kicker">Notebook · lakme-audio</div>
+    <div class="wz-kicker">Notebook · 2026-08-30</div>
     <h1>📋 S21 Phone — 전체 개발일지</h1>
     <p class="deck">&quot;WS SL 내 PC 환경에 디바이스 추가해서 누나 핸드폰을 브랜치처럼 해가지고 태블릿 내가 갖고 있는 것처럼 누나 핸드폰도 등록을 해버리잖아.&quot;</p>
     <div class="wz-meta">
@@ -84,6 +84,8 @@
   </header>
   <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
 <ul>
+<li><a href="#sovits-_grok-2026-08-24">🎙️ SoVITS 덮어쓰기 챌린지 잠금 (_Grok · 2026-08-24)</a></li>
+<li><a href="#dimas-40-_grok-2026-08-18">🪪 dimas-40 프로필 메뉴 — 래퍼 레포 삭제 + 링크 주입 (_Grok · 2026-08-18)</a></li>
 <li><a href="#_grok-2026-08-13">🎙️ 헬레나 성우 베이스라인 잠금 + 주의 기도 더빙 (_Grok · 2026-08-13)</a></li>
 <li><a href="#rvc-onnx-s21-_claude-2026-08-12">🎙️ 사도신경 더빙 — RVC ONNX 전환 + S21 추론 성공 (_Claude · 2026-08-12)</a></li>
 <li><a href="#tailscale-wsls21-_claude-2026-08-12">🔗 Tailscale 테스트 — WSL→S21 파일 전송 (_Claude · 2026-08-12)</a></li>
@@ -497,6 +499,15 @@
 <li><a href="#s21-vs-2-_boss-2026-08-18">🌉 S21 vs 태블릿 &ldquo;안 되는 것&rdquo; 2종류 + 다리(플러그 브릿지) (_Boss · 2026-08-18)</a></li>
 <li><a href="#_claude-2026-08-18_2">🕊️ 마지막 배웅 — 설치·인프라 종료, 이제부터 양산 (_Claude · 2026-08-18)</a></li>
 <li><a href="#ci-_claude-2026-08-18">🩸 포스트모텀 — 삽질 신드롬: 카카오 로그인을 CI에서 시도 (_Claude · 2026-08-18)</a></li>
+<li><a href="#fork-_claude-2026-08-18">🎯 태블릿 = 교육방송 스튜디오 + fork 서플라이 체인 (확정 · _Claude · 2026-08-18)</a></li>
+<li><a href="#grok-_grok-2026-08-18">🧳 Grok = 용병, 세 로케이션 순회 (_Grok · 2026-08-18)</a></li>
+<li><a href="#tab-s9-s21-_grok-2026-08-18">📟 이 방 = Tab S9 계열 실측, S21 아님 (_Grok · 2026-08-18)</a></li>
+<li><a href="#grok-_notebookgrok-_grok-2026-08-18">📂 태블릿 Grok 책상 _notebook/grok/ (_Grok · 2026-08-18)</a></li>
+<li><a href="#grok-eae-5-_grok-2026-08-18">🎭 태블릿 Grok 역할 초안 + EAE 5레포 파싱 (_Grok · 2026-08-18)</a></li>
+<li><a href="#boss-_notebookgrokbossmd-_grok-2026-08-18">📒 Boss 말만 장부 _notebook/grok/BOSS.md (_Grok · 2026-08-18)</a></li>
+<li><a href="#_grok-2026-08-18">🎬 여긴 출판 복제가 아니라 방송국 (_Grok · 2026-08-18)</a></li>
+<li><a href="#parksy-image-pd-5-_grok-2026-08-18">🎬 parksy-image = PD 창고, 아이디어 5편 (_Grok · 2026-08-18)</a></li>
+<li><a href="#pd-80-a-_grok-2026-08-18">📋 렌즈 PD 프로포절 (80% A) (_Grok · 2026-08-18)</a></li>
 </ul>
 </li>
 </ul>
@@ -509,7 +520,23 @@
     <button type="button" id="wzCopy" data-cursor>본문 복사</button>
   </div>
   <article class="wz-prose" id="wzProse" data-app="doc">
-    <h3 id="_grok-2026-08-13">🎙️ 헬레나 성우 베이스라인 잠금 + 주의 기도 더빙 (_Grok · 2026-08-13)</h3>
+    <h3 id="sovits-_grok-2026-08-24">🎙️ SoVITS 덮어쓰기 챌린지 잠금 (_Grok · 2026-08-24)</h3>
+<p><strong>Boss:</strong> 그록 샘플에서 대사·타이밍을 빼 네 성우로 오버라이트. 수첩에 저장하고 챌린징해서 작업할 것.</p>
+<p><strong>잠금:</strong><br>
+- 그록 = 몸(입·제스처·배경). 소리는 버림.<br>
+- 샷리스트 = 글 원본. <code>silencedetect</code> = 쉼 칸.<br>
+- 붙이기 = 이 탭 proot ffmpeg. SoVITS 추론은 가중치 있는 방.<br>
+- 원장 <code>_notebook/108-sovits-dub-overwrite_Grok.md</code> · 맵 <code>output/lens-pilot/host01-gest-40s.timing.json</code> · <code>scripts/dub_overwrite.sh</code></p>
+<h3 id="dimas-40-_grok-2026-08-18">🪪 dimas-40 프로필 메뉴 — 래퍼 레포 삭제 + 링크 주입 (_Grok · 2026-08-18)</h3>
+<p><strong>지시:</strong> <code>dimas-40/dimas-40</code> 레포 삭제. 콘텐츠는 GitHub 프로필 메뉴에. Tistory·YouTube 링크 전부.</p>
+<p><strong>한 일:</strong><br>
+- 레포 <code>dimas-40/dimas-40</code> <strong>삭제 완료</strong> (로컬 백업 <code>/tmp/dimas-profile</code>)<br>
+- 프로필 메뉴 PATCH: name <code>Edu Art Engineer</code> · company <code>EAE</code> · location <code>Seoul</code> · website <code>https://eae-broadcast.tistory.com</code><br>
+- social_accounts 4칸(GitHub 하드캡): <code>@BeingEduartEngineer-4</code> · <code>@EAE-University</code> · <code>@helena_phone</code> · <code>@HelenaPark-e7c</code><br>
+- bio(160자 캡)에 EAE 티스토리 5 + Helena 티스토리 5 슬러그</p>
+<p><strong>한계(과장 금지):</strong> GitHub 프로필 메뉴 = 웹사이트 1 + 소셜 4 + bio 160자. 잡지 레이아웃·영상은 이 메뉴에 못 넣음.</p>
+<p>얼굴: https://github.com/dimas-40</p>
+<h3 id="_grok-2026-08-13">🎙️ 헬레나 성우 베이스라인 잠금 + 주의 기도 더빙 (_Grok · 2026-08-13)</h3>
 <p><strong>결정:</strong> 시편 23편으로 검증된 5단계(Edge SunHi −15%/−3Hz → 침묵제거 → RVC WebUI PyTorch + rmvpe + index 0.75 → 마스터링 192k)를 <strong>성우 더빙 표준</strong>으로 잠금.</p>
 <ul>
 <li>기술 원본: <code>_notebook/81-helena-rvc-dubbing-standard_Claude.md</code></li>
@@ -8789,6 +8816,66 @@ Android(호스트 OS) : proot Ubuntu(리눅스 호환 레이어)
 <p><strong>정답(이미 보일러플레이트에 있음):</strong> <code>xvfb-run -a python3 tistory-naver/renew_sessions.py --headed</code> — 기기(proot) 위에서 headed 로그인, RustDesk로 captcha 1회 수동 → <code>cookies/</code> 저장 → 이후 <code>apply_skin.py</code>/<code>post.py</code> 자동.</p>
 <p><strong>패턴 명명 — &ldquo;삽질 신드롬&rdquo;:</strong> 새 에이전트가 이미 푼 문제를 재발명하고, 엉뚱한 자리(CI)에서 시도하는 것. 보일러플레이트에 정답이 있어도 &ldquo;정답 위치&rdquo;를 모르니 반복된다.</p>
 <p><strong>재발 방지:</strong> SETUP.md &ldquo;수동 하한&rdquo; + README <code>renew_sessions.py --if-needed</code>에 &ldquo;로그인·인증은 CI/헤드리스 금지, 기기 위 headed + 사람 1회&rdquo; 한 줄 명시.</p>
+<h3 id="fork-_claude-2026-08-18">🎯 태블릿 = 교육방송 스튜디오 + fork 서플라이 체인 (확정 · _Claude · 2026-08-18)</h3>
+<p>Boss 발상의 전환으로 태블릿 정체·서플라이 체인이 확정. 상세는 <code>tablet-broadcast-studio_Claude.md</code>.</p>
+<ul>
+<li><strong>태블릿 = 교육방송 스튜디오</strong> (render+믹스+최종 업로드). 드래프트는 Boss가 폰(음성)으로. GitHub=dimas-40 · 삼성=thomas.tj.park.</li>
+<li><strong>3단계 방송국 = 3계정 로드맵</strong> (channels.json 실측): ① 교육방송(thomas.tj.park, @BeingEduartEngineer-4·@EAE-University) → ② 아리랑/KR(dimas.thomas.sancho, 박씨 5채널) → ③ 경제방송(dtslib1979, 6채널). 태블릿은 1단계.</li>
+<li><strong>레인이 아니라 &ldquo;입력2+출력1&rdquo;:</strong> 그림(스케치→Grok)·음악(MIDI→FluidSynth 렌더) = 입력 자산, 교육방송 영상 = 출력. 채널은 교육방송 2개뿐.</li>
+<li><strong>서플라이 체인 = fork 모델:</strong> dtslib1979(뇌) &ndash;fork&ndash;&gt; dimas-40(태블릿) &ndash;업로드&ndash;&gt; thomas.tj.park YouTube. fork가 parksy 루프 구현(선물=pull upstream, 미러=PR).</li>
+<li><strong>fork 4개 예정:</strong> eae.kr · eae-univ(출력) · parksy-audio · parksy-image(입력). 뇌(dtslib-papyrus)는 fork 안 함.</li>
+<li><strong>상태:</strong> 아직 중앙 허브(fork) 미생성 — 수첩에만 저장. 다음 = fork 4개 → SSOT 교체 → 스모크 테스트(FluidSynth MIDI→WAV→tg).</li>
+<li><strong>음악 파이프라인 M0~M6</strong> (오프라인 렌더): 작곡(mido)→가상악기(FluidSynth)→가창(RVC/DiffSinger ⚠️)→믹스(ffmpeg/sox)→tg 전송→발행→BGM(P5 공급).</li>
+</ul>
+<h3 id="grok-_grok-2026-08-18">🧳 Grok = 용병, 세 로케이션 순회 (_Grok · 2026-08-18)</h3>
+<p><strong>Boss 결정:</strong> Grok은 한 단말 상주가 아니다. 용병으로 세 로케이션에 CLI 조인한다.</p>
+<ul>
+<li><strong>세 곳:</strong> ① 누나 핸드폰(S21, 지금 이 방) ② 태블릿 ③ Boss 핸드폰.</li>
+<li><strong>각 방:</strong> 각자 proot Ubuntu + 각자 업무 수첩. STT 「P 루트 5분 투」= proot 우분투.</li>
+<li><strong>켤 때:</strong> 그 방 수첩부터. 다른 방 기억을 가져오지 않는다.</li>
+<li><strong>안 바뀌는 것:</strong> <code>83</code> 칸 두 개(잡지구도 이미지 · 10초 PD). 로케이션이 늘어도 잡일 확대 아님.</li>
+<li><strong>수첩:</strong> <code>_notebook/101-grok-mercenary-3loc_Grok.md</code> · <code>GROK-PLUGIN.md</code>에 한 줄 포인터.</li>
+<li><strong>한계:</strong> 당시 문서로 S21이라 적음 → 직후 하드웨어 실측으로 <strong>태블릿으로 철회</strong> (<code>102</code>).</li>
+</ul>
+<h3 id="tab-s9-s21-_grok-2026-08-18">📟 이 방 = Tab S9 계열 실측, S21 아님 (_Grok · 2026-08-18)</h3>
+<p>Boss: 여기 태블릿에서 구동. 스펙 전부 파싱.</p>
+<ul>
+<li><strong>판정:</strong> Snapdragon 8 Gen 2 (X3+A715+A710+A510) · Adreno740v2 719MHz · S-Pen IRQ · RAM 8GB(가용~1.6G) · userdata 106G=128GB. S21 Mali/ENPU 없음.</li>
+<li><strong>프로트:</strong> Ubuntu 26.04 · grok 1.0.5 · ffmpeg 없음 · Termux:API 없음 · getprop 거부 · Grade C.</li>
+<li><strong>구동:</strong> 칸 ①② 클라우드는 됨. concat/로컬 추론은 안 됨.</li>
+<li><strong>수첩:</strong> <code>_notebook/102-tablet-hw-parse_Grok.md</code></li>
+</ul>
+<h3 id="grok-_notebookgrok-_grok-2026-08-18">📂 태블릿 Grok 책상 <code>_notebook/grok/</code> (_Grok · 2026-08-18)</h3>
+<p>Boss: 상주(딥시크 에이더) 수첩 파싱 → 내 폴더 만들고 세션 켜면 무조건 읽게.</p>
+<ul>
+<li><strong>Aider 수첩 <code>*_Aider.md</code> = 0.</strong> aider 바이너리 없음. 상주 기록은 <code>_Claude</code>(DeepSeek 과금 Claude Code) 4장.</li>
+<li>책상: <code>_notebook/grok/{00-READ-FIRST,hardware,resident-notes}.md</code></li>
+<li>자동 읽기: <code>~/.grok/rules/</code> + <code>/root/work/.grok/rules/</code> + SessionStart 훅 <code>~/.grok/hooks/session-start.json</code></li>
+<li>하드웨어 원본은 <code>grok/hardware.md</code> 로 옮김.</li>
+</ul>
+<h3 id="grok-eae-5-_grok-2026-08-18">🎭 태블릿 Grok 역할 초안 + EAE 5레포 파싱 (_Grok · 2026-08-18)</h3>
+<ul>
+<li>5레포 보일러(CLAUDE/FACTORY/README/00_TRUTH/index) <strong>SHA 동일</strong>. 정체 미개서. Grok 언급 = 「유튜브 알고리즘·마케팅 정찰」2~3줄뿐.</li>
+<li>태블릿 수첩만 「스케치→Grok」. 보일러 직업과 다름.</li>
+<li>스스로 쓴 역할: <code>_notebook/grok/ROLE.md</code> — 그림①·클립②만. 다섯 직함 아님. 마케팅 정찰 거절.</li>
+<li>파싱: <code>_notebook/grok/eae-5repo-parse.md</code></li>
+</ul>
+<h3 id="boss-_notebookgrokbossmd-_grok-2026-08-18">📒 Boss 말만 장부 <code>_notebook/grok/BOSS.md</code> (_Grok · 2026-08-18)</h3>
+<p>Boss: 지금까지 얘기한 것만 정리해 저장하고 거꾸로 브리핑. 채워 가면 된다.<br>
+장부 6항: 용병 3로케이션 · 여기=태블릿 · 상주 먼저+내 폴더 · eaekr 가서 읽기 · 역할은 스스로+5레포 파싱 · 이후 덧붙임.</p>
+<h3 id="_grok-2026-08-18">🎬 여긴 출판 복제가 아니라 방송국 (_Grok · 2026-08-18)</h3>
+<p>Boss: eaekr의 S21 인벤토리 읽고, 누나폰=출판/다큐 시도, 여기=진짜 영상·이미지. 할 수 있는 것 먼저 파악.<br>
+- 허브 파일 읽음. 가능 목록: <code>_notebook/grok/CAN.md</code> (gen/edit/6·10초/참조영상. concat은 ffmpeg 없음).</p>
+<h3 id="parksy-image-pd-5-_grok-2026-08-18">🎬 parksy-image = PD 창고, 아이디어 5편 (_Grok · 2026-08-18)</h3>
+<p>Boss: 3183 자산으로 완벽한 PD. 아이디어 짜라.<br>
+- 허브 수첩 + parksy-image 실측(curator 11 yaml, LUT 10, 도면 컷, moods).<br>
+- Comfy 그래프 안 돌림. YAML→숏 번역이 PD.<br>
+- 프로그램: 렌즈 한 과 / 웹툰 호스트 / 도면 콘티 / LUT 룩북 / 썸네일 틀.<br>
+- 복사: 머리(YAML)만. 3183 덤프 아님. <code>_notebook/grok/PD-IDEAS.md</code></p>
+<h3 id="pd-80-a-_grok-2026-08-18">📋 렌즈 PD 프로포절 (80% A) (_Grok · 2026-08-18)</h3>
+<p>Boss: 아이디어를 프로포절로 구체화, Comfy 이상, 80% A까지 다 짜고 경로 알려라.<br>
+- 원본: <code>/root/work/_notebook/grok/PD-PROPOSAL.md</code><br>
+- 파일럿: 교육편 「학생이 왜 공부해요」55초 10숏. 렌즈 홍+정. 대본은 창고 JSON.</p>
   </article>
   <nav class="wz-pager">
     <a class="" href="session-2026-07-26_Grok.html">
@@ -8802,10 +8889,10 @@ Android(호스트 OS) : proot Ubuntu(리눅스 호환 레이어)
   </nav>
   <div class="wz-related">
           <h2>같은 섹션</h2>
-          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>구축: 2026-07-23 ~ 2026-08-14 (23일)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>## ⚠️ 이 수첩은 히스토리다 — 헌법이 아니다 (2026-08-22 Boss 결정)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
         </div>
   <footer class="wz-foot">
-    <div>S21 PHONE · Webzine lakme-audio</div>
+    <div>S21 PHONE · Webzine 2026-08-30</div>
     <div class="gold">모든 계정은 누나 명의입니다.</div>
     <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
   </footer>

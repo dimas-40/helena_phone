@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="한 줄: `parksy-image` 웹툰 파이프라인의 **6번째 출력 타겟(티스토리)** 을 — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>웹툰 뷰어 → 티스토리 파이프라인 플러그 옵션 (A급 + 모바일/인스타툰) — S21 Phone Webzine</title>
+<link rel="canonical" href="https://helena751107.github.io/helena_phone/notebook/105-webtoon-player-tistory-plugin_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/helena751107#person",
+      "name": "Helena Park",
+      "url": "https://github.com/helena751107",
+      "description": "Made in Korea — not a developer. One Galaxy S21, built by voice, for a sister.",
+      "sameAs": [
+        "https://github.com/helena751107",
+        "https://helena751107.github.io/helena_phone/",
+        "https://www.youtube.com/@helena_phone",
+        "https://www.youtube.com/@HelenaPark-e7c"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://helena751107.github.io/helena_phone/notebook/105-webtoon-player-tistory-plugin_Claude.html#webpage",
+      "url": "https://helena751107.github.io/helena_phone/notebook/105-webtoon-player-tistory-plugin_Claude.html",
+      "name": "웹툰 뷰어 → 티스토리 파이프라인 플러그 옵션 (A급 + 모바일/인스타툰)",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/helena751107#person"
+      },
+      "author": {
+        "@id": "https://github.com/helena751107#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>웹툰 뷰어 → 티스토리 파이프라인 플러그 옵션 (A급 + 모바일/인스타툰)</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · 2026-08-30</div>
+    <h1>웹툰 뷰어 → 티스토리 파이프라인 플러그 옵션 (A급 + 모바일/인스타툰)</h1>
+    <p class="deck">한 줄: `parksy-image` 웹툰 파이프라인의 **6번째 출력 타겟(티스토리)** 을</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/105-webtoon-player-tistory-plugin_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#0">0. 배경 — 오늘 무슨 일이 있었나</a></li>
+<li><a href="#1">1. 핵심 통찰 — &ldquo;티스토리에 옵션 하나가 빠져 있었다&rdquo;</a></li>
+<li><a href="#2">2. 티스토리 파이프라인 = &ldquo;포스트 타입 하나 = 렌더러 하나&rdquo;</a><ul>
+<li><a href="#webtoonpy">webtoon.py 동작</a></li>
+</ul>
+</li>
+<li><a href="#3-parksyplayer-v1-v2-a">3. ParksyPlayer v1 → v2 (A급 + 모바일 최적화)</a><ul>
+<li><a href="#_1">모바일 = 인스타툰 미러링</a></li>
+<li><a href="#_2">튜닝 포인트 (여기서 바로 고칠 수 있게)</a></li>
+</ul>
+</li>
+<li><a href="#4-1">4. 남은 결정 1개 (계정 매칭 — 지난 스레드와 동일)</a></li>
+<li><a href="#5">5. 파일 지도</a></li>
+<li><a href="#6">6. 다음 (팬딩)</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <hr>
+<p>date: 2026-08-22<br>
+agent: Claude Code (출판부)<br>
+mark: _Claude<br>
+type: plugin<br>
+status: active<br>
+related:<br>
+  - tistory-master-guide_Claude.md<br>
+  - tablet-broadcast-studio_Claude.md<br>
+  - tablet-setup-parksy-method_Claude.md<br>
+  - gifts/parksy-webtoon-player (회수 선물)</p>
+<hr>
+<h1 id="a">웹툰 뷰어 → 티스토리 파이프라인 플러그 옵션 (A급 + 모바일/인스타툰)</h1>
+<blockquote>
+<p>한 줄: <code>parksy-image</code> 웹툰 파이프라인의 <strong>6번째 출력 타겟(티스토리)</strong> 을<br>
+티스토리 발행 파이프라인에 <strong>플러그 옵션 하나</strong>로 끼워 넣고,<br>
+웹툰 뷰어(ParksyPlayer)를 <strong>A급 + 모바일(인스타툰) 최적화</strong>로 올렸다.</p>
+</blockquote>
+<hr>
+<h2 id="0">0. 배경 — 오늘 무슨 일이 있었나</h2>
+<ol>
+<li>dtslib1k/2k 티스토리 10곳에서 <strong>&ldquo;빈 웹툰 게시글&rdquo;</strong> 사고 발견 (이미지 0장 → 뷰어가 빈 화면).</li>
+<li>유실 직전의 원본 코드 <code>parksy-webtoon-player.html</code> 회수 → <code>/root/gifts/parksy-webtoon-player/</code>.</li>
+<li>조사 결과: <strong>레포엔 원본이 없고 라이브 블로그에만 있던</strong> 코드였다.</li>
+<li>진짜 자산은 코드가 아니라 <strong>&ldquo;완성 파이프라인 + 완성 콘텐츠가 5개월째 방치&rdquo;</strong> 였다는 사실.</li>
+</ol>
+<hr>
+<h2 id="1">1. 핵심 통찰 — &ldquo;티스토리에 옵션 하나가 빠져 있었다&rdquo;</h2>
+<p><code>dtslib1979/parksy-image</code> 의 웹툰 패키징 <code>webtoon_packager.py</code> 는<br>
+<strong>마스터 캔버스 → 5개 플랫폼 자동 패키징</strong> 을 이미 지원한다.</p>
+<table>
+<thead>
+<tr>
+<th>지원 플랫폼 (기존 5종)</th>
+<th>빠진 것</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>instagram · naver · shorts · broadcast · thumbnail</td>
+<td><strong>tistory</strong> ⬅ 여기</td>
+</tr>
+</tbody>
+</table>
+<p>→ 티스토리 발행에 <strong>웹툰 뷰어라는 옵션 하나가 빠져 있었고</strong>,<br>
+그 빈칸 때문에 완성된 에피소드(ep04 일상편 등)가 3월부터 <strong>5개월째 발행 못 나감</strong>.</p>
+<p><strong>정답은 &ldquo;새로 짜는 게 아니라 <code>--platform tistory</code> 6번째 옵션 추가&rdquo;에 가깝다.</strong></p>
+<hr>
+<h2 id="2">2. 티스토리 파이프라인 = &ldquo;포스트 타입 하나 = 렌더러 하나&rdquo;</h2>
+<p>기존 구조 (실측):</p>
+<table>
+<thead>
+<tr>
+<th>렌더러</th>
+<th>포스트 타입</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>template.py</code></td>
+<td>기본 글 (아코디언 + 인포그래픽)</td>
+</tr>
+<tr>
+<td><code>magazine.py</code></td>
+<td>피아노 웹진 (매거진 레이아웃)</td>
+</tr>
+<tr>
+<td><strong><code>webtoon.py</code> (신규)</strong></td>
+<td><strong>웹툰 (ParksyPlayer v2 주입)</strong></td>
+</tr>
+</tbody>
+</table>
+<p>→ 이번에 <code>webtoon.py</code> 를 추가한 것 = <strong>티스토리 파이프라인에 웹툰 플러그 옵션을 꽂은 것.</strong></p>
+<h3 id="webtoonpy">webtoon.py 동작</h3>
+<pre><code>manifest(에피소드 메타 + 이미지 URL) → webtoon.py
+  → assets/parksy-webtoon-player.html 템플릿 로드
+  → 설정 JSON 주입 (코드는 단일 원본 유지)
+  → posts/&lt;slug&gt;.json 생성 → post.py 가 발행
+</code></pre>
+<pre><code class="language-bash">python3 tistory-naver/webtoon.py tistory-naver/episodes/sample-ep01.json
+python3 tistory-naver/webtoon.py episodes/ep01.json --dump   # HTML만 확인
+</code></pre>
+<p>manifest 형식은 <code>tistory-naver/webtoon.py</code> docstring 참고.<br>
+<code>account</code>(accounts.json id) + <code>blog</code>(블로그 슬러그)는 <strong>필수</strong> (웹툰은 b계정/태블릿 c계정 갈림).</p>
+<hr>
+<h2 id="3-parksyplayer-v1-v2-a">3. ParksyPlayer v1 → v2 (A급 + 모바일 최적화)</h2>
+<p>원본 v1 은 잘 만들었지만 3개 약점이 있었고, 코드가 <strong>한 줄 minify</strong> 라서 여기서 튜닝 불가였다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>v1 (회수 원본)</th>
+<th>v2 (신규)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>빈 <code>images:[]</code> 방어</td>
+<td>❌ 없음 (오늘 사고 원인)</td>
+<td>✅ &ldquo;콘텐츠 준비 중&rdquo; 안내</td>
+</tr>
+<tr>
+<td>접근성</td>
+<td>❌ alt/ARIA 전무</td>
+<td>✅ <code>alt</code> + <code>role</code>/<code>aria-label</code></td>
+</tr>
+<tr>
+<td>설정 위치</td>
+<td>코드 안 하드코딩</td>
+<td>✅ JSON 블록 외부화 (한 곳만 고침)</td>
+</tr>
+<tr>
+<td>코드 가독성</td>
+<td>한 줄 minify</td>
+<td>✅ 주석·변수 분리 (ES5)</td>
+</tr>
+<tr>
+<td>모드</td>
+<td>가로 캐러셀 단일</td>
+<td>✅ <strong>캐러셀 + 세로 스크롤 듀얼</strong></td>
+</tr>
+<tr>
+<td>모바일</td>
+<td>최소 대응</td>
+<td>✅ 풀블리드 + 스크롤스냅 + 큰 터치존</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_1">모바일 = 인스타툰 미러링</h3>
+<ul>
+<li><strong><code>mode: "carousel"</code> (기본)</strong> = 인스타 캐러셀 스타일. 가로 스와이프, 풀블리드, 플로팅 진행바.</li>
+<li><strong><code>mode: "scroll"</code> (옵션)</strong> = 네이버식 세로 웹툰. 컷 스택 + <code>scroll-snap</code>, 하단 도트 내비.</li>
+<li>모바일에서 <code>max-width</code> 해제 → 이미지가 화면 폭을 꽉 채움. 데스크톱은 640px 중앙 정렬.</li>
+<li>터치 스와이프 / 키보드(←→ / Space / f) / 자동재생 / 전체화면 유지.</li>
+</ul>
+<h3 id="_2">튜닝 포인트 (여기서 바로 고칠 수 있게)</h3>
+<ul>
+<li>설정 전부 = <code>&lt;script id="parksy-webtoon-config" type="application/json"&gt;</code> 한 블록.</li>
+<li>강조색 <code>accent</code> 는 CSS 변수 <code>--pw-accent</code> 로 주입 → 테마만 바꾸려면 JSON 한 줄.</li>
+<li><code>webtoon.py</code> 가 이 블록만 갈아끼우므로, <strong>플레이어 코드는 단일 원본</strong>(<code>assets/parksy-webtoon-player.html</code>).</li>
+</ul>
+<hr>
+<h2 id="4-1">4. 남은 결정 1개 (계정 매칭 — 지난 스레드와 동일)</h2>
+<p>웹툰 원발행 대상 = <strong>b계정 티스토리(dtslib1k/2k, 경제방송 · dtslib1979)</strong>.<br>
+그런데 이 워크센터(태블릿) 정체 = <strong>c계정(교육방송 · thomas.tj.park / dimas-40)</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>선택</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① <code>account:"dtslib"</code> (b계정)</td>
+<td>탭이 b계정 작업을 대행. 지금 dimas-40 통합계정 상태에선 자연스럽지만 4계정4세계는 흐려짐</td>
+</tr>
+<tr>
+<td>② <code>account:"eae-image"</code> (c계정)</td>
+<td>fork 모델 그대로 깔끔, 단 새 채널을 키워야 함</td>
+</tr>
+</tbody>
+</table>
+<p><code>webtoon.py</code> 는 이걸 <strong>manifest의 account/blog 로 열어둠</strong> — 결정만 하면 고정값으로 바꾸면 됨.</p>
+<hr>
+<h2 id="5">5. 파일 지도</h2>
+<table>
+<thead>
+<tr>
+<th>파일</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tistory-naver/assets/parksy-webtoon-player.html</code></td>
+<td><strong>플레이어 단일 원본 (v2)</strong></td>
+</tr>
+<tr>
+<td><code>tistory-naver/webtoon.py</code></td>
+<td><strong>파이프라인 플러그 렌더러</strong></td>
+</tr>
+<tr>
+<td><code>tistory-naver/episodes/sample-ep01.json</code></td>
+<td>manifest 샘플</td>
+</tr>
+<tr>
+<td><code>tistory-naver/posts/*.json</code></td>
+<td>발행 대기 큐 (post.py 입력)</td>
+</tr>
+<tr>
+<td><code>/root/gifts/parksy-webtoon-player/</code></td>
+<td>회수 원본 (v1, 증거 보존)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6">6. 다음 (팬딩)</h2>
+<ul>
+<li>[ ] <code>webtoon_packager.py --platform tistory</code> 브랜치 (parksy-image 쪽 — 클론 필요)</li>
+<li>[ ] 계정 결정 (① dtslib b계정 vs ② eae-image c계정)</li>
+<li>[ ] dtslib1k/2k 빈 게시글 정리 (삭제 or 복구)</li>
+</ul>
+<p><em>agent mark <code>_Claude</code> · 2026-08-22</em></p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="105-comfy-grokvideo-graft_Grok.html">
+          <span class="dir">Previous</span>
+          <span class="title">ComfyUI 피로 → GrokVideoNode — 커뮤니티 실측과 접목 판정</span>
+        </a>
+    <a class="next" href="106-git-sync-mistake_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">106 git sync mistake Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>## ⚠️ 이 수첩은 히스토리다 — 헌법이 아니다 (2026-08-22 Boss 결정)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine 2026-08-30</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

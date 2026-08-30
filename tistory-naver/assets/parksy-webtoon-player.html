@@ -1,0 +1,415 @@
+<!-- ============================================================
+     parksy-webtoon-player v2 — 모바일 우선 웹툰 뷰어
+     ─ 인스타툰(가로 스와이프 캐러셀) + 세로 스크롤(네이버식 웹툰) 듀얼 모드
+     ─ 티스토리 HTML 모드에 통째로 붙여넣기. 외부 라이브러리 의존 0.
+
+     A급 개선 (v1 → v2):
+       ✔ 빈 images[] 방어      — "콘텐츠 준비 중" 안내 (사고 재발 방지)
+       ✔ 접근성               — alt + role/aria (스크린리더)
+       ✔ 설정 외부화          — 아래 JSON 블록(또는 window.PARKSY_WEBTOON_CONFIG)만 고치면 됨
+       ✔ 모바일 최적화        — 풀블리드, 큰 터치존, scroll-snap, 뷰포트 단위
+       ✔ 튜닝 가능            — 주석·변수 분리, ES5 (구형 웹뷰 호환)
+
+     설정 (아래 JSON 블록):
+       title       에피소드 제목
+       episode     회차 번호 (0이면 숨김)
+       images      [{src, alt}, ...] 또는 ["url", ...]
+       mode        "carousel"(가로 스와이프·인스타) | "scroll"(세로·웹툰)
+       autoplay    자동재생 여부 (기본 false)
+       autoplaySpeed 자동재생 간격(ms)
+       accent      강조색
+       fullscreen  전체화면 버튼 노출 여부
+     ============================================================ -->
+<script>if(location.pathname.indexOf('/m')===0||location.href.indexOf('/m/')>-1){location.replace(location.href.replace(/\/m(\/|$)/,'/'));}</script>
+
+<div id="parksy-webtoon" role="region" aria-label="웹툰 뷰어"></div>
+
+<style>
+/* ── 테마 토큰 (JS가 accent 주입) ─────────────────────────── */
+.pw-root{--pw-accent:#4285f4;--pw-bg:#000;--pw-ink:#eee;--pw-muted:#9aa;--pw-line:rgba(255,255,255,.14)}
+.pw-root{background:var(--pw-bg);color:var(--pw-ink);font-family:'Pretendard','Pretendard JP',-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR','Noto Sans',sans-serif;line-height:1.4;overflow:hidden}
+.pw-root,.pw-root *{box-sizing:border-box}
+.pw-root :-webkit-any-link,.pw-root a{color:var(--pw-accent)}
+
+/* ── 헤더 ─────────────────────────────────────────────────── */
+.pw-header{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(0,0,0,.55)}
+.pw-title{flex:1;font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pw-counter{flex-shrink:0;color:var(--pw-muted);font-size:13px;font-variant-numeric:tabular-nums}
+
+/* ── 스테이지 (공통) ──────────────────────────────────────── */
+.pw-stage{position:relative;width:100%;background:#000;overflow:hidden}
+.pw-cut{margin:0;position:relative;width:100%;display:flex;align-items:center;justify-content:center}
+.pw-cut img{display:block;width:100%;max-width:100%;object-fit:contain}
+
+/* ── 캐러셀 모드 (가로 스와이프) ───────────────────────────── */
+.pw-stage-carousel .pw-cut{position:absolute;inset:0;min-height:300px;height:100%}
+.pw-stage-carousel .pw-cut img{max-height:78vh}
+.pw-stage-carousel .pw-stage-inner{position:relative;width:100%;min-height:300px;height:60vh;max-height:78vh}
+@media(max-width:600px){.pw-stage-carousel .pw-stage-inner{height:66vh;max-height:none}}
+
+/* 히트존(터치 탭 존) */
+.pw-hit{position:absolute;top:0;bottom:0;width:34%;z-index:2;cursor:pointer;background:transparent;border:0;padding:0}
+.pw-hit:hover{background:rgba(255,255,255,.03)}
+.pw-hit-left{left:0}.pw-hit-right{right:0}
+
+/* ── 세로 스크롤 모드 (웹툰) ───────────────────────────────── */
+.pw-stage-scroll{max-height:80vh;overflow-y:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:y mandatory}
+.pw-stage-scroll .pw-cut{scroll-snap-align:start;min-height:100%;height:auto}
+.pw-stage-scroll .pw-cut img{height:auto}
+.pw-stage-scroll figcaption{padding:8px 14px 16px;color:var(--pw-muted);font-size:12.5px;text-align:center}
+
+/* ── 컨트롤 바 (캐러셀) ───────────────────────────────────── */
+.pw-controls{display:flex;justify-content:center;align-items:center;gap:8px;padding:10px 14px;background:rgba(0,0,0,.55)}
+.pw-btn{appearance:none;background:rgba(255,255,255,.1);border:1px solid var(--pw-line);color:#ddd;padding:7px 14px;border-radius:999px;cursor:pointer;font-size:13px;white-space:nowrap;transition:background .15s,color .15s}
+.pw-btn:hover{background:rgba(255,255,255,.22);color:#fff}
+.pw-btn:disabled{opacity:.3;cursor:default}
+.pw-btn.pw-active{background:var(--pw-accent);border-color:transparent;color:#fff}
+
+/* ── 진행 표시 ────────────────────────────────────────────── */
+.pw-progress{height:3px;background:rgba(255,255,255,.12)}
+.pw-progress-bar{height:100%;background:var(--pw-accent);width:0;transition:width .25s ease}
+.pw-dots{display:flex;justify-content:center;gap:6px;padding:8px 12px;background:rgba(0,0,0,.55)}
+.pw-dot{appearance:none;width:8px;height:8px;border-radius:50%;border:0;padding:0;background:rgba(255,255,255,.25);cursor:pointer}
+.pw-dot.pw-on{background:var(--pw-accent);transform:scale(1.25)}
+
+/* ── 말풍선 (대사 텍스트 오버레이) ───────────────────────── */
+.pw-bubbles{position:absolute;inset:0;z-index:3;pointer-events:none}
+.pw-bubble{position:absolute;max-width:78%;background:rgba(255,255,255,.97);color:#141414;padding:12px 18px;border-radius:18px;box-shadow:0 6px 24px rgba(0,0,0,.32),0 1px 3px rgba(0,0,0,.2);font-size:16px;line-height:1.55;font-weight:500;letter-spacing:-.01em;animation:pwBubbleIn .32s ease}
+.pw-bubble-speaker{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--pw-accent);margin-bottom:4px}
+.pw-bubble-text{display:block;white-space:pre-line}
+.pw-bubble::after{content:'';position:absolute;width:0;height:0;border:9px solid transparent}
+.pw-bubble-pos-bottom-left{left:6%;bottom:9%}.pw-bubble-pos-bottom-left::after{left:16%;bottom:-16px;border-top-color:rgba(255,255,255,.97)}
+.pw-bubble-pos-bottom-right{right:6%;bottom:9%}.pw-bubble-pos-bottom-right::after{right:16%;bottom:-16px;border-top-color:rgba(255,255,255,.97)}
+.pw-bubble-pos-top-left{left:6%;top:9%}.pw-bubble-pos-top-left::after{left:16%;top:-16px;border-bottom-color:rgba(255,255,255,.97)}
+.pw-bubble-pos-top-right{right:6%;top:9%}.pw-bubble-pos-top-right::after{right:16%;top:-16px;border-bottom-color:rgba(255,255,255,.97)}
+.pw-bubble-pos-center{left:50%;bottom:12%;margin-left:-39%;width:78%}.pw-bubble-pos-center::after{left:50%;bottom:-16px;margin-left:-9px;border-top-color:rgba(255,255,255,.97)}
+@keyframes pwBubbleIn{from{opacity:0}to{opacity:1}}
+
+/* ── 빈 상태 ──────────────────────────────────────────────── */
+.pw-empty-box{padding:48px 20px;text-align:center;color:var(--pw-muted)}
+.pw-empty-ico{font-size:40px;margin-bottom:12px}
+.pw-empty-title{font-size:16px;font-weight:700;color:var(--pw-ink);margin-bottom:6px}
+.pw-empty-sub{font-size:13px}
+
+/* ── 전체화면 ─────────────────────────────────────────────── */
+.pw-root:fullscreen,.pw-root:-webkit-full-screen{width:100vw;height:100vh;display:flex;flex-direction:column}
+.pw-root:fullscreen .pw-stage,.pw-root:-webkit-full-screen .pw-stage{flex:1}
+.pw-root:fullscreen .pw-stage-carousel .pw-stage-inner,.pw-root:-webkit-full-screen .pw-stage-carousel .pw-stage-inner{height:100%;max-height:none}
+
+/* ── 데스크톱 여백 ────────────────────────────────────────── */
+@media(min-width:720px){.pw-root{max-width:640px;margin:0 auto;border-radius:10px}.pw-root:fullscreen,.pw-root:-webkit-full-screen{max-width:none;border-radius:0}}
+</style>
+
+<script id="parksy-webtoon-config" type="application/json">
+{
+  "title": "에피소드 제목",
+  "episode": 1,
+  "mode": "carousel",
+  "autoplay": false,
+  "autoplaySpeed": 5000,
+  "accent": "#4285f4",
+  "fullscreen": true,
+  "images": [
+    { "src": "https://blog.kakaocdn.net/YOUR_UPLOADED_IMAGE_1.jpg", "alt": "씬 1 설명" },
+    { "src": "https://blog.kakaocdn.net/YOUR_UPLOADED_IMAGE_2.jpg", "alt": "씬 2 설명" }
+  ],
+  "dialogue": [
+    { "cut": 0, "speaker": "주인", "text": "어서 오세요!", "pos": "bottom-left" },
+    { "cut": 1, "speaker": "손님", "text": "커피 한 잔 주세요.", "pos": "bottom-right" }
+  ]
+}
+</script>
+
+<script>
+(function () {
+  'use strict';
+
+  function $sel(s) { return document.querySelector(s); }
+  function mk(tag, cls) { var e = document.createElement(tag); if (cls) e.className = cls; return e; }
+
+  // ── 1. 설정 로드 (외부화) ─────────────────────────────────
+  function loadConfig() {
+    var el = document.getElementById('parksy-webtoon-config');
+    if (el) {
+      try { return JSON.parse(el.textContent || '{}'); } catch (e) { /* 아래 폴백 */ }
+    }
+    return (typeof window.PARKSY_WEBTOON_CONFIG !== 'undefined') ? window.PARKSY_WEBTOON_CONFIG : {};
+  }
+
+  var DEFAULTS = {
+    title: '',
+    episode: 0,
+    images: [],
+    mode: 'carousel',        // 'carousel' | 'scroll'
+    autoplay: false,
+    autoplaySpeed: 5000,
+    accent: '#4285f4',
+    fullscreen: true
+  };
+
+  var cfg = loadConfig();
+  var k;
+  for (k in DEFAULTS) { if (!(k in cfg)) cfg[k] = DEFAULTS[k]; }
+
+  // 이미지 정규화: 문자열 → {src, alt}
+  cfg.images = (cfg.images || []).map(function (it) {
+    if (typeof it === 'string') return { src: it, alt: '' };
+    return { src: (it && it.src) || '', alt: (it && it.alt) || '' };
+  }).filter(function (it) { return !!it.src; });
+
+  // 대사(말풍선) 정규화: {cut, speaker, text, pos}
+  cfg.dialogue = (cfg.dialogue || []).map(function (it) {
+    return {
+      cut: (it && it.cut != null) ? it.cut : 0,
+      speaker: (it && it.speaker) || '',
+      text: (it && it.text) || '',
+      pos: (it && it.pos) || 'bottom-left'
+    };
+  }).filter(function (it) { return !!it.text; });
+
+  // 특정 컷의 말풍선 목록
+  function bubblesForCut(i) {
+    return cfg.dialogue.filter(function (d) { return d.cut === i; });
+  }
+
+  // 말풍선 DOM 생성
+  function buildBubbles(i) {
+    var wrap = mk('div', 'pw-bubbles');
+    var list = bubblesForCut(i);
+    for (var b = 0; b < list.length; b++) {
+      var d = list[b];
+      var bub = mk('div', 'pw-bubble pw-bubble-pos-' + d.pos);
+      if (d.speaker) {
+        var sp = mk('span', 'pw-bubble-speaker');
+        sp.textContent = d.speaker;
+        bub.appendChild(sp);
+      }
+      var tx = mk('span', 'pw-bubble-text');
+      tx.textContent = d.text;
+      bub.appendChild(tx);
+      wrap.appendChild(bub);
+    }
+    return wrap;
+  }
+
+  var root = $sel('#parksy-webtoon');
+  if (!root) return;
+
+  // 강조색 주입
+  if (cfg.accent) root.style.setProperty('--pw-accent', cfg.accent);
+
+  // ── 2. 빈 상태 방어 ───────────────────────────────────────
+  if (!cfg.images.length) {
+    root.className = 'pw-root pw-empty';
+    root.setAttribute('role', 'status');
+    root.innerHTML = '<div class="pw-empty-box">' +
+      '<div class="pw-empty-ico">🖼</div>' +
+      '<div class="pw-empty-title">콘텐츠 준비 중</div>' +
+      '<div class="pw-empty-sub">웹툰 이미지가 아직 등록되지 않았어요.</div>' +
+      '</div>';
+    return;
+  }
+
+  var total = cfg.images.length;
+  var mode = (cfg.mode === 'scroll') ? 'scroll' : 'carousel';
+  var state = { current: 0, autoplay: false, timer: null, startX: 0, startY: 0, preloaded: {} };
+
+  // ── 3. DOM 구성 ───────────────────────────────────────────
+  root.className = 'pw-root';
+
+  // 헤더
+  var header = mk('div', 'pw-header');
+  var titleEl = mk('span', 'pw-title');
+  var counterEl = mk('span', 'pw-counter');
+  header.appendChild(titleEl); header.appendChild(counterEl);
+  root.appendChild(header);
+
+  var titleText = cfg.title || '';
+  if (cfg.episode) titleText = 'EP.' + cfg.episode + (titleText ? ' ' + titleText : '');
+  titleEl.textContent = titleText;
+
+  // 스테이지
+  var stage = mk('div', mode === 'scroll' ? 'pw-stage pw-stage-scroll' : 'pw-stage pw-stage-carousel');
+
+  function buildCut(i) {
+    var cut = mk('figure', 'pw-cut');
+    var img = document.createElement('img');
+    img.src = cfg.images[i].src;
+    img.alt = cfg.images[i].alt || (titleText + ' ' + (i + 1) + '번째 컷');
+    img.draggable = false;
+    img.loading = 'lazy';
+    if (i > 0) img.loading = 'lazy'; else img.loading = 'eager';
+    cut.appendChild(img);
+    cut.appendChild(buildBubbles(i));
+    if (cfg.images[i].alt) {
+      var cap = mk('figcaption', 'pw-cap');
+      cap.textContent = cfg.images[i].alt;
+      cut.appendChild(cap);
+    }
+    return cut;
+  }
+
+  if (mode === 'scroll') {
+    // 세로: 모든 컷 스택 + snap
+    for (var i = 0; i < total; i++) stage.appendChild(buildCut(i));
+    root.appendChild(stage);
+
+    // 도트
+    var dotsWrap = mk('div', 'pw-dots');
+    var dots = [];
+    for (var d = 0; d < total; d++) {
+      var dot = mk('button', 'pw-dot');
+      dot.setAttribute('aria-label', (d + 1) + '번 컷으로 이동');
+      (function (idx) {
+        dot.addEventListener('click', function () {
+          stage.children[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      })(d);
+      dots.push(dot);
+      dotsWrap.appendChild(dot);
+    }
+    root.appendChild(dotsWrap);
+
+    // 스크롤 위치 → 현재 컷
+    function onScroll() {
+      var top = stage.scrollTop;
+      var idx = 0, best = Infinity;
+      for (var c = 0; c < total; c++) {
+        var diff = Math.abs(stage.children[c].offsetTop - top);
+        if (diff < best) { best = diff; idx = c; }
+      }
+      if (idx !== state.current) { state.current = idx; renderScroll(); }
+    }
+    stage.addEventListener('scroll', onScroll, { passive: true });
+
+    function renderScroll() {
+      counterEl.textContent = (state.current + 1) + ' / ' + total;
+      for (var c = 0; c < total; c++) dots[c].classList.toggle('pw-on', c === state.current);
+    }
+    renderScroll();
+    return;
+  }
+
+  // ── 캐러셀: 단일 컷 + 이전/다음 ───────────────────────────
+  var inner = mk('div', 'pw-stage-inner');
+  var cut = buildCut(0);
+  inner.appendChild(cut);
+  stage.appendChild(inner);
+
+  var hitL = mk('button', 'pw-hit pw-hit-left');
+  var hitR = mk('button', 'pw-hit pw-hit-right');
+  hitL.setAttribute('aria-label', '이전 컷'); hitR.setAttribute('aria-label', '다음 컷');
+  stage.appendChild(hitL); stage.appendChild(hitR);
+  root.appendChild(stage);
+
+  // 컨트롤
+  var controls = mk('div', 'pw-controls');
+  var btnPrev = mk('button', 'pw-btn pw-btn-prev'); btnPrev.innerHTML = '◀ 이전';
+  var btnAuto = mk('button', 'pw-btn pw-btn-auto'); btnAuto.innerHTML = '▶ 자동재생';
+  var btnFS = mk('button', 'pw-btn pw-btn-fs'); btnFS.innerHTML = '⛶ 전체화면';
+  var btnNext = mk('button', 'pw-btn pw-btn-next'); btnNext.innerHTML = '다음 ▶';
+  controls.appendChild(btnPrev); controls.appendChild(btnAuto);
+  if (cfg.fullscreen) controls.appendChild(btnFS);
+  controls.appendChild(btnNext);
+  root.appendChild(controls);
+
+  var pWrap = mk('div', 'pw-progress');
+  var pBar = mk('div', 'pw-progress-bar');
+  pWrap.appendChild(pBar);
+  root.appendChild(pWrap);
+
+  // ── 4. 동작 ───────────────────────────────────────────────
+  function preloadAround(idx) {
+    for (var i = idx - 1; i <= idx + 2; i++) {
+      if (i >= 0 && i < total && !state.preloaded[i]) {
+        var loader = new Image(); loader.src = cfg.images[i].src; state.preloaded[i] = true;
+      }
+    }
+  }
+
+  function render() {
+    var cur = state.current;
+    var img = cut.querySelector('img');
+    var cap = cut.querySelector('figcaption');
+    img.src = cfg.images[cur].src;
+    img.alt = cfg.images[cur].alt || (titleText + ' ' + (cur + 1) + '번째 컷');
+    if (cap) cap.textContent = cfg.images[cur].alt;
+    // 말풍선 갱신
+    var oldBubbles = cut.querySelector('.pw-bubbles');
+    if (oldBubbles) oldBubbles.remove();
+    cut.appendChild(buildBubbles(cur));
+    counterEl.textContent = (cur + 1) + ' / ' + total;
+    pBar.style.width = (total > 1 ? (cur / (total - 1)) * 100 : 100) + '%';
+    btnPrev.disabled = (cur === 0);
+    btnNext.disabled = (cur === total - 1);
+    preloadAround(cur);
+  }
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= total || idx === state.current) return;
+    state.current = idx;
+    render();
+  }
+  function next() {
+    if (state.current < total - 1) goTo(state.current + 1);
+    else if (state.autoplay) stopAutoplay();
+  }
+  function prev() { if (state.current > 0) goTo(state.current - 1); }
+
+  btnPrev.addEventListener('click', prev);
+  btnNext.addEventListener('click', next);
+  hitL.addEventListener('click', prev);
+  hitR.addEventListener('click', next);
+
+  // 자동재생
+  function startAutoplay() {
+    state.autoplay = true;
+    btnAuto.innerHTML = '■ 정지'; btnAuto.classList.add('pw-active');
+    state.timer = setInterval(next, cfg.autoplaySpeed);
+  }
+  function stopAutoplay() {
+    state.autoplay = false;
+    btnAuto.innerHTML = '▶ 자동재생'; btnAuto.classList.remove('pw-active');
+    if (state.timer) { clearInterval(state.timer); state.timer = null; }
+  }
+  btnAuto.addEventListener('click', function () { state.autoplay ? stopAutoplay() : startAutoplay(); });
+
+  // 전체화면
+  function toggleFullscreen() {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    } else {
+      (root.requestFullscreen || root.webkitRequestFullscreen).call(root);
+    }
+  }
+  if (cfg.fullscreen) btnFS.addEventListener('click', toggleFullscreen);
+
+  // 터치 스와이프
+  stage.addEventListener('touchstart', function (e) {
+    state.startX = e.changedTouches[0].clientX;
+    state.startY = e.changedTouches[0].clientY;
+  }, { passive: true });
+  stage.addEventListener('touchend', function (e) {
+    var dx = e.changedTouches[0].clientX - state.startX;
+    var dy = e.changedTouches[0].clientY - state.startY;
+    if (Math.abs(dx) < 40 || Math.abs(dy) > Math.abs(dx)) return;
+    if (dx < 0) next(); else prev();
+  }, { passive: true });
+
+  // 키보드
+  document.addEventListener('keydown', function (e) {
+    if (!isVisible()) return;
+    if (e.key === 'ArrowLeft') { prev(); e.preventDefault(); }
+    else if (e.key === 'ArrowRight' || e.key === ' ') { next(); e.preventDefault(); }
+    else if ((e.key === 'f' || e.key === 'F') && cfg.fullscreen) { toggleFullscreen(); }
+  });
+
+  function isVisible() {
+    var r = root.getBoundingClientRect();
+    return r.top < window.innerHeight && r.bottom > 0;
+  }
+
+  render();
+  if (cfg.autoplay) startAutoplay();
+})();
+</script>

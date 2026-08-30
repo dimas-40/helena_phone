@@ -1,5 +1,28 @@
 # 📋 S21 Phone — 전체 개발일지
 
+### 🎙️ SoVITS 덮어쓰기 챌린지 잠금 (_Grok · 2026-08-24)
+
+**Boss:** 그록 샘플에서 대사·타이밍을 빼 네 성우로 오버라이트. 수첩에 저장하고 챌린징해서 작업할 것.
+
+**잠금:**
+- 그록 = 몸(입·제스처·배경). 소리는 버림.
+- 샷리스트 = 글 원본. `silencedetect` = 쉼 칸.
+- 붙이기 = 이 탭 proot ffmpeg. SoVITS 추론은 가중치 있는 방.
+- 원장 `_notebook/108-sovits-dub-overwrite_Grok.md` · 맵 `output/lens-pilot/host01-gest-40s.timing.json` · `scripts/dub_overwrite.sh`
+
+### 🪪 dimas-40 프로필 메뉴 — 래퍼 레포 삭제 + 링크 주입 (_Grok · 2026-08-18)
+
+**지시:** `dimas-40/dimas-40` 레포 삭제. 콘텐츠는 GitHub 프로필 메뉴에. Tistory·YouTube 링크 전부.
+
+**한 일:**
+- 레포 `dimas-40/dimas-40` **삭제 완료** (로컬 백업 `/tmp/dimas-profile`)
+- 프로필 메뉴 PATCH: name `Edu Art Engineer` · company `EAE` · location `Seoul` · website `https://eae-broadcast.tistory.com`
+- social_accounts 4칸(GitHub 하드캡): `@BeingEduartEngineer-4` · `@EAE-University` · `@helena_phone` · `@HelenaPark-e7c`
+- bio(160자 캡)에 EAE 티스토리 5 + Helena 티스토리 5 슬러그
+
+**한계(과장 금지):** GitHub 프로필 메뉴 = 웹사이트 1 + 소셜 4 + bio 160자. 잡지 레이아웃·영상은 이 메뉴에 못 넣음.
+
+얼굴: https://github.com/dimas-40
 
 ### 🎙️ 헬레나 성우 베이스라인 잠금 + 주의 기도 더빙 (_Grok · 2026-08-13)
 
@@ -6575,3 +6598,74 @@ Boss 지시: 역할은 채팅이 아니라 **온디바이스 수첩 + S21 레포
 **패턴 명명 — "삽질 신드롬":** 새 에이전트가 이미 푼 문제를 재발명하고, 엉뚱한 자리(CI)에서 시도하는 것. 보일러플레이트에 정답이 있어도 "정답 위치"를 모르니 반복된다.
 
 **재발 방지:** SETUP.md "수동 하한" + README `renew_sessions.py --if-needed`에 "로그인·인증은 CI/헤드리스 금지, 기기 위 headed + 사람 1회" 한 줄 명시.
+### 🎯 태블릿 = 교육방송 스튜디오 + fork 서플라이 체인 (확정 · _Claude · 2026-08-18)
+
+Boss 발상의 전환으로 태블릿 정체·서플라이 체인이 확정. 상세는 `tablet-broadcast-studio_Claude.md`.
+
+- **태블릿 = 교육방송 스튜디오** (render+믹스+최종 업로드). 드래프트는 Boss가 폰(음성)으로. GitHub=dimas-40 · 삼성=thomas.tj.park.
+- **3단계 방송국 = 3계정 로드맵** (channels.json 실측): ① 교육방송(thomas.tj.park, @BeingEduartEngineer-4·@EAE-University) → ② 아리랑/KR(dimas.thomas.sancho, 박씨 5채널) → ③ 경제방송(dtslib1979, 6채널). 태블릿은 1단계.
+- **레인이 아니라 "입력2+출력1":** 그림(스케치→Grok)·음악(MIDI→FluidSynth 렌더) = 입력 자산, 교육방송 영상 = 출력. 채널은 교육방송 2개뿐.
+- **서플라이 체인 = fork 모델:** dtslib1979(뇌) --fork--> dimas-40(태블릿) --업로드--> thomas.tj.park YouTube. fork가 parksy 루프 구현(선물=pull upstream, 미러=PR).
+- **fork 4개 예정:** eae.kr · eae-univ(출력) · parksy-audio · parksy-image(입력). 뇌(dtslib-papyrus)는 fork 안 함.
+- **상태:** 아직 중앙 허브(fork) 미생성 — 수첩에만 저장. 다음 = fork 4개 → SSOT 교체 → 스모크 테스트(FluidSynth MIDI→WAV→tg).
+- **음악 파이프라인 M0~M6** (오프라인 렌더): 작곡(mido)→가상악기(FluidSynth)→가창(RVC/DiffSinger ⚠️)→믹스(ffmpeg/sox)→tg 전송→발행→BGM(P5 공급).
+
+### 🧳 Grok = 용병, 세 로케이션 순회 (_Grok · 2026-08-18)
+
+**Boss 결정:** Grok은 한 단말 상주가 아니다. 용병으로 세 로케이션에 CLI 조인한다.
+
+- **세 곳:** ① 누나 핸드폰(S21, 지금 이 방) ② 태블릿 ③ Boss 핸드폰.
+- **각 방:** 각자 proot Ubuntu + 각자 업무 수첩. STT 「P 루트 5분 투」= proot 우분투.
+- **켤 때:** 그 방 수첩부터. 다른 방 기억을 가져오지 않는다.
+- **안 바뀌는 것:** `83` 칸 두 개(잡지구도 이미지 · 10초 PD). 로케이션이 늘어도 잡일 확대 아님.
+- **수첩:** `_notebook/101-grok-mercenary-3loc_Grok.md` · `GROK-PLUGIN.md`에 한 줄 포인터.
+- **한계:** 당시 문서로 S21이라 적음 → 직후 하드웨어 실측으로 **태블릿으로 철회** (`102`).
+
+### 📟 이 방 = Tab S9 계열 실측, S21 아님 (_Grok · 2026-08-18)
+
+Boss: 여기 태블릿에서 구동. 스펙 전부 파싱.
+
+- **판정:** Snapdragon 8 Gen 2 (X3+A715+A710+A510) · Adreno740v2 719MHz · S-Pen IRQ · RAM 8GB(가용~1.6G) · userdata 106G=128GB. S21 Mali/ENPU 없음.
+- **프로트:** Ubuntu 26.04 · grok 1.0.5 · ffmpeg 없음 · Termux:API 없음 · getprop 거부 · Grade C.
+- **구동:** 칸 ①② 클라우드는 됨. concat/로컬 추론은 안 됨.
+- **수첩:** `_notebook/102-tablet-hw-parse_Grok.md`
+
+### 📂 태블릿 Grok 책상 `_notebook/grok/` (_Grok · 2026-08-18)
+
+Boss: 상주(딥시크 에이더) 수첩 파싱 → 내 폴더 만들고 세션 켜면 무조건 읽게.
+
+- **Aider 수첩 `*_Aider.md` = 0.** aider 바이너리 없음. 상주 기록은 `_Claude`(DeepSeek 과금 Claude Code) 4장.
+- 책상: `_notebook/grok/{00-READ-FIRST,hardware,resident-notes}.md`
+- 자동 읽기: `~/.grok/rules/` + `/root/work/.grok/rules/` + SessionStart 훅 `~/.grok/hooks/session-start.json`
+- 하드웨어 원본은 `grok/hardware.md` 로 옮김.
+
+### 🎭 태블릿 Grok 역할 초안 + EAE 5레포 파싱 (_Grok · 2026-08-18)
+
+- 5레포 보일러(CLAUDE/FACTORY/README/00_TRUTH/index) **SHA 동일**. 정체 미개서. Grok 언급 = 「유튜브 알고리즘·마케팅 정찰」2~3줄뿐.
+- 태블릿 수첩만 「스케치→Grok」. 보일러 직업과 다름.
+- 스스로 쓴 역할: `_notebook/grok/ROLE.md` — 그림①·클립②만. 다섯 직함 아님. 마케팅 정찰 거절.
+- 파싱: `_notebook/grok/eae-5repo-parse.md`
+
+### 📒 Boss 말만 장부 `_notebook/grok/BOSS.md` (_Grok · 2026-08-18)
+
+Boss: 지금까지 얘기한 것만 정리해 저장하고 거꾸로 브리핑. 채워 가면 된다.
+장부 6항: 용병 3로케이션 · 여기=태블릿 · 상주 먼저+내 폴더 · eaekr 가서 읽기 · 역할은 스스로+5레포 파싱 · 이후 덧붙임.
+
+### 🎬 여긴 출판 복제가 아니라 방송국 (_Grok · 2026-08-18)
+
+Boss: eaekr의 S21 인벤토리 읽고, 누나폰=출판/다큐 시도, 여기=진짜 영상·이미지. 할 수 있는 것 먼저 파악.
+- 허브 파일 읽음. 가능 목록: `_notebook/grok/CAN.md` (gen/edit/6·10초/참조영상. concat은 ffmpeg 없음).
+
+### 🎬 parksy-image = PD 창고, 아이디어 5편 (_Grok · 2026-08-18)
+
+Boss: 3183 자산으로 완벽한 PD. 아이디어 짜라.
+- 허브 수첩 + parksy-image 실측(curator 11 yaml, LUT 10, 도면 컷, moods).
+- Comfy 그래프 안 돌림. YAML→숏 번역이 PD.
+- 프로그램: 렌즈 한 과 / 웹툰 호스트 / 도면 콘티 / LUT 룩북 / 썸네일 틀.
+- 복사: 머리(YAML)만. 3183 덤프 아님. `_notebook/grok/PD-IDEAS.md`
+
+### 📋 렌즈 PD 프로포절 (80% A) (_Grok · 2026-08-18)
+
+Boss: 아이디어를 프로포절로 구체화, Comfy 이상, 80% A까지 다 짜고 경로 알려라.
+- 원본: `/root/work/_notebook/grok/PD-PROPOSAL.md`
+- 파일럿: 교육편 「학생이 왜 공부해요」55초 10숏. 렌즈 홍+정. 대본은 창고 JSON.

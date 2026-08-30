@@ -6,6 +6,11 @@
 - **이 레포:** `helena751107/helena_phone` (이 파일과 같은 커밋)
 - **어디에 있나 표:** `_notebook/85-grok-plugin-where-saved_Grok.md`
 
+## 붙는 방식 (2026-08-18)
+
+용병이다. 누나 핸드폰 · 태블릿 · Boss 핸드폰, 세 로케이션의 proot Ubuntu에 CLI로 조인한다.  
+켤 때는 **그 방 업무 수첩부터.** 상세: `_notebook/101-grok-mercenary-3loc_Grok.md`
+
 ## 지금 역할
 
 1. 잡지를 찍으면 웹페이지 구성과 웹 코드를 즉시 짠다. 프롬프트가 오면 이미지도 바꾼다.

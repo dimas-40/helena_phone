@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Boss 지시: 내가 설치 과정에서 삽질한 것 + 원상복구한 것을 기록. (삭제·변경한 것 + 그 이유) — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>Grok CLI 설치 · 삽질 기록 (2026-08-18) — S21 Phone Webzine</title>
+<link rel="canonical" href="https://helena751107.github.io/helena_phone/notebook/grok-cli-install-troubleshooting_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/helena751107#person",
+      "name": "Helena Park",
+      "url": "https://github.com/helena751107",
+      "description": "Made in Korea — not a developer. One Galaxy S21, built by voice, for a sister.",
+      "sameAs": [
+        "https://github.com/helena751107",
+        "https://helena751107.github.io/helena_phone/",
+        "https://www.youtube.com/@helena_phone",
+        "https://www.youtube.com/@HelenaPark-e7c"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://helena751107.github.io/helena_phone/notebook/grok-cli-install-troubleshooting_Claude.html#webpage",
+      "url": "https://helena751107.github.io/helena_phone/notebook/grok-cli-install-troubleshooting_Claude.html",
+      "name": "Grok CLI 설치 · 삽질 기록 (2026-08-18)",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/helena751107#person"
+      },
+      "author": {
+        "@id": "https://github.com/helena751107#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>Grok CLI 설치 · 삽질 기록 (2026-08-18)</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · 2026-08-30</div>
+    <h1>Grok CLI 설치 · 삽질 기록 (2026-08-18)</h1>
+    <p class="deck">Boss 지시: 내가 설치 과정에서 삽질한 것 + 원상복구한 것을 기록. (삭제·변경한 것 + 그 이유)</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/grok-cli-install-troubleshooting_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#_1">요약</a></li>
+<li><a href="#1-enxio-ipv6">삽질 ① ENXIO 에러를 네트워크(IPv6) 문제로 오진</a></li>
+<li><a href="#2-grokgr-alias-oldnew">삽질 ② grok/gr alias 통일 반복 실패 (old==new 버그)</a></li>
+<li><a href="#_2">최종 상태 (정상)</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <hr>
+<p>date: 2026-08-18<br>
+agent: Claude Code (출판부)<br>
+mark: _Claude<br>
+type: troubleshooting<br>
+status: resolved<br>
+related:<br>
+  - session-2026-08-18_Claude.md</p>
+<hr>
+<h1 id="grok-cli-2026-08-18">Grok CLI 설치 · 삽질 기록 (2026-08-18)</h1>
+<blockquote>
+<p>Boss 지시: 내가 설치 과정에서 삽질한 것 + 원상복구한 것을 기록. (삭제·변경한 것 + 그 이유)</p>
+</blockquote>
+<h2 id="_1">요약</h2>
+<ul>
+<li>설치·로그인: <strong>성공</strong> (grok 1.0.5, dtslib1979@gmail.com)</li>
+<li>에러 1건: <code>grok "안녕"</code> → <code>No such device or address (os error 6)</code></li>
+<li>내 <strong>오진 → 삽질 2건 → 원인 규명 → 전부 원상복구</strong></li>
+</ul>
+<hr>
+<h2 id="1-enxio-ipv6">삽질 ① ENXIO 에러를 네트워크(IPv6) 문제로 오진</h2>
+<p><strong>증상:</strong> <code>grok "안녕"</code> → <code>Error: No such device or address (os error 6)</code></p>
+<p><strong>오진 판단:</strong> <code>getent hosts api.x.ai</code> 가 IPv6 주소(<code>2606:4700::...</code>)만 반환하는 걸 보고<br>
+&ldquo;proot에 IPv6 인터페이스가 없어서 grok이 IPv6 연결을 시도하다 실패&rdquo;라고 단정.</p>
+<p><strong>삽질 A — <code>/etc/gai.conf</code> 수정:</strong><br>
+- IPv4 우선 precedence(<code>::ffff:0:0/96 100</code>) 주석 해제 → 그 과정에서 중복 라인 생성.<br>
+- 결과: 효과 없음. (grok 여전히 동일 에러)</p>
+<p><strong>삽질 B — <code>/etc/hosts</code> 수정:</strong><br>
+- <code>api.x.ai</code>, <code>cli-chat-proxy.grok.com</code> 의 IPv4를 하드코딩 추가.<br>
+- 결과: 효과 없음. (<code>getent hosts</code>가 여전히 IPv6만 반환 — proot DNS 인터셉트 때문)</p>
+<p><strong>진짜 원인:</strong> <code>/dev/tty</code> 부재. 이 셸은 <strong>헤드리스(비대화형)</strong> 라 grok(TUI)이 터미널을 못 연다.<br>
+<code>os.open('/dev/tty')</code> → <code>OSError: [Errno 6] No such device or address</code> 로 확정.</p>
+<p><strong>증명:</strong> pty(가짜 터미널)로 감싸서 실행 → <strong>정상 동작</strong> (API 연결 + &ldquo;Korean Hello Greeting Session Start&rdquo; 응답 확인).</p>
+<p><strong>복구:</strong> <code>/etc/gai.conf</code>(백업 복원) + <code>/etc/hosts</code>(추가 줄 제거) <strong>전부 원상복구 완료</strong> ✅</p>
+<p><strong>교훈:</strong> <code>No such device or address</code>(ENXIO) = <strong>장치(TTY) 부재</strong>지 네트워크 문제가 아니다.<br>
+네트워크를 의심하기 전에 <code>/dev/tty</code>(또는 <code>os.open('/dev/tty')</code>)부터 확인할 것.</p>
+<hr>
+<h2 id="2-grokgr-alias-oldnew">삽질 ② grok/gr alias 통일 반복 실패 (old==new 버그)</h2>
+<p><strong>상황:</strong> Termux alias에서 <code>grok</code>과 <code>gr</code>을 동일하게 만들려 했는데,<br>
+교체 스크립트의 old/new 문자열을 <strong>매번 똑같이</strong> 써서 no-op이 5~6회 반복.</p>
+<p><strong>해결:</strong> <code>assert old != new</code> 로 버그를 잡고, 정답인 <code>gr</code> 라인의 명령을 <strong>복사해서</strong> <code>grok</code>에 적용.</p>
+<p><strong>교훈:</strong> 문자열 replace 시 old != new 검증(또는 정답 소스에서 복사) 필수.</p>
+<hr>
+<h2 id="_2">최종 상태 (정상)</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>설치</td>
+<td>grok 1.0.5 (linux-aarch64) — <code>~/.grok/bin/{grok,agent}</code> + <code>/usr/local/bin</code> 심링크 + <code>~/.bashrc</code> PATH</td>
+</tr>
+<tr>
+<td>로그인</td>
+<td>dtslib1979@gmail.com — <code>~/.grok/auth.json</code></td>
+</tr>
+<tr>
+<td>Termux alias</td>
+<td><code>grok</code> = <code>gr</code> = <code>proot-distro login ubuntu -- bash -lc "cd /root/work &amp;&amp; /root/.grok/bin/grok"</code> (<code>.bashrc</code> + <code>.profile</code> 둘 다)</td>
+</tr>
+<tr>
+<td>실행 조건</td>
+<td>TTY 있는 대화형(Termux)에선 정상. 헤드리스 스크립트에선 pty 래퍼(<code>script -qec ...</code>) 필요</td>
+</tr>
+</tbody>
+</table>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="98-turning-point-2026-08-16_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">터닝 포인트 — 빌드 멈춤 → 열고 가르치기 (2026-08-16)</span>
+        </a>
+    <a class="next" href="rvc-environment-gap_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">rvc environment gap Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>## ⚠️ 이 수첩은 히스토리다 — 헌법이 아니다 (2026-08-22 Boss 결정)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine 2026-08-30</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

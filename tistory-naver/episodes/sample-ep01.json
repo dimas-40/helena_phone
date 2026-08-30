@@ -1,0 +1,43 @@
+{
+  "slug": "ep01-cafe",
+  "title": "카페에서 첫 손님",
+  "episode": 1,
+  "mode": "carousel",
+  "accent": "#e91e63",
+  "images": [
+    {
+      "src": "https://blog.kakaocdn.net/sample/title.png",
+      "alt": "타이틀 카드"
+    },
+    {
+      "src": "https://blog.kakaocdn.net/sample/scene1.png",
+      "alt": "씬 1: 카페 입구"
+    },
+    {
+      "src": "https://blog.kakaocdn.net/sample/scene2.png",
+      "alt": "씬 2: 첫 손님 등장"
+    }
+  ],
+  "account": "dtslib",
+  "blog": "dtslib1k",
+  "category": "웹툰",
+  "tags": [
+    "웹툰",
+    "일상"
+  ],
+  "visibility": "public",
+  "dialogue": [
+    {
+      "cut": 1,
+      "speaker": "주인",
+      "text": "어서 오세요!",
+      "pos": "bottom-left"
+    },
+    {
+      "cut": 2,
+      "speaker": "손님",
+      "text": "아메리카노 한 잔 주세요.",
+      "pos": "bottom-right"
+    }
+  ]
+}

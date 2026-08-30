@@ -27,7 +27,7 @@ if [ -z "${DEEPSEEK_API_KEY:-}" ] && [ -f "$HOME/.bashrc" ]; then
 fi
 
 export PATH="$HOME/.local/bin:${PATH:-}"
-export AIDER_MODEL_SETTINGS_FILE="${AIDER_MODEL_SETTINGS_FILE:-$HOME/.aider.model.settings.yml}"
+export AIDER_MODEL_SETTINGS_FILE="${AIDER_MODEL_SETTINGS_FILE:-$WORK/configs/aider.model.settings.yml}"
 
 if [ -z "${DEEPSEEK_API_KEY:-}" ]; then
   echo "❌ DEEPSEEK_API_KEY 없음" >&2
@@ -40,7 +40,7 @@ if ! command -v aider >/dev/null 2>&1; then
   exit 1
 fi
 
-MODEL="${AIDER_MODEL:-deepseek/deepseek-v4-pro}"
+MODEL="${AIDER_MODEL:-deepseek/deepseek-v4-flash}"
 
 # 오염 히스토리 정리 (Claude 행세 / greeting 환각 세션)
 HIST="$WORK/.aider.chat.history.md"

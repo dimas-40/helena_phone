@@ -73,7 +73,7 @@
     <span>ds.sh · Aider wrapper</span>
   </div>
   <header class="wz-hero">
-    <div class="wz-kicker">Scripts · lakme-audio</div>
+    <div class="wz-kicker">Scripts · 2026-08-30</div>
     <h1>ds.sh · Aider wrapper</h1>
     <p class="deck">Source viewer · scripts/ds.sh</p>
     <div class="wz-meta">
@@ -124,7 +124,7 @@ if [ -z &quot;${DEEPSEEK_API_KEY:-}&quot; ] &amp;&amp; [ -f &quot;$HOME/.bashrc&
 fi
 
 export PATH=&quot;$HOME/.local/bin:${PATH:-}&quot;
-export AIDER_MODEL_SETTINGS_FILE=&quot;${AIDER_MODEL_SETTINGS_FILE:-$HOME/.aider.model.settings.yml}&quot;
+export AIDER_MODEL_SETTINGS_FILE=&quot;${AIDER_MODEL_SETTINGS_FILE:-$WORK/configs/aider.model.settings.yml}&quot;
 
 if [ -z &quot;${DEEPSEEK_API_KEY:-}&quot; ]; then
   echo &quot;❌ DEEPSEEK_API_KEY 없음&quot; &gt;&amp;2
@@ -137,7 +137,7 @@ if ! command -v aider &gt;/dev/null 2&gt;&amp;1; then
   exit 1
 fi
 
-MODEL=&quot;${AIDER_MODEL:-deepseek/deepseek-v4-pro}&quot;
+MODEL=&quot;${AIDER_MODEL:-deepseek/deepseek-v4-flash}&quot;
 
 # 오염 히스토리 정리 (Claude 행세 / greeting 환각 세션)
 HIST=&quot;$WORK/.aider.chat.history.md&quot;
@@ -191,7 +191,7 @@ exec aider \
           <div class="grid"><a href="../g/install.html"><strong>install.sh · 고급 설치기</strong>Scripts</a><a href="../g/easy.html"><strong>easy.sh · 초심자 1줄</strong>Scripts</a><a href="../care/care-daemon.html"><strong>care-daemon.sh</strong>Scripts</a><a href="../care/care-setup.html"><strong>care-setup.sh</strong>Scripts</a><a href="../care/care-conf.html"><strong>care.conf</strong>Scripts</a><a href="../phone-health.html"><strong>phone-health.sh</strong>Scripts</a></div>
         </div>
   <footer class="wz-foot">
-    <div>S21 PHONE · Webzine lakme-audio</div>
+    <div>S21 PHONE · Webzine 2026-08-30</div>
     <div class="gold">모든 계정은 누나 명의입니다.</div>
     <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
   </footer>

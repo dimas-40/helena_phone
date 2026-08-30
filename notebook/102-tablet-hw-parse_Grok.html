@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="**원본 이전:** `_notebook/grok/hardware.md` (세션 시작 때 읽는 책상). — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>태블릿 로케이션 — 하드웨어·프로트 실측 (2026-08-18) — S21 Phone Webzine</title>
+<link rel="canonical" href="https://helena751107.github.io/helena_phone/notebook/102-tablet-hw-parse_Grok.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/helena751107#person",
+      "name": "Helena Park",
+      "url": "https://github.com/helena751107",
+      "description": "Made in Korea — not a developer. One Galaxy S21, built by voice, for a sister.",
+      "sameAs": [
+        "https://github.com/helena751107",
+        "https://helena751107.github.io/helena_phone/",
+        "https://www.youtube.com/@helena_phone",
+        "https://www.youtube.com/@HelenaPark-e7c"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://helena751107.github.io/helena_phone/notebook/102-tablet-hw-parse_Grok.html#webpage",
+      "url": "https://helena751107.github.io/helena_phone/notebook/102-tablet-hw-parse_Grok.html",
+      "name": "태블릿 로케이션 — 하드웨어·프로트 실측 (2026-08-18)",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/helena751107#person"
+      },
+      "author": {
+        "@id": "https://github.com/helena751107#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>태블릿 로케이션 — 하드웨어·프로트 실측 (2026-08-18)</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · 2026-08-30</div>
+    <h1>태블릿 로케이션 — 하드웨어·프로트 실측 (2026-08-18)</h1>
+    <p class="deck">**원본 이전:** `_notebook/grok/hardware.md` (세션 시작 때 읽는 책상).</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/102-tablet-hw-parse_Grok.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#0">0. 한 줄 판정</a></li>
+<li><a href="#1-tab-s9">1. 왜 Tab S9인가</a></li>
+<li><a href="#2-cpu">2. CPU (실측)</a></li>
+<li><a href="#3">3. 메모리 · 저장 · 열</a></li>
+<li><a href="#4-gpu-npu-proot">4. GPU / NPU — 부품은 있고 proot는 못 씀</a></li>
+<li><a href="#5">5. 프로트 · 소프트웨어 (여기서 구동하는 층)</a></li>
+<li><a href="#6-12">6. 이 방에서 칸 ①②</a></li>
+<li><a href="#7">7. 직전 오판</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <hr>
+<p>date: 2026-08-18<br>
+agent: Grok<br>
+mark: _Grok<br>
+cli: grok<br>
+type: hardware-parse<br>
+boss: true<br>
+status: measured<br>
+related:<br>
+  - 101-grok-mercenary-3loc_Grok.md<br>
+  - tablet-broadcast-studio_Claude.md</p>
+<hr>
+<h1 id="2026-08-18">태블릿 로케이션 — 하드웨어·프로트 실측 (2026-08-18)</h1>
+<blockquote>
+<p><strong>원본 이전:</strong> <code>_notebook/grok/hardware.md</code> (세션 시작 때 읽는 책상).<br>
+용병 규칙: 켠 방의 수첩·기기를 <strong>문서 가정이 아니라 센다.</strong><br>
+직전 리포트에서 이 프로세스를 S21이라고 한 것은 <strong>문서 관성. 철회.</strong><br>
+Boss: 「여기서 구동할 거야 · 태블릿 3번 환경」.</p>
+</blockquote>
+<hr>
+<h2 id="0">0. 한 줄 판정</h2>
+<pre><code>이 방 = Galaxy Tab S9 계열 (8GB / 128GB)
+        Snapdragon 8 Gen 2 + Adreno 740 + S-Pen
+        Termux → proot Ubuntu 26.04 → grok 1.0.5
+
+S21(Exynos 2100 / Mali-G78 / ENPU) 이 아니다.
+S25 Ultra(8 Elite) 도 아니다.
+getprop는 proot에서 막혀 모델코드(SM-X710/X716)는 못 읽음.
+근거는 CPU MIDR + GPU + S-Pen IRQ + 저장 크기.
+</code></pre>
+<hr>
+<h2 id="1-tab-s9">1. 왜 Tab S9인가</h2>
+<table>
+<thead>
+<tr>
+<th>신호</th>
+<th>실측</th>
+<th>맞는 기기</th>
+<th>아닌 것</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU 8코어</td>
+<td>A510×3 + A710×2 + A715×2 + X3×1</td>
+<td><strong>8 Gen 2</strong></td>
+<td>S21=X1+A78+A55. S25=Oryon</td>
+</tr>
+<tr>
+<td>GPU</td>
+<td><code>/dev/kgsl-3d0</code> <strong>Adreno740v2</strong> max 719MHz</td>
+<td>8 Gen 2 Galaxy</td>
+<td>S21=<code>/dev/mali0</code> 없음(오늘 확인)</td>
+</tr>
+<tr>
+<td>SoC</td>
+<td><code>soc0/family=Snapdragon</code> · <code>soc_id=519</code></td>
+<td>SM8550 계열</td>
+<td>Exynos 2100 아님</td>
+</tr>
+<tr>
+<td>S-Pen</td>
+<td><code>hall_wacom</code> + <code>sec_epen_irq</code> + <code>sec_epen_pdct</code></td>
+<td>삼성 펜 기기</td>
+<td>S21 펜 없음</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>MemTotal <strong>7386700 kB ≈ 7.0GiB</strong> (8GB 기기)</td>
+<td>Tab S9 8GB</td>
+<td>Tab S9+ 는 보통 12GB</td>
+</tr>
+<tr>
+<td>저장</td>
+<td>userdata <strong>106G</strong> (사용 31G / 남 76G)</td>
+<td><strong>128GB</strong> 기기</td>
+<td>S23 Ultra 최소 256GB → 탈락</td>
+</tr>
+<tr>
+<td>NPU 스택</td>
+<td>SNPE + <strong>Hexagon HTP v73</strong> + CDSP. eden/mali <strong>없음</strong></td>
+<td>퀄컴</td>
+<td>S21 ENPU 아님</td>
+</tr>
+</tbody>
+</table>
+<p>모델 문자열(<code>SM-X710</code> Wi-Fi / <code>SM-X716</code> 5G)은 안 열림. Wi-Fi/LTE 구분은 이 셸에서 미확정.<br>
+Download에 <code>ONEstoreClient_SKT</code>·<code>F-Droid.apk</code> 있음 — 오늘 태블릿 설치 흔적과 맞음.</p>
+<hr>
+<h2 id="2-cpu">2. CPU (실측)</h2>
+<p>WALT 거버너. 클러스터 3+2+2+1.</p>
+<table>
+<thead>
+<tr>
+<th>코어</th>
+<th>MIDR part</th>
+<th>이름</th>
+<th>min–max</th>
+<th>측정 시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0–2</td>
+<td><code>0xd46</code></td>
+<td>Cortex-A510</td>
+<td>307–2016 MHz</td>
+<td>~1018</td>
+</tr>
+<tr>
+<td>3–4</td>
+<td><code>0xd4d</code></td>
+<td>Cortex-A715</td>
+<td>499–2803 MHz</td>
+<td>2803</td>
+</tr>
+<tr>
+<td>5–6</td>
+<td><code>0xd47</code></td>
+<td>Cortex-A710</td>
+<td>499–2803 MHz</td>
+<td>2803</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>0xd4e</code></td>
+<td>Cortex-X3</td>
+<td>595–<strong>3360</strong> MHz</td>
+<td>864</td>
+</tr>
+</tbody>
+</table>
+<p>AES/SHA/i8mm/bf16/SVE 계열 ASIMD 플래그 있음. 로컬 가속은 <strong>이론</strong>, proot에서 DSP/GPU 직통은 별개.</p>
+<hr>
+<h2 id="3">3. 메모리 · 저장 · 열</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>실측</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RAM</td>
+<td>7213 MB 총 · 가용 ~1.6 GB (빠듯)</td>
+</tr>
+<tr>
+<td>Swap</td>
+<td>8191 MB · 사용 ~45% + zram ~1 GB</td>
+</tr>
+<tr>
+<td>GPU 메모리</td>
+<td>GpuTotal ~495 MB · KgslShmem ~465 MB</td>
+</tr>
+<tr>
+<td>디스크</td>
+<td>f2fs userdata 106G · <code>/</code> 와 <code>/sdcard</code> 같은 블록</td>
+</tr>
+<tr>
+<td>microSD</td>
+<td><code>/storage</code> = <code>emulated</code>+<code>self</code> 만. <strong>카드 안 보임</strong></td>
+</tr>
+<tr>
+<td>열 (m°C)</td>
+<td>battery 30.9 · xo-therm 34.3 · gpuss ~37–40 · cpuss ~41–46</td>
+</tr>
+</tbody>
+</table>
+<p>배터리 % · 충전 여부는 <code>power_supply</code> 권한 거절. Termux:API <code>termux-battery-status</code> <strong>없음</strong>.</p>
+<hr>
+<h2 id="4-gpu-npu-proot">4. GPU / NPU — 부품은 있고 proot는 못 씀</h2>
+<p><strong>있는 것</strong></p>
+<ul>
+<li>GPU: Adreno 740 v2. 주파수 124.8–719 MHz. 유휴 ~220 MHz · busy 2%.</li>
+<li>OpenCL: <code>/vendor/lib64/libOpenCL.so</code> + <code>libEGL_adreno.so</code> (bionic).</li>
+<li>NPU: <code>libSnpeHtpV73Stub.so</code> · <code>libqnnengine.so</code> · <code>libcdsprpc.so</code> (Hexagon v73).</li>
+</ul>
+<p><strong>막힌 것</strong></p>
+<ul>
+<li>proot(glibc) → 벤더 .so(bionic) <code>dlopen</code> 불가. S21 Mali 때와 <strong>같은 벽</strong>, 부품만 다름.</li>
+<li><code>getprop</code> / <code>toybox</code> = Operation not permitted.</li>
+<li><code>/dev/mali0</code> · ENPU · <code>libneuralnetworks.so</code> 경로 없음.</li>
+</ul>
+<p>이미지 생성은 <strong>클라우드(이 CLI의 Imagine)</strong>. 로컬 Adreno/Hexagon 추론은 이 방에서 아직 못 연다.</p>
+<hr>
+<h2 id="5">5. 프로트 · 소프트웨어 (여기서 구동하는 층)</h2>
+<table>
+<thead>
+<tr>
+<th>층</th>
+<th>실측</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>호스트</td>
+<td>Termux <code>aid_u0_a267</code> · prefix bind 됨</td>
+</tr>
+<tr>
+<td>게스트</td>
+<td><strong>Ubuntu 26.04 LTS</strong> (Resolute) · proot-distro <code>ubuntu</code></td>
+</tr>
+<tr>
+<td>uname</td>
+<td><code>6.17.0-PRoot-Distro</code> (가짜 커널 문자열. 기기 커널 아님)</td>
+</tr>
+<tr>
+<td>grok</td>
+<td><strong>1.0.5</strong> <code>/usr/local/bin/grok</code></td>
+</tr>
+<tr>
+<td>claude</td>
+<td>2.1.234</td>
+</tr>
+<tr>
+<td>node</td>
+<td>v22.22.1</td>
+</tr>
+<tr>
+<td>python</td>
+<td><strong>3.14.4</strong> — pillow/numpy/torch <strong>없음</strong></td>
+</tr>
+<tr>
+<td>ffmpeg</td>
+<td><strong>없음</strong> (proot도 Termux도)</td>
+</tr>
+<tr>
+<td>git remote</td>
+<td><code>dimas-40/helena_phone</code> (태블릿 계정. 빈 원격)</td>
+</tr>
+<tr>
+<td><code>/sdcard</code></td>
+<td>bind OK. DCIM/Screenshots · Documents 빔</td>
+</tr>
+<tr>
+<td>inbox</td>
+<td>없음</td>
+</tr>
+<tr>
+<td>phone-mcp :3456</td>
+<td>꺼짐</td>
+</tr>
+<tr>
+<td>건강 08:40</td>
+<td><strong>Grade C</strong> · pass 10 / warn 16 / fail 7</td>
+</tr>
+</tbody>
+</table>
+<p><code>/sdcard</code> 읽기·쓰기는 됨. 갤러리 스캔 API는 Termux:API 미설치라 이 셸에서 안 됨.</p>
+<hr>
+<h2 id="6-12">6. 이 방에서 칸 ①②</h2>
+<table>
+<thead>
+<tr>
+<th>일</th>
+<th>되는가</th>
+<th>조건</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>칸 ① 잡지 구도 → 웹 코드</td>
+<td><strong>됨</strong></td>
+<td>이 CLI</td>
+</tr>
+<tr>
+<td>칸 ① 이미지 교체</td>
+<td><strong>됨</strong></td>
+<td>클라우드 Imagine</td>
+</tr>
+<tr>
+<td>칸 ② 사진 합성 + 10초 I2V</td>
+<td><strong>됨</strong></td>
+<td>클라우드. 사진만 <code>/sdcard</code>나 인자로</td>
+</tr>
+<tr>
+<td>칸 ② 이어 붙이기</td>
+<td><strong>안 됨</strong></td>
+<td>ffmpeg 없음</td>
+</tr>
+<tr>
+<td>로컬 RVC/torch 더빙</td>
+<td><strong>안 됨</strong></td>
+<td>torch 없음 · RAM 가용 1.6G</td>
+</tr>
+<tr>
+<td>S-Pen 스케치 받기</td>
+<td><strong>배관만 됨</strong></td>
+<td><code>/sdcard</code> 보임. 노트 앱 폴더는 아직 비어 있음</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7">7. 직전 오판</h2>
+<p>문서(<code>CLAUDE.md</code> · <code>83</code> §8)는 S21 Mali를 전제한다.<br>
+이 프로세스는 그 레포(<code>helena_phone</code>)를 클론해 앉아 있을 뿐, <strong>실리콘은 태블릿</strong>이다.<br>
+remote가 <code>dimas-40</code>인 것도 이 판정과 맞다.</p>
+<p><em>실측 · agent mark <code>_Grok</code> · 2026-08-18 08:40 UTC</em></p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="101-grok-mercenary-3loc_Grok.html">
+          <span class="dir">Previous</span>
+          <span class="title">Grok은 용병 — 세 로케이션을 돈다 (2026-08-18)</span>
+        </a>
+    <a class="next" href="103-adb-mesh-revive_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">103 adb mesh revive Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>## ⚠️ 이 수첩은 히스토리다 — 헌법이 아니다 (2026-08-22 Boss 결정)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine 2026-08-30</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

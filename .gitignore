@@ -54,4 +54,5 @@ tistory-naver/output/
 tistory-naver/posts/
 tistory-naver/reverse_fetch/
 
+# 파싱해서 들여온 참고 자산 (dtslib-apk-lab/cloud-appstore)
 _import/

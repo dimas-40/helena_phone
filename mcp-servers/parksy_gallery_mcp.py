@@ -238,11 +238,31 @@ def extract_character(prompt: str, wait: int = 20, crop_bottom: float = 0.0) -> 
 
 # 사진 선택기에서 "박씨 갤러리" 앨범의 사진 위치 (첫 행 4장)
 PHOTO_POS = [(150, 348), (410, 348), (670, 348), (930, 348)]
+# 얼굴 사진(parksy_casual_crop) 위치 — 앨범 1번째 (상징 일러스트는 폐기 폴더로 이동시킴)
+FACE_PHOTO = (150, 348)
+
+# ── 자기소개 만화 스토리 (작가 설정) ──────────────────────
+INTRO_STORY = {
+    "title": "에듀 아트 엔지니어 — 나를 소개합니다",
+    "style": "아르 누보",
+    "accent": "#d4a84b",
+    "shots": [
+        {"prompt": "front-facing portrait, confident, art nouveau style", "text": "안녕하세요."},
+        {"prompt": "holding a book, teaching gesture, warm light", "text": "저는 교육을 사랑합니다."},
+        {"prompt": "holding a paintbrush and palette, artistic", "text": "예술을 사랑합니다."},
+        {"prompt": "at a desk with code and gears, focused", "text": "공학을 사랑합니다."},
+        {"prompt": "surrounded by book, brush and gear merging into one glowing emblem", "text": "셋을 하나로 잇습니다."},
+        {"prompt": "standing tall, emblem on chest, proud", "text": "그게 바로, 에듀 아트 엔지니어."},
+        {"prompt": "working in a studio, screens and art around", "text": "기술로 예술을 만들고,\n예술로 사람을 가르칩니다."},
+        {"prompt": "holding a phone, glowing screen, art bursting out", "text": "온디바이스에서,\n명령어 한 줄로."},
+        {"prompt": "warm smile, reaching out hand, soft golden light", "text": "그리고 언제나, 사람을 향해."},
+    ],
+}
 
 
 @mcp.tool()
 def restyle_image(photo_index: int = 0, style: str = "아르 누보", prompt: str = "",
-                  wait: int = 20, crop_bottom: float = 8.0) -> dict:
+                  wait: int = 20, crop_bottom: float = 8.0, face: bool = False) -> dict:
     """기존 사진(박씨 갤러리 앨범)을 업로드해 스타일 변경(재스타일/합성)한다.
 
     Args:
@@ -251,11 +271,16 @@ def restyle_image(photo_index: int = 0, style: str = "아르 누보", prompt: st
         prompt: (선택) 합성/배경 변경 프롬프트. 비우면 화풍만 변경
         wait: 생성 대기(초)
         crop_bottom: 워터마크 크롭 비율(%)
+        face: True면 얼굴 사진(parksy_casual_crop)을 입력으로 사용
     """
     if style not in STYLES:
         return {"ok": False, "error": f"지원하지 않는 스타일: {style}", "styles": list(STYLES)}
-    if not (0 <= photo_index < len(PHOTO_POS)):
-        return {"ok": False, "error": f"photo_index는 0~{len(PHOTO_POS)-1}"}
+    if face:
+        photo_pos = FACE_PHOTO
+    else:
+        if not (0 <= photo_index < len(PHOTO_POS)):
+            return {"ok": False, "error": f"photo_index는 0~{len(PHOTO_POS)-1}"}
+        photo_pos = PHOTO_POS[photo_index]
 
     # 1. 앱 강제 재시작
     _adb("shell", "am", "force-stop", PKG)
@@ -270,7 +295,7 @@ def restyle_image(photo_index: int = 0, style: str = "아르 누보", prompt: st
     # 3. 박씨 갤러리 앨범 → 사진 선택
     _tap(1115, 969)
     time.sleep(2.5)
-    _tap(*PHOTO_POS[photo_index])
+    _tap(*photo_pos)
     time.sleep(3)
 
     # 4. (선택) 프롬프트 편집 (합성/배경 변경)
@@ -312,6 +337,31 @@ def restyle_image(photo_index: int = 0, style: str = "아르 누보", prompt: st
         "prompt": prompt,
         "path": path,
         "cropped": crop_bottom > 0,
+    }
+
+
+@mcp.tool()
+def generate_intro() -> dict:
+    """자기소개 만화(10컷)를 얼굴 사진 + 아르 누보로 생성한다.
+
+    INTRO_STORY(작가 설정) 기반 — 얼굴 + 컷별 프롬프트 → 새 장면 재생성.
+    """
+    results = []
+    shots = INTRO_STORY["shots"]
+    for i, shot in enumerate(shots):
+        r = restyle_image(face=True, style=INTRO_STORY["style"], prompt=shot["prompt"], wait=18)
+        results.append({
+            "cut": i + 1,
+            "text": shot["text"],
+            "ok": r.get("ok"),
+            "path": r.get("path"),
+        })
+        print(f"[generate_intro] {i+1}/{len(shots)} ok={r.get('ok')}", flush=True)
+    return {
+        "ok": all(x["ok"] for x in results),
+        "title": INTRO_STORY["title"],
+        "style": INTRO_STORY["style"],
+        "shots": results,
     }
 
 

@@ -162,13 +162,30 @@ async def _disable_comments(page) -> bool:
         return False
 
 
-async def ensure_logged_in(page, email, pw):
-    # 로그인 여부: TSSESSION(티스토리 세션 쿠키) 존재 확인
-    # (tistory.com/manage 는 로그아웃 시 "페이지 없음"만 띄워 URL 로그인 감지가 불가)
-    cookies = await page.context.cookies("https://www.tistory.com")
-    if any(c["name"] == "TSSESSION" for c in cookies):
+async def ensure_logged_in(page, email, pw, blog: str = ""):
+    # 로그인 상태 실측 확인 (2026-08-22 수정)
+    # 이전: TSSESSION 쿠키 "이름 존재"만 보고 로그인됐다고 오판 → 만료 세션으로
+    #       에디터 진입 → #post-title-inp 30초 타임아웃. 죽은 쿠키가 남아 있어도
+    #       서버측 세션은 만료일 수 있다.
+    # 핵심: www.tistory.com/manage 는 로그아웃 시 "페이지 없음"만 띄워 감지 불가.
+    #       → 블로그 서브도메인 {blog}.tistory.com/manage/newpost 로 접근하면
+    #         만료 시 /auth/login 으로 리다이렉트된다 (실측). 이걸로 판정.
+    # 재로그인(kakao_login) 분기는 추후 — 지금은 만료 "감지"만 정확히 한다.
+    check_url = f"https://{blog}.tistory.com/manage/newpost/?type=post" if blog else "https://www.tistory.com/manage"
+    try:
+        await page.goto(
+            check_url,
+            wait_until="domcontentloaded",
+            timeout=30000,
+        )
+        await page.wait_for_timeout(1500)
+        if "auth/login" in page.url or "/login" in page.url:
+            log("  세션 만료 감지 — /manage 가 로그인으로 리다이렉트")
+            return False
         return True
-    return await kakao_login(page, email, pw)
+    except Exception as e:
+        log(f"  로그인 상태 확인 실패: {e}")
+        return False
 
 
 # ── 포스트 발행 ─────────────────────────────────────────────
@@ -373,10 +390,13 @@ async def process_account(playwright, acc_id: str, acc_info: dict, posts: list):
     page = ctx.pages[0] if ctx.pages else await ctx.new_page()
 
     try:
-        ok = await ensure_logged_in(page, email, pw)
+        ok = await ensure_logged_in(page, email, pw, acc_info.get("blog") or acc_id)
         if not ok:
-            log(f"  로그인 실패 — 계정 스킵")
-            return
+            log(f"  세션 만료 — 재로그인 시도")
+            ok = await kakao_login(page, email, pw)
+            if not ok:
+                log(f"  로그인 실패 — 계정 스킵")
+                return
 
         await ctx.storage_state(path=str(state_path))
 

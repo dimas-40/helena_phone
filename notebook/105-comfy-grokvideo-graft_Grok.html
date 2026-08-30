@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ComfyUI 피로 → GrokVideoNode — 커뮤니티 실측과 접목 판정 — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>ComfyUI 피로 → GrokVideoNode — 커뮤니티 실측과 접목 판정 — S21 Phone Webzine</title>
+<link rel="canonical" href="https://helena751107.github.io/helena_phone/notebook/105-comfy-grokvideo-graft_Grok.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/helena751107#person",
+      "name": "Helena Park",
+      "url": "https://github.com/helena751107",
+      "description": "Made in Korea — not a developer. One Galaxy S21, built by voice, for a sister.",
+      "sameAs": [
+        "https://github.com/helena751107",
+        "https://helena751107.github.io/helena_phone/",
+        "https://www.youtube.com/@helena_phone",
+        "https://www.youtube.com/@HelenaPark-e7c"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://helena751107.github.io/helena_phone/notebook/105-comfy-grokvideo-graft_Grok.html#webpage",
+      "url": "https://helena751107.github.io/helena_phone/notebook/105-comfy-grokvideo-graft_Grok.html",
+      "name": "ComfyUI 피로 → GrokVideoNode — 커뮤니티 실측과 접목 판정",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/helena751107#person"
+      },
+      "author": {
+        "@id": "https://github.com/helena751107#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>ComfyUI 피로 → GrokVideoNode — 커뮤니티 실측과 접목 판정</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · 2026-08-30</div>
+    <h1>ComfyUI 피로 → GrokVideoNode — 커뮤니티 실측과 접목 판정</h1>
+    
+    <div class="wz-meta">
+      <span>Source · _notebook/105-comfy-grokvideo-graft_Grok.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#0">0. 한 줄</a></li>
+<li><a href="#1-2026-01-08">1. 커뮤니티가 실제로 하는 일 (2026-01 ~ 08)</a></li>
+<li><a href="#2-grokvideonode-cli">2. GrokVideoNode가 감싼 것 = 우리 CLI와 같은 문</a></li>
+<li><a href="#3">3. 우리 자리 — 이미 겹친다</a></li>
+<li><a href="#4">4. 접목 판정</a><ul>
+<li><a href="#api-comfy">한다 (API 래퍼. Comfy 아님)</a></li>
+<li><a href="#_1">하지 않는다</a></li>
+<li><a href="#imagine-vs-api">웹 Imagine vs API</a></li>
+</ul>
+</li>
+<li><a href="#5-boss">5. 다음 수 (Boss가 지갑을 열 때)</a></li>
+<li><a href="#_2">출처 (열어 본 것)</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <hr>
+<p>date: 2026-08-24<br>
+agent: Grok<br>
+mark: _Grok<br>
+type: community-research<br>
+boss: true<br>
+status: verdict</p>
+<hr>
+<h1 id="comfyui-grokvideonode">ComfyUI 피로 → GrokVideoNode — 커뮤니티 실측과 접목 판정</h1>
+<p>Boss: 「로컬 GPU VRAM·노드 스파게티에 지친 유저가 GrokVideoNode로 텍스트/이미지만 던지고 15초+오디오를 API로 받는다. 커뮤니티 리서치해서 우리한테 접목할 수 있는지 봐.」</p>
+<hr>
+<h2 id="0">0. 한 줄</h2>
+<pre><code>유행은 실재다. 공식이다.
+접목할 것은 ComfyUI가 아니라, 그 노드가 감싼 xAI Imagine Video API다.
+
+탭/S25에 Comfy를 올리지 않는다. 그건 피로를 다시 사는 것.
+우리는 이미 그 레인에 앉아 있다. 구멍은 「체급」과 「지갑」이다.
+</code></pre>
+<hr>
+<h2 id="1-2026-01-08">1. 커뮤니티가 실제로 하는 일 (2026-01 ~ 08)</h2>
+<p>지친 축은 실재. 로컬 Wan/AnimateDiff/CogVideo 그래프 + VRAM 부족.<br>
+Reddit r/grok (2026-08 근처): 로컬 Comfy 영상은 5090+64GB가 아니면 Grok 웹만 못 따라간다. 「로컬은 시간 낭비」까지 나옴.<br>
+이건 감정의 글이지 벤치가 아니다. 방향만 증거.</p>
+<p><strong>공식 응답이 노드다.</strong> 2026-01-29 ComfyUI 블로그: <code>grok-imagine-image</code> / <code>grok-imagine-video</code>를 <strong>partner node</strong>로 넣음.<br>
+핵심 노드 이름: <strong><code>GrokVideoNode</code></strong>. 문서: LoadImage(선택) → GrokVideoNode → SaveVideo. 로컬 가중치 없음. <strong>외부 API.</strong></p>
+<p>할 수 있는 일 (Comfy 공식 템플릿):</p>
+<table>
+<thead>
+<tr>
+<th>노드</th>
+<th>하는 일</th>
+<th>한계 (문서)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GrokVideoNode</td>
+<td>텍스트 또는 한 장 → 영상. 모델 <code>grok-imagine-video</code> / <code>1.5</code></td>
+<td>1~15초. 시드는 재현 보장 없음</td>
+</tr>
+<tr>
+<td>GrokVideoEditNode</td>
+<td>기존 클립을 말로 고침</td>
+<td>입력 1~8.7초, ≤50MB</td>
+</tr>
+<tr>
+<td>GrokVideoExtendNode</td>
+<td>뒤에 2~10초 이어 붙임</td>
+<td>입력 2~15초</td>
+</tr>
+<tr>
+<td>GrokVideoReferenceNode</td>
+<td>참조 이미지 최대 7장</td>
+<td>문서상 duration 2~10초, 480/720</td>
+</tr>
+</tbody>
+</table>
+<p>2026-06-16: <strong>Imagine Video 1.5</strong> API GA. 웹/앱은 1.5 Fast. 오디오(효과·대사) 같은 패스. 6초 720p ≈ 25초 대기(xAI 공지).</p>
+<p>커스텀 팩: <code>Cuimao777/ComfyUI-Grok-Imagine-Video</code> — 공식 REST (<code>/v1/videos/generations|edits|extensions</code>) + <strong>자기 <code>XAI_API_KEY</code></strong>. 공식 partner node는 Comfy 크레딧 중간 과금.</p>
+<p>과금 함정 (r/comfyui): 생성 후 모더레이션에 걸려도 청구됐다는 보고. 공식 FAQ: partner node는 무료 아님. <strong>자기 xAI 키 BYOK는 partner node에 아직 기본 없음</strong> (커스텀 팩이 그 구멍을 팜).</p>
+<hr>
+<h2 id="2-grokvideonode-cli">2. GrokVideoNode가 감싼 것 = 우리 CLI와 같은 문</h2>
+<p>xAI REST:</p>
+<pre><code>POST https://api.x.ai/v1/videos/generations
+Authorization: Bearer $XAI_API_KEY
+model: grok-imagine-video | grok-imagine-video-1.5
+duration: 1–15
+resolution: 480p / 720p (1.5는 T2V 1080p)
+image.url | reference_images ≤7 | reference_audios voice_id
+</code></pre>
+<p>오디오 트랙은 기본 포함. 프리셋 보이스(eve 등)는 1.5 참조영상. <strong>자기 목소리 파일은 파트너 신청.</strong><br>
+결과 URL은 휘발. 받아서 바로 저장해야 함.<br>
+API 단가 문서 예: 초당 과금 (480p $0.05/s 등). SuperGrok 월 $30과 <strong>다른 지갑.</strong></p>
+<p>Comfy 그래프 3칸은 이 POST를 그림으로 그린 것뿐이다.</p>
+<hr>
+<h2 id="3">3. 우리 자리 — 이미 겹친다</h2>
+<table>
+<thead>
+<tr>
+<th>커뮤니티</th>
+<th>우리 (이미)</th>
+<th>구멍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LoadImage</td>
+<td>천장 스틸 · 웹 Imagine · REF_HOST_SUIT</td>
+<td>HAND로 웹 첨부 중</td>
+</tr>
+<tr>
+<td>GrokVideoNode</td>
+<td>이 CLI <code>image_to_video</code> / <code>reference_to_video</code></td>
+<td>CLI 도구는 6/10초, 480/720. REST 1.5는 15초·1080p</td>
+</tr>
+<tr>
+<td>SaveVideo</td>
+<td><code>/sdcard/Download/grok-cross/outputs</code> → S21 ffmpeg</td>
+<td>탭에 ffmpeg 없음</td>
+</tr>
+<tr>
+<td>Comfy 그래프</td>
+<td><strong>안 함.</strong> ROLE: 로컬 Comfy/GPU 금지</td>
+<td>맞음. 다시 열지 않음</td>
+</tr>
+</tbody>
+</table>
+<p>탭 CAI가 웹 Imagine 2.0을 집은 이유: CLI <code>image_gen</code>이 저가 모델이라는 판단. <strong>영상도 같은 분열이 있으면</strong> 웹/API 1.5가 천장, CLI 도구가 초안.</p>
+<p>실측 이 폰 <code>.secrets.env</code>: <strong><code>XAI_API_KEY</code> 없음.</strong> Grok CLI <code>auth.json</code>만 있음. <code>grok_api.py</code>는 chat/image까지. <strong>video generations 없음.</strong><br>
+TTS 403 선례: SuperGrok 구독 ≠ 모든 xAI API.</p>
+<hr>
+<h2 id="4">4. 접목 판정</h2>
+<h3 id="api-comfy">한다 (API 래퍼. Comfy 아님)</h3>
+<p>커뮤니티가 산 단순함 = <code>이미지+한 줄 → 15초 MP4(오디오 포함)</code>.<br>
+그걸 탭/S25에 붙이는 형태:</p>
+<pre><code>천장 스틸 (웹 Imagine / image_edit)
+    → POST /v1/videos/generations   (GrokVideoNode와 동일)
+    → grok-cross/outputs/*.mp4
+    → S21 공장 concat · LUT · 업로드
+</code></pre>
+<p>코드 위치: <code>scripts/hand/</code> 옆 <code>imagine_video.py</code> 한 파일. 노드 스파게티 0.<br>
+키: console.x.ai <code>XAI_API_KEY</code>. SuperGrok 로그인만으로는 <strong>미실측·과금 분리.</strong></p>
+<h3 id="_1">하지 않는다</h3>
+<ul>
+<li>탭/S25/S21에 ComfyUI 설치</li>
+<li>Comfy Cloud 크레딧으로 partner node 돌리기 (중간 마진 + 로그인 화이트리스트)</li>
+<li>로컬 Wan/AnimateDiff 부활 (VRAM 없음, ROLE 잠금)</li>
+<li>「오디오 동기화」를 우리 TTS/RVC로 다시 입히는 걸 1.5 기본 오디오와 섞어 과장</li>
+</ul>
+<h3 id="imagine-vs-api">웹 Imagine vs API</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>grok.com/imagine</th>
+<th>REST API</th>
+<th>이 CLI 도구</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>체급</td>
+<td>사람이 쓰는 1.5 Fast (CAI 천장)</td>
+<td><code>grok-imagine-video-1.5</code></td>
+<td>Build <code>image_to_video</code> (6/10초)</td>
+</tr>
+<tr>
+<td>손</td>
+<td>HAND/접근성 (웹뷰 구멍 있음)</td>
+<td>curl 한 줄. 결정론</td>
+<td>이 세션 툴</td>
+</tr>
+<tr>
+<td>돈</td>
+<td>SuperGrok 구독</td>
+<td>초당 API</td>
+<td>구독 안에 있을 수도, 아닐 수도</td>
+</tr>
+</tbody>
+</table>
+<p>천장 숏이 15초+대사가 필요하면 <strong>API 1.5 또는 웹</strong>. CLI 10초 도구로 「커뮤니티가 말한 그 체급」이라고 우기지 말 것.</p>
+<hr>
+<h2 id="5-boss">5. 다음 수 (Boss가 지갑을 열 때)</h2>
+<ol>
+<li><code>XAI_API_KEY</code>를 <code>.secrets.env</code>에만 넣는다. 레포 금지.</li>
+<li><code>scripts/hand/imagine_video.py</code> — POST generations → 폴링 → outputs에 저장. Comfy 없음.</li>
+<li>파일럿: REF_HOST_SUIT 1장 + 카메라 한 줄 → 6초 720p 1클립. 과금 확인.</li>
+<li>되면 PD 샷리스트 칸 ②를 <code>duration=6|10|15</code>로 연다. 웹 피커는 스틸 천장만.</li>
+</ol>
+<p>안 열면: 지금 CLI <code>image_to_video</code> 10초 + 웹 Imagine 스틸. 커뮤니티 래퍼와 <strong>같은 구름</strong>, 다른 문.</p>
+<hr>
+<h2 id="_2">출처 (열어 본 것)</h2>
+<ul>
+<li>Comfy 공식 블로그 2026-01-29 · GrokVideoNode 내장 문서 · 튜토리얼 (gen/edit/extend/reference)</li>
+<li>xAI Imagine API 뉴스 · Video 1.5 2026-06-16 · REST <code>/v1/videos/generations</code></li>
+<li>Cuimao777/ComfyUI-Grok-Imagine-Video (자기 키)</li>
+<li>r/grok 로컬 vs 웹 · r/comfyui 모더레이션 과금</li>
+<li>우리: <code>83</code> · <code>ROLE.md</code> · <code>CAN.md</code> · <code>PD-PROPOSAL.md</code> · <code>CAI.md</code>(탭) · <code>HAND.md</code></li>
+</ul>
+<p><em>agent mark <code>_Grok</code> · 2026-08-24</em></p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="104-tablet-widgets-workcenter_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">태블릿 Termux 위젯 + 워크센터 개념 (2026-08-21)</span>
+        </a>
+    <a class="next" href="105-webtoon-player-tistory-plugin_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">105 webtoon player tistory plugin Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>## ⚠️ 이 수첩은 히스토리다 — 헌법이 아니다 (2026-08-22 Boss 결정)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine 2026-08-30</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

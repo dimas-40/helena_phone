@@ -265,6 +265,7 @@ NOTEBOOK_TITLES = {
     "ai-workstation-setup-manual_Boss.md": "폰 하나로 AI 워크스테이션 짓기 (설치 매뉴얼)",
     "S21-Grok-plugin_Grok.md": "S21 Grok 플러그 역할 (온디바이스 카드)",
     "101-ending-page_Claude.md": "엔딩 페이지 — 설치 이후 탑재된 모든 것 · 삽질 기록",
+    "108-sovits-dub-overwrite_Grok.md": "챌린지 — Grok 영상에 SoVITS 성우 덮어쓰기",
 }
 
 # Auto-discover every _notebook/*.md (overrides in NOTEBOOK_TITLES)

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="태블릿 = **외부 아웃소싱 디바이스 / 워크센터.** Boss가 일을 던지면, 나(Claude Code)가 이 워크센터에서 PC(WSL/Windows)와 ADB mesh를 제어해서 처리. — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>태블릿 Termux 위젯 + 워크센터 개념 (2026-08-21) — S21 Phone Webzine</title>
+<link rel="canonical" href="https://helena751107.github.io/helena_phone/notebook/104-tablet-widgets-workcenter_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/helena751107#person",
+      "name": "Helena Park",
+      "url": "https://github.com/helena751107",
+      "description": "Made in Korea — not a developer. One Galaxy S21, built by voice, for a sister.",
+      "sameAs": [
+        "https://github.com/helena751107",
+        "https://helena751107.github.io/helena_phone/",
+        "https://www.youtube.com/@helena_phone",
+        "https://www.youtube.com/@HelenaPark-e7c"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://helena751107.github.io/helena_phone/notebook/104-tablet-widgets-workcenter_Claude.html#webpage",
+      "url": "https://helena751107.github.io/helena_phone/notebook/104-tablet-widgets-workcenter_Claude.html",
+      "name": "태블릿 Termux 위젯 + 워크센터 개념 (2026-08-21)",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/helena751107#person"
+      },
+      "author": {
+        "@id": "https://github.com/helena751107#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>태블릿 Termux 위젯 + 워크센터 개념 (2026-08-21)</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · 2026-08-30</div>
+    <h1>태블릿 Termux 위젯 + 워크센터 개념 (2026-08-21)</h1>
+    <p class="deck">태블릿 = **외부 아웃소싱 디바이스 / 워크센터.** Boss가 일을 던지면, 나(Claude Code)가 이 워크센터에서 PC(WSL/Windows)와 ADB mesh를 제어해서 처리.</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/104-tablet-widgets-workcenter_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#0">0. 개념</a></li>
+<li><a href="#1-6">1. 위젯 6종</a></li>
+<li><a href="#2-ip-tailscale">2. 핵심 IP (Tailscale)</a></li>
+<li><a href="#3-5adbsh-adb-mesh-1">3. 5.ADB.sh 동작 (ADB mesh 자동복구, 1탭)</a></li>
+<li><a href="#4">4. 실행 구조 (한 줄)</a></li>
+<li><a href="#5-claude-code">5. 이 워크센터에서 내(Claude Code) 위치</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <hr>
+<p>date: 2026-08-21<br>
+agent: Claude<br>
+mark: _Claude<br>
+type: infra-setup<br>
+status: active<br>
+related:<br>
+  - 102-tablet-hw-parse_Grok.md<br>
+  - tablet-broadcast-studio_Claude.md<br>
+  - 103-adb-mesh-revive_Claude.md</p>
+<hr>
+<h1 id="termux-2026-08-21">태블릿 Termux 위젯 + 워크센터 개념 (2026-08-21)</h1>
+<blockquote>
+<p>태블릿 = <strong>외부 아웃소싱 디바이스 / 워크센터.</strong> Boss가 일을 던지면, 나(Claude Code)가 이 워크센터에서 PC(WSL/Windows)와 ADB mesh를 제어해서 처리.</p>
+</blockquote>
+<h2 id="0">0. 개념</h2>
+<ul>
+<li>태블릿(tab-s9, Tailscale <code>100.86.15.50</code>) = 워크센터.</li>
+<li><strong>Termux:Widget 6종</strong> (<code>~/.shortcuts/</code>) = 이 워크센터의 인터페이스(1탭 실행).</li>
+</ul>
+<h2 id="1-6">1. 위젯 6종</h2>
+<table>
+<thead>
+<tr>
+<th>위젯</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0.MASTER.sh</code></td>
+<td>1~5 고정본 <strong>복원</strong>(자기복구, ON-DEMAND)</td>
+</tr>
+<tr>
+<td><code>1.wsl_claude.sh</code></td>
+<td>SSH→Windows/WSL → tmux <code>tablet_claude</code> → claude</td>
+</tr>
+<tr>
+<td><code>2.wsl_aider.sh</code></td>
+<td>SSH→WSL → tmux <code>tablet_aider</code> → <code>source ~/.env-deepseek &amp;&amp; claude</code></td>
+</tr>
+<tr>
+<td><code>3.win_claude.sh</code></td>
+<td>SSH→Windows(경유 WSL) → tmux <code>win_claude_tablet</code></td>
+</tr>
+<tr>
+<td><code>4.win_aider.sh</code></td>
+<td>SSH→WSL → tmux <code>win_aider_tablet</code> → start-win-aider.sh</td>
+</tr>
+<tr>
+<td><code>5.ADB.sh</code></td>
+<td>ADB mesh 상태 + 자동복구 (Shizuku/rish/5900)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-ip-tailscale">2. 핵심 IP (Tailscale)</h2>
+<table>
+<thead>
+<tr>
+<th>노드</th>
+<th>주소</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>태블릿 (이 기기)</td>
+<td><code>100.86.15.50</code>, SSH 8022</td>
+</tr>
+<tr>
+<td>WSL (PC)</td>
+<td><code>100.90.83.128:2222</code></td>
+</tr>
+<tr>
+<td>Windows (PC)</td>
+<td><code>100.81.24.124:22</code></td>
+</tr>
+<tr>
+<td>폰 (S25 Ultra)</td>
+<td><code>100.103.250.45:5900</code> (ADB)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-5adbsh-adb-mesh-1">3. 5.ADB.sh 동작 (ADB mesh 자동복구, 1탭)</h2>
+<pre><code>1. Shizuku 확인    → rish -c id → uid=2000?
+2. 무선 디버깅 ON   → rish settings put adb_wifi_enabled 1
+3. sshd 보장        → 8022
+4. 백그라운드 면제  → phantom/Doze/appops 4종 재적용
+5. adb 5900 확인    → 리스닝 체크
+6. 5555 함정 체크   → 에뮬레이터 대역 경고
+7. 온도 체크
+</code></pre>
+<h2 id="4">4. 실행 구조 (한 줄)</h2>
+<pre><code>Termux(위젯 1탭) → SSH → PC(WSL/Windows) → tmux → claude/aider
+                 → Shizuku/rish → uid 2000 → ADB mesh(5900)
+</code></pre>
+<h2 id="5-claude-code">5. 이 워크센터에서 내(Claude Code) 위치</h2>
+<ul>
+<li>나는 <strong>proot Ubuntu</strong>(<code>/root/work</code>)에서 돎.</li>
+<li>위젯 1~4 = PC의 claude/aider 세션을 태블릿에서 원격 조종.</li>
+<li>위젯 5 = ADB mesh(폰·태블릿 제어) 자동복구.</li>
+</ul>
+<p><em>agent mark <code>_Claude</code> · 2026-08-21</em></p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="104-grok-3device-roles_Grok.html">
+          <span class="dir">Previous</span>
+          <span class="title">Grok 용병 — 세 기기, 역할이 다르다 (2026-08-24)</span>
+        </a>
+    <a class="next" href="105-comfy-grokvideo-graft_Grok.html">
+          <span class="dir">Next</span>
+          <span class="title">105 comfy grokvideo graft Grok</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>## ⚠️ 이 수첩은 히스토리다 — 헌법이 아니다 (2026-08-22 Boss 결정)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine 2026-08-30</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

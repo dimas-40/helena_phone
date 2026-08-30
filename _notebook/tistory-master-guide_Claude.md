@@ -151,7 +151,7 @@ Claude Code → 텔레그램 전문 배달 → 사람 복사 → 블로그 붙�
 
 | 파일 | 용도 | 상태 |
 |------|------|------|
-| `tistory-naver/post.py` | 티스토리 Playwright 자동 포스팅 | 📦 보존 |
+| `tistory-naver/post.py` | ~~티스토리 Playwright 자동 포스팅~~ → 자동발행 폐기, Paste Pipeline(사람 복붙)이 정본 | 📦 보존 (로그인 감지 버그 08-22 수정) |
 | `tistory-naver/post.cjs` | 네이버 SE 글쓰기 Playwright | 📦 보존 |
 | `tistory-naver/login.cjs` | 쿠키·storageState 추출 | 📦 보존 |
 | `tistory-naver/session_post.py` | 터미널→네이버 원클릭 파이프 | 📦 보존 |

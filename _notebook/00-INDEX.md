@@ -1,5 +1,10 @@
 # 📖 S21 Phone 업무 수첩 — 전체 목차
 
+> ## ⚠️ 이 수첩은 히스토리다 — 헌법이 아니다 (2026-08-22 Boss 결정)
+> - 나를 규정하는 헌법은 **`CONSTITUTION.md` 하나**뿐. 이 `_notebook/`은 과거 결정·시도·사건의 **기록(히스토리)**이다.
+> - 시대가 지나 **지금 안 맞는 항목**은 ~~사선(취소선)~~ 처리한다. **삭제(삭절)는 하지 않는다.**
+> - 작업 전에 "이 기록이 지금도 유효한가"를 먼저 확인할 것. 과거 기록을 그대로 규칙으로 받아들이지 말 것.
+
 > 구축: 2026-07-23 ~ 2026-08-14 (23일)  
 > 환경: Galaxy S21 → Termux → proot Ubuntu → Claude Code (DeepSeek) + Grok CLI + Aider  
 > 총 105+ md · 기점: [`83-momentum-2026-08-14_Grok.md`](./83-momentum-2026-08-14_Grok.md)  
@@ -269,6 +274,12 @@ Grok 플러그인 슬롯, 영상 표준 v1, PD Pipeline v2 LOCK.
 |------|------|
 | **`83-momentum-2026-08-14_Grok.md`** | **기점** — 잡지→즉시 웹코드 / 누나사진+대사→10초 다큐 |
 | **`85-grok-plugin-where-saved_Grok.md`** | **듀얼 저장 지도** — 온디바이스 수첩 + helena_phone 레포 |
+| **`101-grok-mercenary-3loc_Grok.md`** | **용병** — 세 로케이션(누나폰·태블릿·Boss폰) CLI 조인. 켤 때 그 방 수첩부터 |
+| **`102-tablet-hw-parse_Grok.md`** | **태블릿 실측** — Tab S9 8Gen2/Adreno740/S-Pen. 원본은 `_notebook/grok/hardware.md` |
+| **`grok/`** | **이 방 Grok 책상** — 세션 시작 강제 읽기. 상주 파싱 + 하드웨어 |
+| **`104-grok-3device-roles_Grok.md`** | **세 기기 역할** — S21=집 · 탭=방송국 · S25=크로스 GUI (_Grok) |
+| **`105-comfy-grokvideo-graft_Grok.md`** | Comfy 안 올림. Imagine Video API만 접목 후보 (_Grok) |
+| **`108-sovits-dub-overwrite_Grok.md`** | **챌린지** — 그록 10초 영상에 SoVITS 성우 덮어쓰기 (_Grok) |
 
 ---
 

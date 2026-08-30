@@ -205,7 +205,7 @@
     "title": "📖 S21 Phone 업무 수첩 — 전체 목차",
     "section": "Notebook",
     "kind": "md",
-    "deck": "구축: 2026-07-23 ~ 2026-08-14 (23일)"
+    "deck": "## ⚠️ 이 수첩은 히스토리다 — 헌법이 아니다 (2026-08-22 Boss 결정)"
   },
   {
     "src": "_notebook/01-arch.md",
@@ -1152,6 +1152,86 @@
     "deck": "**랜딩 페이지가 \"여기 뭐가 있나\"라면, 엔딩 페이지는 \"여기까지 오면서 뭘 탑재했고, 뭘 헤맸나\".**"
   },
   {
+    "src": "_notebook/108-sovits-dub-overwrite_Grok.md",
+    "out": "notebook/108-sovits-dub-overwrite_Grok.html",
+    "title": "챌린지 — Grok 영상에 SoVITS 성우 덮어쓰기 (2026-08-24)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss:** 「너 이거 업무 수첩에다 저장해. 이거 챌린징해서 작업할 거야.」"
+  },
+  {
+    "src": "_notebook/101-grok-mercenary-3loc_Grok.md",
+    "out": "notebook/101-grok-mercenary-3loc_Grok.html",
+    "title": "Grok은 용병 — 세 로케이션을 돈다 (2026-08-18)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss 결정 (2026-08-18)**"
+  },
+  {
+    "src": "_notebook/102-tablet-hw-parse_Grok.md",
+    "out": "notebook/102-tablet-hw-parse_Grok.html",
+    "title": "태블릿 로케이션 — 하드웨어·프로트 실측 (2026-08-18)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**원본 이전:** `_notebook/grok/hardware.md` (세션 시작 때 읽는 책상)."
+  },
+  {
+    "src": "_notebook/103-adb-mesh-revive_Claude.md",
+    "out": "notebook/103-adb-mesh-revive_Claude.html",
+    "title": "ADB Mesh 자동 복구 — 태블릿(tab-s9) ADB 무선 연결 지식 (2026-08-20)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "한 장 정리. 나중에 \"ADB 설정\" 얘기 나오면 이걸 먼저 읽으면 됨."
+  },
+  {
+    "src": "_notebook/104-grok-3device-roles_Grok.md",
+    "out": "notebook/104-grok-3device-roles_Grok.html",
+    "title": "Grok 용병 — 세 기기, 역할이 다르다 (2026-08-24)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss 결정 (2026-08-24)**"
+  },
+  {
+    "src": "_notebook/104-tablet-widgets-workcenter_Claude.md",
+    "out": "notebook/104-tablet-widgets-workcenter_Claude.html",
+    "title": "태블릿 Termux 위젯 + 워크센터 개념 (2026-08-21)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "태블릿 = **외부 아웃소싱 디바이스 / 워크센터.** Boss가 일을 던지면, 나(Claude Code)가 이 워크센터에서 PC(WSL/Windows)와 ADB mesh를 제어해서 처리."
+  },
+  {
+    "src": "_notebook/105-comfy-grokvideo-graft_Grok.md",
+    "out": "notebook/105-comfy-grokvideo-graft_Grok.html",
+    "title": "ComfyUI 피로 → GrokVideoNode — 커뮤니티 실측과 접목 판정",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/105-webtoon-player-tistory-plugin_Claude.md",
+    "out": "notebook/105-webtoon-player-tistory-plugin_Claude.html",
+    "title": "웹툰 뷰어 → 티스토리 파이프라인 플러그 옵션 (A급 + 모바일/인스타툰)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "한 줄: `parksy-image` 웹툰 파이프라인의 **6번째 출력 타겟(티스토리)** 을"
+  },
+  {
+    "src": "_notebook/106-git-sync-mistake_Claude.md",
+    "out": "notebook/106-git-sync-mistake_Claude.html",
+    "title": "실수 원인 기록 — 작업 전 git 상태 미확인 (2026-08-22)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss가 SSH로 태블릿 `/root/work`에 들어가 **git 수술**을 해야 했던 사건의 원인 기록."
+  },
+  {
+    "src": "_notebook/107-tistory-sms-adb-unlock_Claude.md",
+    "out": "notebook/107-tistory-sms-adb-unlock_Claude.html",
+    "title": "티스토리 배포 완전 자동화 — SMS 본인인증을 ADB로 뚫는 솔루션 (2026-08-22)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "한 줄: 만료 세션 감지 → 카카오 재로그인 → **SMS 본인인증을 ADB로 폰 문자함에서 읽어 자동 통과** → 발행."
+  },
+  {
     "src": "_notebook/78-pd-pipeline-whitepaper_Claude.md",
     "out": "notebook/78-pd-pipeline-whitepaper_Claude.html",
     "title": "🎬 PD Pipeline 기술 백서 — URL 하나로 숏폼 자동 제작",
@@ -1224,6 +1304,14 @@
     "deck": "**Boss 확정 기점.** 오늘까지 \"만들기\"였다면, 오늘부터 \"열고 가르치기\"다."
   },
   {
+    "src": "_notebook/grok-cli-install-troubleshooting_Claude.md",
+    "out": "notebook/grok-cli-install-troubleshooting_Claude.html",
+    "title": "Grok CLI 설치 · 삽질 기록 (2026-08-18)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss 지시: 내가 설치 과정에서 삽질한 것 + 원상복구한 것을 기록. (삭제·변경한 것 + 그 이유)"
+  },
+  {
     "src": "_notebook/rvc-environment-gap_Claude.md",
     "out": "notebook/rvc-environment-gap_Claude.html",
     "title": "RVC 환경 차이 진단 — WSL vs S21",
@@ -1238,6 +1326,38 @@
     "section": "Notebook",
     "kind": "md",
     "deck": ""
+  },
+  {
+    "src": "_notebook/session-2026-08-18_Claude.md",
+    "out": "notebook/session-2026-08-18_Claude.html",
+    "title": "세션 수첩 — 환경·과금·GitHub 계정 점검 (2026-08-18)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss 지시: (1) proot 환경에 내 업무 수첩 생성, (2) 이 계정의 GitHub 레포 개수 확인,"
+  },
+  {
+    "src": "_notebook/session-2026-08-19_Claude.md",
+    "out": "notebook/session-2026-08-19_Claude.html",
+    "title": "세션 회의록 — 판의 전환 · 오버레이 키트 + 런타임 후보정 (2026-08-19)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "오늘 대화의 핵심을 한 장으로. 두 트랙 웹페이지의 원본."
+  },
+  {
+    "src": "_notebook/tablet-broadcast-studio_Claude.md",
+    "out": "notebook/tablet-broadcast-studio_Claude.html",
+    "title": "태블릿 교육방송 스튜디오 — 서플라이 체인 (확정)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss 방향 정리본. 태블릿(Tab S9)의 정체·역할·서플라이 체인을 한 장으로."
+  },
+  {
+    "src": "_notebook/tablet-setup-parksy-method_Claude.md",
+    "out": "notebook/tablet-setup-parksy-method_Claude.html",
+    "title": "태블릿 워크센터 설정 — parksy 공법 파싱 (dtslib-papyrus → 수첩)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss 지시: 허브(dtslib-papyrus)에 어제·그제 저장된 \"터닝 포인트 기점\" 기준으로"
   },
   {
     "src": "g/install.sh",
