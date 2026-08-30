@@ -1232,6 +1232,14 @@
     "deck": "한 줄: 만료 세션 감지 → 카카오 재로그인 → **SMS 본인인증을 ADB로 폰 문자함에서 읽어 자동 통과** → 발행."
   },
   {
+    "src": "_notebook/109-arnouveau-webtoon-va-pipeline.md",
+    "out": "notebook/109-arnouveau-webtoon-va-pipeline.html",
+    "title": "아르누보 웹툰 + 성우 나레이션 풀파이프라인 (2026-08-30 확정)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
     "src": "_notebook/78-pd-pipeline-whitepaper_Claude.md",
     "out": "notebook/78-pd-pipeline-whitepaper_Claude.html",
     "title": "🎬 PD Pipeline 기술 백서 — URL 하나로 숏폼 자동 제작",

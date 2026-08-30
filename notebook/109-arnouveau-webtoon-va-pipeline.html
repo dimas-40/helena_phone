@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="아르누보 웹툰 + 성우 나레이션 풀파이프라인 (2026-08-30 확정) — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>아르누보 웹툰 + 성우 나레이션 풀파이프라인 (2026-08-30 확정) — S21 Phone Webzine</title>
+<link rel="canonical" href="https://helena751107.github.io/helena_phone/notebook/109-arnouveau-webtoon-va-pipeline.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/helena751107#person",
+      "name": "Helena Park",
+      "url": "https://github.com/helena751107",
+      "description": "Made in Korea — not a developer. One Galaxy S21, built by voice, for a sister.",
+      "sameAs": [
+        "https://github.com/helena751107",
+        "https://helena751107.github.io/helena_phone/",
+        "https://www.youtube.com/@helena_phone",
+        "https://www.youtube.com/@HelenaPark-e7c"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://helena751107.github.io/helena_phone/notebook/109-arnouveau-webtoon-va-pipeline.html#webpage",
+      "url": "https://helena751107.github.io/helena_phone/notebook/109-arnouveau-webtoon-va-pipeline.html",
+      "name": "아르누보 웹툰 + 성우 나레이션 풀파이프라인 (2026-08-30 확정)",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/helena751107#person"
+      },
+      "author": {
+        "@id": "https://github.com/helena751107#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>아르누보 웹툰 + 성우 나레이션 풀파이프라인 (2026-08-30 확정)</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · 2026-08-30</div>
+    <h1>아르누보 웹툰 + 성우 나레이션 풀파이프라인 (2026-08-30 확정)</h1>
+    
+    <div class="wz-meta">
+      <span>Source · _notebook/109-arnouveau-webtoon-va-pipeline.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#_1">재현 절차</a></li>
+<li><a href="#2026-08-30_1">검증 완료 (2026-08-30)</a></li>
+<li><a href="#_2">아직 안 한 것</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <p>박씨 고정 프리셋(parksy_30s, po-deepfake FACE_LIBRARY와 동일 소스) → 삼성 갤러리<br>
+MCP(restyle_image, 좌표 dump 동적탐색)로 배경/장면만 프롬프트로 바꿔가며 아르누보<br>
+스타일 컷 여러 장 생성 → webtoon.py로 캐러셀 웹툰 조립(말풍선=텍스트 렌더링) →<br>
+edge-tts(ko-KR-InJoonNeural)로 컷별 나레이션 mp3 생성 → 컷 전환 시 해당 나레이션<br>
+자동재생되도록 플레이어에 JS 훅 삽입.</p>
+<h2 id="_1">재현 절차</h2>
+<p><strong>1. 컷 생성 (parksy-gallery MCP, restyle_image)</strong></p>
+<pre><code class="language-python"># source 인자 생략 = 항상 DEFAULT_SOURCE(parksy_30s.png) 고정 인물 사용
+await session.call_tool(&quot;restyle_image&quot;, {
+    &quot;style&quot;: &quot;아르 누보&quot;,              # 박씨 확정 고정 스타일 — 바꾸지 말 것
+    &quot;prompt&quot;: &quot;&lt;장면 프롬프트&gt;&quot;,
+    &quot;wait&quot;: 22,
+    &quot;crop_bottom&quot;: 8.0,
+})
+</code></pre>
+<ul>
+<li>컷마다 다른 <code>prompt</code>(배경/상황)만 바꾸고 <code>style</code>은 항상 &ldquo;아르 누보&rdquo; 고정</li>
+<li>결과는 <code>/sdcard/DCIM/박씨 갤러리/Drawing_assist_&lt;timestamp&gt;.jpg</code>에 저장됨</li>
+</ul>
+<p><strong>2. 웹툰 조립 (webtoon.py)</strong><br>
+- manifest JSON에 <code>images</code>(위 컷들, base64 또는 URL) + <code>dialogue</code>(컷별 대사) 작성<br>
+- <code>python3 tistory-naver/webtoon.py episodes/&lt;manifest&gt;.json --dump &gt; out.html</code><br>
+- 캐러셀 뷰어(<code>assets/parksy-webtoon-player.html</code>)가 말풍선(대사) 자동 렌더링</p>
+<p><strong>3. 나레이션 (edge-tts, ko-KR-InJoonNeural — CLAUDE.md 확정 성우)</strong></p>
+<pre><code class="language-bash">edge-tts --voice ko-KR-InJoonNeural --rate=+10% --text &quot;&lt;대사&gt;&quot; --write-media cutN.mp3
+</code></pre>
+<ul>
+<li>컷 개수만큼 mp3 생성, 이 폴더(<code>episodes/&lt;manifest&gt;-audio/</code>)에 함께 보관</li>
+</ul>
+<p><strong>4. 컷↔나레이션 동기화 (플레이어 패치)</strong><br>
+<code>assets/parksy-webtoon-player.html</code>의 <code>render()</code> 함수 끝에 이벤트 디스패치 추가:</p>
+<pre><code class="language-js">document.dispatchEvent(new CustomEvent('pw-panel-change', {detail: cur}));
+</code></pre>
+<p>출력 HTML 하단에 <code>&lt;audio id="pw-audio-N"&gt;</code> N개 + 아래 리스너 삽입:</p>
+<pre><code class="language-js">document.addEventListener('pw-panel-change', function(e){
+  // 이전 오디오 정지 → audios[e.detail] 재생
+});
+</code></pre>
+<h2 id="2026-08-30_1">검증 완료 (2026-08-30)</h2>
+<ul>
+<li>3컷 생성: 새벽 서재 / 방송 스튜디오 / 노을 창가 — 전부 아르누보 + 동일 인물(정장·안경) 확인</li>
+<li>나레이션 3개 개별 + concat 풀트랙(11.2s) 생성 확인</li>
+<li>Claude Artifact로 최종 조립본 시연 (컷 전환 시 나레이션 자동재생 확인)</li>
+</ul>
+<h2 id="_2">아직 안 한 것</h2>
+<ul>
+<li><strong>티스토리 실제 발행</strong>은 안 함(계정/블로그 실제 게시는 외부 공개 행위라 별도 확인 필요)</li>
+<li>나레이션 자동재생은 브라우저 정책상 사용자 첫 탭(제스처) 이후에만 소리가 남 —<br>
+  강제 자동재생 시도 안 함(에러 없이 조용히 실패하는 게 더 나쁨)</li>
+<li>이 레시피를 스크립트 하나로 묶는 자동화(<code>produce_webtoon_va.sh</code> 같은)는 아직 없음<br>
+  — 지금은 수동 3단계(컷생성→조립→오디오)를 순서대로 실행한 것</li>
+</ul>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="107-tistory-sms-adb-unlock_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">티스토리 배포 완전 자동화 — SMS 본인인증을 ADB로 뚫는 솔루션 (2026-08-22)</span>
+        </a>
+    <a class="next" href="78-pd-pipeline-whitepaper_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">78 pd pipeline whitepaper Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>## ⚠️ 이 수첩은 히스토리다 — 헌법이 아니다 (2026-08-22 Boss 결정)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine 2026-08-30</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>
