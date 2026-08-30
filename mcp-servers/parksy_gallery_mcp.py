@@ -93,6 +93,10 @@ GENERATE = (800, 2275)    # "생성" 버튼
 SAVE = (851, 270)         # "저장" 버튼 (생성 완료 후 상단)
 PHOTO_ATTACH = (242, 1897)  # "스타일 변경" 진입 (사진 첨부 아이콘)
 
+# 박씨 고정 프리셋 — po-deepfake MCP(FACE_LIBRARY)와 동일한 소스(parksy_30s, 전신크롭)를
+# 여기서도 기본값으로 씀. 웹툰 컷마다 다른 얼굴로 흔들리는 것 방지 (2026-08-30 확정).
+DEFAULT_SOURCE = "parksy_30s.png"
+
 # 갤러리 경로
 GALLERY_DIR = "/sdcard/DCIM/박씨 갤러리"    # 박씨 갤러리 전용 폴더
 DRAWING_DIR = "/sdcard/DCIM/Drawing assist"  # 앱 기본 저장 폴더
@@ -356,7 +360,7 @@ INTRO_STORY = {
     "title": "에듀 아트 엔지니어 — 나를 소개합니다",
     "style": "아르 누보",
     "accent": "#d4a84b",
-    "face_source": "face_crop_3bpmszt6.jpg",
+    "face_source": DEFAULT_SOURCE,
     "shots": [
         {"prompt": "front-facing portrait, confident, art nouveau style", "text": "안녕하세요."},
         {"prompt": "holding a book, teaching gesture, warm light", "text": "저는 교육을 사랑합니다."},
@@ -372,17 +376,21 @@ INTRO_STORY = {
 
 
 @mcp.tool()
-def restyle_image(source: str, style: str = "아르 누보", prompt: str = "",
+def restyle_image(source: str = DEFAULT_SOURCE, style: str = "아르 누보", prompt: str = "",
                   wait: int = 20, crop_bottom: float = 8.0) -> dict:
-    """프리셋/기존 사진을 업로드해 스타일 변경(재스타일/합성)한다.
+    """박씨 고정 프리셋(기본 parksy_30s, 전신크롭)을 업로드해 배경/화풍만 바꾼다.
 
-    2026-08-30 재작성: 좌표 하드코딩 대신 uiautomator dump로 사진피커의
-    "오늘" 섹션 첫 썸네일을 실시간 탐색한다. 대상 파일은 먼저 자동으로
-    Drawing_assist_<지금시각>.jpg 사본으로 스테이징해서 그 자리에 오게 만든다.
+    Boss 지정: 웹툰 컷마다 인물이 흔들리면 안 되므로 source를 안 넘기면
+    항상 po-deepfake MCP와 동일한 고정 프리셋(parksy_30s.png)을 쓴다.
+    다른 인물(가족 등)이 필요할 때만 source를 명시적으로 넘긴다.
+
+    2026-08-30 재작성: 좌표 하드코딩 대신 uiautomator dump로 사진피커를
+    실시간 탐색한다(/sdcard/Pictures/parksy_stage/ 전용 격리 폴더 경유 —
+    이 파이프라인 전용이라 다른 자동화의 스크린샷과 절대 안 겹침).
 
     Args:
         source: 프리셋 파일명(박씨 갤러리/프리셋/ 안) 또는 박씨 갤러리 안의 기존 파일명.
-                예: "face_crop_3bpmszt6.jpg"
+                기본값 parksy_30s.png(박씨 전신, po-deepfake와 동일 소스)
         style: 스타일 10종
         prompt: (선택) 합성/배경 변경 프롬프트. 비우면 화풍만 변경
         wait: 생성 대기(초)
