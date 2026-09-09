@@ -1,5 +1,17 @@
 # 📋 S21 Phone — 전체 개발일지
 
+### 🎞 갤러리 40s 얼굴 합성 · 한국어 더빙 자기소개 TG (_Grok · 2026-09-05)
+
+**Boss:** 갤러리 내 사진으로 얼굴 합성 + 한국어 더빙 자기소개 영상 → 텔레그램. 이어서 「40s 파일 제목 찾아와」·「해」.
+
+**찾음:** `Pictures/40s.png` (마흔 얼굴) · `Quick Share/40'S.jpg` (도서관 수트). 옆에 `30s`/`50s`도 있음.
+
+**제작:** 스틸 4 → 6초×4 → InJoonNeural 더빙 → concat 24.0s · 480×848 · 1.9MB.
+
+**전송:** TG sendVideo ok message_id 25. 파일 `Download/grok-cross/outputs/intro-40s-ko.mp4`. 원본 갤러리 안 덮음.
+
+**저장:** `_notebook/grok/INTRO-40s.md`
+
 ### 📷 갤러리 CLI 왕복 + 캔버스 품질 층 + TG 1장 (_Grok · 2026-08-28)
 
 **Boss 지시:** 갤러리 사진을 이 CLI에서 처리해 저장소에 되돌릴 수 있다. 웹/PC 캔버스와 품질 차이가 크겠냐. 수첩 저장 + 지금까지 작업 1장 리포트 TG 첨부.
@@ -6920,3 +6932,203 @@ Boss "지금 원하는 파이프라인이 다 구성된 거냐"에 대한 정직
 - **라우트(Route) = BOR** — HOW — 워크센터별 공법 시퀀스 (캐파·설비 차이 반영)
 - 워크센터 = S21 / S25 / Tab / PC — 물리 기기별 용량·설비 상이.
 - (메모리 `recipe-order-mcp` 갱신)
+
+### 🏭 Content Semiconductor Architecture — Division(제품군) + FAB(공정) 2축 모델 (_Claude · 2026-09-02)
+
+**Boss 제안:** "반도체의 제품군 분류(Division)와 제조공정(FAB)을 분리해서 콘텐츠의 '무엇'과 '어떻게'를 동시에 모델링."
+
+- **Division(WHAT)** = Memory(자료)·Logic(구조)·Analog(음악/음성)·Discrete(이미지/영상)·Power(런타임) — **신규.** 저장분 BOM은 자산 종류를 안 분류했고, Division이 그 빈칸을 채움.
+- **FAB(HOW)** = Generate→Process→Integrate→QA→Package — **기존 BOR(공법·라우트) 축의 재포장.** (recipe-order-mcp 와 동일 영역)
+- **동영상 4중 분해가 핵심:** Asset=Discrete · Edit=Logic · Sound=Analog · Source=Memory → "작품"이 "제조 가능한 BOM"으로 전환.
+- **8대 공정 매핑:** 웨이퍼→원재료정리, 식각→편집, 증착→자산생성, 이온주입→톤주입, 금속배선→조립, 테스트→게이트, 패키징→포맷·배포 — 1:1 대응.
+- **실전 가치:** 이 틀에 PD Pipeline을 얹으면 **QA 단계가 공백**으로 드러남 (지금 QA는 gap_count·YouTube 검수로 파이프라인 밖에 존재).
+- **원칙:** 백서로 안 만든다. discipline로 쓴다 — 다음 모듈 2-3개에 태그 붙이며 등장, 쓰인 것만 정식화.
+- **ICM 미확정:** "ICM = Integrated Circuit Manufacturing" 추정, 헌법 "ICM §9"와 일치 여부 확인 필요.
+
+**저장:** `108-content-semiconductor-architecture_Claude.md` · 메모리 `content-semiconductor-architecture`
+
+### 🏭 Content Manufacturing OS — v0.1 스캐폴드 + 계획서 TG 전송 (_Claude · 2026-09-02)
+
+**Boss 지시:** "네가 없다고 한 거(관리층) 반영하고 만들어. 계획서 1장 마크다운을 텔레그램으로."
+
+- **구현 (v0.1):** `configs/content-fab.json`(Division 5 · BOM · Recipe = 단일 진실) + `scripts/fab.py`(list/bom/recipe/order). `order`=주문=레시피 호출. Publishing=1호 Division (공정 스크립트 5종 매핑).
+- **동작 확인:** fab.py list/bom/recipe 출력 정상.
+- **계획서:** `109-content-fab-implementation-plan_Claude.md` — P1(출판 order --run)~P6(Multi-FAB + MCP 주문). TG sendDocument message_id 22.
+- **포지셔닝:** 시장엔 AI Content Factory(인력 압축) 이미 있음. 이 건 = 그 Factory를 **설명·설계하는 산업용 OS**. 반도체 Division/BOM/원가 이식은 아직 남이 안 한 빈 자리.
+- **상태:** 승인 대기 (P1 실행 전 Boss 확인).
+
+### 🏭 Content Manufacturing OS 설계도 — 정본 통합 + TG 전송 (_Claude · 2026-09-02)
+
+- **정본:** `110-content-manufacturing-os_Claude.md` — 108(2축)·109(계획)을 하나로 통합. 16절(원리→메타패턴→로드맵).
+- **핵심 정립:** IMR(정체+BOM+런시트) 규정·저장 → 실행기(fab.py/MES)가 반복 → 양산. **자동화 = 스펙(문서) + 실행기.**
+- **메타 패턴:** 소프트웨어는 이미 이걸 CI/CD로 씀(package.json=IMR, Actions=MES). → 콘텐츠뿐 아니라 타 산업(교육·제조·일반)으로 확장 가능한 "생산 OS" 일반화.
+- **실동작:** order --run EXIT=0 (출판 4단계 순차 + 발행 env 스킵) 이미 증명됨.
+- **전송:** TG sendDocument message_id 23. 실행 대기.
+
+### 🏭 Content FAB MCP — fab_mcp.py (IMR = MCP = 주문) (_Claude · 2026-09-02)
+
+- **Boss 지시:** "이것도 IMR MCP로 만들어야 되는 거 아니냐."
+- **구현:** `helena-programming/mcp/fab_mcp.py` — stdio + http(port 8766). 도구 5: fab_list/bom/recipe/order(주문)/register(IMR 등록).
+- **핵심:** fab_register로 새 제품 IMR을 MCP로 등록 → 시스템 자기확장. 레시피 하나 = MCP = 주문 (로드맵 P4 완료).
+- **테스트:** list/bom/order(dry-run) + register(test-demo 등록→확인→정리) 전부 정상.
+
+### 📘 백서 정리 + TG 전송 — 오늘 작업 전체 (_Claude · 2026-09-02)
+
+- **정본 백서:** `111-content-manufacturing-os-whitepaper_Claude.md` — 108/109/110 + 구현 실물(IMR·실행기·MCP) 통합. 7절.
+- **오늘 완료 체인:** 개념 → 설계도 → 스캐폴드 → 실동작(EXIT=0) → MCP 등록·연결(✔).
+- **TG:** sendDocument message_id 24.
+
+## 복구솔루션 실험 기록 — 망 전부 드롭 시나리오 (_Claude)
+
+2026-09-09 · 기록자: Claude Code (proot Ubuntu 레인)
+
+**내 역할:** 이 실험에서 나는 **기록만** 한다 (수정/개입/복구 안 함). 복구는 Boss가 직접 수행.
+
+**시나리오:** 핸드폰의 망(네트워크)이 모든 상태에서 전부 떨어진 상황.
+
+**핵심:** 핸드폰 자체적으로 빌드를 시작. 복구는 폰에서 **두 개의 레인**으로 병행 시작.
+
+### 레인 1 — Termius → Windows (복구 시작점)
+- 핸드폰의 **Termius**(SSH 클라이언트. Termux가 아님)가 Windows(랩탑/미니PC)에 연결.
+- Windows는 **전원만 들어오면 로그인 세션 없이 자동 부팅**됨.
+- 자동 부팅 시 Windows 환경에 설치된 **에이전트 창(Claude Code, deepseek-v4-pro)**이 저절로 살아남.
+- 복구는 이 에이전트 창부터 시작됨. (첫 번째 레인)
+- 에이전트는 `wsl.exe --list --verbose` / `wsl.exe --status` 등으로 WSL/미니PC 상태를 직접 조회·복구 가능.
+
+### 레인 2 — Termux → proot Ubuntu (내 위치)
+- 나(Claude Code)는 proot Ubuntu 환경에 상주. 이 레인에서 상황을 관찰·기록.
+
+> **오늘 목표 정정:** 산출물은 **에피소드 문서 1개**. Boss가 **전부 원격으로만 통제**하며, 지금 **사무실 랩탑**을 Termius부터 불러 깨우는 중. 나는 그 과정을 이 문서의 원재료로 기록.
+
+### 진행 로그 (실시간)
+- [시작] Boss, 폰 → Termius → 사무실 랩탑 Windows 깨움. Windows 자동 부팅(로그인 세션 없음) → 에이전트 창(Claude Code, deepseek-v4-pro) 기동.
+- [첫 명령] 에이전트가 `wsl.exe --list --verbose` + `wsl.exe --status` 실행 → WSL/미니PC 상태 확인 중.
+
+### 상태 보고 — Windows 에이전트(Termius) 실측 (_Claude)
+
+**💻 랩탑 (Dell XPS 13 9370, "DTSLIB")**
+- OS: Windows 10 Home (2009) · CPU i7-8550U · RAM 16GB
+- 업타임: **7일 8시간 20분** (연속 가동 중)
+- **WSL: Ubuntu + wsl-min 모두 Stopped** (WSL2 백엔드/Hyper-V vSwitch 172.28.128.1은 올라와 있으나 인스턴스는 종료)
+
+**🐧 미니 PC (dev-batch, Linux) — ✅ 정상 (ADB 연결 대상)**
+- Tailscale 100.81.134.89 · LAN 192.168.219.101 (직결)
+- active/direct · ping <1ms · SSH:22 열림
+
+**기타:** dtslib(100.90.83.128) = offline (마지막 접속 9일 전)
+
+**토폴로지 정정:** "미니PC"는 랩탑(WSL)과 **별개** — `dev-batch`라는 독립 Linux 장치. 랩탑은 WSL을 올리는 Windows 머신(DTSLIB). 이전 세션에서 내가 "미니PC = Windows+WSL"로 착각했던 것 정정.
+
+### Q&A — WSL distro 2개(레인 2개)의 정체 (_Claude)
+
+**질문:** WSL이 왜 2개(Ubuntu + wsl-min)? 각각 OS로 봐야 되나? 왜 2개 만들었나? 2개가 맞나?
+
+**실측 결과:**
+- 각 WSL distro는 기술적으로 **별개 Linux 환경**(별도 루트파일시스템 + systemd + 프로세스, 커널만 공유) = 사실상 OS 인스턴스 2개.
+- 단, `wsl-min`은 부팅 시도 시 `Wsl/Service/CreateInstance/MountDisk/HCS/ERROR_PATH_NOT_FOUND` → **루트파일시스템(VHD)이 없어서 아예 못 뜸.**
+- 즉 실질 동작하는 건 `Ubuntu`(기본, `*`) 하나뿐. `wsl-min`은 등록만 남은 **깨진/고아 distro** (옛 "미니멀" 시도 잔재로 보임).
+
+**결론:** 2개가 "맞는" 게 아니라, 사실상 **1개(Ubuntu) + 잔재 1개(wsl-min)**. wsl-min은 `wsl --unregister wsl-min`로 정리 가능(무손실).
+
+### ADB 실측 (짐작 금지, 직접 측정) (_Claude)
+
+**내 환경(proot)에서 직접 잰 값:**
+- 폰 adbd `127.0.0.1:5900` → **OPEN** (폰이 ADB 서버로 떠있음)
+- `adb devices -l` → **빈 목록** (폰 adb 클라이언트 기준 연결된 device 없음)
+- 미니PC dev-batch `100.81.134.89`: **:22 OPEN** / :5555 CLOSED / :5900 CLOSED → SSH만, ADB포트 없음
+- 랩탑 `100.81.24.124`: **:22 OPEN / :2222 OPEN** (Windows + WSL SSH)
+
+**해석(확정된 부분만):** 폰은 adbd(5900) 서버로 살아있고, 미니PC·랩탑은 SSH로 접근 가능. 폰의 `adb devices`가 빈 건 "폰=클라이언트"가 아니라 "폰=서버" 구조라서일 가능성. (ADB 클라이언트로 어디에 붙는지는 미확인 — Boss 지시 대기)
+
+### Windows(Termius) 세션 들여다보기 가능 여부 — 실측 (_Claude)
+
+**결론: ✅ 가능.** 내 환경(proot)에서 SSH로 Windows에 붙어 Termius 세션(Windows Claude Code)을 관찰 가능.
+
+**실측 경로:**
+1. SSH `dtsli@100.81.24.124:22` → Windows C: 드라이브 접근 OK.
+2. 실행 중 프로세스 확인: **PID 1684 `claude`** = `...\@anthropic-ai\claude-code-win32-x64\claude.exe` (npm 설치, Windows 네이티브).
+3. 세션 트랜스크립트 읽기 가능: `C:\Users\dtsli\.claude\projects\` 아래 4개 프로젝트 (`C--Users-dtsli`, `C--Windows-system32`, `D--`, `D--PARKSY`), 각각 `.jsonl` 세션 파일 존재.
+
+**의미:** 레인2(proot, 나)에서 레인1(Windows Claude Code, Termius)의 세션 데이터를 SSH로 읽어 관찰 가능 → 양 레인 교차 감시 가능.
+
+### Windows 에이전트의 실제 조사 결과 (세션 트랜스크립트에서 발췌) (_Claude)
+
+`52179bb8…jsonl` 마지막 어시스턴트 응답:
+- **"크래시 아니고, 오늘 오후에 WSL을 누가 두세 번 껐다 켰다."**
+- `journalctl --list-boots`: `-2`(09-02 02:16 → 09-08 15:54, 6일 안정) / `-1`(09-08 15:55 → 16:14, 19분만 생존) / `0`(09-08 16:15 → 현재)
+- 이전 부팅 마지막 로그 = `systemd-poweroff.service` / `poweroff.target` → **깨끗한 종료, 크래시 아님.**
+
+**종합:** WSL 죽는 원인은 크래시가 아니라 외부의 정상 종료(poweroff). + 내 실측(wsl-min = VHD 없음 ERROR_PATH_NOT_FOUND)까지 합쳐 "왜 두 개"의 답이 됨.
+
+### 이동식 디스크 구조 파악 (실측) (_Claude)
+
+**물리 디스크 3개:**
+1. **내장 NVMe SSD** — Samsung PM981a 512GB (Fixed) → `C:` OS 494GB
+2. **외장 HDD** — WD My Passport 2TB (External) → `D:` DATA 1.76TB + **`W:` WTG_WIN10 107GB + `T:` WTG_EFI 520MB(FAT32)** = **Windows To Go**
+3. **SDXC 카드** — 512GB (Removable) → `E:` 477GB(NTFS, 볼륨명 `CCCOMA_X64FRE_KO-KR_DV9` = Windows10 설치미디어 KO-KR) + `X:` 257MB(FAT32)
+
+**핵심:** WD 외장 HDD에 **Windows To Go(W:) + EFI(T:)** 가 있고, SDXC 카드는 **Win10 설치 미디어**로 쓰임.
+
+### Windows 에이전트 세션 캡처 (핸드폰 저장) (_Claude)
+- `_notebook/windows-agent-capture/` 로 복사: **27개 .jsonl + history.jsonl (1.4MB)**, 전부 `C--Users-dtsli` 프로젝트. (다른 프로젝트 디렉토리 3개는 비어있음)
+
+### Windows 에이전트 세션 전체 해석 저장 (_Claude)
+- 전체 대화 26세션 읽고 해석 완료. 핵심 = 박씨의 **"재부팅해도 안 죽는 폰"(Shizuku 비루팅 무선 ADB 영속화, 2026-08-21)** 발명.
+- 타임라인: 03-29 설계 → 04-06 무선 구축 → 04-28 무선 포기(재부팅 리셋 미해결) → 08-21 Shizuku 돌파.
+- 남은 숙제 2개: (1) adb tcpip 5900 전 인터페이스 바인딩 보안 제한, (2) WSL 자동복구 AtLogon→이벤트 트리거 재작성.
+- 저장: `_notebook/windows-agent-capture/interpretation.md` (77줄 해석) + `agent-conversation-full.txt` (전체 대화) + 원본 `.jsonl` 27개.
+
+### 핵심 설계 진전 — 미니PC 관제허브 + 직결케이블 레인 (_Claude)
+
+**환경이 바뀐 이유 (Boss 설명):** 랩탑(Dell XPS13)이 작업 과부하 → 발열 + 배터리 부풀음(안전사고 위험) → 30만원 미니PC(dev-batch, Linux) 도입. 랩탑은 서버 부담을 못 짊.
+
+**새 설계:** 미니PC(dev-batch) = **관제 허브**(리눅스, 발열/배터리 문제 없음, 상시가동). 랩탑 = 작업 노드.
+
+**신규 복구 레인 3:** `폰 → Tailscale → 미니PC → [직결케이블] → 랩탑`
+- Tailscale/WiFi 통째로 죽어도 직결 링크로 통제 가능 = **네트워크 독립 레인.**
+- 구현: USB-C 이더넷(또는 USB 네트워킹) 포인트투포인트 + 고정 IP + 그 위 SSH.
+- (ADB는 안드로이드 통제용으로 유지, 랩탑↔미니PC는 직결 SSH가 맞는 채널.)
+
+**최종 레인 4계층:** ①폰→Tailscale→랩탑 ②폰→Termius→Windows에이전트 ③폰→미니PC→직결→랩탑(신규) ④WTG(OS 사망 구급차)
+
+### 내 분석 저장 — "C2C 케이블 하나로 되냐" 답변 (_Claude)
+
+**결론: C2C 케이블 하나만으로는 보통 안 됨.** USB는 host↔device 구조라 두 PC(둘 다 host)는 일반 케이블로 서로 못 붙음.
+
+**되는 방법 2가지:**
+- **A. 직결 이더넷** (확실): 랩탑 USB-C→이더넷 어댑터 + 이더넷 케이블 → 미니PC 이더넷. 고정 IP.
+- **B. C2C 1개** (조건부): 미니PC USB-C가 **가젯(device) 모드** 지원 시(g_ether). 대부분 일반 미니PC는 host-only라 불가.
+
+**판별 명령:** `ls /sys/class/udc` → 출력 있으면 B 가능, 없으면 A로.
+
+---
+
+## ✅ 세션 최종 저장 (2026-09-09) — 반복 방지용 요약 (_Claude)
+
+**이 세션에서 확정된 것:**
+1. 토폴로지: 랩탑(XPS13+WSL) / 미니PC(dev-batch, Linux 관제허브 후보) / 폰(S25 Ultra) / WTG(WD Passport).
+2. WSL 2개 = 의도된 2계층(Ubuntu 본진 + wsl-min 경량복구). wsl-min은 VHDX 소실로 죽음.
+3. 세션 떨어짐 원인: (a) 랩탑 WSL 초기화 태스크 3종 AtLogon 전용 → 미실행. (b) 미니PC sshd 죽음 → 원격 제어 불가.
+4. 핵심 통찰: 관제 허브(미니PC) 자체가 단일실패지점 → 스마트플러그(흔들어깨우기) + 직결케이블(네트워크독립) 보험 필요.
+5. 구매: 스마트플러그(즉시) + USB C 이더넷 어댑터(네트워크독립).
+
+**저장 위치:**
+- 메모리: `~/.claude/projects/-root-work/memory/recovery-solution-architecture.md` (64줄)
+- 산출물: `_notebook/windows-agent-capture/` (interpretation.md, episode-2026-09-09.md, episode-parse-result.md, agent-conversation-full.txt)
+- 본 일지: 이 파일(99-devlog.md)
+
+### 터묵스 vs 터미우스 — 레이어 구조 확정 (_Claude)
+
+**Boss가 정리한 접속 레이어 모델:**
+```
+Windows (상위 레이어)
+   └── WSL (하위 레이어 — Windows에 종속)
+```
+
+- **터묵스 채널 = WSL(하위) 작업로.** 위젯(1~4, d.claude/d.aider)으로 에이전트 세션 창 여는 용도.
+  → WSL은 Windows 아래라서 **Windows가 떨어지면 WSL도 같이 죽음 → 터묵스 채널도 끊김.**
+- **터미우스 = Windows(상위) 복구로.** 터묵스(WSL) 채널이 망가졌을 때, 상위 레이어에서 다시 호출/재요청.
+
+**한 줄:** 터묵스 = 하위(WSL) 작업로 · 터미우스 = 상위(Windows) 복구로.
+
+**교차복구 원칙과 동일:** "OS는 자기 자신을 못 고친다. WSL↔Windows 교차 복구." → 터묵스(WSL) ↔ 터미우스(Windows)가 상하 교차로 서로 복구.
