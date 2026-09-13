@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "parksy-gallery": {
+    "tablet-webtoon": {
       "command": "python3",
-      "args": ["/root/work/mcp-servers/parksy_gallery_mcp.py"]
+      "args": ["/root/work/mcp-servers/tablet_webtoon_mcp.py"]
     }
   }
 }
