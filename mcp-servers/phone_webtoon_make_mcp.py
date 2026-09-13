@@ -25,6 +25,20 @@ DISCLAIMER_CROP = 0.08  # 삼성 AI 경고문(하단 텍스트) — 하단 8% �
 VISION_SCRIPT = "/root/vision/see.py"  # BLIP 눈 (영구 설치)
 TG_SCRIPT = "/root/work/tg.sh"
 
+# ── 필름 스프로켓홀 (Boss 2026-09-13, 변수화) ──
+FILM_STRIP_W = 52
+FILM_HOLE_W = 24
+FILM_HOLE_H = 18
+FILM_HOLE_GAP = 30
+FILM_STRIP_COLOR = (14, 26, 20)
+FILM_HOLE_COLOR = (236, 231, 208)
+
+# ── 식자 말풍선 위치/크기 (변수화) ──
+BUBBLE_LEFT = 60
+BUBBLE_RIGHT = 60
+BUBBLE_BOTTOM = 14
+BUBBLE_FONT = 16
+
 
 # ── BLIP 비전 (눈) — 강제 사용 ──
 def _vision(image_path):
@@ -210,18 +224,16 @@ def _add_film_sprocket(path):
         from PIL import Image, ImageDraw
         img = Image.open(path).convert('RGB')
         w, h = img.size
-        strip_w = 52; hole_w = 24; hole_h = 18; gap = 30
-        strip = (14, 26, 20); hole = (236, 231, 208)
-        new_w = w + 2 * strip_w
-        out = Image.new('RGB', (new_w, h), strip)
-        out.paste(img, (strip_w, 0))
+        new_w = w + 2 * FILM_STRIP_W
+        out = Image.new('RGB', (new_w, h), FILM_STRIP_COLOR)
+        out.paste(img, (FILM_STRIP_W, 0))
         d = ImageDraw.Draw(out)
-        y = gap // 2
-        while y + hole_h < h:
-            cx_l = strip_w // 2; cx_r = new_w - strip_w // 2
-            d.rectangle([cx_l - hole_w // 2, y, cx_l + hole_w // 2, y + hole_h], fill=hole)
-            d.rectangle([cx_r - hole_w // 2, y, cx_r + hole_w // 2, y + hole_h], fill=hole)
-            y += gap + hole_h
+        y = FILM_HOLE_GAP // 2
+        while y + FILM_HOLE_H < h:
+            cx_l = FILM_STRIP_W // 2; cx_r = new_w - FILM_STRIP_W // 2
+            d.rectangle([cx_l - FILM_HOLE_W // 2, y, cx_l + FILM_HOLE_W // 2, y + FILM_HOLE_H], fill=FILM_HOLE_COLOR)
+            d.rectangle([cx_r - FILM_HOLE_W // 2, y, cx_r + FILM_HOLE_W // 2, y + FILM_HOLE_H], fill=FILM_HOLE_COLOR)
+            y += FILM_HOLE_GAP + FILM_HOLE_H
         out.save(path, quality=92)
     except Exception:
         pass
@@ -232,7 +244,7 @@ def _compose(title, cut_rel, dialogue):
     for i, (cut, text) in enumerate(zip(cut_rel, dialogue), 1):
         safe = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         panels.append(f'<section class="panel"><div class="cut"><img src="{cut}" alt="컷 {i}">'
-                      f'<div class="bubble"><span class="txt">{safe}</span></div></div></section>')
+                      f'<div class="bubble wt-bubble"><span class="txt">{safe}</span></div></div></section>')
     return f'''<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>{title} — PARKSY 웹툰</title>
 <style>:root{{--paper:#0c1710;--ink:#e9e5cf;--brass:#a08a4c}}*{{box-sizing:border-box;margin:0;padding:0}}
@@ -241,7 +253,7 @@ body{{background:var(--paper);color:var(--ink);font-family:"Nanum Myeongjo",seri
 .mast{{text-align:center;padding:18px 0 26px;border-bottom:1px solid rgba(160,138,76,.3)}}
 .mast h1{{font-family:Georgia,serif;font-weight:900;font-size:26px}}.mast .sub{{font-size:11px;letter-spacing:.3em;color:var(--brass);margin-top:6px}}
 .panel{{margin:26px 0}}.cut{{position:relative}}.cut img{{width:100%;display:block;border-radius:4px;box-shadow:0 14px 30px rgba(0,0,0,.5)}}
-.bubble{{position:absolute;left:60px;right:60px;bottom:14px;background:rgba(233,229,207,.96);color:#1a120c;padding:12px 16px;border-radius:14px;font-size:16px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.45);text-align:center}}
+.bubble{{position:absolute;left:{BUBBLE_LEFT}px;right:{BUBBLE_RIGHT}px;bottom:{BUBBLE_BOTTOM}px;background:rgba(233,229,207,.96);color:#1a120c;padding:12px 16px;border-radius:14px;font-size:{BUBBLE_FONT}px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.45);text-align:center}}
 footer{{text-align:center;color:var(--brass);font-size:12px;letter-spacing:.2em;padding:30px 0}}</style></head><body>
 <div class="wrap"><div class="mast"><h1>{title}</h1><div class="sub">PARKSY WEBTOON</div></div>
 {''.join(panels)}<footer>PARKSY · 박씨 종합잡지사</footer></div></body></html>'''
