@@ -41,18 +41,15 @@ BUBBLE_FONT = 13
 
 # ── 인터랙티브 (Boss 2026-09-13, 셀프컨테인드 — 모바일 표준) ──
 INTERACTIVE_CSS = """
-.wt-bubble{transition:opacity .45s}
-.wt-bubble.wt-in{animation:wt-sway 3.2s ease-in-out infinite}
-@keyframes wt-sway{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-.wt-char{display:inline-block;opacity:0;transform:scale(0)}
-.wt-in .wt-char{animation:wttype .45s cubic-bezier(.34,1.56,.64,1) forwards}
-@keyframes wttype{0%{opacity:0;transform:scale(1.3)}60%{opacity:1;transform:scale(.92)}100%{opacity:1;transform:scale(1)}}
+.wt-bubble{opacity:0;transition:opacity .4s;will-change:transform}
+.wt-bubble.wt-in{opacity:1}
+.wt-char{display:inline-block;opacity:0}
+.wt-in .wt-char{animation:wttype .4s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes wttype{0%{opacity:0;transform:translateY(6px) scale(1.4)}100%{opacity:1;transform:translateY(0) scale(1)}}
 .wt-bubble:hover{box-shadow:0 10px 32px rgba(0,0,0,.72),0 0 0 2px rgba(160,138,76,.55)}
-.wt-bubble.wt-shake{animation:wt-shake .45s !important}
-@keyframes wt-shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
 """
 INTERACTIVE_JS = """<script>
-(function(){var bs=document.querySelectorAll('.wt-bubble');if(!bs.length)return;for(var i=0;i<bs.length;i++){var b=bs[i];var t=b.textContent;b.innerHTML=t.split('').map(function(c,j){return '<span class="wt-char" style="animation-delay:'+(j*0.04).toFixed(3)+'s">'+(c===' '?'&nbsp;':c)+'</span>';}).join('');}for(var k=0;k<bs.length;k++){(function(el){el.addEventListener('click',function(){el.classList.remove('wt-shake');void el.offsetWidth;el.classList.add('wt-shake');});})(bs[k]);}if('IntersectionObserver'in window){var io=new IntersectionObserver(function(es){for(var j=0;j<es.length;j++){if(es[j].isIntersecting)es[j].target.classList.add('wt-in');else es[j].target.classList.remove('wt-in');}},{threshold:0.3});for(var l=0;l<bs.length;l++)io.observe(bs[l]);}else{for(var m=0;m<bs.length;m++)bs[m].classList.add('wt-in');}})();
+(function(){var bs=document.querySelectorAll('.wt-bubble');if(!bs.length)return;for(var i=0;i<bs.length;i++){var b=bs[i];var t=b.textContent;b.innerHTML=t.split('').map(function(c,j){return '<span class="wt-char" style="animation-delay:'+(j*0.04).toFixed(3)+'s">'+(c===' '?'&nbsp;':c)+'</span>';}).join('');}var shakes={};for(var k=0;k<bs.length;k++){(function(el){el.addEventListener('click',function(){shakes[el]=Date.now()+450;});})(bs[k]);}if('IntersectionObserver'in window){var io=new IntersectionObserver(function(es){for(var j=0;j<es.length;j++){if(es[j].isIntersecting)es[j].target.classList.add('wt-in');else es[j].target.classList.remove('wt-in');}},{threshold:0.3});for(var l=0;l<bs.length;l++)io.observe(bs[l]);}else{for(var m=0;m<bs.length;m++)bs[m].classList.add('wt-in');}function tick(){var now=Date.now(),vh=innerHeight;for(var j=0;j<bs.length;j++){var b=bs[j];if(!b.classList.contains('wt-in'))continue;var r=b.getBoundingClientRect(),c=r.top+r.height/2,d=Math.abs(c-vh/2);var kk=Math.max(0,1-d/(vh/2)),s=0.95+kk*0.13;var sway=Math.sin(now/800+j*1.3)*5;var sh=0;if(shakes[b]&&now<shakes[b]){var tt=(shakes[b]-now)/450;sh=Math.sin(now/40)*9*tt;}b.style.transform='scale('+s.toFixed(3)+') translateX('+(sway+sh).toFixed(1)+'px)';}requestAnimationFrame(tick);}requestAnimationFrame(tick);})();
 </script>"""
 
 
