@@ -101,18 +101,25 @@ def _fit100(p):
 
 
 def _design(title, body, vision):
-    """연출 기획 — 소스 기반 4컷 웹툰 설계. 몸동작 + 프롬프트(100자 압축)."""
-    words = [w for w in body.split() if not w.startswith("--")][:8]
-    gist = " ".join(words) if words else title[:40]
+    """연출 기획 — 소스 내용을 반영한 4컷 웹툰 설계. 몸동작 + 프롬프트(100자 압축).
+
+    2026-09-13 수정: 구판은 gist를 계산만 하고 프롬프트엔 한 글자도 안 써서
+    소스가 뭐든 컷 4개가 "잡지 가판대" 하드코딩으로 완전히 동일했던 버그가
+    있었다(태블릿(tablet_webtoon_mcp.py)에서 먼저 발견·수정된 걸 이쪽에도
+    반영). hook/gist를 실제 프롬프트 문자열에 삽입한다.
+    """
+    words = [w.strip(".,!?") for w in body.split() if not w.startswith("--") and len(w) > 1][:12]
+    gist = " ".join(words[:6]) if words else title[:40]
+    hook = words[0] if words else "이야기"
     core = [
         ("앞에 서다", "정면. 두 손 뒤로. 대상을 바라보며 선다.",
-         f"박씨 얼굴 합성, 다크그린 잡지 가판대 64권 앞 정면 전신 서서 두 손 뒤로 바라봄, 황동 금박 간판"),
-        ("집어 눕히다", "손을 뻗어 한 조각을 집는다 → 가로로 눕힌다.",
-         f"박씨 얼굴 합성, 손 클로즈업, 잡지 한 권 집어 다크그린 테이블에 가로로 눕히는 순간, 황동 측면 조명"),
-        ("일으켜 세우다", "눕힌 것을 세로로 일으켜 세운다 → 빛나는 영상으로 변한다.",
-         f"박씨 얼굴 합성, 눕힌 잡지 세로로 일으켜 세우며 표지가 빛나는 영상 프레임으로 변하는 순간, 역동적 구도"),
-        ("다시 이 집으로", "세운 것을 끌어안듯 다시 제자리에 꽂는다 → 미소.",
-         f"박씨 얼굴 합성, 영상에서 돌아온 잡지 다시 가판대에 꽂으며 미소 전신 구도, 루프 완성"),
+         f"박씨 얼굴 합성, {hook} 주제 배경 앞 정면 전신, 두 손 뒤로 바라봄, 다크그린 황동 조명"),
+        ("집어 눕히다", "손을 뻗어 핵심을 집는다 → 눕힌다.",
+         f"박씨 얼굴 합성, 손 클로즈업, {gist} 관련 오브제를 테이블에 눕히는 순간, 측면 조명"),
+        ("일으켜 세우다", "눕힌 것을 세운다 → 빛나는 결과로 변한다.",
+         f"박씨 얼굴 합성, {hook} 오브제 세로로 세우며 빛나는 프레임으로 변하는 순간, 역동 구도"),
+        ("돌아오다", "완성된 것을 끌어안듯 제자리로.",
+         f"박씨 얼굴 합성, {gist} 완성물 안고 돌아와 미소, 전신 구도, 루프 완성"),
     ]
     cuts = [{"n": i+1, "scene": sc, "motion": mo, "prompt": _fit100(pr)} for i, (sc, mo, pr) in enumerate(core)]
     return {"title": f"웹툰 — {title}", "source_gist": gist, "vision": vision, "cuts": cuts}
@@ -176,6 +183,7 @@ def webtoon_assemble(dialogue=None, title="웹툰"):
             ext = os.path.splitext(pats[i])[1]
             dst = os.path.join(ASSET_DIR, f"cut_{i+1:02d}{ext}")
             _crop_disclaimer(pats[i], dst)
+            _add_film_sprocket(dst)
             cut_rel.append(f"cuts/cut_{i+1:02d}{ext}")
         html = _compose(title, cut_rel, dialogue[:n])
         out = os.path.join(WEBTOON_DIR, "index.html")
@@ -194,6 +202,29 @@ def _crop_disclaimer(src, dst):
         img.crop((0, 0, w, int(h * (1 - DISCLAIMER_CROP)))).save(dst)
     except Exception:
         shutil.copy(src, dst)  # PIL 실패 시 원본 복사
+
+
+def _add_film_sprocket(path):
+    """필름 스프로켓홀 효과 — 좌우 다크그린 스트립 + 흰색 구멍 (Boss 2026-09-13)."""
+    try:
+        from PIL import Image, ImageDraw
+        img = Image.open(path).convert('RGB')
+        w, h = img.size
+        strip_w = 52; hole_w = 24; hole_h = 18; gap = 30
+        strip = (14, 26, 20); hole = (236, 231, 208)
+        new_w = w + 2 * strip_w
+        out = Image.new('RGB', (new_w, h), strip)
+        out.paste(img, (strip_w, 0))
+        d = ImageDraw.Draw(out)
+        y = gap // 2
+        while y + hole_h < h:
+            cx_l = strip_w // 2; cx_r = new_w - strip_w // 2
+            d.rectangle([cx_l - hole_w // 2, y, cx_l + hole_w // 2, y + hole_h], fill=hole)
+            d.rectangle([cx_r - hole_w // 2, y, cx_r + hole_w // 2, y + hole_h], fill=hole)
+            y += gap + hole_h
+        out.save(path, quality=92)
+    except Exception:
+        pass
 
 
 def _compose(title, cut_rel, dialogue):
