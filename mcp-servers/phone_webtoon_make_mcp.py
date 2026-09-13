@@ -39,6 +39,22 @@ BUBBLE_RIGHT = 60
 BUBBLE_BOTTOM = 14
 BUBBLE_FONT = 13
 
+# ── 인터랙티브 (Boss 2026-09-13, 셀프컨테인드 — 모바일 표준) ──
+INTERACTIVE_CSS = """
+.wt-bubble{transition:opacity .45s}
+.wt-bubble.wt-in{animation:wt-sway 3.2s ease-in-out infinite}
+@keyframes wt-sway{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.wt-char{display:inline-block;opacity:0;transform:scale(0)}
+.wt-in .wt-char{animation:wttype .45s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes wttype{0%{opacity:0;transform:scale(1.3)}60%{opacity:1;transform:scale(.92)}100%{opacity:1;transform:scale(1)}}
+.wt-bubble:hover{box-shadow:0 10px 32px rgba(0,0,0,.72),0 0 0 2px rgba(160,138,76,.55)}
+.wt-bubble.wt-shake{animation:wt-shake .45s !important}
+@keyframes wt-shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+"""
+INTERACTIVE_JS = """<script>
+(function(){var bs=document.querySelectorAll('.wt-bubble');if(!bs.length)return;for(var i=0;i<bs.length;i++){var b=bs[i];var t=b.textContent;b.innerHTML=t.split('').map(function(c,j){return '<span class="wt-char" style="animation-delay:'+(j*0.04).toFixed(3)+'s">'+(c===' '?'&nbsp;':c)+'</span>';}).join('');}for(var k=0;k<bs.length;k++){(function(el){el.addEventListener('click',function(){el.classList.remove('wt-shake');void el.offsetWidth;el.classList.add('wt-shake');});})(bs[k]);}if('IntersectionObserver'in window){var io=new IntersectionObserver(function(es){for(var j=0;j<es.length;j++){if(es[j].isIntersecting)es[j].target.classList.add('wt-in');else es[j].target.classList.remove('wt-in');}},{threshold:0.3});for(var l=0;l<bs.length;l++)io.observe(bs[l]);}else{for(var m=0;m<bs.length;m++)bs[m].classList.add('wt-in');}})();
+</script>"""
+
 
 # ── BLIP 비전 (눈) — 강제 사용 ──
 def _vision(image_path):
@@ -254,9 +270,9 @@ body{{background:var(--paper);color:var(--ink);font-family:"Nanum Myeongjo",seri
 .mast h1{{font-family:Georgia,serif;font-weight:900;font-size:26px}}.mast .sub{{font-size:11px;letter-spacing:.3em;color:var(--brass);margin-top:6px}}
 .panel{{margin:26px 0}}.cut{{position:relative}}.cut img{{width:100%;display:block;border-radius:4px;box-shadow:0 14px 30px rgba(0,0,0,.5)}}
 .bubble{{position:absolute;left:{BUBBLE_LEFT}px;right:{BUBBLE_RIGHT}px;bottom:{BUBBLE_BOTTOM}px;background:rgba(233,229,207,.96);color:#1a120c;padding:12px 16px;border-radius:14px;font-size:{BUBBLE_FONT}px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.45);text-align:center}}
-footer{{text-align:center;color:var(--brass);font-size:12px;letter-spacing:.2em;padding:30px 0}}</style></head><body>
+footer{{text-align:center;color:var(--brass);font-size:12px;letter-spacing:.2em;padding:30px 0}}{INTERACTIVE_CSS}</style></head><body>
 <div class="wrap"><div class="mast"><h1>{title}</h1><div class="sub">PARKSY WEBTOON</div></div>
-{''.join(panels)}<footer>PARKSY · 박씨 종합잡지사</footer></div></body></html>'''
+{''.join(panels)}<footer>PARKSY · 박씨 종합잡지사</footer></div>{INTERACTIVE_JS}</body></html>'''
 
 
 # ── JSON-RPC stdio ──
