@@ -12,6 +12,8 @@ phone-webtoon-make MCP — 폰 웹툰 메이크. 웹툰 작가·연출 시퀀스
   - webtoon_direct 는 반드시 BLIP 비전(눈)으로 소스를 "본 뒤"에 설계한다.
   - 이미지 생성(얼굴 합성)은 Boss 몫, 몸동작 연출·식자·조립은 Claude 몫.
 """
+# ⚠️ 작동 원칙 (Boss 2026-09-13 — 절대 오버라이드 금지)
+#   Claude = 실행만. 판단·드라이빙 금지. 방향·판단은 전부 Boss가 정한다.
 import json, sys, os, glob, shutil, subprocess, time
 from pathlib import Path
 

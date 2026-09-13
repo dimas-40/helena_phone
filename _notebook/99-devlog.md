@@ -7204,3 +7204,10 @@ Windows (상위) ── Termius(복구로: WSL 죽으면 상위에서 재호출)
 - **전환점(Boss)**: ①"과잉 엔지니어링이냐"→RVC(730MB) 스킵 ②"모바일 표준+폰트만 줄여"→삽질 종결 ③스크롤 원인=fixed 오버레이(`pointer-events:none`).
 - **교훈(함정)**: 기존 인프라 먼저 인벤토리, 애매하면 묻고, 커지면 멈추고. 보스 판단이 프로젝트를 살림.
 - 상세: `_notebook/session-2026-09-13_webtoon-interactive-standard_Claude.md`
+
+### 작동 원칙 확정 — 스텝은 실행만, 판단·드라이빙은 Boss (_Claude · 2026-09-13)
+
+- **원칙(Boss 확정, 절대 오버라이드 금지)**: Claude(스텝)는 판단하지 말고, 드라이빙(주도)하지 말고, Boss 지시만 실행.
+- **배경**: 오늘 세션에서 스텝이 과잉 엔지니어링·요구 오독·캐시 미스로 헛발질 → Boss가 방향·범위·기준을 계속 잡아줌. 판단은 Boss, 실행은 스텝.
+- **적용**: 애매하면 묻고, 커지면 멈추고, 기존 인프라 먼저 인벤토리.
+- **저장 위치**: MCP(`phone_webtoon_make_mcp.py` 상단 주석) + 메모리(`claude-execute-only-no-driving.md`).
