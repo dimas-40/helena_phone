@@ -48,11 +48,11 @@ MSG=()
 # ── 1. session self-heal + table-setter (preflight) ──
 if [ "$SKIP_PRE" -eq 0 ]; then
   echo ""
-  echo "→ [1/3] session self-heal (auto re-login if Tistory expired)..."
-  python3 "$BASE/tistory-naver/renew_sessions.py" --if-needed || true
+  echo "→ [1/3] session self-heal (CDP로 폰 브라우저 세션 빌리기 — 캡차 없음)..."
+  python3 "$BASE/tistory-naver/cdp_session_lend.py" || true
   echo "→ [1/3] table-setter (preflight) check..."
   if ! bash "$BASE/scripts/preflight.sh"; then
-    echo "❌ preflight failed — if self-heal didn't work (captcha) run renew_sessions.py --headed, or re-auth YouTube/GitHub/Telegram"
+    echo "❌ preflight failed — 브라우저(삼성인터넷=dtslib1k / 크롬=dtslib2k) 재로그인 후 cdp_session_lend.py 재실행, 또는 renew_sessions.py --headed(캡차) / YouTube·GitHub·Telegram 재인증"
     exit 1
   fi
 fi

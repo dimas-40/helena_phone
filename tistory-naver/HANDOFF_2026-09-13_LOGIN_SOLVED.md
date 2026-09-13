@@ -3,6 +3,25 @@
 > 이전 세션 컨텍스트가 꽉 차서 새 세션이 이어받는다. 이 파일부터 읽을 것.
 > 아래 내용은 전부 WSL(Claude Sonnet 5, dtslib-papyrus)이 오늘 실측으로 확인한 것이지, 추정이 아니다.
 
+## 🔄 UPDATE (폰 세션, 동일 날짜 — 아래 §0의 "폰 혼자 불가능"은 폐기)
+
+폰(proot) 세션이 **폰 단독으로 CDP 세션빌리기가 가능함을 실측 확정**했다.
+WSL의 "폰은 자기 자신에게 ADB 못 붙는다(wireless debugging 자기참조 unauthorized)"는 원인 오진이었고,
+실제 원인은 **proot adb 키(`b07fd`)와 Termux(승인된) 키(`75f1a`) 불일치**였다. 키만 맞추면 됨.
+
+- **정본 파이프라인은 그대로 `make_pair.sh --tistory` 하나** — 단, 세션갱신 단계가 바뀜:
+  `renew_sessions.py --if-needed`(캡차) → **`cdp_session_lend.py`(캡차 없음, 신규)**.
+- **브라우저↔계정 매핑 (현재 유지 중):**
+  - 삼성인터넷(`@Terrace_devtools_remote`) = **본사그룹 dtslib1k** (dtslib1k·hitop·lafilosofia·midmath·midsocial)
+  - 크롬(`@chrome_devtools_remote`) = **지사그룹 dtslib2k** (korean-parksy·kr-merit-bluff/shaman/halfblood/aggro)
+- **동작:** Boss가 위 두 브라우저에 로그인 1회씩만 해두면, 매 발행마다 `cdp_session_lend.py`가
+  살아있는 세션을 새로 뽑아 10개 프로파일에 시드 → preflight 통과 → 발행. 캡차 제거.
+- **수정 파일:** `tistory-naver/cdp_session_lend.py`(신규) · `scripts/make_pair.sh` · `scripts/preflight.sh`
+  (preflight는 accounts.json의 `id` 기준으로 state 조회하도록 정렬 — 기존 `account`(그룹) 기준은
+  낡은 `dtslib2k_state.json`(2124개 원시덤프)을 읽어 400 오탐을 냈음. 그 원시덤프는 정리됨.)
+
+---
+
 ## 0. 결론부터 — 캡차 안 풀고 로그인하는 법 (지금 바로 되는 것)
 
 박씨가 평소 쓰는 **삼성인터넷**은 이미 티스토리에 로그인돼 있다(캡차 없음, 낯선 기기가 아니라서).

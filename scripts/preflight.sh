@@ -51,7 +51,7 @@ echo "════════════════════════�
 
 # ── 1. Tistory sessions (live manage URL probe) ──
 echo ""
-echo "[1] Tistory sessions (5 blogs, live probe)"
+echo "[1] Tistory sessions (10 blogs, live probe)"
 TISTORY_RESULT=$(python3 - "$BASE" <<'PY'
 import json
 import sys
@@ -60,19 +60,25 @@ import urllib.request
 
 BASE = sys.argv[1]
 
-# account→blog slug (ecosystem.json SSOT, fall back to samples if missing)
+# account→blog slug — accounts.json(id→blog) 기준 (renew_sessions.py·post.py 와 동일).
+# load_ecosystem.py 의 account 필드(dtslib1k/dtslib2k 그룹명)는 state 파일명(id)과 불일치하므로
+# 여기선 accounts.json 을 우선하고, 없으면 load_ecosystem 폴백.
 try:
-    sys.path.insert(0, BASE + "/scripts")
-    from load_ecosystem import repos
-    pairs = [(r.get("account", ""), r.get("blog", "")) for r in repos()]
+    _accs = json.load(open(BASE + "/tistory-naver/accounts.json", encoding="utf-8"))["accounts"]
+    pairs = [(a["id"], a["blog"]) for a in _accs]
 except Exception:
-    pairs = [
-        ("galaxys21", "galaxys21-pwuser"),
-        ("mynote", "mynote11605"),
-        ("piano", "helena-piano"),
-        ("metalcare", "helena-metalcare"),
-        ("faith", "helana-christianity"),
-    ]
+    try:
+        sys.path.insert(0, BASE + "/scripts")
+        from load_ecosystem import repos
+        pairs = [(r.get("account", ""), r.get("blog", "")) for r in repos()]
+    except Exception:
+        pairs = [
+            ("galaxys21", "galaxys21-pwuser"),
+            ("mynote", "mynote11605"),
+            ("piano", "helena-piano"),
+            ("metalcare", "helena-metalcare"),
+            ("faith", "helana-christianity"),
+        ]
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
