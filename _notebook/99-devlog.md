@@ -7132,3 +7132,75 @@ Windows (상위 레이어)
 **한 줄:** 터묵스 = 하위(WSL) 작업로 · 터미우스 = 상위(Windows) 복구로.
 
 **교차복구 원칙과 동일:** "OS는 자기 자신을 못 고친다. WSL↔Windows 교차 복구." → 터묵스(WSL) ↔ 터미우스(Windows)가 상하 교차로 서로 복구.
+
+### 미니PC 에이전트 호출 UX 확정 — 배너+타이핑 (sudo 불필요) (_Claude)
+
+- Boss가 미니PC 클로드 세션(병렬)에서 "2201/2202 포트 강제실행"이 아니라 **"SSH→배너→claude/ds 타이핑"** 방식을 원함 (랩탑 profile.ps1과 동일 UX).
+- 미니PC 클로드가 구현: `~/bin/pc-controller-menu.sh`(bash 배너) + `.bashrc` source. SSH(포트22) 붙으면 배너 뜨고 `claude`/`ds` 직접 타이핑.
+- 2201/2202 포트는 옵션으로 유지(안 지움).
+- **효과: 에이전트 호출은 sudo 불필요** — "빠진 세 조각"의 sudo 문제 사실상 해소.
+
+## ✅ 미니PC 관제허브 완성 (2026-09-09 최종 정리) (_Claude)
+
+### 미니PC 세션(병렬)에서 완료된 것
+1. **Termius 직결 구축 + 검증** — ADB로 폰 Termius 조작해 ED25519 키(`mini`) 생성+authorized_keys 등록, 호스트 `mini`(100.81.134.89:22) 등록. sshd 로그로 폰(100.103.250.45) 공개키 인증 성공 확인(05:08:31).
+2. **부팅생존 버그 수정** — 딥시크가 만든 sshd 구조에 `ssh.service enable` 누락 → **재부팅하면 sshd 자동기동 안 되는 버그** 발견+수정. (재부팅 세션 드롭의 부팅레벨 원인)
+3. **배너 추가** — `~/bin/pc-controller-menu.sh`(bash 배너) + .bashrc source. SSH 붙으면 배너→`claude`/`ds` 타이핑.
+4. **설정 저장** — `memory/minipc_termius_setup.md`에 alias/IP/포트/유저/키이름 전부.
+
+### 레이어 구조 확정 (Boss가 명시)
+```
+Windows (상위) ── Termius(복구로: WSL 죽으면 상위에서 재호출)
+   └── WSL (하위) ── Termux(작업로: 에이전트 세션)
+미니PC (독립 상위) ── 랩탑 전체 죽어도 생존 (관제허브)
+```
+- 원칙: **"OS는 자기 자신 못 고친다. WSL↔Windows 교차 복구"** → 하위(WSL) 죽음은 상위(Windows)에서 깨움.
+- 복구 레이어 3단: **WSL → Windows → 미니PC**.
+
+### 미니PC 최종 상태 (완성)
+| 항목 | 상태 |
+|------|------|
+| 에이전트(claude+ds) | ✅ |
+| 배너+타이핑 호출 | ✅ |
+| Termius 직결(폰↔미니PC) | ✅ 검증 |
+| 렌더 OOM 캡(12g) | ✅ |
+| sshd 부팅생존(enable) | ✅ |
+| 설정 저장 | ✅ |
+
+### 오늘 전체 요약 (한 줄)
+미니PC(dev-batch)를 "폰에서 랩탑처럼 쓰는 관제허브"로 완성. 세션 드롭 원인(렌더 OOM + sshd 부팅생존 버그) 2개 잡고, Termius 직결+배너+에이전트까지 전부 구축. 레포 2곳(helena_phone·dtslib-localpc)에 세션 기록 커밋/푸시 완료.
+
+### 폰 비전(눈) 구축 완료 — 온디맨드 방식 확정 (_Claude)
+
+- **결과**: 폰 proot Ubuntu에 BLIP 캡션 모델 설치 완료 (torch 2.14.0+cpu + transformers 5.17 + BLIP 944MB safetensors).
+- **사용 방식(확정)**: 온디맨드 — `describe_screen(이미지)` 호출 → 로드(1.1초) → 캡션(3초) → 프로세스 종료 → 램 자동 해제. **상주 안 함.**
+- **램 실측**: 피크 554MB (1회), 종료 후 자동 해제 (폰 여유 3.6~3.9GB 유지). 램 안 터짐.
+- **구성**: `/root/vision/` (vision_server.py + blip_model/) — describe_screen() + MCP 등록 가능.
+- **경량 대안**: Termux onnxruntime + MobileNetV2(14MB, 분류) — `/data/data/com.termux/files/home/vision/see.py`.
+- **설치 과정 해결 이슈**: Termux(bionic) tokenizers .so 실패→proot(glibc) 전환 / pip 멈춤→curl -C- 재개 / PyPI torch CUDA 의존→CPU휠 --no-deps / HF 멈춤→adb push(미니PC→폰 944M/152초).
+
+### 유튜브 채널 리네임 수습 + SSOT 단일화 결론 (_Claude · 2026-09-12)
+
+- **발견**: 유튜브 채널이 `@justino-fashion` → `@Parksy-webzine` 로 핸들 리네임(채널 ID `UCRJsaNvt9tQtOJ1tZ-_T3Yg` 동일). 파피루스·폰 SSOT가 "레포만 parksy-webzine, 핸들은 justino 그대로" 반쪽 리네임 상태였음.
+- **수습(SSOT 정합)**: 폰 `ecosystem.json`(sameAs/handle/topic/channel) + 하드코딩(apply_geold·accounts.template·CONSTITUTION) + 180 HTML 재생성. 파피루스 SSOT 활성 10파일 `@Parksy-webzine` 반영 → 커밋 `af5d063` push. `load_ecosystem --check` ✅ 정합.
+- **채널키 stale**: yt_upload/yt_geo_origin `main/phone` → 6채널 키(branch·phoneparis·alexandria·artrew·parksy-webzine·espiritu) — PC 세션이 SSH로 완결, 내 실측 컨펌(미커밋).
+- **신개념 잡지 루프(parksy-webzine)**: 웹진(눕다)→YouTube(세우다)→티스토리(루프). 64권 캐러셀+다크그린 테마+선반 30px. Content FAB `publishing`=implemented, `video`=빈 BOM(루프 완성 조건).
+- **결론(Boss 확정)**: 공통 SSOT 하나(dtslib-papyrus)를 폰/WSL/미니PC가 git pull로 참조 + 역할 분리(폰=실행·공장장, WSL=개발, 미니PC=딥시크). 오늘 채널키 불일치는 "SSOT 따로 놀아서" 생긴 사고 — 단일화로 구조적 재발 차단.
+- **남은 갭**: GCP OAuth 클라이언트 ID/시크릿 수동 발급 1회(유일한 병목) · 쿼터는 프로젝트 단위 공유(10,000유닛/일 ≈ 업로드 6개).
+- 상세: `_notebook/session-2026-09-12_parksy-webzine-loop-ssot_Claude.md`
+
+### 양산 파이프라인 확정 — 그록 편집장 원큐 CLI 생성 (_Claude · 2026-09-12)
+
+- Boss 확정: 물리 잡지(일본 6~7 + 한국 ~10권) 벤치마크 → 이미지 파싱 → **그록(편집장)이 CLI Imagine/PD 원큐 일괄 생성** → 보스가 "표절 베이스라인에서 내 스타일 편집" → 나(공장장)가 웹진/유튜브/티스토리/웹툰 4매체 루프로 양산.
+- 첫 worked example = 64권 스킨 일괄 (`a45129e` 샘플2권 → `72febe3` 64권 일괄 + `_rebuild_shelf.py`).
+- 원장: `parksy-webzine/00_TRUTH/PRODUCTION.md` · 세션: `_notebook/session-2026-09-12_grok-editorial-production_Claude.md`
+
+### 웹툰 인터랙티브 식자 파이프라인 확정 — 콜드스타트·모바일 표준·과잉 컷 (_Claude · 2026-09-13)
+
+- **티스토리 콜드스타트 해결**: CDP 세션빌리기(`cdp_session_lend.py` 신규) — 삼성인터넷=본사(dtslib1k 5블로그)·크롬=지사(dtslib2k 5블로그) 세션 자동 빌리기, 캡차 없이 10블로그 커버. adb 키 불일치(proot/Termux)가 근본 원인.
+- **웹툰 발행**: `kr-merit-aggro.tistory.com/4` + 카테고리 2레인(잡지 16타이틀 + 몸춤 5카테고리 espiritu-tango).
+- **인터랙티브 식자(핵심 연출)**: 스크롤 위치 스케일(0.95~1.08) + 글자 타이핑 + 좌우 sway + 호버 글로우 + 탭 흔들림. 셀프컨테인드(콘텐츠 내장).
+- **모바일 표준 확정**: 말풍선 13px, 데스크톱/모바일/앱 동일. 필름 스프로켓홀 효과. MCP 변수화(FILM_*/BUBBLE_*/INTERACTIVE_*).
+- **전환점(Boss)**: ①"과잉 엔지니어링이냐"→RVC(730MB) 스킵 ②"모바일 표준+폰트만 줄여"→삽질 종결 ③스크롤 원인=fixed 오버레이(`pointer-events:none`).
+- **교훈(함정)**: 기존 인프라 먼저 인벤토리, 애매하면 묻고, 커지면 멈추고. 보스 판단이 프로젝트를 살림.
+- 상세: `_notebook/session-2026-09-13_webtoon-interactive-standard_Claude.md`
