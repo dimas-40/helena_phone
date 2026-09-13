@@ -241,7 +241,7 @@ body{{background:var(--paper);color:var(--ink);font-family:"Nanum Myeongjo",seri
 .mast{{text-align:center;padding:18px 0 26px;border-bottom:1px solid rgba(160,138,76,.3)}}
 .mast h1{{font-family:Georgia,serif;font-weight:900;font-size:26px}}.mast .sub{{font-size:11px;letter-spacing:.3em;color:var(--brass);margin-top:6px}}
 .panel{{margin:26px 0}}.cut{{position:relative}}.cut img{{width:100%;display:block;border-radius:4px;box-shadow:0 14px 30px rgba(0,0,0,.5)}}
-.bubble{{position:absolute;left:14px;right:14px;bottom:14px;background:rgba(233,229,207,.96);color:#1a120c;padding:12px 16px;border-radius:14px;font-size:16px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.45);text-align:center}}
+.bubble{{position:absolute;left:60px;right:60px;bottom:14px;background:rgba(233,229,207,.96);color:#1a120c;padding:12px 16px;border-radius:14px;font-size:16px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.45);text-align:center}}
 footer{{text-align:center;color:var(--brass);font-size:12px;letter-spacing:.2em;padding:30px 0}}</style></head><body>
 <div class="wrap"><div class="mast"><h1>{title}</h1><div class="sub">PARKSY WEBTOON</div></div>
 {''.join(panels)}<footer>PARKSY · 박씨 종합잡지사</footer></div></body></html>'''
