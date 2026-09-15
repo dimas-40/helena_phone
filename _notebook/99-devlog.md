@@ -7241,3 +7241,13 @@ Windows (상위) ── Termius(복구로: WSL 죽으면 상위에서 재호출)
 - **서빙맵(SERVING_MAP.md)**: "A 작업 → B.md 1개만 주입" 1:1 매핑 규칙.
 - **교훈**: ①Perplexity=검색래퍼(생성 아님, return_images는 스톡) ②대량 원재료 수집=Perplexity, 가공·구조화=Claude ③품질민감 소수(SF)는 GUI, 물량(64+)은 API 배치.
 - 상세: `parksy-webzine/00_TRUTH/HANDOFF_2026-09-14.md` · `00_TRUTH/BASELINES/SERVING_MAP.md`
+
+### 웹툰 투 레인 + "앱이 있는 웹진" 방향 + 식자 3차 확정 (_Claude · 2026-09-15)
+
+- **웹툰 투 레인 확정(Boss)**: 반자동 레인(폰 MCP — BLIP 눈+연출+식자, 이미지는 Boss 수동)과 자동 레인(WSL 태블릿 — 100% 자동) **병행**. 대체가 아니라 분산 얼로케이션. `memory/webtoon-two-lanes.md`
+- **OpenAI + Perplexity 중단(Boss)**: 이미지=Grok(Imagine), 리서치=Grok/WebSearch. gpt-image-1·sonar-pro 호출 금지. `memory/no-openai-no-perplexity.md`
+- **웹툰 식자 3차 확정(실측 반영)**: 식자 = 그림(img) + 그 아래 캡션(.cap) 두 요소, **절대배치 0**. 오버레이 8종(.bub/.narr/.sfx/.frame/.scene-*/꼬리/괘선) 전부 폐기 → **필름 스프로켓 단일**로. `parksy-webzine/00_TRUTH/DIRECTION.md`
+- **티스토리 제약 정정**: `<script>`는 **살아남고** `<style>`만 지워진다(구판 "script도 지워짐"은 오진). → JS 인터랙션은 티스토리에서 가능, 스타일만 인라인으로 대응.
+- **"앱이 있는 웹진" 방향(Boss: 중요)**: FEMME를 **설치형 PWA**로(manifest + service worker + icons + shortcuts). Fashion Lab **25스테이션**(색채/소재/스타일링/사이즈/온습도/매거진) — 6완성/19준비.
+- **색상환 배색 시뮬레이터(실측 라이브)**: `lab/01-colorwheel.html` — 실제 색채학 계산(`%360`, 보색 `+180`, 삼각 `+120`, 유사색 `±30`, `hsl()`) → FEMME 카탈로그 실제 색상값과 매칭. 더미 아님.
+- **ref 경로 (WSL 태블릿 세션 = 다른 환경 산출)**: `parksy-webzine/webzine/fashion-01-femme/lab/01-colorwheel.html` · `.../lab/index.html` · `.../manifest.json` + `webzine/sw-femme.js` · `parksy-webzine/00_TRUTH/DIRECTION.md` · `parksy-webzine/scripts/webtoon_auto.py`(자동레인) · `mcp-servers/phone_webtoon_make_mcp.py`(반자동레인)
