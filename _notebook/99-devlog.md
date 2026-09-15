@@ -7222,3 +7222,22 @@ Windows (상위) ── Termius(복구로: WSL 죽으면 상위에서 재호출)
 - **방향 vs 실행(교훈)**: Boss가 하는 "무엇을 만들지"(편집·큐레이션·정체성 설계)가 "어떻게 만들지"(코드 실행)보다 희소·고가치. 스텝(AI)은 실행만. **14시간 육체노동 + STT로 방향을 유지한 게 핵심 실력.**
 - **현재 상태**: 뼈대(정체성+64장르+SSOT) 완성. 이미지 44개 미스매치(재생성 대기, 프롬프트 TG 전송) · 본문 스캐폴드 · 커머스 미구현.
 - 상세: `parksy-webzine/00_TRUTH/HANDOFF_2026-09-14.md`
+
+### 퍼플렉시티 API 이미지 생성 검증 + 스킨 44개 스톡 다운로드 (_Claude · 2026-09-14)
+
+- **검증 결과(실측)**: Perplexity API는 이미지 "생성" 없음. `/v1/models` = 49개 전부 텍스트 모델(claude·gemini·gpt·grok 등, 이미지 생성 모델 없음). `/v1/images/generations` 404. `return_images` = 스톡사진 검색 링크만.
+- **회사 vs API 구분**: Perplexity 회사의 이미지·영상 생성(Nano Banana 2, Seedream)은 **앱/웹 Pro UI 전용, API 미공개.** API는 검색·답변 텍스트 전용.
+- **스킨 44개 다운로드**: `return_images` API로 스톡 44개 일괄 수집 → `assets/covers/{id}.jpg` 덮어쓰기(커밋 63b5678). Grok 주간한도 소진 상태라 Perplexity로 대체.
+- **품질 판단**: Perplexity 스톡은 "검색 편의"(쿼리→관련 이미지 URL)일 뿐, **품질은 공개 스톡사이트(vecteezy·pexels·shutterstock 등)와 동일.** 실사 장르엔 적합, SF 장르(메카·우주·심해)엔 AI 생성 필요 → SF 12개 프롬프트 Grok Imagine용 별도 전송.
+- **잔액($10) 판단**: 이미지 "품질 향상"용이 아니라 "검색 자동화"용. 진짜 AI 생성은 Grok Imagine 또는 Gemini API 직접.
+
+### PARKSY 웹진 — Perplexity $10 소진 + OpenAI SF 이미지 + 레이아웃 엔진·64페이지 (_Claude · 2026-09-15)
+
+- **Perplexity 딥스크랩 완주 ($10 전액 소진)**: 16카테고리 + 64장르 + 5취향 + 작곡가30(브루크너·말러·포레) + 작가10(무라카미·한강) + 잡지36 딥다이브 + 레이아웃기술6 + 누락베이스라인6 = **베이스라인 백서 130+개 .md** (출처 포함). 공리1(대놓고 표절)의 소스 자료.
+- **JSON 스키마 정규화**: `normalize_presets.py` — Perplexity 산문→JSON 프리셋 85개. modules→sections 통일, 재귀 hex 추출, 필수 키 5개 보장(불량 0).
+- **layout_engine.py 구현**: PresetLoader + CSS Grid Generator + Article Synthesizer. **하우스 팔레트(다크그린#0c1710+브라스#a08a4c) 고정 + 섹션별 콘텐츠 차별화 + 마크다운 표·인용각주 제거.** PoC `dist/index.html`.
+- **64개 webzine 셸에 기사 주입**: `fill_webzine.py` — 각 장르 베이스라인을 하우스 톤 에디터 노트로 다듬어 64개 `webzine/{id}.html`에 주입(64/64).
+- **OpenAI SF 12 이미지 생성**: `gpt-image-1`(1024×1536) — 메카·무기·군장·전투·우주선·행성·외계·성운·심해생물·잠수정·해저도시·해구. 스톡→진짜 AI 상상 세계로 교체(장당 ~$0.12).
+- **서빙맵(SERVING_MAP.md)**: "A 작업 → B.md 1개만 주입" 1:1 매핑 규칙.
+- **교훈**: ①Perplexity=검색래퍼(생성 아님, return_images는 스톡) ②대량 원재료 수집=Perplexity, 가공·구조화=Claude ③품질민감 소수(SF)는 GUI, 물량(64+)은 API 배치.
+- 상세: `parksy-webzine/00_TRUTH/HANDOFF_2026-09-14.md` · `00_TRUTH/BASELINES/SERVING_MAP.md`
