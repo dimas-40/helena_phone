@@ -57,6 +57,12 @@ INTERACTIVE_CSS = """
 INTERACTIVE_JS = """<script>
 (function(){document.documentElement.classList.add('wt-js');var bs=document.querySelectorAll('.wt-bubble');if(!bs.length)return;for(var i=0;i<bs.length;i++){var b=bs[i];var t=b.textContent;b.innerHTML=t.split('').map(function(c,j){return '<span class="wt-char" style="animation-delay:'+(j*0.04).toFixed(3)+'s">'+(c===' '?'&nbsp;':c)+'</span>';}).join('');}var shakes={};for(var k=0;k<bs.length;k++){(function(el){el.addEventListener('click',function(){shakes[el]=Date.now()+450;});})(bs[k]);}if('IntersectionObserver'in window){var io=new IntersectionObserver(function(es){for(var j=0;j<es.length;j++){if(es[j].isIntersecting)es[j].target.classList.add('wt-in');else es[j].target.classList.remove('wt-in');}},{threshold:0.3});for(var l=0;l<bs.length;l++)io.observe(bs[l]);}else{for(var m=0;m<bs.length;m++)bs[m].classList.add('wt-in');}function tick(){var now=Date.now(),vh=innerHeight;for(var j=0;j<bs.length;j++){var b=bs[j];if(!b.classList.contains('wt-in'))continue;var r=b.getBoundingClientRect(),c=r.top+r.height/2,d=Math.abs(c-vh/2);var kk=Math.max(0,1-d/(vh/2)),s=0.95+kk*0.13;var sway=Math.sin(now/800+j*1.3)*5;var sh=0;if(shakes[b]&&now<shakes[b]){var tt=(shakes[b]-now)/450;sh=Math.sin(now/40)*9*tt;}b.style.transform='scale('+s.toFixed(3)+') translateX('+(sway+sh).toFixed(1)+'px)';}requestAnimationFrame(tick);}requestAnimationFrame(tick);})();
 </script>"""
+IMAGE_JS = """<script>
+/* 이미지 객체 연출 — 스크롤이 카메라 (Ken Burns 줌 + 페이드 + 미세 회전) */
+(function(){var imgs=document.querySelectorAll('.cut img');if(!imgs.length)return;
+function tick(){var vh=innerHeight;for(var i=0;i<imgs.length;i++){var im=imgs[i];var r=im.getBoundingClientRect();var c=(vh/2-r.top)/vh;var k=Math.max(0,Math.min(1,c));im.style.transform='scale('+(1+k*0.22).toFixed(3)+') rotate('+((k-0.5)*2.5).toFixed(2)+'deg)';im.style.opacity=(0.35+k*0.65).toFixed(3);}requestAnimationFrame(tick);}
+requestAnimationFrame(tick);})();
+</script>"""
 
 
 # ── BLIP 비전 (눈) — 강제 사용 ──
@@ -185,6 +191,26 @@ def _fit100(p):
     return p[:100]
 
 
+# ── 연출 기법: 시네마틱 숏 타입 (영화 문법 → 세로 스크롤 웹툰) ──
+#   한 컷 = 한 장의 그림(만화)이 아니라 "하나의 카메라 쇼트"(영화).
+#   face=True 일 때만 '박씨 얼굴 합성'을 쓴다 — 얼굴은 연출 자원.
+SHOTS = {
+    "establishing":  {"ko": "설정 숏",      "camera": "와이드, 장소 전체",        "face": False, "motion": "공간을 세운다. 인물은 작거나 없음."},
+    "long":          {"ko": "롱 숏",        "camera": "전신",                    "face": False, "motion": "인물 전체. 배경과의 관계."},
+    "medium":        {"ko": "미디엄 숏",    "camera": "허리 위 상반신",          "face": True,  "motion": "상반신. 표정이 읽히기 시작."},
+    "closeup":       {"ko": "클로즈업",     "camera": "얼굴 또는 핵심 사물",     "face": True,  "motion": "얼굴/사물. 감정이 선다."},
+    "extreme":       {"ko": "극클로즈업",   "camera": "눈·손·질감 디테일",       "face": True,  "motion": "디테일. 가장 세게."},
+    "over_shoulder": {"ko": "오버숄더",     "camera": "어깨 너머 시점",          "face": False, "motion": "뒤에서 바라본 시점. 대상에 접근."},
+    "pov":           {"ko": "POV",          "camera": "1인칭 시점",              "face": False, "motion": "인물의 눈으로 본다."},
+    "reaction":      {"ko": "리액션 숏",    "camera": "표정 반응",               "face": True,  "motion": "표정 반응."},
+    "insert":        {"ko": "인서트 숏",    "camera": "사물 인서트",             "face": False, "motion": "사물을 삽입. 손·오브제."},
+    "cutaway":       {"ko": "컷어웨이",     "camera": "주변 풍경",               "face": False, "motion": "주변으로 잠깐."},
+}
+
+# 4컷 기본 진행: 설정 → 접근 → 행동 → 결정 (얼굴은 마지막에만 공개)
+SHOT_SEQ = ["establishing", "over_shoulder", "insert", "extreme"]
+
+
 # BLIP 영문 캡션 → 한글 사물 (최소 매핑). 없는 단어는 드롭.
 KO = {
     "man": "남자", "woman": "여자", "person": "사람", "people": "사람들",
@@ -216,25 +242,18 @@ def _design(title, body, vision):
     notes = _feature_notes(feats)
     note_str = " / ".join(notes) if notes else ""
 
-    core = [
-        # ① 도입 — 와이드(얼굴 없이 공간을 세운다)
-        ("와이드 숏", "아주 넓은 공간. 인물은 작은 실루엣.",
-         f"{hook} 주제 공간의 와이드 숏, 작은 인물 실루엣, 다크그린 황동 조명"),
-        # ② 전개 — 뒷모습 접근(얼굴 없이 대상으로)
-        ("뒷모습 접근", "뒷모습으로 대상에 천천히 다가간다.",
-         f"뒷모습 전신, {gist} 쪽으로 걸어가는 인물, 어깨 너머 시점"),
-        # ③ 절정 — 손 클로즈업(얼굴 없이 행동으로)
-        ("손 클로즈업", "손이 핵심을 집는다.",
-         f"손 클로즈업, {gist} 관련 오브제를 집는 순간, 측면 조명"),
-        # ④ 마무리 — 결정적 순간에만 얼굴(합성 1회)
-        ("얼굴 클로즈업", "결정적 순간. 처음으로 얼굴이 보인다.",
-         f"박씨 얼굴 합성, {gist} 완성물을 마주한 얼굴 클로즈업, 깊은 심도"),
-    ]
+    core = []
+    for skey in SHOT_SEQ:
+        sh = SHOTS[skey]
+        face = "박씨 얼굴 합성, " if sh["face"] else ""
+        prompt = f"{face}{sh['camera']}, {gist} 주제, 다크그린 황동 조명"
+        core.append((sh["ko"], sh["motion"], prompt))
     cuts = []
     for i, (sc, mo, pr) in enumerate(core):
         if vdesc:
             pr = f"{pr}, 보이는 사물: {vdesc}"
-        cuts.append({"n": i + 1, "scene": sc, "motion": mo, "prompt": _fit100(pr)})
+        cuts.append({"n": i + 1, "scene": sc, "motion": mo,
+                     "shot": SHOT_SEQ[i], "prompt": _fit100(pr)})
     return {"title": f"웹툰 — {title}", "source_gist": gist,
             "vision": {"caption": cap, "features": feats, "blind": blind},
             "visible": visible, "notes": note_str, "cuts": cuts}
@@ -377,11 +396,11 @@ body{{background:var(--paper);color:var(--ink);font-family:"Nanum Myeongjo",seri
 .wrap{{max-width:720px;margin:0 auto;padding:20px 16px 80px}}
 .mast{{text-align:center;padding:18px 0 26px;border-bottom:1px solid rgba(160,138,76,.3)}}
 .mast h1{{font-family:Georgia,serif;font-weight:900;font-size:26px}}.mast .sub{{font-size:11px;letter-spacing:.3em;color:var(--brass);margin-top:6px}}
-.panel{{margin:26px 0}}.cut img{{width:100%;display:block;border-radius:4px;box-shadow:0 14px 30px rgba(0,0,0,.5)}}
+.panel{{margin:26px 0}}.cut{{overflow:hidden;border-radius:4px;box-shadow:0 14px 30px rgba(0,0,0,.5)}}.cut img{{width:100%;display:block;will-change:transform,opacity}}
 .cap{{margin:14px 0 0;background:rgba(233,229,207,.96);color:#1a120c;padding:12px 16px;border-radius:14px;font-size:{BUBBLE_FONT}px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.45);text-align:center}}
 footer{{text-align:center;color:var(--brass);font-size:12px;letter-spacing:.2em;padding:30px 0}}{INTERACTIVE_CSS}</style></head><body>
 <div class="wrap"><div class="mast"><h1>{title}</h1><div class="sub">PARKSY WEBTOON</div></div>
-{''.join(panels)}<footer>PARKSY · 박씨 종합잡지사</footer></div>{INTERACTIVE_JS}</body></html>'''
+{''.join(panels)}<footer>PARKSY · 박씨 종합잡지사</footer></div>{INTERACTIVE_JS}{IMAGE_JS}</body></html>'''
 
 
 # ── JSON-RPC stdio ──
