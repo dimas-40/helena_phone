@@ -18,7 +18,7 @@ import json, sys, os, glob, shutil, subprocess, time
 from pathlib import Path
 
 SERVER = "phone-webtoon-make"
-VER = "1.0.0"
+VER = "1.1.0"
 
 GALLERY = "/sdcard/DCIM/Drawing assist"
 WEBTOON_DIR = "/root/work/parksy-webzine/webtoon"
@@ -61,24 +61,76 @@ INTERACTIVE_JS = """<script>
 
 # ── BLIP 비전 (눈) — 강제 사용 ──
 def _vision(image_path):
-    """BLIP으로 이미지를 '본다'. 실패해도 텍스트 폴백 반환."""
+    """BLIP 캡션 + 모델 없는 특징을 같이 본다. 반환: {caption, features, blind}."""
+    res = {"caption": "", "features": {}, "blind": False}
     if not os.path.isfile(VISION_SCRIPT):
-        return "(비전 스크립트 없음)"
+        res["caption"] = "BLIND"
+        res["blind"] = True
+        return res
     try:
         r = subprocess.run(["/usr/bin/python3", VISION_SCRIPT, image_path],
-                           capture_output=True, text=True, timeout=120)
-        out = r.stdout
-        for line in out.splitlines():
-            if line.strip().startswith("CAPTION:") or (line.strip() and "caption" in line.lower()):
+                           capture_output=True, text=True, timeout=180)
+        for line in (r.stdout or "").splitlines():
+            line = line.strip()
+            if not line or "\t" not in line:
                 continue
-        # CAPTION 라인 찾기
-        lines = out.splitlines()
-        for i, l in enumerate(lines):
-            if "CAPTION" in l and i + 1 < len(lines):
-                return lines[i + 1].strip()
-        return out.strip()[-300:]
+            parts = line.split("\t")
+            kind = parts[0]
+            if kind == "CAPTION":
+                res["caption"] = parts[-1].strip()
+            elif kind == "SEE":
+                try:
+                    res["features"] = json.loads(parts[-1])
+                except Exception:
+                    pass
+            elif kind.startswith("BLIND"):
+                res["blind"] = True
+                res["caption"] = "BLIND"
+                try:
+                    res["features"] = json.loads(parts[-1])
+                except Exception:
+                    pass
+        if not res["caption"] and not res["blind"]:
+            res["caption"] = "BLIND"
+            res["blind"] = True
     except Exception as e:
-        return f"(비전 오류: {e})"
+        res["caption"] = f"BLIND({type(e).__name__})"
+        res["blind"] = True
+    return res
+
+
+def _visible_keywords(caption, maxn=6):
+    """BLIP 캡션에서 '보이는 사물' 단어 추출 (불용어 제거)."""
+    import re
+    stop = {"a", "the", "of", "in", "on", "with", "and", "to", "an", "is", "are",
+            "photo", "drawing", "comic", "close", "up", "that", "for", "by", "at",
+            "man", "woman", "person", "people"}
+    words = [w for w in re.findall(r"[A-Za-z]+", caption or "") if w.lower() not in stop]
+    seen, out = set(), []
+    for w in words:
+        wl = w.lower()
+        if wl not in seen:
+            seen.add(wl)
+            out.append(wl)
+    return out[:maxn]
+
+
+def _feature_notes(feats):
+    """모델 없는 특징 → 연출 노트 (조명·톤·품질 경고)."""
+    notes = []
+    if not feats or "err" in feats:
+        return notes
+    if feats.get("dark", 0) > 0.5:
+        notes.append("암전 컷 — 밝은 말풍선·SFX 강조")
+    if feats.get("warm", 0) > feats.get("cool", 0) + 0.05:
+        notes.append("황동·노을 톤")
+    elif feats.get("cool", 0) > feats.get("warm", 0) + 0.05:
+        notes.append("차가운 톤")
+    if feats.get("sat", 0) < 0.08:
+        notes.append("저채도(무채색)")
+    if feats.get("edge", 0) < 0.015:
+        notes.append("디테일 낮음(흐림/백지) 주의")
+    return notes
 
 
 def _screenshot(url):
@@ -134,16 +186,23 @@ def _fit100(p):
 
 
 def _design(title, body, vision):
-    """연출 기획 — 소스 내용을 반영한 4컷 웹툰 설계. 몸동작 + 프롬프트(100자 압축).
+    """연출 기획 — 눈(BLIP)이 본 것 + 텍스트 gist를 실제로 반영한 4컷 설계.
 
-    2026-09-13 수정: 구판은 gist를 계산만 하고 프롬프트엔 한 글자도 안 써서
-    소스가 뭐든 컷 4개가 "잡지 가판대" 하드코딩으로 완전히 동일했던 버그가
-    있었다(태블릿(tablet_webtoon_mcp.py)에서 먼저 발견·수정된 걸 이쪽에도
-    반영). hook/gist를 실제 프롬프트 문자열에 삽입한다.
+    2026-09-16 반영(Boss 지적 "눈 달아만 놓고 연출에 안 씀"): vision(caption+features)을
+    컷 프롬프트에 실제로 삽입. 이전엔 vision 파라미터가 표시용일 뿐 설계에 0% 반영됐다.
     """
     words = [w.strip(".,!?") for w in body.split() if not w.startswith("--") and len(w) > 1][:12]
     gist = " ".join(words[:6]) if words else title[:40]
     hook = words[0] if words else "이야기"
+
+    cap = (vision or {}).get("caption", "") or ""
+    feats = (vision or {}).get("features", {}) or {}
+    blind = bool((vision or {}).get("blind"))
+    visible = _visible_keywords(cap)
+    vdesc = " ".join(visible) if visible else ""
+    notes = _feature_notes(feats)
+    note_str = " / ".join(notes) if notes else ""
+
     core = [
         ("앞에 서다", "정면. 두 손 뒤로. 대상을 바라보며 선다.",
          f"박씨 얼굴 합성, {hook} 주제 배경 앞 정면 전신, 두 손 뒤로 바라봄, 다크그린 황동 조명"),
@@ -154,8 +213,14 @@ def _design(title, body, vision):
         ("돌아오다", "완성된 것을 끌어안듯 제자리로.",
          f"박씨 얼굴 합성, {gist} 완성물 안고 돌아와 미소, 전신 구도, 루프 완성"),
     ]
-    cuts = [{"n": i+1, "scene": sc, "motion": mo, "prompt": _fit100(pr)} for i, (sc, mo, pr) in enumerate(core)]
-    return {"title": f"웹툰 — {title}", "source_gist": gist, "vision": vision, "cuts": cuts}
+    cuts = []
+    for i, (sc, mo, pr) in enumerate(core):
+        if vdesc:
+            pr = f"{pr}, 보이는 사물: {vdesc}"
+        cuts.append({"n": i + 1, "scene": sc, "motion": mo, "prompt": _fit100(pr)})
+    return {"title": f"웹툰 — {title}", "source_gist": gist,
+            "vision": {"caption": cap, "features": feats, "blind": blind},
+            "visible": visible, "notes": note_str, "cuts": cuts}
 
 
 def _tg_send(text):
@@ -171,9 +236,25 @@ def _tg_send(text):
 
 
 def _format_telegram(d):
+    v = d.get("vision", {}) or {}
+    cap = v.get("caption", "")
+    feats = v.get("features", {}) or {}
+    blind = v.get("blind", False)
+    eye = "BLIND ⚠️" if blind else (cap or "(없음)")
+    feat_str = ""
+    if feats and "err" not in feats:
+        feat_str = (f"b{feats.get('bright','?')} d{feats.get('dark','?')} "
+                    f"w{feats.get('warm','?')}/c{feats.get('cool','?')} "
+                    f"s{feats.get('sat','?')} e{feats.get('edge','?')}")
     lines = [f"🎬 폰 웹툰 메이크 — 연출 기획", "",
-             f"소스: {d['title']}", f"눈(BLIP): {d['vision']}", "",
-             "━━━━━━━━━━━━━━━━"]
+             f"소스: {d['title']}", f"눈(BLIP): {eye}", ""]
+    if feat_str:
+        lines.append(f"특징: {feat_str}")
+    if d.get("notes"):
+        lines.append(f"연출노트: {d['notes']}")
+    if d.get("visible"):
+        lines.append(f"보이는 사물: {' '.join(d['visible'])}")
+    lines += ["", "━━━━━━━━━━━━━━━━"]
     for c in d["cuts"]:
         lines += [f"[컷 {c['n']}] {c['scene']}", f"몸동작: {c['motion']}",
                   f"프롬프트:", f"「{c['prompt']}」", ""]
@@ -187,11 +268,18 @@ def webtoon_direct(source=None):
         if not source:
             return {"ok": False, "error": "source 필요 (URL 또는 문서경로)"}
         title, body = _fetch_text(source)
-        # 반드시 눈으로 본다 (스크린샷 + BLIP)
-        vision = "(문서라 스크린샷 없음)"
+        # 반드시 눈으로 본다 (스크린샷 + BLIP + 특징). 눈이 없으면 중단(BLIND).
+        vision = {"caption": "", "features": {}, "blind": False}
         if source.startswith("http"):
             png = _screenshot(source)
-            vision = _vision(png) if png else "(스크린샷 실패)"
+            if not png:
+                return {"ok": False, "error": "스크린샷 실패 — 눈으로 못 봄"}
+            vision = _vision(png)
+            if vision.get("blind"):
+                return {"ok": False, "error": "BLIP 눈 없음(BLIND) — 슬라이드쇼 방지를 위해 중단",
+                        "vision": vision}
+        else:
+            vision["caption"] = "(문서라 스크린샷 없음)"
         design = _design(title, body, vision)
         msg = _format_telegram(design)
         tg = _tg_send(msg)
