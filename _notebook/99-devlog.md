@@ -7251,3 +7251,11 @@ Windows (상위) ── Termius(복구로: WSL 죽으면 상위에서 재호출)
 - **"앱이 있는 웹진" 방향(Boss: 중요)**: FEMME를 **설치형 PWA**로(manifest + service worker + icons + shortcuts). Fashion Lab **25스테이션**(색채/소재/스타일링/사이즈/온습도/매거진) — 6완성/19준비.
 - **색상환 배색 시뮬레이터(실측 라이브)**: `lab/01-colorwheel.html` — 실제 색채학 계산(`%360`, 보색 `+180`, 삼각 `+120`, 유사색 `±30`, `hsl()`) → FEMME 카탈로그 실제 색상값과 매칭. 더미 아님.
 - **ref 경로 (WSL 태블릿 세션 = 다른 환경 산출)**: `parksy-webzine/webzine/fashion-01-femme/lab/01-colorwheel.html` · `.../lab/index.html` · `.../manifest.json` + `webzine/sw-femme.js` · `parksy-webzine/00_TRUTH/DIRECTION.md` · `parksy-webzine/scripts/webtoon_auto.py`(자동레인) · `mcp-servers/phone_webtoon_make_mcp.py`(반자동레인)
+
+### 웹툰 3-Gate 편집 모델 + 연출 DSL 타임라인 (_Claude · 2026-09-16)
+
+- **3-Gate 모델 확정(Boss)**: ①생성(사진술·삼성 GUI) → ②후처리(편집술·이미지 객체) → ③런타임 연출(웹 인터랙션·JS). 차별점은 ③ — "컷" → "객체+상태+시간+입력".
+- **오픈소스 리서치**: 편집 원자 = 3축(transform/filter/clip-path). 후보: miniPaint·Cropper.js·Konva.js·Anime.js·D3.js(+Lenis). "라이브러리 복제가 아니라 원자 추출"이 원칙.
+- **티스토리 천정 정정**: 본문 `<script>`는 살고 `<style>`은 지워지지만, **스킨(skin.html+images/)에 JS/CSS 업로드 가능**(공식 스킨도 `<script src="./images/...">` 사용). → 핵심 엔진은 스킨 JS에, 본문은 data-* 구조만. 내 이전 판단(인라인 JS만)은 과소평가였음.
+- **MCP 반영(연출 DSL)**: `DEFAULT_TL` 타임라인 JSON + `data-tl` 속성 + IMAGE_JS 스펙구동 엔진(p=스크롤 진행, s/r/o/blur/clip을 선형보간). 하드코딩 효과 → 데이터 선언으로 전환.
+- **레벨**: L1(scale/rotate/opacity) → L2(crop/reveal/blur/mask/aspect/perspective) → L3(scroll/time/touch) → L4(+text/data/sound/Lottie) → L5(인포그래픽+시네마틱 스크롤) → L6(OBJECT→SCENE→TIMELINE→INTERACTION→STORY).
