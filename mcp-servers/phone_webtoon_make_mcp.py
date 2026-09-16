@@ -106,6 +106,20 @@ function apply(el,st){el.style.transform='scale('+(st.s||1)+') rotate('+(st.r||0
 function tick(){var vh=innerHeight;for(var i=0;i<els.length;i++){var el=els[i],tgt=el.querySelector('img')||el;var r=el.getBoundingClientRect();var k=Math.max(0,Math.min(1,(vh-r.top)/(vh*0.8)));var tl;try{tl=JSON.parse(el.getAttribute('data-tl'));}catch(e){continue;}apply(tgt,at(tl,k));}requestAnimationFrame(tick);}
 requestAnimationFrame(tick);})();
 </script>"""
+INFO_JS = """<script>
+/* INFO 객체 연출 — 카운트업 + 막대성장 + 탭 버튼 (SPEC v1: info object) */
+(function(){
+function ease(p){return p<.5?2*p*p:-1+(4-2*p)*p;}
+var ioN=null,ioB=null;
+if('IntersectionObserver'in window){
+  ioN=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var el=e.target,t=parseInt(el.getAttribute('data-count'),10),s=el.getAttribute('data-suffix')||'',d=1200,t0=null;function st(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/d);el.textContent=Math.round(t*ease(p))+s;if(p<1)requestAnimationFrame(st);}requestAnimationFrame(st);ioN.unobserve(el);}});},{threshold:0.5});
+  ioB=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.style.width=e.target.getAttribute('data-bar')+'%';ioB.unobserve(e.target);}});},{threshold:0.5});
+}
+var nums=document.querySelectorAll('[data-count]');nums.forEach(function(n){if(ioN)ioN.observe(n);else n.textContent=n.getAttribute('data-count')+(n.getAttribute('data-suffix')||'');});
+var bars=document.querySelectorAll('[data-bar]');bars.forEach(function(b){if(ioB)ioB.observe(b);else b.style.width=b.getAttribute('data-bar')+'%';});
+var tabs=document.querySelectorAll('[data-tab]');tabs.forEach(function(t){t.addEventListener('click',function(){var g=t.getAttribute('data-group')||'g';document.querySelectorAll('[data-tab][data-group="'+g+'"]').forEach(function(x){x.style.background='rgba(160,138,76,.15)';x.style.color='#e9e5cf';});t.style.background='#a08a4c';t.style.color='#0c1710';document.querySelectorAll('[data-panel="'+g+'"]').forEach(function(p){p.style.display='none';});var tgt=document.querySelector('[data-panel="'+g+'"][data-pane="'+t.getAttribute('data-pane')+'"]');if(tgt)tgt.style.display='block';});});
+})();
+</script>"""
 
 
 # ── BLIP 비전 (눈) — 강제 사용 ──
