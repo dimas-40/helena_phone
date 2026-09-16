@@ -88,8 +88,8 @@ DEFAULT_TL = ('[{"p":0,"s":1,"r":-1.5,"o":0.3,"blur":2,"y":20},'
 SHOT_TIMELINES = {
     "establishing": '[{"p":0,"s":1,"o":0.2,"blur":3},{"p":0.4,"s":1.08,"o":0.9,"blur":0},{"p":1,"s":1.2,"o":1}]',          # 와이드: 느린 줌인+페이드
     "over_shoulder": '[{"p":0,"s":1.1,"r":-2,"o":0.3,"y":40},{"p":0.5,"s":1.05,"r":-1,"o":1,"y":0},{"p":1,"s":1.0,"r":0,"o":1,"y":-12}]',  # 접근: 슬라이드업+기울기
-    "insert": '[{"p":0,"s":1.3,"o":0.4,"blur":8,"clip":"inset(0 0 45% 0)"},{"p":0.6,"s":1.1,"o":1,"blur":0,"clip":"inset(0 0 0 0)"},{"p":1,"s":1.0,"o":1}]',  # 손: 초점당김+아래서 reveal
-    "extreme": '[{"p":0,"s":1.45,"r":-3,"o":0.2,"gray":1,"blur":5},{"p":0.5,"s":1.2,"r":0,"o":1,"gray":0.3,"blur":0},{"p":1,"s":1.0,"r":2,"o":1,"gray":0}]',  # 얼굴: 무채색→컬러+줌아웃
+    "insert": '[{"p":0,"s":1.22,"o":0.6,"blur":5,"reveal":0.15},{"p":0.6,"s":1.08,"o":1,"blur":0,"reveal":1},{"p":1,"s":1.0,"o":1,"reveal":1}]',  # 손: 초점당김+아래서 reveal(숫자 보간)
+    "extreme": '[{"p":0,"s":1.35,"r":-2,"o":0.4,"gray":1,"blur":4},{"p":0.5,"s":1.15,"r":0,"o":1,"gray":0,"blur":0},{"p":1,"s":1.0,"r":1.5,"o":1,"gray":0}]',  # 얼굴: 무채색→컬러+줌아웃
     "long": '[{"p":0,"s":1.05,"o":0.3,"y":25},{"p":1,"s":1.15,"o":1,"y":0}]',
     "medium": '[{"p":0,"s":1.15,"o":0.3,"y":15},{"p":1,"s":1.0,"o":1,"y":0}]',
     "closeup": '[{"p":0,"s":1.25,"o":0.2,"blur":4},{"p":1,"s":1.0,"o":1,"blur":0}]',
@@ -101,8 +101,8 @@ IMAGE_JS = """<script>
 /* 연출 엔진(SPEC v1) — [data-tl] 타임라인 재생. s/r/x/y=transform, o=opacity, blur/bright/contr/sat/hue/gray/sepia/invert=filter, clip, mask */
 (function(){var els=document.querySelectorAll('[data-tl]');if(!els.length)return;
 function lerp(a,b,t){return a+(b-a)*t;}
-function at(tl,k){if(k<=tl[0].p)return tl[0];for(var i=0;i<tl.length-1;i++){var a=tl[i],b=tl[i+1];if(k>=a.p&&k<=b.p){var t=(k-a.p)/(b.p-a.p),o={};for(var key in a){if(key!=='p')o[key]=lerp(a[key],b[key],t);}return o;}}return tl[tl.length-1];}
-function apply(el,st){el.style.transform='scale('+(st.s||1)+') rotate('+(st.r||0)+'deg) translate('+(st.x||0)+'px,'+(st.y||0)+'px)';if(st.o!=null)el.style.opacity=st.o;var f=[];if(st.blur!=null)f.push('blur('+st.blur+'px)');if(st.bright!=null)f.push('brightness('+st.bright+')');if(st.contr!=null)f.push('contrast('+st.contr+')');if(st.sat!=null)f.push('saturate('+st.sat+')');if(st.hue!=null)f.push('hue-rotate('+st.hue+'deg)');if(st.gray!=null)f.push('grayscale('+st.gray+')');if(st.sepia!=null)f.push('sepia('+st.sepia+')');if(st.invert!=null)f.push('invert('+st.invert+')');if(f.length)el.style.filter=f.join(' ');if(st.clip)el.style.clipPath=st.clip;if(st.mask)el.style.webkitMaskImage=el.style.maskImage=st.mask;}
+function at(tl,k){if(k<=tl[0].p)return tl[0];for(var i=0;i<tl.length-1;i++){var a=tl[i],b=tl[i+1];if(k>=a.p&&k<=b.p){var t=(k-a.p)/(b.p-a.p),o={};for(var key in a){if(key==='p')continue;o[key]=(typeof a[key]==='number'&&typeof b[key]==='number')?lerp(a[key],b[key],t):b[key];}return o;}}return tl[tl.length-1];}
+function apply(el,st){el.style.transform='scale('+(st.s||1)+') rotate('+(st.r||0)+'deg) translate('+(st.x||0)+'px,'+(st.y||0)+'px)';if(st.o!=null)el.style.opacity=st.o;var f=[];if(st.blur!=null)f.push('blur('+st.blur+'px)');if(st.bright!=null)f.push('brightness('+st.bright+')');if(st.contr!=null)f.push('contrast('+st.contr+')');if(st.sat!=null)f.push('saturate('+st.sat+')');if(st.hue!=null)f.push('hue-rotate('+st.hue+'deg)');if(st.gray!=null)f.push('grayscale('+st.gray+')');if(st.sepia!=null)f.push('sepia('+st.sepia+')');if(st.invert!=null)f.push('invert('+st.invert+')');if(f.length)el.style.filter=f.join(' ');if(st.reveal!=null)el.style.clipPath='inset(0 0 '+((1-st.reveal)*100).toFixed(1)+'% 0)';else if(st.clip)el.style.clipPath=st.clip;if(st.mask)el.style.webkitMaskImage=el.style.maskImage=st.mask;}
 function tick(){var vh=innerHeight;for(var i=0;i<els.length;i++){var el=els[i],tgt=el.querySelector('img')||el;var r=el.getBoundingClientRect();var k=Math.max(0,Math.min(1,(vh/2-r.top)/vh));var tl;try{tl=JSON.parse(el.getAttribute('data-tl'));}catch(e){continue;}apply(tgt,at(tl,k));}requestAnimationFrame(tick);}
 requestAnimationFrame(tick);})();
 </script>"""
