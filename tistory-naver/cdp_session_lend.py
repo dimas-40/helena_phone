@@ -181,7 +181,11 @@ def main() -> int:
         if not adb_forward(br["port"], br["socket"]):
             log(f"⚠️ {br['label']} forward 실패 — 건너뜀")
             continue
-        cookies = extract_cookies(br["port"])
+        try:
+            cookies = extract_cookies(br["port"])
+        except Exception as e:
+            log(f"⚠️ {br['label']} 세션 추출 실패(브라우저 미실행?) — 건너뜀")
+            continue
         if not has_session(cookies):
             log(f"ℹ {br['label']} — TSSESSION 없음(로그인 안 됨) → 건너뜀")
             continue
