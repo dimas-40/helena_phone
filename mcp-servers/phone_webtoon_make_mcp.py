@@ -120,7 +120,7 @@ def _feature_notes(feats):
     notes = []
     if not feats or "err" in feats:
         return notes
-    if feats.get("dark", 0) > 0.5:
+    if feats.get("dark", 0) >= 0.4:
         notes.append("암전 컷 — 밝은 말풍선·SFX 강조")
     if feats.get("warm", 0) > feats.get("cool", 0) + 0.05:
         notes.append("황동·노을 톤")
@@ -185,6 +185,19 @@ def _fit100(p):
     return p[:100]
 
 
+# BLIP 영문 캡션 → 한글 사물 (최소 매핑). 없는 단어는 드롭.
+KO = {
+    "man": "남자", "woman": "여자", "person": "사람", "people": "사람들",
+    "standing": "서 있는", "sitting": "앉은", "walking": "걷는",
+    "bookcase": "책장", "bookshelf": "책장", "library": "서재", "book": "책",
+    "robot": "로봇", "giant": "거대한", "gun": "총", "hand": "손",
+    "table": "테이블", "desk": "책상", "chair": "의자", "room": "방",
+    "window": "창문", "mirror": "거울", "glass": "유리", "face": "얼굴",
+    "hair": "머리", "glasses": "안경", "street": "거리", "building": "건물",
+    "car": "차", "food": "음식", "flower": "꽃", "tree": "나무",
+}
+
+
 def _design(title, body, vision):
     """연출 기획 — 눈(BLIP)이 본 것 + 텍스트 gist를 실제로 반영한 4컷 설계.
 
@@ -198,20 +211,24 @@ def _design(title, body, vision):
     cap = (vision or {}).get("caption", "") or ""
     feats = (vision or {}).get("features", {}) or {}
     blind = bool((vision or {}).get("blind"))
-    visible = _visible_keywords(cap)
+    visible = [KO.get(w) for w in _visible_keywords(cap) if w in KO]
     vdesc = " ".join(visible) if visible else ""
     notes = _feature_notes(feats)
     note_str = " / ".join(notes) if notes else ""
 
     core = [
-        ("앞에 서다", "정면. 두 손 뒤로. 대상을 바라보며 선다.",
-         f"박씨 얼굴 합성, {hook} 주제 배경 앞 정면 전신, 두 손 뒤로 바라봄, 다크그린 황동 조명"),
-        ("집어 눕히다", "손을 뻗어 핵심을 집는다 → 눕힌다.",
-         f"박씨 얼굴 합성, 손 클로즈업, {gist} 관련 오브제를 테이블에 눕히는 순간, 측면 조명"),
-        ("일으켜 세우다", "눕힌 것을 세운다 → 빛나는 결과로 변한다.",
-         f"박씨 얼굴 합성, {hook} 오브제 세로로 세우며 빛나는 프레임으로 변하는 순간, 역동 구도"),
-        ("돌아오다", "완성된 것을 끌어안듯 제자리로.",
-         f"박씨 얼굴 합성, {gist} 완성물 안고 돌아와 미소, 전신 구도, 루프 완성"),
+        # ① 도입 — 와이드(얼굴 없이 공간을 세운다)
+        ("와이드 숏", "아주 넓은 공간. 인물은 작은 실루엣.",
+         f"{hook} 주제 공간의 와이드 숏, 작은 인물 실루엣, 다크그린 황동 조명"),
+        # ② 전개 — 뒷모습 접근(얼굴 없이 대상으로)
+        ("뒷모습 접근", "뒷모습으로 대상에 천천히 다가간다.",
+         f"뒷모습 전신, {gist} 쪽으로 걸어가는 인물, 어깨 너머 시점"),
+        # ③ 절정 — 손 클로즈업(얼굴 없이 행동으로)
+        ("손 클로즈업", "손이 핵심을 집는다.",
+         f"손 클로즈업, {gist} 관련 오브제를 집는 순간, 측면 조명"),
+        # ④ 마무리 — 결정적 순간에만 얼굴(합성 1회)
+        ("얼굴 클로즈업", "결정적 순간. 처음으로 얼굴이 보인다.",
+         f"박씨 얼굴 합성, {gist} 완성물을 마주한 얼굴 클로즈업, 깊은 심도"),
     ]
     cuts = []
     for i, (sc, mo, pr) in enumerate(core):
@@ -294,10 +311,11 @@ def webtoon_assemble(dialogue=None, title="웹툰"):
     try:
         if not dialogue or not isinstance(dialogue, list):
             return {"ok": False, "error": "dialogue 필요 (대사 리스트)"}
-        pats = sorted(glob.glob(os.path.join(GALLERY, "*.jpg")) + glob.glob(os.path.join(GALLERY, "*.png")), reverse=True)
+        pats = sorted(glob.glob(os.path.join(GALLERY, "*.jpg")) + glob.glob(os.path.join(GALLERY, "*.png")))
         if not pats:
             return {"ok": False, "error": f"갤러리에 컷 없음: {GALLERY}"}
         n = min(len(pats), len(dialogue))
+        pats = pats[-n:]  # 최신 n개를 생성 순서(오래된→최신)로 — 역순 버그 수정
         os.makedirs(ASSET_DIR, exist_ok=True)
         cut_rel = []
         for i in range(n):
@@ -350,8 +368,8 @@ def _compose(title, cut_rel, dialogue):
     panels = []
     for i, (cut, text) in enumerate(zip(cut_rel, dialogue), 1):
         safe = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-        panels.append(f'<section class="panel"><div class="cut"><img src="{cut}" alt="컷 {i}">'
-                      f'<div class="bubble wt-bubble"><span class="txt">{safe}</span></div></div></section>')
+        panels.append(f'<section class="panel"><div class="cut"><img src="{cut}" alt="컷 {i}"></div>'
+                      f'<div class="cap wt-bubble"><span class="txt">{safe}</span></div></section>')
     return f'''<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>{title} — PARKSY 웹툰</title>
 <style>:root{{--paper:#0c1710;--ink:#e9e5cf;--brass:#a08a4c}}*{{box-sizing:border-box;margin:0;padding:0}}
@@ -359,8 +377,8 @@ body{{background:var(--paper);color:var(--ink);font-family:"Nanum Myeongjo",seri
 .wrap{{max-width:720px;margin:0 auto;padding:20px 16px 80px}}
 .mast{{text-align:center;padding:18px 0 26px;border-bottom:1px solid rgba(160,138,76,.3)}}
 .mast h1{{font-family:Georgia,serif;font-weight:900;font-size:26px}}.mast .sub{{font-size:11px;letter-spacing:.3em;color:var(--brass);margin-top:6px}}
-.panel{{margin:26px 0}}.cut{{position:relative}}.cut img{{width:100%;display:block;border-radius:4px;box-shadow:0 14px 30px rgba(0,0,0,.5)}}
-.bubble{{position:absolute;left:{BUBBLE_LEFT}px;right:{BUBBLE_RIGHT}px;bottom:{BUBBLE_BOTTOM}px;background:rgba(233,229,207,.96);color:#1a120c;padding:12px 16px;border-radius:14px;font-size:{BUBBLE_FONT}px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.45);text-align:center}}
+.panel{{margin:26px 0}}.cut img{{width:100%;display:block;border-radius:4px;box-shadow:0 14px 30px rgba(0,0,0,.5)}}
+.cap{{margin:14px 0 0;background:rgba(233,229,207,.96);color:#1a120c;padding:12px 16px;border-radius:14px;font-size:{BUBBLE_FONT}px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.45);text-align:center}}
 footer{{text-align:center;color:var(--brass);font-size:12px;letter-spacing:.2em;padding:30px 0}}{INTERACTIVE_CSS}</style></head><body>
 <div class="wrap"><div class="mast"><h1>{title}</h1><div class="sub">PARKSY WEBTOON</div></div>
 {''.join(panels)}<footer>PARKSY · 박씨 종합잡지사</footer></div>{INTERACTIVE_JS}</body></html>'''
