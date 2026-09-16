@@ -83,6 +83,20 @@ SPEC = {
 DEFAULT_TL = ('[{"p":0,"s":1,"r":-1.5,"o":0.3,"blur":2,"y":20},'
               '{"p":0.5,"s":1.12,"r":0,"o":1,"blur":0,"y":0},'
               '{"p":1,"s":1.35,"r":2.5,"o":1,"blur":0,"y":-10}]')
+
+# 숏 타입별 연출 타임라인 — 같은 이미지에 "카메라 워킹"을 부여 (편집 원자 조합)
+SHOT_TIMELINES = {
+    "establishing": '[{"p":0,"s":1,"o":0.2,"blur":3},{"p":0.4,"s":1.08,"o":0.9,"blur":0},{"p":1,"s":1.2,"o":1}]',          # 와이드: 느린 줌인+페이드
+    "over_shoulder": '[{"p":0,"s":1.1,"r":-2,"o":0.3,"y":40},{"p":0.5,"s":1.05,"r":-1,"o":1,"y":0},{"p":1,"s":1.0,"r":0,"o":1,"y":-12}]',  # 접근: 슬라이드업+기울기
+    "insert": '[{"p":0,"s":1.3,"o":0.4,"blur":8,"clip":"inset(0 0 45% 0)"},{"p":0.6,"s":1.1,"o":1,"blur":0,"clip":"inset(0 0 0 0)"},{"p":1,"s":1.0,"o":1}]',  # 손: 초점당김+아래서 reveal
+    "extreme": '[{"p":0,"s":1.45,"r":-3,"o":0.2,"gray":1,"blur":5},{"p":0.5,"s":1.2,"r":0,"o":1,"gray":0.3,"blur":0},{"p":1,"s":1.0,"r":2,"o":1,"gray":0}]',  # 얼굴: 무채색→컬러+줌아웃
+    "long": '[{"p":0,"s":1.05,"o":0.3,"y":25},{"p":1,"s":1.15,"o":1,"y":0}]',
+    "medium": '[{"p":0,"s":1.15,"o":0.3,"y":15},{"p":1,"s":1.0,"o":1,"y":0}]',
+    "closeup": '[{"p":0,"s":1.25,"o":0.2,"blur":4},{"p":1,"s":1.0,"o":1,"blur":0}]',
+    "pov": '[{"p":0,"s":1.0,"r":0,"o":0.3},{"p":1,"s":1.15,"r":1.5,"o":1}]',
+    "reaction": '[{"p":0,"s":1.0,"o":0.3,"r":-1},{"p":1,"s":1.1,"o":1,"r":0}]',
+    "cutaway": '[{"p":0,"s":1.2,"o":0.2,"blur":3},{"p":1,"s":1.0,"o":1,"blur":0}]',
+}
 IMAGE_JS = """<script>
 /* 연출 엔진(SPEC v1) — [data-tl] 타임라인 재생. s/r/x/y=transform, o=opacity, blur/bright/contr/sat/hue/gray/sepia/invert=filter, clip, mask */
 (function(){var els=document.querySelectorAll('[data-tl]');if(!els.length)return;
@@ -416,7 +430,8 @@ def _compose(title, cut_rel, dialogue):
     panels = []
     for i, (cut, text) in enumerate(zip(cut_rel, dialogue), 1):
         safe = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-        tl_attr = DEFAULT_TL.replace('"', '&quot;')
+        tl = SHOT_TIMELINES.get(SHOT_SEQ[(i-1) % len(SHOT_SEQ)], DEFAULT_TL)
+        tl_attr = tl.replace('"', '&quot;')
         panels.append(f'<section class="panel"><div class="cut" data-tl="{tl_attr}"><img src="{cut}" alt="컷 {i}"></div>'
                       f'<div class="cap wt-bubble"><span class="txt">{safe}</span></div></section>')
     return f'''<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8">
