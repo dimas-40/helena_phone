@@ -57,18 +57,39 @@ INTERACTIVE_CSS = """
 INTERACTIVE_JS = """<script>
 (function(){document.documentElement.classList.add('wt-js');var bs=document.querySelectorAll('.wt-bubble');if(!bs.length)return;for(var i=0;i<bs.length;i++){var b=bs[i];var t=b.textContent;b.innerHTML=t.split('').map(function(c,j){return '<span class="wt-char" style="animation-delay:'+(j*0.04).toFixed(3)+'s">'+(c===' '?'&nbsp;':c)+'</span>';}).join('');}var shakes={};for(var k=0;k<bs.length;k++){(function(el){el.addEventListener('click',function(){shakes[el]=Date.now()+450;});})(bs[k]);}if('IntersectionObserver'in window){var io=new IntersectionObserver(function(es){for(var j=0;j<es.length;j++){if(es[j].isIntersecting)es[j].target.classList.add('wt-in');else es[j].target.classList.remove('wt-in');}},{threshold:0.3});for(var l=0;l<bs.length;l++)io.observe(bs[l]);}else{for(var m=0;m<bs.length;m++)bs[m].classList.add('wt-in');}function tick(){var now=Date.now(),vh=innerHeight;for(var j=0;j<bs.length;j++){var b=bs[j];if(!b.classList.contains('wt-in'))continue;var r=b.getBoundingClientRect(),c=r.top+r.height/2,d=Math.abs(c-vh/2);var kk=Math.max(0,1-d/(vh/2)),s=0.95+kk*0.13;var sway=Math.sin(now/800+j*1.3)*5;var sh=0;if(shakes[b]&&now<shakes[b]){var tt=(shakes[b]-now)/450;sh=Math.sin(now/40)*9*tt;}b.style.transform='scale('+s.toFixed(3)+') translateX('+(sway+sh).toFixed(1)+'px)';}requestAnimationFrame(tick);}requestAnimationFrame(tick);})();
 </script>"""
-# ── 연출 DSL: 이미지 객체 타임라인 (기본값) ──
-#   p=스크롤 진행(0~1), s=scale, r=rotate(deg), o=opacity, blur=px, clip=css clip-path
-#   (오픈소스 편집 원자 3축: transform/filter/clip-path 를 데이터로 선언)
-DEFAULT_TL = ('[{"p":0,"s":1,"r":-1.5,"o":0.3,"blur":2},'
-              '{"p":0.5,"s":1.12,"r":0,"o":1,"blur":0},'
-              '{"p":1,"s":1.35,"r":2.5,"o":1,"blur":0}]')
+# ── Tistory Interactive Comic Spec v1 — 제한 규격 (제약이 연출 문법) ──
+#   NO external dep · NO WebGL · NO framework.
+#   YES: vanilla JS + rAF + IntersectionObserver + DOM + CSS transform/filter/clip-path/mask + SVG + scroll/touch/pointer.
+SPEC = {
+    "runtime": "vanilla-js-only",
+    "objects": {
+        "image": "사진 → 확대/이동/회전/투명/blur/clip/mask",
+        "text": "문장 → 등장/이동/opacity/scale/시간차",
+        "info": "숫자 → 카운트업/막대성장/SVG/그래프 reveal",
+    },
+    "primitives": {
+        "transform": ["translate", "scale", "rotate", "skew", "perspective"],
+        "filter": ["blur", "brightness", "contrast", "saturate", "hue-rotate", "grayscale", "sepia", "invert"],
+        "clip": ["inset", "circle", "polygon"],
+        "mask": ["gradient", "image"],
+        "opacity": True,
+    },
+    "triggers": ["scroll", "touch", "pointer", "time"],
+}
+
+# ── 연출 DSL: 객체 타임라인 (기본값) ──
+#   p=스크롤 진행(0~1), s=scale, r=rotate(deg), x/y=translate(px), o=opacity,
+#   blur/bright/contr/sat/hue/gray=filter, clip=css clip-path, mask=css mask
+DEFAULT_TL = ('[{"p":0,"s":1,"r":-1.5,"o":0.3,"blur":2,"y":20},'
+              '{"p":0.5,"s":1.12,"r":0,"o":1,"blur":0,"y":0},'
+              '{"p":1,"s":1.35,"r":2.5,"o":1,"blur":0,"y":-10}]')
 IMAGE_JS = """<script>
-/* 이미지 객체 연출 엔진 — data-tl 타임라인을 스크롤로 재생 (transform/filter/clip) */
-(function(){var els=document.querySelectorAll('.cut[data-tl]');if(!els.length)return;
+/* 연출 엔진(SPEC v1) — [data-tl] 타임라인 재생. s/r/x/y=transform, o=opacity, blur/bright/contr/sat/hue/gray/sepia/invert=filter, clip, mask */
+(function(){var els=document.querySelectorAll('[data-tl]');if(!els.length)return;
 function lerp(a,b,t){return a+(b-a)*t;}
 function at(tl,k){if(k<=tl[0].p)return tl[0];for(var i=0;i<tl.length-1;i++){var a=tl[i],b=tl[i+1];if(k>=a.p&&k<=b.p){var t=(k-a.p)/(b.p-a.p),o={};for(var key in a){if(key!=='p')o[key]=lerp(a[key],b[key],t);}return o;}}return tl[tl.length-1];}
-function tick(){var vh=innerHeight;for(var i=0;i<els.length;i++){var el=els[i],im=el.querySelector('img');if(!im)continue;var r=el.getBoundingClientRect();var k=Math.max(0,Math.min(1,(vh/2-r.top)/vh));var tl;try{tl=JSON.parse(el.getAttribute('data-tl'));}catch(e){continue;}var st=at(tl,k);im.style.transform='scale('+(st.s||1).toFixed(3)+') rotate('+(st.r||0).toFixed(2)+'deg)';im.style.opacity=(st.o!=null?st.o:1).toFixed(3);if(st.blur!=null)im.style.filter='blur('+st.blur.toFixed(2)+'px)';if(st.clip)im.style.clipPath=st.clip;}requestAnimationFrame(tick);}
+function apply(el,st){el.style.transform='scale('+(st.s||1)+') rotate('+(st.r||0)+'deg) translate('+(st.x||0)+'px,'+(st.y||0)+'px)';if(st.o!=null)el.style.opacity=st.o;var f=[];if(st.blur!=null)f.push('blur('+st.blur+'px)');if(st.bright!=null)f.push('brightness('+st.bright+')');if(st.contr!=null)f.push('contrast('+st.contr+')');if(st.sat!=null)f.push('saturate('+st.sat+')');if(st.hue!=null)f.push('hue-rotate('+st.hue+'deg)');if(st.gray!=null)f.push('grayscale('+st.gray+')');if(st.sepia!=null)f.push('sepia('+st.sepia+')');if(st.invert!=null)f.push('invert('+st.invert+')');if(f.length)el.style.filter=f.join(' ');if(st.clip)el.style.clipPath=st.clip;if(st.mask)el.style.webkitMaskImage=el.style.maskImage=st.mask;}
+function tick(){var vh=innerHeight;for(var i=0;i<els.length;i++){var el=els[i],tgt=el.querySelector('img')||el;var r=el.getBoundingClientRect();var k=Math.max(0,Math.min(1,(vh/2-r.top)/vh));var tl;try{tl=JSON.parse(el.getAttribute('data-tl'));}catch(e){continue;}apply(tgt,at(tl,k));}requestAnimationFrame(tick);}
 requestAnimationFrame(tick);})();
 </script>"""
 
