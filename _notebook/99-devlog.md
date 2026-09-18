@@ -7259,3 +7259,12 @@ Windows (상위) ── Termius(복구로: WSL 죽으면 상위에서 재호출)
 - **티스토리 천정 정정**: 본문 `<script>`는 살고 `<style>`은 지워지지만, **스킨(skin.html+images/)에 JS/CSS 업로드 가능**(공식 스킨도 `<script src="./images/...">` 사용). → 핵심 엔진은 스킨 JS에, 본문은 data-* 구조만. 내 이전 판단(인라인 JS만)은 과소평가였음.
 - **MCP 반영(연출 DSL)**: `DEFAULT_TL` 타임라인 JSON + `data-tl` 속성 + IMAGE_JS 스펙구동 엔진(p=스크롤 진행, s/r/o/blur/clip을 선형보간). 하드코딩 효과 → 데이터 선언으로 전환.
 - **레벨**: L1(scale/rotate/opacity) → L2(crop/reveal/blur/mask/aspect/perspective) → L3(scroll/time/touch) → L4(+text/data/sound/Lottie) → L5(인포그래픽+시네마틱 스크롤) → L6(OBJECT→SCENE→TIMELINE→INTERACTION→STORY).
+
+### 웹툰 투트랙 확정 + 브릿지 + WSL 최신 파싱 (_Claude · 2026-09-18)
+
+- **투트랙 확정(Boss)**: 폰=작가주의(auteur)+실험 / 태블릿=양산+100%자동. 전자종이 품질+LCD 속도가 같이 감. 폰에 양산 기능(QA·세션heal) 이식 금지.
+- **브릿지(교차)**: ①폰→태블릿 = 연출 문법(SHOTS·SHOT_TIMELINES·얼굴공개·연출DSL·SPEC). ②태블릿→폰 = 품질 원리(눈 탈부착·가독성·QA 원리·운동 표준화)를 개념으로만.
+- **태블릿 MCP 최신(4404줄)**: ⑥눈 탈부착(captions — 드라이버가 식자 직접 공급, BLIP 선택) · ⑤신경계(keepawake+세션heal 자동복구+systemd 워치독) · skin_sync(PC//m/스킨 정규화) · 운동법(스크롤식자+인포) · 가독성법(대비) · QA게이트(얼굴/중복/밋밋/암전/백지).
+- **WSL 최신 24커밋**: 세 법칙(가독성/skin_sync/운동) 게이트화 · 인포그래픽 20→11종 재선택 · 식자 피츠제럴드 결(2~3행, 사물을 상태로) · 진입점 하나(URL→콘티) · phoneparis16 「폰팔이, 왕세자를 가르치다」 16컷.
+- **내가 오늘 겪은 2문제를 태블릿이 구조적으로 해결**: 세션 로그아웃(자동 heal) + 모바일 /m/ 스킨(skin_sync) — 나는 Boss 재로그인 요청 + 외부 engine.js 우회로 대응했음.
+- **ref**: `parksy-image/mcp-servers/tablet_webtoon_mcp.py`(태블릿) · `mcp-servers/phone_webtoon_make_mcp.py`(폰) · `memory/webtoon-two-lanes.md`(투트랙 원칙)
