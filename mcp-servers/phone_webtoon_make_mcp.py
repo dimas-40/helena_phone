@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-phone-webtoon-make MCP — 폰 웹툰 메이크. 웹툰 작가·연출 시퀀스.
+phone-webtoon-produce MCP — 폰 웹툰 프로덕션(그리기가 아니라 편집·조립·발행·영상화). 작가가 그린 스케치·스토리를 웹툰 형식으로 프로덕션.
 
 2단 시퀀스 (휴먼 인더 루프):
   1. webtoon_direct(source)  — 연출 기획: 소스(URL/문서) 파싱 + BLIP 눈(필수) → 컷·몸동작·프롬프트 설계 → 텔레그램 전송
@@ -17,7 +17,7 @@ phone-webtoon-make MCP — 폰 웹툰 메이크. 웹툰 작가·연출 시퀀스
 import json, sys, os, glob, shutil, subprocess, time
 from pathlib import Path
 
-SERVER = "phone-webtoon-make"
+SERVER = "phone-webtoon-produce"
 VER = "1.1.0"
 
 GALLERY = "/sdcard/DCIM/Drawing assist"
@@ -370,7 +370,7 @@ def _format_telegram(d):
         feat_str = (f"b{feats.get('bright','?')} d{feats.get('dark','?')} "
                     f"w{feats.get('warm','?')}/c{feats.get('cool','?')} "
                     f"s{feats.get('sat','?')} e{feats.get('edge','?')}")
-    lines = [f"🎬 폰 웹툰 메이크 — 연출 기획", "",
+    lines = [f"🎬 폰 웹툰 프로덕션 — 연출 기획", "",
              f"소스: {d['title']}", f"눈(BLIP): {eye}", ""]
     if feat_str:
         lines.append(f"특징: {feat_str}")
@@ -580,11 +580,11 @@ footer{{text-align:center;color:var(--brass);font-size:12px;letter-spacing:.2em;
 # ── JSON-RPC stdio ──
 def _tools():
     return [
-        {"name": "webtoon_direct", "description": "[폰 웹툰 메이크] 연출 기획. 소스(URL/문서)를 BLIP 눈으로 본 뒤 컷·몸동작·프롬프트를 설계해 텔레그램으로 전송.",
+        {"name": "webtoon_direct", "description": "[폰 웹툰 프로덕션] 연출 기획. 소스(URL/문서)를 BLIP 눈으로 본 뒤 컷·몸동작·프롬프트를 설계해 텔레그램으로 전송.",
          "inputSchema": {"type": "object", "properties": {"source": {"type": "string", "description": "URL 또는 문서경로"}}, "required": ["source"]}},
-        {"name": "webtoon_assemble", "description": "[폰 웹툰 메이크] 식자·조립. 갤러리 컷을 읽어 대사 말풍선을 식자하고 세로 웹툰 HTML로 조립.",
+        {"name": "webtoon_assemble", "description": "[폰 웹툰 프로덕션] 식자·조립. 갤러리 컷을 읽어 대사 말풍선을 식자하고 세로 웹툰 HTML로 조립.",
          "inputSchema": {"type": "object", "properties": {"dialogue": {"type": "array", "items": {"type": "string"}}, "captions": {"type": "object"}, "title": {"type": "string"}}, "required": []}},
-        {"name": "webtoon_record", "description": "[폰 웹툰 메이크] 웹툰 → 화면 녹화 → 스토리텔링 영상. 스크롤=카메라라 자동 스크롤+녹화로 '만화 읽어주는' 영상(mp4) 생성.",
+        {"name": "webtoon_record", "description": "[폰 웹툰 프로덕션] 웹툰 → 화면 녹화 → 스토리텔링 영상. 스크롤=카메라라 자동 스크롤+녹화로 '만화 읽어주는' 영상(mp4) 생성.",
          "inputSchema": {"type": "object", "properties": {"html": {"type": "string"}, "url": {"type": "string"}, "out": {"type": "string"}}}},
     ]
 
