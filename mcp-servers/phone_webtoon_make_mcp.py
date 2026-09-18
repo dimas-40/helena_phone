@@ -131,6 +131,28 @@ SCROLL_FIX = """<script>
 </script>"""
 
 
+SKIN_SYNC = """<script>
+/* 스킨 싱크 — PC 스킨과 /m/ 모바일 스킨을 같은 숫자로 정규화 (WSL skin_sync 축약)
+   JS로 <style>을 생성해 주입한다 — 정적 <style>은 티스토리가 지우지만 JS 생성은 살아남음. */
+(function(){
+var root=document.getElementById('parksy-webtoon');if(!root)return;
+var st=document.createElement('style');st.id='parksy-skin-sync';
+st.textContent=[
+ 'html,body{background:#08090a !important}',
+ '#parksy-webtoon{width:min(720px,calc(100vw - 44px),100%) !important;max-width:none !important;margin:0 auto !important;padding:20px 16px 80px !important;background:#0c1710 !important;color:#e9e5cf !important;font-size:16px !important;line-height:1.5 !important;word-break:keep-all !important;overflow-wrap:break-word !important;text-align:left !important}',
+ '#parksy-webtoon,#parksy-webtoon *{box-sizing:border-box !important}',
+ '#parksy-webtoon .panel,#parksy-webtoon .cut{width:100% !important;max-width:100% !important}',
+ '#parksy-webtoon .cut{overflow:hidden !important}',
+ '#parksy-webtoon .cut img{width:100% !important;height:auto !important;max-width:100% !important;display:block !important}',
+ '#parksy-webtoon .cap{font-size:14px !important;line-height:26.6px !important;word-break:keep-all !important;overflow-wrap:break-word !important;text-align:left !important;margin:14px 0 0 !important}',
+ '#parksy-webtoon [data-tab]{font-size:13px !important}',
+ '#parksy-webtoon [data-panel]{line-height:20px !important}'
+].join('\\n');
+document.head.appendChild(st);
+})();
+</script>"""
+
+
 # ── BLIP 비전 (눈) — 강제 사용 ──
 def _vision(image_path):
     """BLIP 캡션 + 모델 없는 특징을 같이 본다. 반환: {caption, features, blind}."""
