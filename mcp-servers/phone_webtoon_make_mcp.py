@@ -86,10 +86,11 @@ DEFAULT_TL = ('[{"p":0,"s":1,"r":-1.5,"o":0.3,"blur":2,"y":20},'
 
 # 숏 타입별 연출 타임라인 — 같은 이미지에 "카메라 워킹"을 부여 (편집 원자 조합)
 SHOT_TIMELINES = {
-    "establishing": '[{"p":0,"s":1,"o":0.2,"blur":3},{"p":0.4,"s":1.08,"o":0.9,"blur":0},{"p":1,"s":1.2,"o":1}]',          # 와이드: 느린 줌인+페이드
-    "over_shoulder": '[{"p":0,"s":1.1,"r":-2,"o":0.3,"y":40},{"p":0.5,"s":1.05,"r":-1,"o":1,"y":0},{"p":1,"s":1.0,"r":0,"o":1,"y":-12}]',  # 접근: 슬라이드업+기울기
-    "insert": '[{"p":0,"s":1.22,"o":0.6,"blur":5,"reveal":0.15},{"p":0.6,"s":1.08,"o":1,"blur":0,"reveal":1},{"p":1,"s":1.0,"o":1,"reveal":1}]',  # 손: 초점당김+아래서 reveal(숫자 보간)
-    "extreme": '[{"p":0,"s":1.35,"r":-2,"o":0.4,"gray":1,"blur":4},{"p":0.5,"s":1.15,"r":0,"o":1,"gray":0,"blur":0},{"p":1,"s":1.0,"r":1.5,"o":1,"gray":0}]',  # 얼굴: 무채색→컬러+줌아웃
+    # 만점 연출 — 5키프레임, 부드럽고 길게 (트리거는 앞당겨져 있음)
+    "establishing": '[{"p":0,"s":1.03,"r":0,"o":0,"blur":3,"y":34},{"p":0.25,"s":1.07,"o":0.55,"blur":1.5,"y":18},{"p":0.5,"s":1.13,"o":1,"blur":0,"y":4},{"p":0.78,"s":1.19,"o":1,"y":-7},{"p":1,"s":1.24,"o":1,"y":-12}]',
+    "over_shoulder": '[{"p":0,"s":1.13,"r":-2.5,"o":0,"y":52},{"p":0.3,"s":1.08,"r":-1.6,"o":0.7,"y":26},{"p":0.6,"s":1.03,"r":-0.6,"o":1,"y":6},{"p":0.85,"s":1.0,"r":0,"o":1,"y":-9},{"p":1,"s":1.0,"r":0.6,"o":1,"y":-15}]',
+    "insert": '[{"p":0,"s":1.36,"o":0.25,"blur":6,"reveal":0.08},{"p":0.3,"s":1.22,"o":0.65,"blur":2,"reveal":0.5},{"p":0.6,"s":1.1,"o":1,"blur":0,"reveal":1},{"p":0.85,"s":1.02,"o":1,"reveal":1},{"p":1,"s":1.0,"o":1,"reveal":1}]',
+    "extreme": '[{"p":0,"s":1.5,"r":-3,"o":0.08,"gray":1,"blur":6},{"p":0.3,"s":1.34,"r":-2,"o":0.5,"gray":0.7,"blur":2.5},{"p":0.55,"s":1.17,"r":0,"o":1,"gray":0.2,"blur":0},{"p":0.8,"s":1.06,"r":1.1,"o":1,"gray":0},{"p":1,"s":1.0,"r":1.6,"o":1,"gray":0}]',
     "long": '[{"p":0,"s":1.05,"o":0.3,"y":25},{"p":1,"s":1.15,"o":1,"y":0}]',
     "medium": '[{"p":0,"s":1.15,"o":0.3,"y":15},{"p":1,"s":1.0,"o":1,"y":0}]',
     "closeup": '[{"p":0,"s":1.25,"o":0.2,"blur":4},{"p":1,"s":1.0,"o":1,"blur":0}]',
@@ -356,24 +357,29 @@ def _format_telegram(d):
 
 
 # ── 툴 1: 연출 기획 ──
-def webtoon_direct(source=None):
+def webtoon_direct(source=None, captions=None):
     try:
         if not source:
             return {"ok": False, "error": "source 필요 (URL 또는 문서경로)"}
         title, body = _fetch_text(source)
-        # 반드시 눈으로 본다 (스크린샷 + BLIP + 특징). 눈이 없으면 중단(BLIND).
-        vision = {"caption": "", "features": {}, "blind": False}
-        if source.startswith("http"):
-            png = _screenshot(source)
-            if not png:
-                return {"ok": False, "error": "스크린샷 실패 — 눈으로 못 봄"}
-            vision = _vision(png)
-            if vision.get("blind"):
-                return {"ok": False, "error": "BLIP 눈 없음(BLIND) — 슬라이드쇼 방지를 위해 중단",
-                        "vision": vision}
+        # ── 눈 탈부착: 작가(Boss)가 식자를 주면 BLIP 눈을 건너뛴다. 없으면 실험(BLIP). ──
+        if captions is not None:
+            vision = {"caption": "(작가 제공 — BLIP 생략)", "features": {}, "blind": False, "source": "author"}
         else:
-            vision["caption"] = "(문서라 스크린샷 없음)"
+            vision = {"caption": "", "features": {}, "blind": False}
+            if source.startswith("http"):
+                png = _screenshot(source)
+                if not png:
+                    return {"ok": False, "error": "스크린샷 실패 — 눈으로 못 봄"}
+                vision = _vision(png)
+                if vision.get("blind"):
+                    return {"ok": False, "error": "BLIP 눈 없음(BLIND) — 슬라이드쇼 방지를 위해 중단",
+                            "vision": vision}
+            else:
+                vision["caption"] = "(문서라 스크린샷 없음)"
         design = _design(title, body, vision)
+        if captions is not None:
+            design["captions"] = captions  # 작가 식자를 설계에 첨부
         msg = _format_telegram(design)
         tg = _tg_send(msg)
         return {"ok": True, "title": title, "vision": vision, "cuts": len(design["cuts"]),
@@ -383,15 +389,34 @@ def webtoon_direct(source=None):
 
 
 # ── 툴 2: 식자·조립 ──
-def webtoon_assemble(dialogue=None, title="웹툰"):
+def webtoon_assemble(dialogue=None, captions=None, title="웹툰"):
     try:
-        if not dialogue or not isinstance(dialogue, list):
-            return {"ok": False, "error": "dialogue 필요 (대사 리스트)"}
+        # ── 눈 탈부착(작가주의): 식자는 Boss(작가)가 직접 준다. BLIP는 webtoon_direct(실험)에서만. ──
+        #   captions: list(컷 순서 1-based) 또는 dict("3"=컷번호 / "cut_01" / "cuts/cut_01.jpg")
+        lines = captions if captions is not None else dialogue
+        if lines is None:
+            return {"ok": False, "error": "captions/dialogue 필요 (식자 리스트 또는 딕셔너리)"}
         pats = sorted(glob.glob(os.path.join(GALLERY, "*.jpg")) + glob.glob(os.path.join(GALLERY, "*.png")))
         if not pats:
             return {"ok": False, "error": f"갤러리에 컷 없음: {GALLERY}"}
-        n = min(len(pats), len(dialogue))
+        if isinstance(lines, dict):
+            # n = 최대 숫자 키(컷 번호). 숫자 키 없으면 갤러리 전체(파일명 매핑용)
+            nums = [int(k) for k in lines if str(k).isdigit()]
+            n = max(nums) if nums else len(pats)
+        else:
+            n = len(lines)
+        n = min(n, len(pats))
         pats = pats[-n:]  # 최신 n개를 생성 순서(오래된→최신)로 — 역순 버그 수정
+        if isinstance(lines, dict):
+            # dict → 컷 순서(1..n)로 해석. 매핑 없으면 빈 문자열(= 안 본 것, blind 유지)
+            resolved = []
+            for i in range(1, n + 1):
+                c = (lines.get(str(i)) or lines.get(f"cut_{i:02d}")
+                     or lines.get(f"cut_{i:02d}.jpg") or lines.get(f"cuts/cut_{i:02d}.jpg") or "")
+                resolved.append(c)
+            lines = resolved
+        else:
+            lines = list(lines)
         os.makedirs(ASSET_DIR, exist_ok=True)
         cut_rel = []
         for i in range(n):
@@ -400,10 +425,10 @@ def webtoon_assemble(dialogue=None, title="웹툰"):
             _crop_disclaimer(pats[i], dst)
             _add_film_sprocket(dst)
             cut_rel.append(f"cuts/cut_{i+1:02d}{ext}")
-        html = _compose(title, cut_rel, dialogue[:n])
+        html = _compose(title, cut_rel, lines[:n])
         out = os.path.join(WEBTOON_DIR, "index.html")
         open(out, "w").write(html)
-        return {"ok": True, "n_cuts": n, "html": out, "cuts": cut_rel}
+        return {"ok": True, "n_cuts": n, "html": out, "cuts": cut_rel, "eye": "author"}
     except Exception as e:
         return {"ok": False, "error": f"{type(e).__name__}: {e}"[:300]}
 
