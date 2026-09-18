@@ -463,6 +463,66 @@ def webtoon_assemble(dialogue=None, captions=None, title="웹툰"):
         return {"ok": False, "error": f"{type(e).__name__}: {e}"[:300]}
 
 
+def webtoon_record(html=None, url=None, out=None):
+    """웹툰 → 화면 녹화 → 스토리텔링 영상 (스크롤=카메라).
+
+    Playwright video + 자동 스크롤. 스크롤 연출(줌·페이드·카운트업·막대)이
+    그대로 영상 카메라 워킹이 된다 — 별도 촬영·편집 불필요.
+    """
+    try:
+        src = url if url else os.path.abspath(html or os.path.join(WEBTOON_DIR, "index.html"))
+        out = out or os.path.join(WEBTOON_DIR, "story.mp4")
+        vdir = "/tmp/wt_video"
+        shutil.rmtree(vdir, ignore_errors=True)
+        os.makedirs(vdir, exist_ok=True)
+        goto = f'pg.goto({src!r}, wait_until="networkidle", timeout=60000)' if url \
+            else f'pg.goto("file://" + {src!r}, wait_until="networkidle", timeout=60000)'
+        code = f'''
+from playwright.sync_api import sync_playwright
+with sync_playwright() as p:
+    b = p.chromium.launch()
+    ctx = b.new_context(viewport={{"width":390,"height":844}},
+        record_video_dir={vdir!r}, record_video_size={{"width":390,"height":844}})
+    pg = ctx.new_page()
+    {goto}
+    pg.wait_for_timeout(1500)
+    # 스토리텔링 스크롤 — 느린 팬(카메라) + 끝에서 멈춤
+    pg.evaluate("""
+        (async () => {{
+            const delay = ms => new Promise(r => setTimeout(r, ms));
+            const total = document.body.scrollHeight - window.innerHeight;
+            let y = 0;
+            while (y < total) {{
+                y += 6;
+                window.scrollTo(0, y);
+                await delay(40);
+            }}
+            window.scrollTo(0, total);
+            await delay(2500);
+        }})()
+    """)
+    pg.wait_for_timeout(3000)
+    b.close()
+'''
+        subprocess.run(["/usr/bin/python3", "-c", code], capture_output=True, timeout=600)
+        vfiles = sorted(glob.glob(os.path.join(vdir, "*.webm")))
+        if not vfiles:
+            return {"ok": False, "error": "녹화 파일 없음 (Playwright video 실패)"}
+        if os.path.isfile(out):
+            os.remove(out)
+        r = subprocess.run(["ffmpeg", "-y", "-i", vfiles[-1], "-c:v", "libx264",
+                            "-pix_fmt", "yuv420p", "-movflags", "+faststart", out],
+                           capture_output=True, timeout=180)
+        if r.returncode != 0:
+            # ffmpeg 없으면 webm 그대로
+            shutil.copy(vfiles[-1], out)
+        return {"ok": True, "video": out,
+                "size": os.path.getsize(out) if os.path.isfile(out) else 0,
+                "format": os.path.splitext(out)[1]}
+    except Exception as e:
+        return {"ok": False, "error": f"{type(e).__name__}: {e}"[:300]}
+
+
 def _crop_disclaimer(src, dst):
     """삼성 AI 경고문(하단 텍스트) 제거 — 하단 8% 크롭 후 저장."""
     try:
@@ -523,7 +583,9 @@ def _tools():
         {"name": "webtoon_direct", "description": "[폰 웹툰 메이크] 연출 기획. 소스(URL/문서)를 BLIP 눈으로 본 뒤 컷·몸동작·프롬프트를 설계해 텔레그램으로 전송.",
          "inputSchema": {"type": "object", "properties": {"source": {"type": "string", "description": "URL 또는 문서경로"}}, "required": ["source"]}},
         {"name": "webtoon_assemble", "description": "[폰 웹툰 메이크] 식자·조립. 갤러리 컷을 읽어 대사 말풍선을 식자하고 세로 웹툰 HTML로 조립.",
-         "inputSchema": {"type": "object", "properties": {"dialogue": {"type": "array", "items": {"type": "string"}}, "title": {"type": "string"}}, "required": ["dialogue"]}},
+         "inputSchema": {"type": "object", "properties": {"dialogue": {"type": "array", "items": {"type": "string"}}, "captions": {"type": "object"}, "title": {"type": "string"}}, "required": []}},
+        {"name": "webtoon_record", "description": "[폰 웹툰 메이크] 웹툰 → 화면 녹화 → 스토리텔링 영상. 스크롤=카메라라 자동 스크롤+녹화로 '만화 읽어주는' 영상(mp4) 생성.",
+         "inputSchema": {"type": "object", "properties": {"html": {"type": "string"}, "url": {"type": "string"}, "out": {"type": "string"}}}},
     ]
 
 
@@ -534,7 +596,7 @@ def _handle(method, params):
         return {"tools": _tools()}
     if method == "tools/call":
         name = params.get("name"); args = params.get("arguments", {}) or {}
-        fn = {"webtoon_direct": webtoon_direct, "webtoon_assemble": webtoon_assemble}.get(name)
+        fn = {"webtoon_direct": webtoon_direct, "webtoon_assemble": webtoon_assemble, "webtoon_record": webtoon_record}.get(name)
         if not fn:
             raise ValueError(f"Unknown tool: {name}")
         r = fn(**args)
