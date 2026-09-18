@@ -123,6 +123,14 @@ var tabs=document.querySelectorAll('[data-tab]');tabs.forEach(function(t){t.addE
 </script>"""
 
 
+SCROLL_FIX = """<script>
+/* (0) 티스토리 스킨이 html/body에 박은 overscroll-behavior-y:contain 을 걷어낸다.
+   ★ 2026-09-15 실기기 확정: 이 값 때문에 손가락 터치 스와이프(스크롤)가 0%로 죽는다.
+   auto 로 바꾸면 터치 스크롤이 살아난다. 연출보다 이게 먼저다. */
+(function(){var _h=document.documentElement,_b=document.body;if(_h)_h.style.setProperty('overscroll-behavior-y','auto','important');if(_b)_b.style.setProperty('overscroll-behavior-y','auto','important');})();
+</script>"""
+
+
 # ── BLIP 비전 (눈) — 강제 사용 ──
 def _vision(image_path):
     """BLIP 캡션 + 모델 없는 특징을 같이 본다. 반환: {caption, features, blind}."""
