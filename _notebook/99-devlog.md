@@ -7268,3 +7268,17 @@ Windows (상위) ── Termius(복구로: WSL 죽으면 상위에서 재호출)
 - **WSL 최신 24커밋**: 세 법칙(가독성/skin_sync/운동) 게이트화 · 인포그래픽 20→11종 재선택 · 식자 피츠제럴드 결(2~3행, 사물을 상태로) · 진입점 하나(URL→콘티) · phoneparis16 「폰팔이, 왕세자를 가르치다」 16컷.
 - **내가 오늘 겪은 2문제를 태블릿이 구조적으로 해결**: 세션 로그아웃(자동 heal) + 모바일 /m/ 스킨(skin_sync) — 나는 Boss 재로그인 요청 + 외부 engine.js 우회로 대응했음.
 - **ref**: `parksy-image/mcp-servers/tablet_webtoon_mcp.py`(태블릿) · `mcp-servers/phone_webtoon_make_mcp.py`(폰) · `memory/webtoon-two-lanes.md`(투트랙 원칙)
+
+### 웹툰 공방 정체 확정 — 투트랙·경제·해자·감옥원칙·AI시대 리콰이어먼트 (_Claude · 2026-09-19)
+
+- **투트랙(트레인)**: 프로덕션(태블릿/WSL, 양산·노멀라이즈) / 작가주의(폰/나, 예술성·개성 공방). 대체가 아니라 분업.
+- **드로잉 vs 제작(본질)**: 드로잉(손으로 관찰·추상화해 그리는 재미) = Boss가 따로 함(그 자체가 목적). 이 MCP = 그리기 뒤의 귀찮은 제작(업로드·생성·편집·조립·발행·영상화)을 삼킴. Boss는 코드 못 치고 STT로 말만 → 에이전트가 코드 생성.
+- **경제 모델**: 온디바이스 GPU(삼성) = 고정비(이미 산 기기) → 변동비 0. 품질은 A급의 80~90%면 충분(콘텐츠용). 승부처 = 기술 프론티어 ❌ / 콘텐츠 ✅.
+- **해자**: ADB 역조작 = "어뷰징"이 아니라 **대체 입력(접근성 유사)**. 온디바이스 AI = 기기 구매자 무료 서비스(시리얼 넘버). 범용 확장(삼성 이미지→샤오미/중국 동영상→다음 기능), 애플만 예외(잠김).
+- **AI 시대 리콰이어먼트 표본**: ①코드→말로 지시 ②GPU 구매→무료 온디바이스 활용 ③수동 노동→지루한 공정 자동화.
+- **감옥원칙(jail)**: 기획 단계 = 풀어줌(자유·툴 다수). 공장 연산 = 수갑(MCP당 툴 2개: 액션+탈출구, 3개째 금지). 기획/공장 구분 필수.
+- **28레포 생태계**: dtslib1979 5-Tier·3방송국(parksy.kr=콘텐츠 / eae.kr=지식·인프라 / dtslib.kr=비즈니스). 웹툰(parksy-webzine)은 그 한 축.
+- **평가 프레임**: "네이버 웹툰 품질·GPU·상용 제품" 같은 옛날 관성 잣대로 재지 말 것. 이 시스템의 자기 잣대(말로 지시·무료 온디바이스·개인 제작 공방)로.
+- **MCP 작업물(폰)**: phone-webtoon-make(리네임 리버트 — 메이크=제작이 맞음) · webtoon_record(웹툰→화면녹화→스토리텔링 영상, 스크롤=카메라) · 눈 탈부착(captions) · SCROLL_FIX(overscroll) · SKIN_SYNC(전체 WSL 이식) · SHOTS/타임라인/인포그래픽.
+- **WSL 교차(왕복)**: 태블릿이 내 폰 연출 문법(SHOTS·얼굴공개·눈탈부착·BLIND·탭)을 이식(f473907f). 반대로 내 폰이 태블릿의 SKIN_SYNC 전체를 이식(skin_sync.js). 투트랙 왕복 성립.
+- 상세: `memory/webtoon-philosophy.md` · `memory/webtoon-economics.md` · `memory/webtoon-samsung-moat.md` · `memory/mcp-jail-principle.md` · `memory/dtslib-28-repos.md` · `memory/webtoon-eval-frame.md`
