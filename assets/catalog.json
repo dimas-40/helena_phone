@@ -1232,6 +1232,46 @@
     "deck": "한 장 정리. 나중에 \"ADB 설정\" 얘기 나오면 이걸 먼저 읽으면 됨."
   },
   {
+    "src": "_notebook/108-content-semiconductor-architecture_Claude.md",
+    "out": "notebook/108-content-semiconductor-architecture_Claude.html",
+    "title": "🏭 Content Semiconductor Architecture — 반도체 공법을 콘텐츠 제조로 (2축 모델)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "작성: 2026-09-02 · `_Claude` (출판부) · 상태: **개념 확정** (구현 전)"
+  },
+  {
+    "src": "_notebook/109-content-fab-implementation-plan_Claude.md",
+    "out": "notebook/109-content-fab-implementation-plan_Claude.html",
+    "title": "🏭 Content Manufacturing OS — 구현 계획서 (1장)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "작성: 2026-09-02 · `_Claude` · 상태: **승인 대기** · 근거: `108-content-semiconductor-architecture_Claude.md`"
+  },
+  {
+    "src": "_notebook/110-content-manufacturing-os_Claude.md",
+    "out": "notebook/110-content-manufacturing-os_Claude.html",
+    "title": "🏭 Content Manufacturing OS — 개념 설계도 (최종 정리본)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "작성: 2026-09-02 · `_Claude` · 상태: **설계도 확정, 실행 대기**"
+  },
+  {
+    "src": "_notebook/111-content-manufacturing-os-whitepaper_Claude.md",
+    "out": "notebook/111-content-manufacturing-os-whitepaper_Claude.html",
+    "title": "🏭 Content Manufacturing OS — 백서 (오늘 작업 전체 정리)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "작성: 2026-09-02 · `_Claude` · 상태: **구현 + 실동작 + MCP 연결 완료**"
+  },
+  {
+    "src": "_notebook/112-repo-inventory-master_Claude.md",
+    "out": "notebook/112-repo-inventory-master_Claude.html",
+    "title": "전 레포 문서 재고 조사 — 종합 마스터 리포트",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "작성: 2026-09-04 · `_Claude` · Boss 지시 (\"연결 레포 전체 문서 파싱 + 재고조사 문서 전수\")"
+  },
+  {
     "src": "_notebook/78-pd-pipeline-whitepaper_Claude.md",
     "out": "notebook/78-pd-pipeline-whitepaper_Claude.html",
     "title": "🎬 PD Pipeline 기술 백서 — URL 하나로 숏폼 자동 제작",
@@ -1328,6 +1368,14 @@
     "deck": ""
   },
   {
+    "src": "_notebook/schedule-2026-09_Claude.md",
+    "out": "notebook/schedule-2026-09_Claude.html",
+    "title": "📅 스케줄 관리 — 2026년 9월 (기점 2026-09-04)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "시작: 2026-09-04 · 담당: `_Claude` (스케줄러·마케터) · Boss 지시"
+  },
+  {
     "src": "_notebook/session-2026-08-18_Claude.md",
     "out": "notebook/session-2026-08-18_Claude.html",
     "title": "세션 수첩 — 환경·과금·GitHub 계정 점검 (2026-08-18)",
@@ -1358,6 +1406,14 @@
     "section": "Notebook",
     "kind": "md",
     "deck": "**Boss 지시 (2026-08-22):** \"유튜브 OAuth부터 연결해. 이것도 평균이 이슈니까 리마인더하고 업무 스토리 다 저장.\""
+  },
+  {
+    "src": "_notebook/session-2026-09-05_Claude.md",
+    "out": "notebook/session-2026-09-05_Claude.html",
+    "title": "세션 노트 — 2026-09-05 (박씨 프로덕트 판매 전략 확정)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "날짜: 2026-09-04 ~ 09-05 · `_Claude` · Boss 지시로 대화 이력 저장"
   },
   {
     "src": "_notebook/tablet-broadcast-studio_Claude.md",

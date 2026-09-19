@@ -1,0 +1,344 @@
+<title>아브라함의 선반</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f5f2e9; --paper-2:#ebe7d8; --ink:#1b1e18; --ink-soft:#52564a;
+    --green:#1e4d3b; --green-2:#2c6a52; --wood:#6e5436; --wood-dark:#59432a;
+    --brass:#a98a4b; --brass-soft:#c2a569; --line:#d8d3c4; --cover-shadow:rgba(27,30,24,.22);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#161915; --paper-2:#1e221c; --ink:#eceadf; --ink-soft:#a8ac9f;
+      --green:#3d7d5f; --green-2:#4f9272; --wood:#7a5a38; --wood-dark:#5d4428;
+      --brass:#c2a25f; --brass-soft:#d3b87c; --line:#2d322a; --cover-shadow:rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#161915; --paper-2:#1e221c; --ink:#eceadf; --ink-soft:#a8ac9f;
+    --green:#3d7d5f; --green-2:#4f9272; --wood:#7a5a38; --wood-dark:#5d4428;
+    --brass:#c2a25f; --brass-soft:#d3b87c; --line:#2d322a; --cover-shadow:rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Newsreader",Georgia,serif; font-size:18px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px}
+
+  /* ── 마스트헤드 ── */
+  .masthead{display:flex; align-items:flex-end; justify-content:space-between; gap:24px;
+    padding:40px 0 8px; border-bottom:1px solid var(--line)}
+  .brand h1{
+    margin:0; font-family:"Fraunces",Georgia,serif; font-weight:900;
+    font-size:clamp(44px,7vw,80px); line-height:.95; letter-spacing:.02em;
+    color:var(--green); text-wrap:balance;
+  }
+  .brand h1 .amp{color:var(--brass); font-weight:600}
+  .brand .sub{margin-top:10px; font-size:15px; letter-spacing:.22em; color:var(--ink-soft);
+    text-transform:uppercase; font-family:"IBM Plex Mono",monospace}
+  .established{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--brass);
+    letter-spacing:.08em; text-transform:uppercase; padding-bottom:8px; white-space:nowrap}
+
+  /* ── 인트로 ── */
+  .intro{display:grid; grid-template-columns:1.4fr 1fr; gap:40px; padding:36px 0 8px; align-items:end}
+  .intro .lede{font-size:clamp(22px,2.6vw,30px); line-height:1.35; font-weight:500; margin:0;
+    max-width:34ch; text-wrap:balance}
+  .intro .lede em{font-style:italic; color:var(--green-2)}
+  .intro .note{font-size:15px; color:var(--ink-soft); font-family:"IBM Plex Mono",monospace;
+    line-height:1.7; margin:0; text-align:right}
+
+  /* ── 선반 ── */
+  .shelf-stage{position:relative; padding:34px 0 10px}
+  .shelf-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:22px}
+  .shelf-head .label{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--ink-soft)}
+  .shelf-nav{display:flex; gap:8px}
+  .shelf-nav button{
+    width:40px; height:40px; border:1px solid var(--line); background:transparent; color:var(--ink);
+    cursor:pointer; font-size:18px; border-radius:0; transition:border-color .2s,color .2s;
+  }
+  .shelf-nav button:hover{border-color:var(--green); color:var(--green)}
+  .shelf-nav button:focus-visible{outline:2px solid var(--green); outline-offset:2px}
+
+  .shelf{display:flex; gap:0; overflow-x:auto; scroll-snap-type:x mandatory;
+    padding-bottom:26px; scrollbar-width:none; align-items:flex-end}
+  .shelf::-webkit-scrollbar{display:none}
+  .shelf::after{content:""; position:absolute; left:0; right:0; bottom:34px; height:14px;
+    background:linear-gradient(var(--wood),var(--wood-dark)); border-radius:1px;
+    box-shadow:0 2px 0 rgba(0,0,0,.12), 0 12px 22px var(--cover-shadow); pointer-events:none}
+
+  /* ── 잡지(커버) ── */
+  .mag{flex:0 0 auto; width:170px; margin:0 10px; scroll-snap-align:center;
+    position:relative; cursor:pointer; transition:transform .25s cubic-bezier(.2,.7,.3,1)}
+  .mag:first-child{margin-left:28px}
+  .mag:last-child{margin-right:28px}
+  .mag:hover{transform:translateY(-12px) rotate(-.6deg)}
+  .mag:focus-visible{outline:2px solid var(--brass); outline-offset:3px}
+  .mag .cover{
+    aspect-ratio:3/4.15; display:flex; flex-direction:column; justify-content:space-between;
+    padding:16px 14px; position:relative; overflow:hidden; box-shadow:0 6px 16px var(--cover-shadow);
+    border:1px solid rgba(0,0,0,.14);
+  }
+  .mag .cover .era{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em;
+    opacity:.82}
+  .mag .cover .title{font-family:"Fraunces",Georgia,serif; font-weight:900; line-height:.95;
+    font-size:26px; letter-spacing:-.01em}
+  .mag .cover .cat{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.16em;
+    text-transform:uppercase; opacity:.9; border-top:1px solid; padding-top:8px}
+  .mag .spine{position:absolute; left:-7px; top:0; bottom:0; width:7px; border-radius:1px;
+    filter:brightness(.82)}
+  .mag .shadow{position:absolute; left:6%; right:6%; bottom:-14px; height:12px;
+    background:radial-gradient(ellipse at center, var(--cover-shadow), transparent 70%)}
+  .mag figcaption{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-soft);
+    text-align:center; margin-top:6px; letter-spacing:.04em}
+
+  /* 커버 색 배정 */
+  .c-brutus{background:#23443a; color:#efe9d6}
+  .c-brutus .spine{background:#16291f}
+  .c-popeye{background:#c84b31; color:#fbf3e6}
+  .c-popeye .spine{background:#8f2f1c}
+  .c-casa{background:#d9d5c8; color:#2c2c28}
+  .c-casa .spine{background:#a8a294}
+  .c-premium{background:#e8dfc8; color:#3a3323}
+  .c-premium .spine{background:#b8a97e}
+  .c-kunel{background:#8a9470; color:#f2f0e4}
+  .c-kunel .spine{background:#5e6850}
+  .c-abraham{background:#1e4d3b; color:#f0e6c8}
+  .c-abraham .spine{background:#14301f}
+  .c-abraham .cover{border-color:var(--brass)}
+
+  /* ── 리더(오버레이) ── */
+  .reader{position:fixed; inset:0; background:rgba(12,14,11,.6); display:none;
+    align-items:center; justify-content:center; z-index:50; padding:24px;
+    backdrop-filter:blur(3px)}
+  .reader.open{display:flex}
+  .reader-card{background:var(--paper); max-width:680px; width:100%; max-height:88vh;
+    overflow-y:auto; position:relative; box-shadow:0 30px 80px rgba(0,0,0,.4);
+    animation:rise .3s cubic-bezier(.2,.7,.3,1)}
+  @keyframes rise{from{opacity:0; transform:translateY(16px)}to{opacity:1; transform:none}}
+  .reader-close{position:absolute; top:14px; right:14px; width:36px; height:36px; border:1px solid var(--line);
+    background:var(--paper); color:var(--ink); cursor:pointer; font-size:16px; z-index:2}
+  .reader-close:hover{border-color:var(--green); color:var(--green)}
+  .reader-head{display:flex; gap:24px; padding:34px 34px 0}
+  .reader-cover{flex:0 0 150px; aspect-ratio:3/4.15; box-shadow:0 8px 20px var(--cover-shadow);
+    display:flex; flex-direction:column; justify-content:space-between; padding:14px 12px}
+  .reader-cover .title{font-family:"Fraunces",Georgia,serif; font-weight:900; font-size:24px; line-height:.95}
+  .reader-cover .era{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em}
+  .reader-meta{flex:1; display:flex; flex-direction:column; justify-content:center; gap:6px}
+  .reader-meta .t{font-family:"Fraunces",Georgia,serif; font-weight:900; font-size:30px; line-height:1.05}
+  .reader-meta .e{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--brass); letter-spacing:.1em; text-transform:uppercase}
+  .reader-body{padding:26px 34px 40px}
+  .reader-body p{font-size:17px; color:var(--ink); margin:0 0 16px}
+  .toc{border-top:1px solid var(--line); margin-top:10px; padding-top:16px}
+  .toc h3{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--ink-soft); margin:0 0 12px}
+  .toc li{display:flex; justify-content:space-between; gap:16px; padding:7px 0; border-bottom:1px dashed var(--line);
+    font-size:16px; list-style:none}
+  .toc li span:last-child{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-soft); white-space:nowrap}
+  .reader-foot{margin-top:20px; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-soft);
+    letter-spacing:.08em}
+
+  /* ── 푸터 ── */
+  footer{border-top:1px solid var(--line); margin-top:48px; padding:28px 0 44px;
+    display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-soft)}
+  footer .philo{font-family:"Newsreader",Georgia,serif; font-size:15px; font-style:italic; color:var(--ink); max-width:40ch}
+
+  @media (max-width:640px){
+    .intro{grid-template-columns:1fr; gap:16px}
+    .intro .note{text-align:left}
+    .reader-head{flex-direction:column; padding:26px 22px 0}
+    .reader-cover{flex-basis:120px; width:120px}
+    .reader-body{padding:20px 22px 32px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .mag:hover{transform:none}
+    .reader-card{animation:none}
+  }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand">
+      <h1>ABRAHAM<span class="amp">·</span></h1>
+      <div class="sub">잡지의 아버지 · 모든 잡지를 발행하는 한 사람의 출판사</div>
+    </div>
+    <div class="established">설립 2026 · 창간호 발행</div>
+  </header>
+
+  <section class="intro">
+    <p class="lede">선반 위에 잡지들이 서 있다. <em>꺼내 읽는 순간,</em> 그 잡지가 다시 발행된다.</p>
+    <p class="note">일본 잡지 황금기의 편집 문법을 보존하고<br>밀리터리 관광·건축·라이프스타일까지<br>모든 종류의 잡지를 한 선반에 세운다.</p>
+  </section>
+</div>
+
+<div class="wrap">
+  <section class="shelf-stage" aria-label="잡지 선반">
+    <div class="shelf-head">
+      <span class="label">선반 · SHELF</span>
+      <div class="shelf-nav">
+        <button id="prev" aria-label="이전">←</button>
+        <button id="next" aria-label="다음">→</button>
+      </div>
+    </div>
+
+    <div class="shelf" id="shelf" tabindex="0" aria-label="잡지 캐러셀">
+      <figure class="mag" data-i="0" tabindex="0">
+        <div class="cover c-brutus">
+          <span class="spine"></span>
+          <span class="era">1980</span>
+          <span class="title">BRUTUS</span>
+          <span class="cat">일본의 미</span>
+        </div>
+        <div class="shadow"></div>
+        <figcaption>BRUTUS · 1980</figcaption>
+      </figure>
+
+      <figure class="mag" data-i="1" tabindex="0">
+        <div class="cover c-popeye">
+          <span class="spine"></span>
+          <span class="era">1976</span>
+          <span class="title">POPEYE</span>
+          <span class="cat">시티보이</span>
+        </div>
+        <div class="shadow"></div>
+        <figcaption>POPEYE · 1976</figcaption>
+      </figure>
+
+      <figure class="mag" data-i="2" tabindex="0">
+        <div class="cover c-casa">
+          <span class="spine"></span>
+          <span class="era">1998</span>
+          <span class="title">CASA<br>BRUTUS</span>
+          <span class="cat">건축 · 인테리어</span>
+        </div>
+        <div class="shadow"></div>
+        <figcaption>CASA BRUTUS · 1998</figcaption>
+      </figure>
+
+      <figure class="mag" data-i="3" tabindex="0">
+        <div class="cover c-premium">
+          <span class="spine"></span>
+          <span class="era">2013</span>
+          <span class="title">&amp;Premium</span>
+          <span class="cat">디자인 · 생활</span>
+        </div>
+        <div class="shadow"></div>
+        <figcaption>&amp;Premium · 2013</figcaption>
+      </figure>
+
+      <figure class="mag" data-i="4" tabindex="0">
+        <div class="cover c-kunel">
+          <span class="spine"></span>
+          <span class="era">2004</span>
+          <span class="title">Ku:nel</span>
+          <span class="cat">수공예 · 자연</span>
+        </div>
+        <div class="shadow"></div>
+        <figcaption>Ku:nel · 2004</figcaption>
+      </figure>
+
+      <figure class="mag" data-i="5" tabindex="0">
+        <div class="cover c-abraham">
+          <span class="spine"></span>
+          <span class="era">2026</span>
+          <span class="title">ABRAHAM<br>창간호</span>
+          <span class="cat">모든 잡지의 아버지</span>
+        </div>
+        <div class="shadow"></div>
+        <figcaption>ABRAHAM · 2026</figcaption>
+      </figure>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <footer>
+    <p class="philo">"편집이란 무엇을 빼고 무엇을 남길지 결정하는 일이다." — ABRAHAM 출판의 원칙</p>
+    <p>© 2026 ABRAHAM · 모든 잡지의 아버지</p>
+  </footer>
+</div>
+
+<div class="reader" id="reader" role="dialog" aria-modal="true" aria-label="잡지 읽기">
+  <div class="reader-card">
+    <button class="reader-close" id="close" aria-label="닫기">✕</button>
+    <div class="reader-head">
+      <div class="reader-cover" id="rcover"></div>
+      <div class="reader-meta">
+        <span class="e" id="rera"></span>
+        <h2 class="t" id="rtitle"></h2>
+      </div>
+    </div>
+    <div class="reader-body">
+      <p id="rdesc"></p>
+      <div class="toc">
+        <h3>차례 · CONTENTS</h3>
+        <ul id="rtoc"></ul>
+      </div>
+      <p class="reader-foot" id="rfoot"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+const MAGS = [
+  {t:"BRUTUS", era:"1980", cls:"c-brutus", cat:"일본의 미",
+   desc:"1980년 창간. '남자들의 신바람'을 표방하며 일본의 미를 편집해온 잡지. 교토의 절, 오래된 가구, 소면 공장까지 — 대상을 특집으로 파고드는 구성법이 이 선반의 기준이다.",
+   toc:[["교토의 절 — 돌과 나무의 미","12"],["오래된 가구의 시간","38"],["소면 공장의 하루","54"],["미학이란 무엇인가","72"]],
+   foot:"일본 잡지문화 아카이브 · Axis A"},
+  {t:"POPEYE", era:"1976", cls:"c-popeye", cat:"시티보이",
+   desc:"1976년 창간. 도시를 즐기는 '시티보이'의 라이프스타일을 정립한 잡지. 무엇을 입고, 어디서 먹고, 어디로 갈지 — 도시 생활의 문법을 페이지로 만들었다.",
+   toc:[["시티보이의 하루","10"],["도쿄의 아침 식사","30"],["가방 속 물건들","48"],["주말의 산책길","66"]],
+   foot:"일본 잡지문화 아카이브 · Axis A"},
+  {t:"CASA BRUTUS", era:"1998", cls:"c-casa", cat:"건축 · 인테리어",
+   desc:"1998년 창간. 집과 건축, 디자인을 다루는 잡지. '살고 싶은 집'을 특집하며 공간의 문법을 편집한다. 이 선반에서 군사 유적의 건축을 읽는 렌즈가 된다.",
+   toc:[["살고 싶은 집 100","8"],["요새의 건축학","42"],["작은 공간의 힘","60"],["빛과 그림자","78"]],
+   foot:"밀리터리 관광 · Axis B"},
+  {t:"&Premium", era:"2013", cls:"c-premium", cat:"디자인 · 생활",
+   desc:"2013년 창간. '좋은 것'을 오래 쓰는 생활을 제안하는 잡지. 물건의 질감, 장인의 손, 일상의 리듬을 느리게 편집한다.",
+   toc:[["좋은 것의 기준","14"],["장인의 손","36"],["천천히 사는 법","52"],["겨울의 방","70"]],
+   foot:"라이프스타일"},
+  {t:"Ku:nel", era:"2004", cls:"c-kunel", cat:"수공예 · 자연",
+   desc:"2004년 창간. 손으로 만드는 일과 자연의 리듬을 기록하는 잡지. 서두르지 않고, 고치고, 다시 쓰는 삶의 문법을 담는다.",
+   toc:[["손으로 만드는 시간","16"],["숲의 레시피","40"],["고쳐 쓰는 물건들","58"],["계절의 색","76"]],
+   foot:"수공예 · 자연"},
+  {t:"ABRAHAM", era:"2026", cls:"c-abraham", cat:"모든 잡지의 아버지",
+   desc:"2026년 창간호. 이 선반의 첫 번째 잡지. 일본 잡지 문법과 밀리터리 관광을 하나로 묶고, 앞으로 발행될 모든 잡지의 기준이 될 창간호.",
+   toc:[["아브라함의 선언","6"],["편집의 문법","24"],["첫 특집 — 요새의 미","46"],["다음 잡지를 기다리며","88"]],
+   foot:"ABRAHAM · 창간호"},
+];
+
+const shelf = document.getElementById('shelf');
+const prev = document.getElementById('prev');
+const next = document.getElementById('next');
+const reader = document.getElementById('reader');
+const close = document.getElementById('close');
+
+function openMag(i){
+  const m = MAGS[i];
+  document.getElementById('rcover').className = 'reader-cover ' + m.cls;
+  document.getElementById('rcover').innerHTML = `<span class="era">${m.era}</span><span class="title">${m.t.replace('<br>',' ')}</span>`;
+  document.getElementById('rera').textContent = m.cat + ' · ' + m.era;
+  document.getElementById('rtitle').textContent = m.t.replace('<br>',' ');
+  document.getElementById('rdesc').textContent = m.desc;
+  document.getElementById('rtoc').innerHTML = m.toc.map(x=>`<li><span>${x[0]}</span><span>${x[1]}</span></li>`).join('');
+  document.getElementById('rfoot').textContent = m.foot;
+  reader.classList.add('open');
+  close.focus();
+}
+function closeReader(){ reader.classList.remove('open'); }
+
+document.querySelectorAll('.mag').forEach(el=>{
+  el.addEventListener('click', ()=>openMag(+el.dataset.i));
+  el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault(); openMag(+el.dataset.i);} });
+});
+next.addEventListener('click', ()=>shelf.scrollBy({left:220, behavior:'smooth'}));
+prev.addEventListener('click', ()=>shelf.scrollBy({left:-220, behavior:'smooth'}));
+close.addEventListener('click', closeReader);
+reader.addEventListener('click', e=>{ if(e.target===reader) closeReader(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeReader(); });
+</script>

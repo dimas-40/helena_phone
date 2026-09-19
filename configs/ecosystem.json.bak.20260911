@@ -1,0 +1,77 @@
+{
+  "_readme": "S25 Ultra (proot Ubuntu) — b계정 경제방송 SSOT. 16레포×10블로그×6채널 매핑. SSOT: dtslib-papyrus hq/TISTORY-ENDPRODUCT-MAPPING-2026-08-22.md §2.5(v3) + hq/config/channel-repo-map.json v2.0. 시크릿은 .secrets.env.",
+  "owner": "dtslib1979",
+  "mode": "lab",
+  "world": "경제방송 (b계정)",
+
+  "identity": {
+    "_readme": "GEO 원조 스탬프(헌법 제17조). person_name/tagline은 Boss 확정 대기 — 현재 임시값.",
+    "person_name": "dtslib",
+    "github_user": "dtslib1979",
+    "hub_repo": "dtslib-papyrus",
+    "tagline": "경제방송 — 16레포×10블로그×6채널, 1인 미디어 출판·방송",
+    "sameAs": [
+      "https://github.com/dtslib1979",
+      "https://dtslib.kr",
+      "https://www.youtube.com/@dtslib-branch",
+      "https://www.youtube.com/@phoneparis-r6q",
+      "https://www.youtube.com/@alexandria-y6k",
+      "https://www.youtube.com/@artrew-i1w",
+      "https://www.youtube.com/@justino-fashion"
+    ]
+  },
+
+  "git": {
+    "name": "parksy-bot",
+    "email": "bot@dtslib.com",
+    "user_agent": "parksy-bot/1.0"
+  },
+
+  "sync": {
+    "cron": "7 * * * *",
+    "out_dir": "기자"
+  },
+
+  "naver": {
+    "blog": "dtslib",
+    "domains": {
+      "dtslib": "경제방송국",
+      "eae_kr": "교육방송국",
+      "parksy_kr": "박씨로그"
+    }
+  },
+
+  "youtube": {
+    "accounts": [
+      { "id": "b", "email": "dtslib1979@gmail.com" }
+    ]
+  },
+
+  "channels": [
+    { "key": "branch",     "id": "UCxz800sMD27pk6X6HvxNS1g", "handle": "@dtslib-branch",   "topic": "경제방송 통합 업로드 (본진)" },
+    { "key": "phoneparis", "id": "UCOvHKAfWYYUQKPunZIjOQbg", "handle": "@phoneparis-r6q",  "topic": "모바일 유통" },
+    { "key": "alexandria", "id": "UCt-pTP_Bketi7o9R-2Q7tPA", "handle": "@alexandria-y6k",  "topic": "요양원·인생철학" },
+    { "key": "artrew",     "id": "UCNciU69gQolXddS9nQx29XA", "handle": "@artrew-i1w",     "topic": "예술·AI 미대" },
+    { "key": "justino",    "id": "UCRJsaNvt9tQtOJ1tZ-_T3Yg", "handle": "@justino-fashion", "topic": "쇼핑몰·크리에이터" },
+    { "key": "espiritu",   "id": "UCfhlV8VijgD9wMT9WY2KI0Q", "handle": "@espiritu-tango",  "topic": "댄스 (PENDING·매핑 밖)" }
+  ],
+
+  "repos": [
+    { "repo": "dtslib-branch",      "account": "dtslib1k", "blog": "dtslib1k",        "channel": "@dtslib-branch",   "role": "HQ",         "domain": "dtslib.kr" },
+    { "repo": "phoneparis",         "account": "dtslib1k", "blog": "hitop",           "channel": "@phoneparis-r6q",  "role": "본사",       "domain": "phoneparis.kr" },
+    { "repo": "alexandria-sanctuary","account": "dtslib1k", "blog": "lafilosofia",     "channel": "@alexandria-y6k",  "role": "본사",       "domain": "" },
+    { "repo": "buckleychang.com",   "account": "dtslib1k", "blog": "midmath",         "channel": "@dtslib-branch",   "role": "본사",       "domain": "buckleychang.com" },
+    { "repo": "buddies.kr",         "account": "dtslib1k", "blog": "midsocial",       "channel": "@dtslib-branch",   "role": "본사",       "domain": "buddies.kr" },
+    { "repo": "koosy",              "account": "dtslib2k", "blog": "korean-parksy",   "channel": "@dtslib-branch",   "role": "지사",       "domain": "koosy.kr" },
+    { "repo": "gohsy",              "account": "dtslib2k", "blog": "kr-merit-bluff",  "channel": "@dtslib-branch",   "role": "지사",       "domain": "gohsy.com" },
+    { "repo": "artrew",             "account": "dtslib2k", "blog": "kr-merit-shaman", "channel": "@artrew-i1w",     "role": "지사",       "domain": "artrew.com" },
+    { "repo": "papafly",            "account": "dtslib2k", "blog": "kr-merit-halfblood","channel": "@dtslib-branch",  "role": "지사",       "domain": "papafly.kr" },
+    { "repo": "justino",            "account": "dtslib2k", "blog": "kr-merit-aggro",  "channel": "@justino-fashion", "role": "지사",       "domain": "dtslib1979.github.io/justino" },
+    { "repo": "dtslib.kr",          "account": "dtslib1k", "blog": "dtslib1k",        "channel": "@dtslib-branch",   "role": "HQ 공동관리", "domain": "dtslib.kr" },
+    { "repo": "gohsy-fashion",      "account": "dtslib1k", "blog": "dtslib1k",        "channel": "@dtslib-branch",   "role": "HQ 공동관리", "domain": "gohsyfashion.com" },
+    { "repo": "gohsy-production",   "account": "dtslib1k", "blog": "dtslib1k",        "channel": "@dtslib-branch",   "role": "HQ 공동관리", "domain": "gohsyproduction.com" },
+    { "repo": "hoyadang.com",       "account": "dtslib1k", "blog": "dtslib1k",        "channel": "@dtslib-branch",   "role": "HQ 공동관리", "domain": "hoyadang.com" },
+    { "repo": "namoneygoal",        "account": "dtslib1k", "blog": "dtslib1k",        "channel": "@dtslib-branch",   "role": "HQ 공동관리", "domain": "namoneygoal.kr" },
+    { "repo": "termux-bridge",      "account": "dtslib1k", "blog": "dtslib1k",        "channel": "@phoneparis-r6q",  "role": "HQ 공동관리", "domain": "" }
+  ]
+}

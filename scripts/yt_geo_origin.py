@@ -11,7 +11,7 @@ YouTube는 남의 루트라 llms.txt를 못 박음 → 두 채널의
 사용법:
   python3 scripts/yt_geo_origin.py --inspect      # 읽기 전용 — 뭐가 바뀔지 미리 보기
   python3 scripts/yt_geo_origin.py --apply        # 실제 반영 (About + 영상 설명)
-  python3 scripts/yt_geo_origin.py --apply --channel main --about-only
+  python3 scripts/yt_geo_origin.py --apply --channel branch --about-only
 
 의존성: 시스템 python3(googleapiclient). 인증은 yt_upload.get_credentials 재사용.
 """
@@ -104,13 +104,13 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--inspect", action="store_true", help="읽기 전용 미리보기")
     p.add_argument("--apply", action="store_true", help="실제 반영")
-    p.add_argument("--channel", default="all", help="main|phone|all")
+    p.add_argument("--channel", default="all", help=f"{'|'.join(Y.CHANNELS.keys())}|all")
     p.add_argument("--about-only", action="store_true", help="채널 About만, 영상 설명 제외")
     a = p.parse_args()
 
     Y._load_secrets()
     yt = Y.get_authenticated_service()
-    keys = ["main", "phone"] if a.channel == "all" else [a.channel]
+    keys = list(Y.CHANNELS.keys()) if a.channel == "all" else [a.channel]
 
     if a.inspect:
         for k in keys:

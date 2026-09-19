@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="작성: 2026-09-02 · `_Claude` · 상태: **구현 + 실동작 + MCP 연결 완료** — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>🏭 Content Manufacturing OS — 백서 (오늘 작업 전체 정리) — S21 Phone Webzine</title>
+<link rel="canonical" href="https://dtslib1979.github.io//notebook/111-content-manufacturing-os-whitepaper_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/dtslib1979#person",
+      "name": "dtslib",
+      "url": "https://github.com/dtslib1979",
+      "description": "경제방송 — 16레포×10블로그×6채널, 1인 미디어 출판·방송",
+      "sameAs": [
+        "https://github.com/dtslib1979",
+        "https://dtslib.kr",
+        "https://www.youtube.com/@dtslib-branch",
+        "https://www.youtube.com/@phoneparis-r6q",
+        "https://www.youtube.com/@alexandria-y6k",
+        "https://www.youtube.com/@artrew-i1w",
+        "https://www.youtube.com/@Parksy-webzine"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://dtslib1979.github.io//notebook/111-content-manufacturing-os-whitepaper_Claude.html#webpage",
+      "url": "https://dtslib1979.github.io//notebook/111-content-manufacturing-os-whitepaper_Claude.html",
+      "name": "🏭 Content Manufacturing OS — 백서 (오늘 작업 전체 정리)",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/dtslib1979#person"
+      },
+      "author": {
+        "@id": "https://github.com/dtslib1979#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>🏭 Content Manufacturing OS — 백서 (오늘 작업 전체 정리)</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · lakme-audio</div>
+    <h1>🏭 Content Manufacturing OS — 백서 (오늘 작업 전체 정리)</h1>
+    <p class="deck">작성: 2026-09-02 · `_Claude` · 상태: **구현 + 실동작 + MCP 연결 완료**</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/111-content-manufacturing-os-whitepaper_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#0">0. 요약 (한 줄)</a></li>
+<li><a href="#1">1. 왜 (문제와 기회)</a></li>
+<li><a href="#2">2. 핵심 원리</a></li>
+<li><a href="#3-architecture">3. 설계 (Architecture)</a><ul>
+<li><a href="#31">3.1 두 축</a></li>
+<li><a href="#32-division-5">3.2 Division 5종</a></li>
+<li><a href="#33">3.3 마스터 데이터 (핵심)</a></li>
+<li><a href="#34-4-bom">3.4 동영상 4중 분해 (모놀리스 → BOM)</a></li>
+<li><a href="#35-multi-fab">3.5 Multi-FAB (원천 → 여러 제품)</a></li>
+<li><a href="#36">3.6 메타 패턴 — 타 산업 확장</a></li>
+<li><a href="#37-1-ceo-fab-manager-product-architect">3.7 1인 = CEO + Fab Manager + Product Architect</a></li>
+</ul>
+</li>
+<li><a href="#4">4. 구현 (오늘 만든 것)</a></li>
+<li><a href="#5-proof">5. 실증 (Proof)</a><ul>
+<li><a href="#51">5.1 런시트 실동작</a></li>
+<li><a href="#52-mcp">5.2 MCP 연결</a></li>
+</ul>
+</li>
+<li><a href="#6">6. 확장 로드맵</a></li>
+<li><a href="#7">7. 핵심 통찰</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <blockquote>
+<p>작성: 2026-09-02 · <code>_Claude</code> · 상태: <strong>구현 + 실동작 + MCP 연결 완료</strong><br>
+이 문서는 오늘(2026-09-02) 진행한 작업 전체의 정리본. <code>108</code>(개념) · <code>109</code>(계획) · <code>110</code>(설계도)의 통합 + 구현 실물 포함.</p>
+</blockquote>
+<hr>
+<h2 id="0">0. 요약 (한 줄)</h2>
+<p>콘텐츠를 <strong>제품군(Division)×공정(FAB)</strong> 으로 재분해하고, <strong>IMR(마스터 레코드)을 규정·저장하면 실행기(MES)가 반복 실행해서 양산까지 자동화</strong>되는 산업용 OS. 반도체 FAB의 Division/BOM/원가 사고를 콘텐츠 제조 아키텍처로 이식.</p>
+<p><strong>오늘 결과:</strong> 개념 → 설계도 → 스캐폴드 → <strong>실동작(EXIT=0)</strong> → <strong>MCP 등록·연결(✔)</strong> 까지 전부 완료.</p>
+<h2 id="1">1. 왜 (문제와 기회)</h2>
+<ul>
+<li>시장엔 이미 <strong>&ldquo;AI Content Factory&rdquo;</strong>가 있음 — 다만 대부분 &ldquo;기존 인력 압축&rdquo;(노동력 대체).</li>
+<li>이건 한 단계 아래: <strong>Factory를 설명·설계하는 산업용 OS</strong> (제품군·BOM·공정·QA 단위).</li>
+<li>반도체 FAB의 <strong>Division/BOM/원가 사고를 콘텐츠로 이식</strong>한 사례는 아직 없음 → 빈 자리.</li>
+<li>AI-native studio들이 &ldquo;studio/production system/pipeline/orchestration&rdquo; 언어를 쓰기 시작 = 산업이 그 방향으로 가는 초기 신호.</li>
+</ul>
+<h2 id="2">2. 핵심 원리</h2>
+<ol>
+<li><strong>제품군(무엇)과 공정(어떻게)을 분리.</strong> 부품(교체 가능)과 공정(순서가 있음)은 다른 축. 섞지 않는 게 전부.</li>
+<li><strong>자동화 = 기계가 읽는 스펙(문서) + 실행기.</strong> 어렵고 값진 쪽은 스펙. <strong>&ldquo;문서 작업&rdquo;이 곧 자동화의 본체.</strong></li>
+</ol>
+<h2 id="3-architecture">3. 설계 (Architecture)</h2>
+<h3 id="31">3.1 두 축</h3>
+<table>
+<thead>
+<tr>
+<th>축</th>
+<th>반도체</th>
+<th>콘텐츠</th>
+<th>질문</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Division</strong></td>
+<td>제품군 분류</td>
+<td>Memory/Logic/Analog/Discrete/Power</td>
+<td>무엇인가</td>
+</tr>
+<tr>
+<td><strong>FAB</strong></td>
+<td>제조 공정</td>
+<td>Generate→Process→Integrate→QA→Package</td>
+<td>어떻게 만드나</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-division-5">3.2 Division 5종</h3>
+<p>Memory(원재료)·Logic(구조/규칙)·Analog(감각 신호)·Discrete(독립 부품)·Power(실행 에너지/Runtime).</p>
+<h3 id="33">3.3 마스터 데이터 (핵심)</h3>
+<p><strong>IMR(Item Master Record) = 제품 하나에 대한 마스터 레코드:</strong></p>
+<table>
+<thead>
+<tr>
+<th>마스터 데이터</th>
+<th>반도체</th>
+<th>우리 쪽</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Item Master</td>
+<td>제품 정체</td>
+<td>product</td>
+</tr>
+<tr>
+<td>BOM</td>
+<td>무엇으로 (자재)</td>
+<td>bom</td>
+</tr>
+<tr>
+<td>Routing(=런시트)</td>
+<td>어떻게 (공정 순서표)</td>
+<td>recipe.steps</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>&ldquo;IMR 규정·저장 → 런시트 → 실행기가 반복 → 양산.&rdquo;</strong> 런시트(run sheet)는 한 랏이 거쳐야 할 공정 순서표.</p>
+</blockquote>
+<h3 id="34-4-bom">3.4 동영상 4중 분해 (모놀리스 → BOM)</h3>
+<p>Asset=Discrete · Edit=Logic · Sound=Analog · Source=Memory → &ldquo;작품&rdquo;이 &ldquo;제조 가능한 BOM&rdquo;으로 전환.</p>
+<h3 id="35-multi-fab">3.5 Multi-FAB (원천 → 여러 제품)</h3>
+<p>하나의 SOURCE(스토리=raw material) → Book/Video/Audio/Education/Web 각자 FAB Recipe만 다름.</p>
+<h3 id="36">3.6 메타 패턴 — 타 산업 확장</h3>
+<blockquote>
+<p><strong>어떤 산업이든 = 제품군(Division) × 마스터데이터(IMR) × 실행기(MES) → 양산</strong></p>
+</blockquote>
+<p>소프트웨어는 이미 이걸 <strong>CI/CD</strong>로 씀 (package.json=IMR, GitHub Actions=MES). → 콘텐츠뿐 아니라 교육·일반 제조로 확장 가능한 <strong>&ldquo;생산 OS&rdquo; 일반 패턴.</strong></p>
+<h3 id="37-1-ceo-fab-manager-product-architect">3.7 1인 = CEO + Fab Manager + Product Architect</h3>
+<p>AI를 노동력이 아니라 <strong>생산설비</strong>로. &ldquo;100인 기능을 모듈화해 1인이 오케스트레이션&rdquo;하는 실험. Boss는 <strong>스토리(raw material)만 관리</strong>하면 됨.</p>
+<h2 id="4">4. 구현 (오늘 만든 것)</h2>
+<table>
+<thead>
+<tr>
+<th>산출물</th>
+<th>파일</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IMR (마스터 데이터)</strong></td>
+<td><code>configs/content-fab.json</code></td>
+<td>Division 5 + 제품별 BOM·런시트 (단일 진실)</td>
+</tr>
+<tr>
+<td><strong>실행기 (MES)</strong></td>
+<td><code>scripts/fab.py</code></td>
+<td><code>list</code>/<code>bom</code>/<code>recipe</code>/<code>order</code> — 런시트 실행</td>
+</tr>
+<tr>
+<td><strong>MCP 서버</strong></td>
+<td><code>helena-programming/mcp/fab_mcp.py</code></td>
+<td>도구 5종, stdio(MCP JSON-RPC)+http</td>
+</tr>
+</tbody>
+</table>
+<p><strong>MCP 도구 5종:</strong></p>
+<table>
+<thead>
+<tr>
+<th>도구</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fab_list</code></td>
+<td>Division + 제품 목록</td>
+</tr>
+<tr>
+<td><code>fab_bom</code></td>
+<td>제품 BOM</td>
+</tr>
+<tr>
+<td><code>fab_recipe</code></td>
+<td>제품 런시트</td>
+</tr>
+<tr>
+<td><code>fab_order</code></td>
+<td><strong>주문</strong> — 레시피 실행 (run=true 실제, 실패 중단)</td>
+</tr>
+<tr>
+<td><code>fab_register</code></td>
+<td><strong>새 제품 IMR 등록</strong> → 시스템 자기확장</td>
+</tr>
+</tbody>
+</table>
+<p><strong>등록:</strong></p>
+<pre><code class="language-bash">claude mcp add content-fab -- python3 /root/work/helena-programming/mcp/fab_mcp.py
+</code></pre>
+<h2 id="5-proof">5. 실증 (Proof)</h2>
+<h3 id="51">5.1 런시트 실동작</h3>
+<p><code>fab.py order publishing --run</code> → <strong>EXIT=0</strong> (조판 gap=0 → 게이트 통과 → 라우팅 → 메트릭, 발행은 env 스킵).</p>
+<h3 id="52-mcp">5.2 MCP 연결</h3>
+<p><code>claude mcp list</code> → <strong>content-fab: ✔ Connected</strong>.</p>
+<h2 id="6">6. 확장 로드맵</h2>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th>내용</th>
+<th>상태</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>개념·설계</td>
+<td>2축·IMR·런시트·메타패턴</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>스캐폴드</td>
+<td>content-fab.json + fab.py</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>실동작</td>
+<td>order &ndash;run EXIT=0</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>fab_mcp.py 등록·연결</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>발행 게이트</td>
+<td>env + 승인 절차 붙이기</td>
+<td>⏳</td>
+</tr>
+<tr>
+<td>위성레포 8 gap</td>
+<td>게이트로 승격</td>
+<td>⏳</td>
+</tr>
+<tr>
+<td>Route=BOR</td>
+<td>워크센터(S21/S25/Tab/PC) 분기</td>
+<td>⏳</td>
+</tr>
+<tr>
+<td>Multi-FAB</td>
+<td>영상·오디오·교육 런시트 등록(fab_register)</td>
+<td>⏳</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7">7. 핵심 통찰</h2>
+<ul>
+<li><strong>자동화의 정체는 &ldquo;문서&rdquo;(스펙).</strong> 스펙이 기계가 읽는 순간 실행기가 반복 → 양산.</li>
+<li><strong>백서(산문) ≠ IMR(기계 스펙).</strong> 같은 문서 쓰기인데 하나는 사람용(장식), 하나는 기계용(자동화).</li>
+<li><strong>시스템이 자기확장(self-extending).</strong> <code>fab_register</code>로 새 제품 IMR을 MCP 한 번으로 등록 → 어느 에이전트든 &ldquo;주문&rdquo;으로 호출.</li>
+</ul>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="110-content-manufacturing-os_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">🏭 Content Manufacturing OS — 개념 설계도 (최종 정리본)</span>
+        </a>
+    <a class="next" href="112-repo-inventory-master_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">112 repo inventory master Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>구축: 2026-07-23 ~ 2026-08-14 (23일)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine lakme-audio</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

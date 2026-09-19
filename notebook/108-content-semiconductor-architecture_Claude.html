@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="작성: 2026-09-02 · `_Claude` (출판부) · 상태: **개념 확정** (구현 전) — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>🏭 Content Semiconductor Architecture — 반도체 공법을 콘텐츠 제조로 (2축 모델) — S21 Phone Webzine</title>
+<link rel="canonical" href="https://dtslib1979.github.io//notebook/108-content-semiconductor-architecture_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/dtslib1979#person",
+      "name": "dtslib",
+      "url": "https://github.com/dtslib1979",
+      "description": "경제방송 — 16레포×10블로그×6채널, 1인 미디어 출판·방송",
+      "sameAs": [
+        "https://github.com/dtslib1979",
+        "https://dtslib.kr",
+        "https://www.youtube.com/@dtslib-branch",
+        "https://www.youtube.com/@phoneparis-r6q",
+        "https://www.youtube.com/@alexandria-y6k",
+        "https://www.youtube.com/@artrew-i1w",
+        "https://www.youtube.com/@Parksy-webzine"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://dtslib1979.github.io//notebook/108-content-semiconductor-architecture_Claude.html#webpage",
+      "url": "https://dtslib1979.github.io//notebook/108-content-semiconductor-architecture_Claude.html",
+      "name": "🏭 Content Semiconductor Architecture — 반도체 공법을 콘텐츠 제조로 (2축 모델)",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/dtslib1979#person"
+      },
+      "author": {
+        "@id": "https://github.com/dtslib1979#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>🏭 Content Semiconductor Architecture — 반도체 공법을 콘텐츠 제조로 (2축 모델)</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · lakme-audio</div>
+    <h1>🏭 Content Semiconductor Architecture — 반도체 공법을 콘텐츠 제조로 (2축 모델)</h1>
+    <p class="deck">작성: 2026-09-02 · `_Claude` (출판부) · 상태: **개념 확정** (구현 전)</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/108-content-semiconductor-architecture_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#_1">요약 (한 줄)</a></li>
+<li><a href="#1-division">1. Division — 제품군 분류 (무엇)</a></li>
+<li><a href="#2-fab">2. FAB — 제조공정 (어떻게)</a></li>
+<li><a href="#3-4">3. 동영상 4중 분해 (이 구조의 핵심)</a></li>
+<li><a href="#4-product-publish">4. 전체 체인 (Product → Publish)</a></li>
+<li><a href="#5-8">5. 반도체 8대 공정 → 콘텐츠 매핑 (공법 그대로 가져오기)</a></li>
+<li><a href="#6">6. 기존 저장분과의 관계 (뭐가 겹치고 뭐가 새거냐)</a></li>
+<li><a href="#7-qa">7. 이 틀이 생산하는 실전 가치 — QA 공백 발견</a></li>
+<li><a href="#8">8. 리스크 / 주의 (백서로 만들지 말 것)</a></li>
+<li><a href="#9-icm">9. ICM 연결 (미확정)</a></li>
+<li><a href="#10">10. 다음 검증 단계</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <blockquote>
+<p>작성: 2026-09-02 · <code>_Claude</code> (출판부) · 상태: <strong>개념 확정</strong> (구현 전)<br>
+근거: <code>99-devlog.md</code> FAB 3층 (2026-08-27) + Boss Division 제안 (2026-09-02)<br>
+관련 메모리: <code>recipe-order-mcp</code> · <code>content-semiconductor-architecture</code> · 기점 <code>83-momentum-2026-08-14_Grok.md</code></p>
+</blockquote>
+<hr>
+<h2 id="_1">요약 (한 줄)</h2>
+<p>반도체의 <strong>제품군 분류(Division)</strong> 와 <strong>제조공정(FAB)</strong> 을 <strong>분리</strong>해서, 콘텐츠 생산 시스템의 <strong>&lsquo;무엇(what)&rsquo;</strong> 과 <strong>&lsquo;어떻게(how)&rsquo;</strong> 를 동시에 모델링한다.</p>
+<ul>
+<li><strong>Division(제품군) = WHAT</strong> — 이 콘텐츠는 무슨 부품으로 구성되나 (모듈 분류)</li>
+<li><strong>FAB(공정) = HOW</strong> — 그 부품을 어떻게 만들고 조립하나 (생산 공정)</li>
+</ul>
+<blockquote>
+<p>이 둘을 섞지 않는 것이 이 구조의 핵심. 부품(교체 가능한 것)과 공정(순서가 있는 것)은 다른 축이다.</p>
+</blockquote>
+<hr>
+<h2 id="1-division">1. Division — 제품군 분류 (무엇)</h2>
+<p>반도체 산업의 제품군 분류를 콘텐츠 모듈 분류 체계로 빌려온 것.</p>
+<table>
+<thead>
+<tr>
+<th>Division</th>
+<th>콘텐츠 매핑</th>
+<th>담당 신호</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Memory</strong></td>
+<td>자료/소스/아카이브</td>
+<td>원재료 저장</td>
+<td>음악·캐릭터·이미지 라이브러리, 대사 DB, 영상 클립, 프롬프트, 템플릿</td>
+</tr>
+<tr>
+<td><strong>Logic</strong></td>
+<td>시나리오/구조/편집</td>
+<td>무엇을 어떻게 만들지 결정</td>
+<td>Script, Scene order, Timing, Cut, Transition, Caption, Publishing format</td>
+</tr>
+<tr>
+<td><strong>Analog</strong></td>
+<td>음악/음성/분위기</td>
+<td>감각 신호 (연속 신호)</td>
+<td>BGM, Voice, Ambience, Sound Effect, Emotion/Mood</td>
+</tr>
+<tr>
+<td><strong>Discrete</strong></td>
+<td>이미지/영상/개별 효과</td>
+<td>독립 부품 (물질적 부품)</td>
+<td>Character/Background Image, Thumbnail, Short Video, Animation Clip, Overlay</td>
+</tr>
+<tr>
+<td><strong>Power</strong></td>
+<td>실행/자동화/배포</td>
+<td>실행 에너지 (Runtime)</td>
+<td>API 호출, GPU/CPU, 자동화 실행, 렌더링, 인코딩, 배포 인프라</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Power 정정 (Boss):</strong> &ldquo;배포&rdquo;가 아니라 <strong>&ldquo;실행에 필요한 에너지 / Runtime&rdquo;</strong> 으로 정의. Power Semiconductor의 실제 역할(전력 공급)에 맞춘 것. 콘텐츠가 실제로 생산되도록 에너지를 공급하는 계층.</p>
+</blockquote>
+<hr>
+<h2 id="2-fab">2. FAB — 제조공정 (어떻게)</h2>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>① Generate</strong></td>
+<td>생성 — 부품 생산 (자산·음성·캡처)</td>
+</tr>
+<tr>
+<td><strong>② Process</strong></td>
+<td>가공 — 편집·렌더·트림</td>
+</tr>
+<tr>
+<td><strong>③ Integrate</strong></td>
+<td>연결 — 조립·합성·자막 burn-in</td>
+</tr>
+<tr>
+<td><strong>④ QA</strong></td>
+<td>검사 — 품질 게이트</td>
+</tr>
+<tr>
+<td><strong>⑤ Package</strong></td>
+<td>패키징 — 포맷 변환·인코딩·배포</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-4">3. 동영상 4중 분해 (이 구조의 핵심)</h2>
+<p>동영상을 통째로 하나의 Discrete로 보지 않는다. 하나의 콘텐츠는 여러 Division의 부품이 조립된 결과:</p>
+<table>
+<thead>
+<tr>
+<th>영상의 층</th>
+<th>Division</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Video Asset</td>
+<td>Discrete</td>
+</tr>
+<tr>
+<td>Video Editing</td>
+<td>Logic</td>
+</tr>
+<tr>
+<td>Video Sound</td>
+<td>Analog</td>
+</tr>
+<tr>
+<td>Video Source Library</td>
+<td>Memory</td>
+</tr>
+</tbody>
+</table>
+<p><strong>효과:</strong> &ldquo;이 영상을 어떻게 다시 만들지?&rdquo; → <strong>&ldquo;각 부품을 어떻게 다시 생산하지?&rdquo;</strong> 로 바뀐다. → 콘텐츠가 <strong>작품</strong>에서 <strong>제조 가능한 BOM</strong>으로 전환. 이것이 &ldquo;레시피 1개&rdquo;(저장분)에서 &ldquo;여러 Division이 부품 공급 → 조립&rdquo;으로 스케일하는 문.</p>
+<hr>
+<h2 id="4-product-publish">4. 전체 체인 (Product → Publish)</h2>
+<pre><code>CONTENT PRODUCT
+      ↓
+PRODUCT ARCHITECTURE
+      ↓
+BOM
+      ↓
+DIVISION            ← WHAT (제품군 분류)
+      ↓
+FAB PROCESS         ← HOW (공정)
+      ↓
+QA / GAP GATE
+      ↓
+PACKAGING
+      ↓
+PUBLISH
+</code></pre>
+<hr>
+<h2 id="5-8">5. 반도체 8대 공정 → 콘텐츠 매핑 (공법 그대로 가져오기)</h2>
+<table>
+<thead>
+<tr>
+<th>반도체 공정</th>
+<th>하는 일</th>
+<th>콘텐츠 생산 매칭</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>웨이퍼 제조</td>
+<td>원판 준비</td>
+<td>원자재/소스/아카이브 정리 (Memory)</td>
+</tr>
+<tr>
+<td>산화</td>
+<td>보호막</td>
+<td>템플릿·포맷·표준 골격 (Logic)</td>
+</tr>
+<tr>
+<td>포토리소그래피</td>
+<td>패턴 전사</td>
+<td>스토리보드·구도·레이아웃 (Logic)</td>
+</tr>
+<tr>
+<td>식각</td>
+<td>불필요 제거</td>
+<td>편집·트림·압축 (Logic)</td>
+</tr>
+<tr>
+<td>증착</td>
+<td>재료 쌓기</td>
+<td>자산 생성 — 이미지/영상(Discrete)·BGM(Analog)</td>
+</tr>
+<tr>
+<td>이온주입</td>
+<td>성질 주입</td>
+<td>톤·감정·분위기 (Analog)</td>
+</tr>
+<tr>
+<td>금속배선</td>
+<td>층 연결</td>
+<td>부품 조립 → 하나의 SoC</td>
+</tr>
+<tr>
+<td>테스트</td>
+<td>검사</td>
+<td>품질 게이트 (gap_count·Vision QA)</td>
+</tr>
+<tr>
+<td>패키징</td>
+<td>포장</td>
+<td>포맷 변환·인코딩·배포 (Power)</td>
+</tr>
+</tbody>
+</table>
+<p>각 공정의 실제 동작(쌓기/깎기/연결/검사)이 콘텐츠 작업(생성/편집/조립/게이트)과 1:1로 대응 → 공법을 그대로 관리 체계로 가져올 수 있다.</p>
+<hr>
+<h2 id="6">6. 기존 저장분과의 관계 (뭐가 겹치고 뭐가 새거냐)</h2>
+<table>
+<thead>
+<tr>
+<th>축</th>
+<th>기존 저장분</th>
+<th>관계</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FAB (HOW)</strong></td>
+<td><code>recipe-order-mcp</code> 의 <strong>BOR = 공법 = 라우트</strong></td>
+<td>✅ <strong>같은 영역의 재포장</strong> — Generate→Process→Integrate→QA→Package는 BOR 축을 5단계로 구체화</td>
+</tr>
+<tr>
+<td><strong>Division (WHAT)</strong></td>
+<td>(없음)</td>
+<td>❌ <strong>신규</strong> — 저장된 BOM은 &ldquo;자산=창고=레포&rdquo;만 말하고, 자산의 <em>종류</em>는 분류 안 함. Division이 그 빈칸을 채움</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>BOM/BOR/Recipe</strong> (저장분) = 자산/공법/호출의 <strong>생산 공정</strong> 모델.</li>
+<li><strong>Division</strong> (신규) = BOM 잎(leaf)을 분류하는 <strong>제품군 분류</strong> 모델.</li>
+<li>둘은 충돌이 아니라 <strong>Division이 BOM의 분류 체계</strong>가 되는 보완 관계.</li>
+</ul>
+<blockquote>
+<p>한 줄: <strong>공법(BOR/FAB)은 이미 있던 것을 재정렬, 제품군(Division)은 없던 것을 새로 추가.</strong> 둘을 합쳐야 &ldquo;완벽한 비유 매칭&rdquo;이 완성되고, 저장분만으론 절반(공법)만 있었던 것.</p>
+</blockquote>
+<hr>
+<h2 id="7-qa">7. 이 틀이 생산하는 실전 가치 — QA 공백 발견</h2>
+<p>기존 PD Pipeline(P0 parse → P6 encode)을 이 두 축에 얹어보면 Generate→Process→Integrate→Package는 대략 떨어지는데, <strong>QA 단계가 공백</strong>으로 드러난다. 현재 QA는 파이프라인 <em>밖</em>(gap_count=출판부, YouTube &ldquo;보고→검수&rdquo;)에 떨어져 있고 FAB 단계 <em>안</em>에 없다. → 이 틀은 &ldquo;QA는 1급 공정 단계여야 한다&rdquo;를 강제한다.</p>
+<hr>
+<h2 id="8">8. 리스크 / 주의 (백서로 만들지 말 것)</h2>
+<ol>
+<li><strong>부품과 공정이 겹친다.</strong> 반도체는 부품(트랜지스터)이 공정(식각)과 물리적으로 분리되지만, 콘텐츠의 부품은 종종 <em>행위</em>다 (예: Edit는 Logic 부품이면서 Process 공정과 겹침). 두 축이 콘텐츠에선 깨끗하게 안 갈라짐 — 최대 리스크.</li>
+<li><strong>과설계 경계.</strong> 7~8층 체인 + Division 5 × FAB 5 매트릭스를 증명 없이 지으면 &ldquo;지을 땐 재밌고 버리기 쉬운&rdquo; 구조가 됨.</li>
+<li><strong>쓰임새 원칙:</strong> 이건 <strong>분류 규율(discipline)</strong> 로 쓴다. 백서/스펙 문서로 만들지 않는다. 다음 실제 모듈 2-3개를 만들 때 태그를 붙이며 등장시키고, 쓰인 것만 정식화.</li>
+<li><strong>이름도 미룬다.</strong> &ldquo;Content Semiconductor Architecture&rdquo;는 PD Pipeline 재기술로 살아남은 뒤에 확정.</li>
+</ol>
+<hr>
+<h2 id="9-icm">9. ICM 연결 (미확정)</h2>
+<p>&ldquo;ICM&rdquo;은 저장소 어디에도 정의가 없다 (CONSTITUTION v7 &ldquo;ICM §9 상속&rdquo; 문구만 존재). 맥락상 <strong>ICM = Integrated Circuit Manufacturing(집적회로 제조)</strong> 로 읽으면 &ldquo;BOM/BOR 관리 + ICM&rdquo; = &ldquo;자산·공법 관리 + 제품군 분류까지 해서 진짜 IC 제조로 간다&rdquo;로 연결된다. 단, 헌법의 &ldquo;ICM §9&rdquo; 의미와 일치하는지는 <strong>확인 필요</strong>.</p>
+<hr>
+<h2 id="10">10. 다음 검증 단계</h2>
+<p>기존 <strong>PD Pipeline</strong> 을 <code>Division(부품 분해) + FAB(공정 단계)</code> 두 축으로 재기술해본다.<br>
+- 깨끗하게 떨어지면 → 정식화 (파일·MCP 명명·설정 스키마에 반영)<br>
+- 억지로 끼워맞춰야 하면 → 은유가 주인 노릇 하는 것이므로 걷어냄</p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="103-adb-mesh-revive_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">ADB Mesh 자동 복구 — 태블릿(tab-s9) ADB 무선 연결 지식 (2026-08-20)</span>
+        </a>
+    <a class="next" href="109-content-fab-implementation-plan_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">109 content fab implementation plan Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>구축: 2026-07-23 ~ 2026-08-14 (23일)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine lakme-audio</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

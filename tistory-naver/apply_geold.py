@@ -32,7 +32,7 @@ BLOG_META = {
     "kr-merit-bluff":    ("gohsy 허세교양", "gohsy", "@dtslib-branch"),
     "kr-merit-shaman":   ("artrew 샤먼·예술", "artrew", "@artrew-i1w"),
     "kr-merit-halfblood":("papafly 혼종어학", "papafly", "@dtslib-branch"),
-    "kr-merit-aggro":    ("justino 어그로", "justino", "@justino-fashion"),
+    "kr-merit-aggro":    ("parksy 편집강박", "parksy-webzine", "@Parksy-webzine"),
 }
 
 PERSON_ID = "https://github.com/dtslib1979#person"
@@ -47,7 +47,7 @@ def render_geold(blog_name, blog_url, repo, channel):
         "https://www.youtube.com/@phoneparis-r6q",
         "https://www.youtube.com/@alexandria-y6k",
         "https://www.youtube.com/@artrew-i1w",
-        "https://www.youtube.com/@justino-fashion",
+        "https://www.youtube.com/@Parksy-webzine",
     ]
     ld = {
         "@context": "https://schema.org",

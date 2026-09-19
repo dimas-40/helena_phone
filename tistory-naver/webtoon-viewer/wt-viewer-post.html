@@ -1,0 +1,161 @@
+<!-- wt-webtoon-viewer v1.1 — 세로 연속스크롤 웹툰 뷰어 (네이버웹툰 방식) -->
+<!-- 티스토리 HTML모드 포스트 본문에 이 조각 전체를 그대로 붙여넣는다. -->
+<!-- doctype/head/body 없음 — ParksyPlayer와 동일한 구조로 인라인 검증됨. -->
+<!-- 사용법: 아래 CONFIG.images 배열만 채우면 됨 (packager 주입 지점) -->
+
+<div class="wt-root" id="wt-app-EPSLOT"></div>
+
+<style>
+  /* wt = webtoon viewer — 티스토리 스킨 CSS 충돌 방지 접두사 */
+  .wt-root{ --wt-bg:#111; --wt-text:#f2f2f2; --wt-muted:#999; --wt-accent:#ff4d4d;
+    max-width:520px; margin:0 auto; background:var(--wt-bg); color:var(--wt-text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR","Malgun Gothic",sans-serif; }
+  .wt-root *{ box-sizing:border-box; }
+  .wt-top{ position:sticky; top:0; z-index:20; background:rgba(17,17,17,.94);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    border-bottom:1px solid rgba(255,255,255,.08); }
+  .wt-top-in{ display:flex; align-items:center; justify-content:space-between;
+    gap:12px; padding:10px 14px; }
+  .wt-title{ font-size:15px; font-weight:700; letter-spacing:-.3px;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .wt-meta{ font-size:12px; color:var(--wt-muted); white-space:nowrap; flex-shrink:0; }
+  .wt-progress{ height:2px; background:rgba(255,255,255,.08); }
+  .wt-progress-bar{ height:100%; width:0; background:var(--wt-accent); transition:width .08s linear; }
+  .wt-cuts{ padding:0; }
+  .wt-cut{ position:relative; display:block; width:100%; margin:0; background:#222; }
+  .wt-cut img{ display:block; width:100%; height:auto; opacity:0; transition:opacity .25s ease; }
+  .wt-cut img.wt-loaded{ opacity:1; }
+  .wt-ph{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    color:var(--wt-muted); font-size:13px; }
+  .wt-cta{ padding:28px 16px 48px; text-align:center; }
+  .wt-cta-btn{ display:inline-block; padding:12px 30px; border-radius:999px;
+    background:var(--wt-accent); color:#fff; font-weight:700; text-decoration:none; }
+  .wt-empty{ max-width:520px; margin:0 auto; padding:80px 24px; text-align:center;
+    color:var(--wt-muted); background:var(--wt-bg); }
+  .wt-empty h2{ color:var(--wt-text); font-size:18px; margin:0 0 8px; }
+  .wt-empty p{ margin:0; font-size:14px; line-height:1.6; }
+  @media (prefers-color-scheme: light){
+    .wt-root{ --wt-bg:#fff; --wt-text:#111; --wt-muted:#777; --wt-accent:#e64040; }
+    .wt-top{ background:rgba(255,255,255,.96); border-bottom-color:rgba(0,0,0,.08); }
+    .wt-cut{ background:#f2f2f3; }
+  }
+</style>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ═══════════ 주입 지점 — parksy-image packager가 이 블록만 채운다 ═══════════ */
+  var CONFIG = {
+    images: [],              /* ← 이미지 공개 URL 배열. packager가 episode.json에서 주입. */
+    title: '손님이 화를 냈다',  /* ← 에피소드 제목 */
+    episode: 4,              /* ← EP 번호 (0이면 생략) */
+    series: '',              /* ← 시리즈명 (있으면 상단에 표시) */
+    ctaText: '다음 편 보기',   /* ← 하단 CTA 문구 */
+    ctaUrl: ''               /* ← CTA 링크 (비면 비활성 버튼) */
+  };
+  /* ═══════════════════════════════════════════════════════════ */
+
+  var app = document.getElementById('wt-app-EPSLOT');
+  if (!app) return;
+
+  /* ── 빈 배열 방어: images[]가 비면 "콘텐츠 준비중" (2026-08-22 사고 재발 방지) ── */
+  if (!CONFIG.images || !CONFIG.images.length) {
+    app.outerHTML =
+      '<div class="wt-empty"><h2>콘텐츠 준비중입니다</h2>' +
+      '<p>작가님이 그림을 그리고 있어요.<br>잠시 후 다시 확인해주세요.</p></div>';
+    return;
+  }
+
+  var ep = CONFIG.episode ? 'EP.' + CONFIG.episode + ' ' : '';
+  var fullTitle = ep + CONFIG.title;
+
+  /* ── 상단 고정 바 (제목 + 컷 수 + 진행률) ── */
+  var top = document.createElement('header');
+  top.className = 'wt-top';
+  top.innerHTML = '<div class="wt-top-in">' +
+    '<span class="wt-title"></span>' +
+    '<span class="wt-meta">' + CONFIG.images.length + '컷</span></div>' +
+    '<div class="wt-progress"><div class="wt-progress-bar"></div></div>';
+  top.querySelector('.wt-title').textContent = fullTitle;
+
+  /* ── 세로 컷 스택 ── */
+  var cuts = document.createElement('div');
+  cuts.className = 'wt-cuts';
+  CONFIG.images.forEach(function(src, i) {
+    var wrap = document.createElement('figure');
+    wrap.className = 'wt-cut';
+
+    var ph = document.createElement('div');
+    ph.className = 'wt-ph';
+    ph.textContent = '불러오는 중…';
+
+    var img = document.createElement('img');
+    img.setAttribute('data-src', src);
+    img.setAttribute('alt', fullTitle + ' ' + (i + 1) + '/' + CONFIG.images.length);
+    img.setAttribute('width', '860');   /* 레이아웃 공간 선점 → 스크롤 점프 방지 */
+    img.setAttribute('height', '1290');
+    img.addEventListener('error', function(){ ph.textContent = '이미지를 불러오지 못했어요'; });
+    img.addEventListener('load', function(){
+      img.classList.add('wt-loaded');
+      if (ph.parentNode) ph.remove();
+    });
+
+    wrap.appendChild(ph);
+    wrap.appendChild(img);
+    cuts.appendChild(wrap);
+  });
+
+  app.appendChild(top);
+  app.appendChild(cuts);
+
+  /* ── CTA ── */
+  if (CONFIG.ctaText) {
+    var cta = document.createElement('div');
+    cta.className = 'wt-cta';
+    if (CONFIG.ctaUrl) {
+      cta.innerHTML = '<a class="wt-cta-btn" href="' + CONFIG.ctaUrl + '">' + CONFIG.ctaText + '</a>';
+    } else {
+      cta.innerHTML = '<div class="wt-cta-btn" style="background:rgba(255,255,255,.08);color:var(--wt-muted);font-weight:600;">' + CONFIG.ctaText + '</div>';
+    }
+    app.appendChild(cta);
+  }
+
+  /* ── IntersectionObserver lazy-load: 뷰포트 ±200px 진입 시에만 src 부여 ── */
+  /* (native loading="lazy"는 안 씀 — data-src 패턴이라 어차피 무의미한 죽은 속성이 됨) */
+  var all = Array.prototype.slice.call(cuts.querySelectorAll('img[data-src]'));
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(en) {
+        if (!en.isIntersecting) return;
+        var img = en.target;
+        if (img.getAttribute('src')) return;
+        img.src = img.getAttribute('data-src');
+        img.removeAttribute('data-src');
+        io.unobserve(img);
+      });
+    }, { rootMargin: '200px 0px' });
+    all.forEach(function(img){ io.observe(img); });
+  } else {
+    /* 폴백: 구형 브라우저 — 전부 즉시 로드 */
+    all.forEach(function(img){
+      img.src = img.getAttribute('data-src');
+      img.removeAttribute('data-src');
+    });
+  }
+
+  /* ── 읽기 진행률 바 (해당 뷰어 영역 기준 — 페이지 전체 스크롤 아님) ── */
+  var bar = top.querySelector('.wt-progress-bar');
+  function onScroll() {
+    var rect = app.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    var total = rect.height - vh;
+    var scrolled = -rect.top;
+    var pct = total > 0 ? Math.max(0, Math.min(100, (scrolled / total) * 100)) : 100;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  onScroll();
+})();
+</script>

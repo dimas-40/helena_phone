@@ -9,7 +9,7 @@ OAuth(Device Code) → Data API v3 · Analytics v2
   python3 scripts/yt_upload.py --title "제목" --file video.mp4 --auto   # 승인 없이 바로
   python3 scripts/yt_upload.py --approve <DRAFT_ID>                     # 타임아웃 드래프트 재개
   # 채널 조회
-  python3 scripts/yt_upload.py --channel phone --list
+  python3 scripts/yt_upload.py --channel branch --list
   python3 scripts/yt_upload.py --stats
   # 플레이리스트
   python3 scripts/yt_upload.py --playlist-list
@@ -48,8 +48,7 @@ CLIENT_SECRET = os.environ.get("YOUTUBE_CLIENT_SECRET", "")
 ACCESS_TOKEN = os.environ.get("YOUTUBE_ACCESS_TOKEN", "")
 REFRESH_TOKEN = os.environ.get("YOUTUBE_REFRESH_TOKEN", "")
 
-# 생태계 SSOT(configs/ecosystem.json)에서 2채널·프로젝트 로드.
-# (구 6채널 하드코딩 → 2채널 정합: main=돌봄, phone=도구)
+# 생태계 SSOT(configs/ecosystem.json)에서 채널·프로젝트 로드 (하드코딩 금지).
 from load_ecosystem import channels as _ecosystem_channels, youtube as _ecosystem_youtube
 
 PROJECT_ID = _ecosystem_youtube().get("project_id", "")
@@ -81,6 +80,9 @@ def get_credentials():
     credentials = None
 
     # 토큰 로드 — 1순위 .secrets.env(YOUTUBE_ACCESS/REFRESH), 2순위 yt_tokens.json
+    # scopes는 일부러 안 넘김 — refresh_token이 이 SCOPES와 다른 스코프 조합으로
+    # 발급된 경우(예: 구 yt_oauth_auto.cjs 4스코프) refresh 요청에 scope를 실으면
+    # invalid_scope로 거부됨. scope 미지정 시 서버가 원 발급 스코프를 그대로 사용.
     if ACCESS_TOKEN or REFRESH_TOKEN:
         credentials = Credentials(
             token=ACCESS_TOKEN,
@@ -88,7 +90,6 @@ def get_credentials():
             token_uri="https://oauth2.googleapis.com/token",
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
-            scopes=SCOPES,
         )
     elif TOKEN_FILE.exists():
         with open(TOKEN_FILE, 'r') as f:
@@ -99,7 +100,6 @@ def get_credentials():
                 token_uri="https://oauth2.googleapis.com/token",
                 client_id=CLIENT_ID,
                 client_secret=CLIENT_SECRET,
-                scopes=SCOPES,
             )
 
     # 만료 시 리프레시
@@ -447,7 +447,7 @@ def main():
     parser.add_argument('--tags', nargs='*', help='태그 (공백 구분)')
     parser.add_argument('--category', default='22', help='카테고리 ID (기본: 22=People)')
     parser.add_argument('--privacy', default='private', choices=['private', 'unlisted', 'public'])
-    parser.add_argument('--channel', default='main', help=f'채널 키: {", ".join(CHANNELS.keys())}')
+    parser.add_argument('--channel', default='branch', help=f'채널 키: {", ".join(CHANNELS.keys())}')
     parser.add_argument('--list', action='store_true', help='채널 동영상 목록')
     parser.add_argument('--stats', action='store_true', help='채널 통계')
     parser.add_argument('--playlist-list', action='store_true', help='플레이리스트 목록')
@@ -464,7 +464,7 @@ def main():
     _load_secrets()
 
     youtube = get_authenticated_service()
-    channel = CHANNELS.get(args.channel, CHANNELS['main'])
+    channel = CHANNELS.get(args.channel, CHANNELS["branch"])
 
     if not channel['id']:
         print(f"❌ 채널 '{args.channel}'의 ID가 설정되지 않았습니다.")
@@ -504,7 +504,7 @@ def main():
         if not draft:
             print(f"❌ 드래프트 없음: {args.approve}")
             sys.exit(1)
-        ch = CHANNELS.get(draft.get("channel", "main"), CHANNELS["main"])
+        ch = CHANNELS.get(draft.get("channel", "branch"), CHANNELS["branch"])
         video_id, url = upload_video(
             youtube, draft["file"], draft["title"], draft["description"],
             draft["tags"], draft["category"], draft["privacy"],

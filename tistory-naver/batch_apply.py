@@ -1,11 +1,13 @@
 """
-티스토리 스킨 표준설정 일괄 적용 — galaxys21 외 나머지 4개 블로그
+티스토리 스킨 표준설정 일괄 적용 — dtslib1k/dtslib2k 10개 블로그 (v2)
 - 각 블로그: ① Whatever 스킨 전환(set.json) ② skin-premium.css + S21 레이아웃 주입(html.json)
-- 로그인 1회(동일 Daum 계정, TSSESSION 공유) 후 4개 블로그 순회
-실행: python3 tistory-naver/batch_apply.py [--only mynote,faith] [--dry-run]
+- 계정(카카오 email) 기준 그룹핑: 계정마다 로그인 1회 → 그 계정 소속 블로그만 순회
+  (기존 "동일 계정 가정"은 dtslib1k·dtslib2k 2계정으로 바뀌며 폐기)
+- --dry-run: 스킨 전환·저장 POST 전부 생략, GET만으로 10개 접근·현재 상태 확인
+실행: python3 tistory-naver/batch_apply.py [--only dtslib1k,hitop] [--dry-run]
 """
 
-import asyncio, argparse, json, time, sys
+import asyncio, argparse, json, time, sys, subprocess
 from pathlib import Path
 from playwright.async_api import async_playwright
 
@@ -13,6 +15,9 @@ BASE          = Path(__file__).parent
 ACCOUNTS_FILE = BASE / "accounts.json"
 COOKIES_DIR   = BASE / "cookies"
 SKIN_CSS      = BASE / "skin-premium.css"
+SECRETS_ENV   = Path("/root/work/.secrets.env")
+CAPTCHA_SHOT  = BASE / "captcha_shot.png"
+CAPTCHA_COORDS = BASE / "captcha_coords.txt"  # 'x,y' 형식 — Boss가 기록하면 폴링으로 읽음
 
 # apply_layout.py 재사용
 sys.path.insert(0, str(BASE))
@@ -25,6 +30,93 @@ SKIP = {"galaxys21"}  # 이미 적용된 메인 블로그
 
 def log(msg):
     print(f"[{time.strftime('%H:%M:%S')}] {msg}", flush=True)
+
+
+# ── 캡차 스크린샷 relay (Boss 2026-08-22) ─────────────────────────────
+# 카카오 로그인이 dkaptcha 캡차로 막히면 OCR 시도 금지 → 스크린샷을 TG로 전송,
+# Boss가 이미지를 보고 클릭 좌표를 captcha_coords.txt 에 기록 → 폴링으로 읽어 클릭.
+# OCR 재시도·헤드리스 반복 로그인 금지 (카카오 봇감지 쿨다운만 늘어남).
+def _load_secrets() -> dict:
+    env = {}
+    try:
+        for line in SECRETS_ENV.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if "=" in line and not line.startswith("#"):
+                k, v = line.split("=", 1)
+                env[k] = v.strip().strip('"').strip("'")
+    except Exception:
+        pass
+    return env
+
+
+def send_tg_photo(path: str, caption: str = "") -> bool:
+    """캡차 스크린샷을 텔레그램으로 전송 (sendPhoto 직접 호출)."""
+    env = _load_secrets()
+    tok, chat = env.get("TG_TOKEN", ""), env.get("TG_CHAT", "")
+    if not tok or not chat:
+        log(f"  ⚠️ TG 자격증명 없음 — 스크린샷 {path} 수동 확인 필요")
+        return False
+    try:
+        r = subprocess.run(
+            ["curl", "-s", "-X", "POST",
+             f"https://api.telegram.org/bot{tok}/sendPhoto",
+             "-F", f"chat_id={chat}",
+             "-F", f"photo=@{path}",
+             "-F", f"caption={caption}"],
+            capture_output=True, text=True, timeout=60)
+        ok = '"ok":true' in (r.stdout or "")
+        log(f"  📤 캡차 스크린샷 TG 전송 {'✅' if ok else '⚠️ ' + (r.stdout or '')[:120]}")
+        return ok
+    except Exception as e:
+        log(f"  ⚠️ TG 전송 실패: {e}")
+        return False
+
+
+async def wait_captcha_coords(timeout: int = 900) -> tuple[int, int] | None:
+    """captcha_coords.txt 폴링 — 'x,y' 기록되면 (x,y) 반환. 타임아웃 시 None."""
+    log(f"  ⏳ 좌표 대기: {CAPTCHA_COORDS} 에 'x,y' 기록 (최대 {timeout}s)")
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        if CAPTCHA_COORDS.exists():
+            try:
+                txt = CAPTCHA_COORDS.read_text(encoding="utf-8").strip()
+                x, y = map(int, txt.split(","))
+                CAPTCHA_COORDS.unlink()
+                log(f"  🎯 좌표 수신 ({x},{y})")
+                return x, y
+            except Exception:
+                log(f"  ⚠️ 좌표 파일 형식 오류: '{CAPTCHA_COORDS.read_text()}' — 'x,y' 기대")
+                await asyncio.sleep(2)
+        await asyncio.sleep(2)
+    log("  ⏰ 좌표 대기 타임아웃")
+    return None
+
+
+async def relay_captcha(page, email: str) -> bool:
+    """dkaptcha 캡차 iframe → 스크린샷 → TG → 좌표 폴링 → 클릭. 성공 시 True."""
+    log("  ⚠️ 캡차 iframe(#dkaptcha-*) 감지 — 스크린샷 relay 시작")
+    all_pages = page.context.pages
+    if len(all_pages) > 1:
+        page = all_pages[-1]
+        log(f"  🪟 팝업 감지됨 — 새 페이지로 전환 (총 {len(all_pages)}개), url={page.url}")
+    try:
+        await page.screenshot(path=str(CAPTCHA_SHOT), full_page=True)
+        log(f"  🖼 스크린샷 저장: {CAPTCHA_SHOT}")
+    except Exception as e:
+        log(f"  ⚠️ 스크린샷 실패: {e}")
+    send_tg_photo(str(CAPTCHA_SHOT), f"카카오 캡차 — 계정 {email} 로그인. 클릭 좌표(x,y) 알려줘.")
+    coords = await wait_captcha_coords()
+    if coords is None:
+        return False
+    x, y = coords
+    try:
+        await page.mouse.click(x, y)
+        await page.wait_for_timeout(3000)
+        log("  👆 캡차 좌표 클릭 완료 — 계속 진행")
+        return True
+    except Exception as e:
+        log(f"  ⚠️ 클릭 실패: {e}")
+        return False
 
 
 async def kakao_login(page, email, pw):
@@ -80,16 +172,86 @@ async def kakao_login(page, email, pw):
     if not (filled and filled["id"] and filled["pw"]):
         log(f"  폼 채움 실패: {filled}")
         return False
+    diag = await page.evaluate("() => { const el = document.querySelector('#password--2, input[name=password]'); return el ? el.value.length : -1; }")
+    log(f'  진단: pw입력길이={diag} (기대값=11)')
+    if diag != len(pw):
+        await page.locator("#password--2, input[name=password]").first.fill(pw)
+        diag2 = await page.evaluate("() => { const el = document.querySelector('#password--2, input[name=password]'); return el ? el.value.length : -1; }")
+        log(f"  재시도(fill) 후 길이={diag2}")
     # 제출 — submit 버튼 클릭이 확실 (Enter-only는 계정선택 화면에 막힘 실측)
     try:
         await page.locator("button[type='submit'], button.submit, .btn_g").first.click(timeout=3000)
     except Exception:
         await page.locator("#password--2, input[name=password]").first.press("Enter")
-    # 리다이렉트 대기 (계정선택 '계속' 버튼 처리 포함)
+    # 리다이렉트 대기 (계정선택 '계속' 버튼 처리 + 캡차/추가인증 relay 포함)
     for _ in range(45):
         u = page.url
         if "tistory.com" in u and "login" not in u and "accounts.kakao" not in u:
             return True
+        # 캡차/추가인증 게이트 감지 → 스크린샷 relay (OCR 금지).
+        # ① dkaptcha 이미지 캡차 iframe  ② 카카오 '추가 인증' 화면(휴대폰/신용카드 본인인증)
+        gate = False
+        try:
+            n_dk = await page.evaluate(
+                "() => document.querySelectorAll('iframe[id^=\"dkaptcha\"], iframe[src*=\"dkaptcha\"]').length")
+            gate = gate or n_dk > 0
+        except Exception:
+            pass
+        if "selectVerificationMethodForActionPenalty" in u:
+            gate = True
+        if "smsTwoStepVerification" in u:
+            log("  📩 SMS 2단계인증 감지 — sms_code.txt 대기")
+            code = None
+            for _ in range(60):
+                fp = BASE / "sms_code.txt"
+                if fp.exists():
+                    code = fp.read_text().strip()
+                    fp.unlink()
+                    break
+                await page.wait_for_timeout(2000)
+            if not code:
+                log("  ⏰ SMS 코드 대기 타임아웃")
+                return False
+            log(f"  🔢 SMS 코드 수신: {code}")
+            try:
+                await page.screenshot(path='/root/work/tistory-naver/sms_before.png', full_page=True)
+            except Exception:
+                pass
+            try:
+                loc = page.locator("input[type=tel], input[type=number], input[type=text]").first
+                await loc.click(timeout=2000)
+                await loc.press_sequentially(code, delay=120)
+                log("  코드 타이핑 완료 (press_sequentially)")
+                await page.wait_for_timeout(800)
+                try:
+                    await page.screenshot(path='/root/work/tistory-naver/sms_after_type.png', full_page=True)
+                except Exception:
+                    pass
+                clicked = False
+                for sel in ["button:has-text('확인')", "button[type=submit]"]:
+                    try:
+                        el = page.locator(sel).first
+                        if await el.is_visible(timeout=400):
+                            await el.click()
+                            clicked = True
+                            break
+                    except Exception:
+                        pass
+                log(f"  확인버튼 클릭={clicked}")
+                await page.wait_for_timeout(3000)
+                try:
+                    await page.screenshot(path='/root/work/tistory-naver/sms_after_submit.png', full_page=True)
+                except Exception:
+                    pass
+            except Exception as e:
+                log(f"  ⚠️ SMS 코드 입력 실패: {e}")
+                return False
+            continue
+        if gate:
+            if not await relay_captcha(page, email):
+                log("  ❌ 캡차 relay 미완료 — 쿨다운 필요 (봇감지)")
+                return False
+            continue
         for sel in ["button:has-text('계속')", "a:has-text('계속')", "button:has-text('동의하고 계속')"]:
             try:
                 el = page.locator(sel).first
@@ -103,6 +265,17 @@ async def kakao_login(page, email, pw):
     cap = await page.evaluate("() => document.body ? document.body.innerText.includes('답해 주세요') : false")
     if cap:
         log("  ⚠️ 카카오 봇감지 CAPTCHA — 쿨다운 필요")
+    # 리다이렉트 미완 → 진단: 현재 URL + body 첫 텍스트 (어떤 게이트인지 판단용)
+    try:
+        body_txt = (await page.locator("body").inner_text())[:400].replace("\n", " | ")
+    except Exception as e:
+        body_txt = f"(body 읽기 실패: {e})"
+    log(f"  🔎 진단 URL: {page.url}")
+    log(f"  🔎 진단 body: {body_txt}")
+    try:
+        await page.screenshot(path='/root/work/tistory-naver/fail_diag.png', full_page=True)
+    except Exception as e:
+        log(f'  진단스샷 실패: {e}')
     return False
 
 
@@ -170,69 +343,87 @@ async def main():
     data = json.loads(ACCOUNTS_FILE.read_text(encoding="utf-8"))
     pw = data["password"]
     only = {x.strip() for x in args.only.split(",") if x.strip()}
-    targets = [a for a in data["accounts"] if a["id"] not in SKIP and (not only or a["id"] in only)]
+
+    # 계정(email) 기준 그룹핑 — 계정마다 로그인 1회 → 그 계정 소속 블로그만 순회
+    groups: dict[str, list[dict]] = {}
+    for a in data["accounts"]:
+        if a["id"] in SKIP:
+            continue
+        if only and a["id"] not in only:
+            continue
+        groups.setdefault(a["email"], []).append(a)
 
     css_add = SKIN_CSS.read_text(encoding="utf-8")
-    log(f"=== 스킨 표준설정 일괄 적용 ({len(targets)}개 블로그) ===")
-    for a in targets:
-        log(f"  대상: {a['id']} -> {a['blog']}")
+    n_blog = sum(len(v) for v in groups.values())
+    log(f"=== 스킨 표준설정 일괄 적용 (계정 {len(groups)}개 · 블로그 {n_blog}개) ===")
+    for email, members in groups.items():
+        log(f"  계정 {email} -> {[m['id'] for m in members]}")
 
-    async with async_playwright() as pw:
-        ctx = await pw.chromium.launch_persistent_context(
-            str(COOKIES_DIR / "galaxys21"), headless=True,
-            viewport={"width": 1280, "height": 900}, locale="ko-KR",
-            args=["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"])
-        page = ctx.pages[0] if ctx.pages else await ctx.new_page()
-
-        # 저장된 state 파일 쿠키 복원 — TSSESSION(세션쿠키)은 프로파일에 영속 안 되므로 재실행 시 유실됨.
-        st_path = COOKIES_DIR / "galaxys21_state.json"
-        if st_path.exists():
-            st = json.loads(st_path.read_text())
-            now = int(time.time())
-            cks = []
-            for c in st.get("cookies", []):
-                if c.get("domain") in (".tistory.com", ".www.tistory.com", "www.tistory.com", ".daum.net"):
-                    if c.get("expires", -1) == -1:
-                        c["expires"] = now + 86400 * 7
-                    cks.append(c)
-            if cks:
-                await ctx.add_cookies(cks)
-                log(f"state 쿠키 {len(cks)}개 복원")
-
-        email = targets[0]["email"]
-        if not any(c["name"] == "TSSESSION" for c in await page.context.cookies("https://www.tistory.com")):
-            if not await kakao_login(page, email, pw):
-                log("❌ 로그인 실패 — 종료")
-                sys.exit(1)
-            # TSSESSION은 세션쿠키(expires=-1) → 재실행 시 유실됨. 만료 보정으로 영속화.
-            now = int(time.time())
-            fixed = []
-            for c in await ctx.cookies("https://www.tistory.com"):
-                if c["name"] == "TSSESSION" and c.get("expires", -1) == -1:
-                    c["expires"] = now + 86400 * 7
-                fixed.append(c)
-            if fixed:
-                await ctx.add_cookies(fixed)
-            await ctx.storage_state(path=str(COOKIES_DIR / "galaxys21_state.json"))
-            log("✅ 로그인 성공 — 세션 영속화")
-        else:
-            log("✅ 기존 세션 유효")
-
+    async with async_playwright() as pw_driver:
         results = []
-        for a in targets:
-            slug = a["blog"]
-            log(f"\n▶ [{a['id']}] {slug}")
-            ok_skin = await switch_skin(page, slug)
-            ok_layout = await apply_layout(page, a["id"], slug, css_add, args.dry_run)
-            results.append((a["id"], slug, ok_skin, ok_layout))
-            log(f"  → {a['id']}: 스킨={ok_skin} 레이아웃={ok_layout}")
+        for email, members in groups.items():
+            # 계정별 persistent context — 쿠키 디렉토리는 email 앞부분 (예: dtslib1k)
+            ctx_key = email.split("@")[0]
+            log(f"\n=== 계정 {email} ({len(members)}개 블로그) ===")
+            # ⚠️ headless=False 필수 — dkaptcha 캡차 iframe 로드는 headed(또는 xvfb-run)에서만 동작.
+            ctx = await pw_driver.chromium.launch_persistent_context(
+                str(COOKIES_DIR / ctx_key), headless=False,
+                viewport={"width": 1280, "height": 900}, locale="ko-KR",
+                args=["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"])
+            page = ctx.pages[0] if ctx.pages else await ctx.new_page()
+
+            # 저장된 state 파일 쿠키 복원 — TSSESSION(세션쿠키)은 프로파일에 영속 안 되므로 재실행 시 유실됨.
+            st_path = COOKIES_DIR / f"{ctx_key}_state.json"
+            if st_path.exists():
+                st = json.loads(st_path.read_text())
+                now = int(time.time())
+                cks = []
+                for c in st.get("cookies", []):
+                    if c.get("domain") in (".tistory.com", ".www.tistory.com", "www.tistory.com", ".daum.net"):
+                        if c.get("expires", -1) == -1:
+                            c["expires"] = now + 86400 * 7
+                        cks.append(c)
+                if cks:
+                    await ctx.add_cookies(cks)
+                    log(f"  state 쿠키 {len(cks)}개 복원")
+
+            if not any(c["name"] == "TSSESSION" for c in await page.context.cookies("https://www.tistory.com")):
+                if not await kakao_login(page, email, pw):
+                    log(f"  ❌ 로그인 실패({email}) — 다음 계정으로")
+                    await ctx.close()
+                    for a in members:
+                        results.append((a["id"], a["blog"], False, False))
+                    continue
+                # TSSESSION은 세션쿠키(expires=-1) → 재실행 시 유실됨. 만료 보정으로 영속화.
+                now = int(time.time())
+                fixed = []
+                for c in await ctx.cookies("https://www.tistory.com"):
+                    if c["name"] == "TSSESSION" and c.get("expires", -1) == -1:
+                        c["expires"] = now + 86400 * 7
+                    fixed.append(c)
+                if fixed:
+                    await ctx.add_cookies(fixed)
+                await ctx.storage_state(path=str(st_path))
+                log(f"  ✅ 로그인 성공 — 세션 영속화")
+            else:
+                log(f"  ✅ 기존 세션 유효")
+
+            for a in members:
+                slug = a["blog"]
+                log(f"\n▶ [{a['id']}] {slug}")
+                ok_skin = True
+                if not args.dry_run:  # dry-run은 스킨 전환 POST 생략
+                    ok_skin = await switch_skin(page, slug)
+                ok_layout = await apply_layout(page, a["id"], slug, css_add, args.dry_run)
+                results.append((a["id"], slug, ok_skin, ok_layout))
+                log(f"  → {a['id']}: 스킨={ok_skin} 레이아웃={ok_layout}")
+
+            await ctx.close()
 
         print("\n=== 결과 요약 ===")
         for rid, slug, ok_skin, ok_layout in results:
             status = "✅" if (ok_skin and ok_layout) else "⚠️"
             print(f"  {status} {rid:10s} {slug:22s} 스킨={ok_skin} 레이아웃={ok_layout}")
-
-        await ctx.close()
 
 
 if __name__ == "__main__":

@@ -1,0 +1,4 @@
+file '/root/work/_notebook/grok/assets/intro-40s/clip1.mp4'
+file '/root/work/_notebook/grok/assets/intro-40s/clip2.mp4'
+file '/root/work/_notebook/grok/assets/intro-40s/clip3.mp4'
+file '/root/work/_notebook/grok/assets/intro-40s/clip4.mp4'

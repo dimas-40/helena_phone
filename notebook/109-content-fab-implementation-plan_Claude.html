@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="작성: 2026-09-02 · `_Claude` · 상태: **승인 대기** · 근거: `108-content-semiconductor-architecture_Claude.md` — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>🏭 Content Manufacturing OS — 구현 계획서 (1장) — S21 Phone Webzine</title>
+<link rel="canonical" href="https://dtslib1979.github.io//notebook/109-content-fab-implementation-plan_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/dtslib1979#person",
+      "name": "dtslib",
+      "url": "https://github.com/dtslib1979",
+      "description": "경제방송 — 16레포×10블로그×6채널, 1인 미디어 출판·방송",
+      "sameAs": [
+        "https://github.com/dtslib1979",
+        "https://dtslib.kr",
+        "https://www.youtube.com/@dtslib-branch",
+        "https://www.youtube.com/@phoneparis-r6q",
+        "https://www.youtube.com/@alexandria-y6k",
+        "https://www.youtube.com/@artrew-i1w",
+        "https://www.youtube.com/@Parksy-webzine"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://dtslib1979.github.io//notebook/109-content-fab-implementation-plan_Claude.html#webpage",
+      "url": "https://dtslib1979.github.io//notebook/109-content-fab-implementation-plan_Claude.html",
+      "name": "🏭 Content Manufacturing OS — 구현 계획서 (1장)",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/dtslib1979#person"
+      },
+      "author": {
+        "@id": "https://github.com/dtslib1979#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>🏭 Content Manufacturing OS — 구현 계획서 (1장)</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · lakme-audio</div>
+    <h1>🏭 Content Manufacturing OS — 구현 계획서 (1장)</h1>
+    <p class="deck">작성: 2026-09-02 · `_Claude` · 상태: **승인 대기** · 근거: `108-content-semiconductor-architecture_Claude.md`</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/109-content-fab-implementation-plan_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#_1">목표 한 줄</a></li>
+<li><a href="#_2">포지셔닝 (왜 이거냐)</a></li>
+<li><a href="#3">핵심 3층</a></li>
+<li><a href="#1-division">이미 있는 것 (출판 = 1호 Division)</a></li>
+<li><a href="#_3">구현 단계</a></li>
+<li><a href="#_4">원칙 (불변)</a></li>
+<li><a href="#_5">다음 액션</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <blockquote>
+<p>작성: 2026-09-02 · <code>_Claude</code> · 상태: <strong>승인 대기</strong> · 근거: <code>108-content-semiconductor-architecture_Claude.md</code></p>
+</blockquote>
+<hr>
+<h2 id="_1">목표 한 줄</h2>
+<p>콘텐츠를 <strong>제품군×공정</strong>으로 재분해해, 1인이 AI 생산설비를 오케스트레이션하는 <strong>산업용 OS</strong>를 만든다.</p>
+<h2 id="_2">포지셔닝 (왜 이거냐)</h2>
+<ul>
+<li>시장엔 이미 <strong>&ldquo;AI Content Factory&rdquo;</strong>가 있다 — 다만 대부분 &ldquo;기존 인력 압축&rdquo;(노동력 대체).</li>
+<li>내가 만드는 건 한 단계 아래: <strong>Factory를 설명·설계하는 OS</strong> (제품군·BOM·공정·QA 단위).</li>
+<li>검색 결과: AI-native studio들이 &ldquo;studio/production system/pipeline/orchestration&rdquo; 언어를 쓰기 시작 = 산업이 그 방향으로 가는 초기 신호. 단 <strong>&ldquo;반도체 FAB의 Division/BOM/원가 사고를 그대로 이식&rdquo;하는 사례는 아직 없음</strong> → 빈 자리.</li>
+</ul>
+<h2 id="3">핵심 3층</h2>
+<table>
+<thead>
+<tr>
+<th>층</th>
+<th>반도체</th>
+<th>콘텐츠</th>
+<th>질문</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Division</strong></td>
+<td>제품군</td>
+<td>Memory/Logic/Analog/Discrete/Power</td>
+<td>무엇인가</td>
+</tr>
+<tr>
+<td><strong>BOM</strong></td>
+<td>자재명세</td>
+<td>제품을 이루는 부품 목록</td>
+<td>뭘로 만들었나</td>
+</tr>
+<tr>
+<td><strong>Recipe/FAB</strong></td>
+<td>공정</td>
+<td>Generate→Process→Integrate→QA→Package</td>
+<td>어떻게 만드나</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>레시피 하나 = MCP 하나 = <strong>&ldquo;주문&rdquo;</strong>. 주문 등록 = 레시피 번호 호출.</p>
+</blockquote>
+<h2 id="1-division">이미 있는 것 (출판 = 1호 Division)</h2>
+<ul>
+<li>공정 스크립트: <code>build_webzine</code>(조판) · <code>check_webpages</code>(게이트) · <code>publish_route</code>(라우팅) · <code>publishing_metrics</code>(메트릭) · <code>publish</code>(발행)</li>
+<li><strong>v0.1 스캐폴드 (방금 만듦, 동작 확인):</strong> <code>configs/content-fab.json</code> + <code>scripts/fab.py</code> (<code>list</code>/<code>bom</code>/<code>recipe</code>/<code>order</code>)</li>
+</ul>
+<h2 id="_3">구현 단계</h2>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th>무엇</th>
+<th>산출물</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>P1</strong></td>
+<td>출판 레시피를 <code>order --run</code>으로 끝까지 실행 + QA를 recipe 안 1급 공정으로 고정</td>
+<td><code>fab.py order publishing --run</code></td>
+</tr>
+<tr>
+<td><strong>P2</strong></td>
+<td>BOM 잎 → 실제 파일·디렉토리에 <code>division</code> 태그 (frontmatter)</td>
+<td>태깅 규약 + 체커</td>
+</tr>
+<tr>
+<td><strong>P3</strong></td>
+<td><strong>BOR(Route)</strong> — 워크센터(S21/S25/Tab/PC)별 공법 분기</td>
+<td><code>route</code> 매니페스트</td>
+</tr>
+<tr>
+<td><strong>P4</strong></td>
+<td><strong>Recipe → MCP &ldquo;주문&rdquo;</strong> — 레시피 번호로 호출하는 MCP 서버</td>
+<td><code>fab</code> MCP (기존 FAB/WC-000 create_lot 연결)</td>
+</tr>
+<tr>
+<td><strong>P5</strong></td>
+<td><strong>Multi-FAB</strong> — 영상(PD Pipeline)·오디오·교육을 같은 OS로 등록</td>
+<td>Division별 recipe</td>
+</tr>
+<tr>
+<td><strong>P6</strong></td>
+<td>QA/게이트 통합 + BOM 원가·수율 메트릭</td>
+<td><code>publishing_metrics</code> 확장</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_4">원칙 (불변)</h2>
+<p>스캐폴드 우선(일단 작동) · <strong>백서 금지</strong>(discipline로, 쓰인 것만 정식화) · 작게 자주 커밋 · 각 단계가 실제 모듈 태깅하며 등장.</p>
+<h2 id="_5">다음 액션</h2>
+<p><strong>P1</strong> — 출판을 <code>order --run</code>으로 끝까지 돌려서 &ldquo;주문 → 조판 → QA → 라우팅 → 발행&rdquo; 한 줄이 실제로 작동하는지 증명 → Boss 확인 후 P2로.</p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="108-content-semiconductor-architecture_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">🏭 Content Semiconductor Architecture — 반도체 공법을 콘텐츠 제조로 (2축 모델)</span>
+        </a>
+    <a class="next" href="110-content-manufacturing-os_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">110 content manufacturing os Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>구축: 2026-07-23 ~ 2026-08-14 (23일)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine lakme-audio</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

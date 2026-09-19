@@ -1,13 +1,13 @@
 {
-  "generated": "2026-08-14",
+  "generated": "2026-09-02",
   "source": [
     "_notebook/*.md"
   ],
   "logic": "분모 → GitHub Pages(전량) + Tistory(여집합 = 분모 − pages-only)",
-  "분모_total": 115,
+  "분모_total": 149,
   "counts": {
-    "pages_only": 5,
-    "tistory": 110
+    "pages_only": 6,
+    "tistory": 143
   },
   "rules": {
     "priority": [
@@ -94,6 +94,12 @@
       "title": "61 · 랜딩 6샷 디렉터 파이프 — 개발 계획서 (_Grok) **v2 정정**",
       "channel": "pages-only",
       "reason": "시각·인터랙티브 형태 신호 (pages 2 > tistory 0)"
+    },
+    {
+      "file": "96-brand-theses_Claude.md",
+      "title": "명제 인벤토리 — \"폰 한 대가 곧 ___\"",
+      "channel": "pages-only",
+      "reason": "시각·인터랙티브 형태 신호 (pages 1 > tistory 0)"
     }
   ],
   "tistory": [
@@ -154,6 +160,78 @@
     {
       "file": "10-phone-mcp.md",
       "title": "phone-mcp-server — 핸드폰 통제 MCP",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "100-onboarding-entry-barrier-review_Claude.md",
+      "title": "온보딩 진입 장벽 — 외부 리뷰 + 무결점 세팅 스크립트",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "100-phone-management-3layers_Claude.md",
+      "title": "📱 폰 관리 3계층 — 수리 라우팅 원칙 (2026-08-21)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 1 ≥ pages 0)"
+    },
+    {
+      "file": "101-ending-page_Claude.md",
+      "title": "엔딩 페이지 — 설치 이후, 이 작업실에 탑재된 모든 것 · 삽질 기록",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 2 ≥ pages 1)"
+    },
+    {
+      "file": "101-grok-mercenary-3loc_Grok.md",
+      "title": "Grok은 용병 — 세 로케이션을 돈다 (2026-08-18)",
+      "channel": "tistory",
+      "reason": "type:org-decision 은 읽는 글 형식"
+    },
+    {
+      "file": "102-tablet-hw-parse_Grok.md",
+      "title": "태블릿 로케이션 — 하드웨어·프로트 실측 (2026-08-18)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "103-adb-mesh-revive_Claude.md",
+      "title": "ADB Mesh 자동 복구 — 태블릿(tab-s9) ADB 무선 연결 지식 (2026-08-20)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "104-grok-3device-roles_Grok.md",
+      "title": "Grok 용병 — 세 기기, 역할이 다르다 (2026-08-24)",
+      "channel": "tistory",
+      "reason": "type:org-decision 은 읽는 글 형식"
+    },
+    {
+      "file": "105-comfy-grokvideo-graft_Grok.md",
+      "title": "ComfyUI 피로 → GrokVideoNode — 커뮤니티 실측과 접목 판정",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "106-imagine-canvas-18_Grok.md",
+      "title": "Imagine 캔버스 18기능 — 제공 화면 기준",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "107-gallery-cli-vs-canvas_Grok.md",
+      "title": "갤러리 CLI vs 웹 캔버스 — 처리 가능·품질 층",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "108-content-semiconductor-architecture_Claude.md",
+      "title": "🏭 Content Semiconductor Architecture — 반도체 공법을 콘텐츠 제조로 (2축 모델)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "109-content-fab-implementation-plan_Claude.md",
+      "title": "🏭 Content Manufacturing OS — 구현 계획서 (1장)",
       "channel": "tistory",
       "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
     },
@@ -692,10 +770,22 @@
       "reason": "type:report 은 읽는 글 형식"
     },
     {
+      "file": "90-mynote-care-daemon-plan_Claude.md",
+      "title": "mynote11605 = 돌봄 데몬 채널 — 개편 업데이트 플랜 (_Claude)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
       "file": "91-automation-caution_Claude.md",
       "title": "GUI 자동화 주의사항 — \"사람 손가락\"처럼 보인다는 착각 (2026-08-14)",
       "channel": "tistory",
       "reason": "type:standard 은 읽는 글 형식"
+    },
+    {
+      "file": "91-mynote-care-daemon-dev-plan_Claude.md",
+      "title": "mynote11605 돌봄 데몬 채널 — 개발 계획서 (Season 1) (_Claude)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
     },
     {
       "file": "92-automation-line-boss-to-publish_Claude.md",
@@ -704,8 +794,62 @@
       "reason": "type:standard 은 읽는 글 형식"
     },
     {
+      "file": "93-tistory-skin-reverse-engineering_Claude.md",
+      "title": "🔬 티스토리 스킨 적용 — 리버스 엔지니어링 완전 해부",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 1 ≥ pages 0)"
+    },
+    {
+      "file": "94-three-week-review_Claude.md",
+      "title": "갤럭시 S21, 3주 만에 1인 미디어 스튜디오가 되다 — 회고",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 2 ≥ pages 0)"
+    },
+    {
+      "file": "95-publishing-bootstrap-doctor_Claude.md",
+      "title": "출판 파이프라인 — 원클릭 부트스트랩 + 출판 doctor 설계",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 1 ≥ pages 0)"
+    },
+    {
+      "file": "97-s21-solutions-showcase_Claude.md",
+      "title": "S21 한 대로 만든 것 — 3주 랩업 & 보여줄 만한 솔루션",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 1 ≥ pages 0)"
+    },
+    {
+      "file": "97b-s21-solutions-showcase-evaluation_Grok.md",
+      "title": "재고조사 평가 — Grok (2026-08-16)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 1 ≥ pages 0)"
+    },
+    {
+      "file": "97c-ai-limitation-reverse-evaluation_Claude.md",
+      "title": "AI의 한계 — 역평가의 단위 오류 (Boss 역카운터)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 1 ≥ pages 0)"
+    },
+    {
+      "file": "98-turning-point-2026-08-16_Claude.md",
+      "title": "터닝 포인트 — 빌드 멈춤 → 열고 가르치기 (2026-08-16)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 1 ≥ pages 0)"
+    },
+    {
+      "file": "98b-tutorial-reproducibility-shift_Claude.md",
+      "title": "재현성 기준의 변화 — 튜토리얼은 결과 복제가 아니라 사고 과정 재현",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 2 ≥ pages 0)"
+    },
+    {
       "file": "99-devlog.md",
       "title": "📋 S21 Phone — 전체 개발일지",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "S21-Grok-plugin_Grok.md",
+      "title": "S21 Grok 플러그 역할 (온디바이스 카드)",
       "channel": "tistory",
       "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
     },
@@ -716,10 +860,28 @@
       "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
     },
     {
+      "file": "ai-workstation-setup-manual_Boss.md",
+      "title": "백서: 폰 하나로 AI 워크스테이션 짓기 (완결판)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 2 ≥ pages 0)"
+    },
+    {
       "file": "allocation-rate-2026-07-28.md",
       "title": "Allocation Rate — 2026-07-28",
       "channel": "tistory",
       "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "grok-cli-install-troubleshooting_Claude.md",
+      "title": "Grok CLI 설치 · 삽질 기록 (2026-08-18)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 3 ≥ pages 0)"
+    },
+    {
+      "file": "infra-whitepaper-2026-08-27_Claude.md",
+      "title": "🏭 proot Ubuntu (Galaxy S25) — 1인 미디어 공장 기술백서",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 2 ≥ pages 0)"
     },
     {
       "file": "naver-intro-article.md",
@@ -746,10 +908,52 @@
       "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
     },
     {
+      "file": "session-2026-08-18_Claude.md",
+      "title": "세션 수첩 — 환경·과금·GitHub 계정 점검 (2026-08-18)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "session-2026-08-19_Claude.md",
+      "title": "세션 회의록 — 판의 전환 · 오버레이 키트 + 런타임 후보정 (2026-08-19)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "session-2026-08-22_quota-channel-map_Claude.md",
+      "title": "🗺️ YouTube 쿼터 2계정 → 채널 확정 + 역산 플랫폼 매핑 (_Claude · 2026-08-22)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "session-2026-08-22_youtube-oauth_Claude.md",
+      "title": "📺 2026-08-22 — 유튜브 OAuth 연결 준비 · 시스템 감사 · 3대 우선순위",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "session-2026-08-27_Claude.md",
+      "title": "세션 수첩 — S25 경제방송 배선 공사 + 파이프라인 갭 평가 (2026-08-27)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
       "file": "supergrok-community-research-2026-07-25.md",
       "title": "SuperGrok 커뮤니티 리서치 리포트",
       "channel": "tistory",
       "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "tablet-broadcast-studio_Claude.md",
+      "title": "태블릿 교육방송 스튜디오 — 서플라이 체인 (확정)",
+      "channel": "tistory",
+      "reason": "여집합 기본 (tistory 0 ≥ pages 0)"
+    },
+    {
+      "file": "tablet-setup-parksy-method_Claude.md",
+      "title": "태블릿 워크센터 설정 — parksy 공법 파싱 (dtslib-papyrus → 수첩)",
+      "channel": "tistory",
+      "reason": "type:reference 은 읽는 글 형식"
     },
     {
       "file": "tistory-master-guide_Claude.md",

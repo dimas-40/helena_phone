@@ -1,0 +1,177 @@
+{
+  "name": "Content FAB",
+  "version": "0.1.0",
+  "updated": "2026-09-02",
+  "meta": "반도체 공정을 콘텐츠 제조로 미러링한 3층 관리체계. Division(제품군) · BOM(부품 명세) · Recipe(공정 = MCP = 주문). 단일 진실(SSOT).",
+  "divisions": {
+    "memory": {
+      "label": "Memory",
+      "role": "원재료 저장 (자료/소스/아카이브)",
+      "examples": [
+        "라이브러리",
+        "대사 DB",
+        "영상 클립",
+        "프롬프트",
+        "템플릿"
+      ]
+    },
+    "logic": {
+      "label": "Logic",
+      "role": "구조/규칙 (무엇을 어떻게 만들지 결정)",
+      "examples": [
+        "Script",
+        "Scene order",
+        "Timing",
+        "Cut",
+        "Caption",
+        "Publishing format"
+      ]
+    },
+    "analog": {
+      "label": "Analog",
+      "role": "감각 신호 (음악/음성/분위기)",
+      "examples": [
+        "BGM",
+        "Voice",
+        "Ambience",
+        "Sound Effect",
+        "Emotion/Mood"
+      ]
+    },
+    "discrete": {
+      "label": "Discrete",
+      "role": "독립 부품 (이미지/영상/효과)",
+      "examples": [
+        "Character/BG Image",
+        "Thumbnail",
+        "Short Video",
+        "Animation Clip",
+        "Overlay"
+      ]
+    },
+    "power": {
+      "label": "Power",
+      "role": "실행 에너지 (Runtime)",
+      "examples": [
+        "API 호출",
+        "GPU/CPU",
+        "자동화",
+        "렌더링",
+        "인코딩",
+        "배포 인프라"
+      ]
+    }
+  },
+  "products": {
+    "publishing": {
+      "label": "Publishing",
+      "outputs": [
+        "책",
+        "eBook",
+        "블로그",
+        "뉴스레터",
+        "웹페이지"
+      ],
+      "status": "implemented",
+      "note": "1호 Division — 공정(FAB)은 이미 스크립트로 존재, Division/BOM/Recipe 관리층을 이 매니페스트로 새로 얹음",
+      "bom": [
+        {
+          "part": "Manuscript(원고)",
+          "division": "logic"
+        },
+        {
+          "part": "Research(자료)",
+          "division": "memory"
+        },
+        {
+          "part": "Illustration(일러스트)",
+          "division": "discrete"
+        },
+        {
+          "part": "Photo(사진)",
+          "division": "discrete"
+        },
+        {
+          "part": "Cover(표지)",
+          "division": "discrete"
+        },
+        {
+          "part": "Typography/Layout(조판)",
+          "division": "logic"
+        },
+        {
+          "part": "Metadata/ISBN(메타·배포)",
+          "division": "power"
+        }
+      ],
+      "recipe": {
+        "id": "RECIPE-001",
+        "steps": [
+          {
+            "order": 1,
+            "fab": "Generate",
+            "step": "build_webzine",
+            "command": "python3 scripts/build_webzine.py",
+            "needs_env": false
+          },
+          {
+            "order": 2,
+            "fab": "QA",
+            "step": "check_webpages",
+            "command": "python3 scripts/check_webpages_Grok.py",
+            "needs_env": false
+          },
+          {
+            "order": 3,
+            "fab": "Route",
+            "step": "publish_route",
+            "command": "python3 scripts/publish_route.py",
+            "needs_env": false
+          },
+          {
+            "order": 4,
+            "fab": "Package",
+            "step": "publishing_metrics",
+            "command": "python3 scripts/publishing_metrics.py",
+            "needs_env": false
+          },
+          {
+            "order": 5,
+            "fab": "Publish",
+            "step": "publish",
+            "command": "~/browser-env/bin/python3 scripts/publish.py tistory",
+            "needs_env": true
+          }
+        ]
+      }
+    },
+    "video": {
+      "label": "Video / Broadcast",
+      "outputs": [
+        "Shorts",
+        "YouTube",
+        "영화"
+      ],
+      "status": "exists-unclassified",
+      "note": "PD Pipeline(P0→P6) + Director(48~60)이 실재하나, Division/BOM/Recipe로 아직 미분류"
+    },
+    "audio": {
+      "label": "Audio",
+      "outputs": [
+        "Podcast",
+        "오디오북",
+        "음원"
+      ],
+      "status": "planned"
+    },
+    "education": {
+      "label": "Education",
+      "outputs": [
+        "강의",
+        "교재",
+        "코스"
+      ],
+      "status": "planned"
+    }
+  }
+}

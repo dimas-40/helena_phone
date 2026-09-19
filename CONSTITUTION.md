@@ -311,7 +311,7 @@
 - 본사그룹 `dtslib1k` (5): dtslib1k · hitop · lafilosofia · midmath · midsocial
 - 지사그룹 `dtslib2k` (5): korean-parksy · kr-merit-bluff · kr-merit-shaman · kr-merit-halfblood · kr-merit-aggro
 
-**YouTube 6 [v7]** — @dtslib-branch(통합) · @phoneparis-r6q · @alexandria-y6k · @artrew-i1w · @justino-fashion · @espiritu-tango(PENDING · 매핑 밖)
+**YouTube 6 [v7]** — @dtslib-branch(통합) · @phoneparis-r6q · @alexandria-y6k · @artrew-i1w · @Parksy-webzine · @espiritu-tango(PENDING · 매핑 밖)
 
 > ⚠️ **v5의 `@helena_phone` · `@HelenaPark-e7c` 2채널은 위 6채널 매핑에 나타나지 않는다.** 폐기인지 별도 유지인지 미확인 — 다음 개정 때 Boss 판정 필요.
 

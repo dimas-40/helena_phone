@@ -2,8 +2,8 @@
    HELENA PHONE — 다크 에디토리얼 스킨 (Whatever 기반)
    --------------------------------------------------------------------------
    팔레트
-     배경    #08090a   표면 #0f1115 / #14161c   테두리 #1e2128
-     본문    #f7f8f8   보조 #d8dbe0   뮤트 #8a8f98
+     배경    #0c1710   표면 #152117 / #1b2e24   테두리 #2a3a2e
+     본문    #e9e5cf   보조 #cfc9a8   뮤트 #8fa185
      액센트  틸/골드 — 아래 :root 테마 토큰으로 블로그별 변경
    구조 = 평범(원래 Whatever 레이아웃 유지) + 디자인 = 프리미엄 다크
    ========================================================================== */
@@ -13,13 +13,13 @@
   /* PC에서 폰 베젤·카메라가 화면 전체가 아니라 콘텐츠(1160px) 한도에 맞게 — 스크롤시 페이지 밖으로 넘치지 않게 */
   --s21-frame-w: min(100vw - 32px, 1160px);
   --s21-frame-x: calc((100vw - var(--s21-frame-w)) / 2);
-  --s21-accent: #2dd4bf;
-  --s21-accent-rgb: 45, 212, 191;
-  --s21-accent2: #e8b45a;
-  --s21-accent2-rgb: 232, 180, 90;
-  --s21-nebula-a: rgba(96, 70, 180, 0.52);
-  --s21-nebula-b: rgba(45, 212, 191, 0.44);
-  --s21-nebula-c: rgba(240, 180, 41, 0.30);
+  --s21-accent: #a08a4c;
+  --s21-accent-rgb: 160, 138, 76;
+  --s21-accent2: #b5985a;
+  --s21-accent2-rgb: 181, 152, 90;
+  --s21-nebula-a: rgba(78, 74, 44, 0.52);
+  --s21-nebula-b: rgba(143, 161, 133, 0.44);
+  --s21-nebula-c: rgba(160, 138, 76, 0.30);
   --s21-star1: #ffffff;
   --s21-star2: #7fe7ff;
   --s21-star3: #ffd98a;
@@ -30,7 +30,7 @@
 }
 
 /* ── 0. 글로벌 다크 베이스 ─────────────────────────────────────────────── */
-html { background: #08090a; }
+html { background: #0c1710; }
 /* 스크롤 컨테이너 제어: body 스크롤 잠금 → 폰 화면(#wrap) 안에서만 스크롤 (Boss 2026-08-15) */
 html, body {
   height: 100%;
@@ -38,8 +38,8 @@ html, body {
   overscroll-behavior-y: contain;
 }
 body {
-  background: #08090a !important;
-  color: #f7f8f8;
+  background: #0c1710 !important;
+  color: #e9e5cf;
 }
 #wrap {
   background:
@@ -47,8 +47,8 @@ body {
     radial-gradient(1000px 620px at 96% 10%, var(--s21-nebula-b), transparent 55%),
     radial-gradient(880px 560px at 6% 102%, var(--s21-nebula-c), transparent 55%),
     radial-gradient(820px 520px at 60% 108%, rgba(var(--s21-accent2-rgb), 0.16), transparent 55%),
-    #08090a !important;
-  color: #f7f8f8;
+    #0c1710 !important;
+  color: #e9e5cf;
   font-family: 'Pretendard', -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic',
                'Noto Sans KR', sans-serif;
   font-size: 16px;
@@ -146,9 +146,9 @@ body {
 }
 #gnb li a:hover { background: rgba(var(--s21-accent-rgb), 0.10); color: var(--s21-accent); }
 #header .mobile-menu {
-  background: #14161c;
-  border: 1px solid #1e2128;
-  color: #f7f8f8;
+  background: #1b2e24;
+  border: 1px solid #2a3a2e;
+  color: #e9e5cf;
   border-radius: 8px;
   padding: 7px 12px;
 }
@@ -165,8 +165,8 @@ body {
 
 /* ── 3. 글 목록 카드 ──────────────────────────────────────────────────── */
 .post-item {
-  background: #0f1115;
-  border: 1px solid #1e2128;
+  background: #152117;
+  border: 1px solid #2a3a2e;
   border-radius: 14px;
   padding: 24px;
   margin-bottom: 20px;
@@ -196,7 +196,7 @@ body {
   font-weight: 600;
   line-height: 1.42;
   letter-spacing: -0.02em;
-  color: #f7f8f8;
+  color: #e9e5cf;
   margin-bottom: 8px;
 }
 .post-item:hover .title { color: var(--s21-accent); transition: color .18s ease; }
@@ -242,8 +242,8 @@ body {
   min-width: 40px; height: 40px;
   display: inline-flex; align-items: center; justify-content: center;
   border-radius: 10px;
-  background: #0f1115;
-  border: 1px solid #1e2128;
+  background: #152117;
+  border: 1px solid #2a3a2e;
   color: #c9ced6;
   text-decoration: none;
   font-size: 14px;
@@ -261,7 +261,7 @@ body {
 .sidebar-1 { max-width: 1160px; margin: 0 auto 24px; padding: 0 28px; }
 .sidebar-1 .posts, .sidebar-2 .tags, .sidebar-3 .search {
   background: rgba(255,255,255,0.028);
-  border: 1px solid #1e2128;
+  border: 1px solid #2a3a2e;
   border-radius: 14px;
   padding: 20px;
 }
@@ -270,7 +270,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #f7f8f8;
+  color: #e9e5cf;
   margin: 0 0 14px;
   padding-left: 12px;
   border-left: 3px solid var(--s21-accent);
@@ -279,60 +279,60 @@ body {
 .sidebar-1 .posts li a {
   display: block;
   padding: 8px 0;
-  border-bottom: 1px dashed #1e2128;
+  border-bottom: 1px dashed #2a3a2e;
   color: #c9ced6;
   font-size: 14px;
   text-decoration: none;
   transition: color .15s ease, padding .15s ease;
 }
 .sidebar-1 .posts li a::before { content: "▸ "; color: var(--s21-accent); font-size: 12px; }
-.sidebar-1 .posts li a:hover { color: #f7f8f8; padding-left: 6px; }
+.sidebar-1 .posts li a:hover { color: #e9e5cf; padding-left: 6px; }
 .sidebar-2 .tags .items a { color: var(--s21-accent); text-decoration: none; font-size: 13px; }
 .sidebar-3 .search input {
   width: 100%;
-  background: #14161c;
-  border: 1px solid #1e2128;
+  background: #1b2e24;
+  border: 1px solid #2a3a2e;
   border-radius: 8px;
-  color: #f7f8f8;
+  color: #e9e5cf;
   padding: 9px 12px;
   outline: none;
 }
-.sidebar-3 .search input::placeholder { color: #8a8f98; }
+.sidebar-3 .search input::placeholder { color: #8fa185; }
 
 /* ── 5. 아티클 읽기 뷰 ────────────────────────────────────────────────── */
 .post-header h1, .entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4 {
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: #f7f8f8;
+  color: #e9e5cf;
   line-height: 1.35;
 }
 .post-header h1 { font-size: 30px; }
-.entry-content h2 { font-size: 24px; margin: 1.5em 0 0.6em; padding-bottom: 8px; border-bottom: 1px solid #1e2128; }
+.entry-content h2 { font-size: 24px; margin: 1.5em 0 0.6em; padding-bottom: 8px; border-bottom: 1px solid #2a3a2e; }
 .entry-content h3 { font-size: 20px; margin: 1.4em 0 0.5em; }
 .entry-content h4 { font-size: 17px; margin: 1.3em 0 0.5em; }
-.post-meta { color: #8a8f98; font-size: 13px; margin: 8px 0 24px; }
+.post-meta { color: #8fa185; font-size: 13px; margin: 8px 0 24px; }
 .post-meta .author, .post-meta .date { margin-right: 14px; }
 
 /* 본문 .s21-post 인라인 라이트 스타일 → 강제 다크 (인라인 <style>이 body에 있어 우선순위 높음) */
-#article-view .s21-post { color: #d8dbe0 !important; }
+#article-view .s21-post { color: #cfc9a8 !important; }
 #article-view .s21-post a { color: var(--s21-accent) !important; border-bottom: 1px solid rgba(var(--s21-accent-rgb), 0.35) !important; }
 #article-view .s21-acc,
 #article-view .s21-btn,
 #article-view .s21-acc > summary {
-  background: #0f1115 !important;
-  border-color: #1e2128 !important;
-  color: #d8dbe0 !important;
+  background: #152117 !important;
+  border-color: #2a3a2e !important;
+  color: #cfc9a8 !important;
 }
-#article-view .s21-acc > summary { background: #14161c !important; }
+#article-view .s21-acc > summary { background: #1b2e24 !important; }
 #article-view .s21-acc > summary:hover { background: #1a1e26 !important; }
 #article-view .s21-btn { color: var(--s21-accent) !important; }
 #article-view .s21-btn:hover { background: var(--s21-accent) !important; color: #04110e !important; }
-#article-view .s21-code pre { background: #0d0f13 !important; color: #a5f3e6 !important; border: 1px solid #1e2128 !important; }
+#article-view .s21-code pre { background: #0d0f13 !important; color: #a5f3e6 !important; border: 1px solid #2a3a2e !important; }
 #article-view .s21-code code { color: inherit !important; }
 #article-view .s21-copy { background: #1e293b !important; border-color: #334155 !important; color: #cbd5e1 !important; }
 
 /* 일반 본문 요소 */
-.entry-content p { line-height: 1.95; color: #d8dbe0; font-size: 15.5px; }
+.entry-content p { line-height: 1.95; color: #cfc9a8; font-size: 15.5px; }
 .entry-content strong { color: #ffffff; }
 .entry-content blockquote {
   border-left: 3px solid var(--s21-accent);
@@ -343,12 +343,12 @@ body {
   border-radius: 0 8px 8px 0;
 }
 .entry-content ul, .entry-content ol { padding-left: 1.5em; }
-.entry-content li { margin-bottom: 0.4em; color: #d8dbe0; }
+.entry-content li { margin-bottom: 0.4em; color: #cfc9a8; }
 .entry-content img { max-width: 100%; height: auto; border-radius: 10px; }
 .entry-content pre {
   background: #0d0f13;
   color: #a5f3e6;
-  border: 1px solid #1e2128;
+  border: 1px solid #2a3a2e;
   border-radius: 10px;
   padding: 16px;
   overflow-x: auto;
@@ -357,12 +357,12 @@ body {
   line-height: 1.65;
 }
 .entry-content :not(pre) > code {
-  background: #14161c;
+  background: #1b2e24;
   color: var(--s21-accent);
   padding: 2px 7px;
   border-radius: 6px;
   font-size: 0.9em;
-  border: 1px solid #1e2128;
+  border: 1px solid #2a3a2e;
 }
 .entry-content table {
   width: 100%;
@@ -372,8 +372,8 @@ body {
   table-layout: auto;
 }
 .entry-content th {
-  background: #14161c;
-  color: #f7f8f8;
+  background: #1b2e24;
+  color: #e9e5cf;
   padding: 11px 14px;
   text-align: left;
   border: 1px solid #23262e;
@@ -383,7 +383,7 @@ body {
 .entry-content td {
   padding: 10px 14px;
   border: 1px solid #23262e;
-  color: #d8dbe0;
+  color: #cfc9a8;
   overflow-wrap: anywhere;
 }
 .entry-content table code,
@@ -394,13 +394,13 @@ body {
 .entry-content tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
 /* 아코디언 본문 — 테이블 가로 넘침 시 내부 스크롤(클리핑 방지) */
 .s21-acc-body { overflow-x: auto; }
-.entry-content hr { border: 0; border-top: 1px solid #1e2128; margin: 2em 0; }
+.entry-content hr { border: 0; border-top: 1px solid #2a3a2e; margin: 2em 0; }
 
 /* ── 6. 푸터 ──────────────────────────────────────────────────────────── */
 #footer {
-  border-top: 1px solid #1e2128;
+  border-top: 1px solid #2a3a2e;
   background: #0a0b0d;
-  color: #8a8f98;
+  color: #8fa185;
   padding: 28px;
   text-align: center;
   position: relative;
@@ -412,9 +412,9 @@ body {
 
 /* ── 7. 티스토리 툴바 버튼 다크 ───────────────────────────────────────── */
 .btn_menu_toolbar {
-  background: #14161c !important;
-  border: 1px solid #1e2128 !important;
-  color: #f7f8f8 !important;
+  background: #1b2e24 !important;
+  border: 1px solid #2a3a2e !important;
+  color: #e9e5cf !important;
 }
 .btn_menu_toolbar:hover { border-color: rgba(var(--s21-accent-rgb), 0.45) !important; }
 
@@ -440,21 +440,21 @@ body {
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.35;
-  color: #f7f8f8;
+  color: #e9e5cf;
   margin: 0 0 8px;
 }
 /* 댓글 폼/네임카드/팝업 레이어 (표시될 경우 다크로) */
 .tt_box_namecard, .layer_post {
-  background: #0f1115 !important;
-  border-color: #1e2128 !important;
-  color: #d8dbe0 !important;
+  background: #152117 !important;
+  border-color: #2a3a2e !important;
+  color: #cfc9a8 !important;
 }
 #wrap .comments input, #wrap .comments textarea,
 #wrap input[type="text"], #wrap input[type="email"],
 #wrap input[type="password"], #wrap input[type="search"], #wrap textarea {
-  background: #14161c !important;
-  color: #f7f8f8 !important;
-  border: 1px solid #1e2128 !important;
+  background: #1b2e24 !important;
+  color: #e9e5cf !important;
+  border: 1px solid #2a3a2e !important;
 }
 .tt-btn_register, #wrap .comments button {
   background: var(--s21-accent) !important;
@@ -517,7 +517,7 @@ section.container {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #f7f8f8;
+  color: #e9e5cf;
   margin: 0 0 14px;
   padding-left: 12px;
   border-left: 3px solid var(--s21-accent);
@@ -527,18 +527,18 @@ section.container {
 #category-nav li a {
   display: block;
   padding: 8px 0;
-  border-bottom: 1px dashed #1e2128;
+  border-bottom: 1px dashed #2a3a2e;
   color: #c9ced6;
   font-size: 14px;
   text-decoration: none;
   transition: color .15s ease, padding .15s ease;
 }
 #category-nav li a::before { content: "▸ "; color: var(--s21-accent); font-size: 12px; }
-#category-nav li a:hover { color: #f7f8f8; padding-left: 6px; }
+#category-nav li a:hover { color: #e9e5cf; padding-left: 6px; }
 #category-nav .link_tit, #category-nav .link_tit a {
   font-weight: 700;
   color: var(--s21-accent);
-  border-bottom: 1px solid #1e2128;
+  border-bottom: 1px solid #2a3a2e;
 }
 #category-nav .cnt { color: #6b7280; font-size: 12px; }
 #category-nav .sub_category_list, #category-nav .link_sub_item a { padding-left: 16px; font-size: 13px; }
@@ -588,7 +588,7 @@ section.container {
   gap: 6px;
   margin-top: 18px;
   padding-top: 14px;
-  border-top: 1px solid #1e2128;
+  border-top: 1px solid #2a3a2e;
   background: transparent;
   border-radius: 0;
   box-shadow: none;
@@ -600,8 +600,8 @@ section.container {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #1e2128;
-  background: #14161c;
+  border: 1px solid #2a3a2e;
+  background: #1b2e24;
   color: #c9ced6;
   border-radius: 8px;
   font-size: 16px;
@@ -861,28 +861,28 @@ body.s21-mobile #content { width: 100%; max-width: 100%; min-width: 0; font-size
 }
 #s21-install-modal[hidden] { display: none; }
 .s21-install-card {
-  background: #14161c;
+  background: #1b2e24;
   border: 1px solid rgba(var(--s21-accent-rgb), 0.35);
   border-radius: 16px;
   padding: 24px 26px;
   max-width: 380px;
   width: calc(100vw - 48px);
-  color: #d8dbe0;
+  color: #cfc9a8;
   box-shadow: 0 24px 60px -20px rgba(0,0,0,0.9);
   position: relative;
 }
-.s21-install-card h3 { margin: 0 0 6px; font-size: 18px; color: #f7f8f8; }
-.s21-install-sub { margin: 0 0 14px; font-size: 13px; color: #8a8f98; }
+.s21-install-card h3 { margin: 0 0 6px; font-size: 18px; color: #e9e5cf; }
+.s21-install-sub { margin: 0 0 14px; font-size: 13px; color: #8fa185; }
 .s21-install-steps ol { margin: 0; padding-left: 18px; }
 .s21-install-steps li { margin-bottom: 8px; font-size: 14px; color: #c9ced6; }
-.s21-install-note { margin: 14px 0 0; font-size: 12px; color: #8a8f98; }
+.s21-install-note { margin: 14px 0 0; font-size: 12px; color: #8fa185; }
 .s21-install-note kbd {
-  background: #0d0f13; border: 1px solid #1e2128; border-radius: 5px;
+  background: #0d0f13; border: 1px solid #2a3a2e; border-radius: 5px;
   padding: 1px 6px; font-family: inherit; font-size: 11px;
 }
 .s21-install-close {
   position: absolute; top: 10px; right: 12px;
-  background: transparent; border: none; color: #8a8f98;
+  background: transparent; border: none; color: #8fa185;
   font-size: 22px; cursor: pointer; line-height: 1;
 }
 .s21-install-close:hover { color: var(--s21-accent); }
