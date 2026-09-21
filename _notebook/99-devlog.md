@@ -7323,7 +7323,15 @@ Windows (상위) ── Termius(복구로: WSL 죽으면 상위에서 재호출)
 ### 컨테이너 2개 실물 확인 — 배포 아키텍처 정정 (_Claude · 2026-09-21)
 
 - **계기**: Boss "깃허브 레포 가서 지금 컨테이너 2개 봐봐. 그거 네가 이미 사용해 가지고 핸드폰에서 했던 거야." → 실제로 가서 확인. **Boss가 맞았고 내가 틀렸다.**
-- **실물 (`dtslib1979/parksy-image`)**: ① `cell/` → `po-deepfake-cell:latest` (상시 — 텔레그램 폰 도어 + MCP 에이전트 도어, `compose.yaml`/`cell.sh`) ② `cell/native/` → `po-deepfake-cell:native` (**불변 정본** — "지금 되는 황금 조합"을 이미지에 박제, 외부 라이브러리가 100번 바뀌어도 같은 수율. GHCR 푸시본).
+- **실물 — GHCR 컨테이너 2개 (Boss 계정에 실제로 올라가 있는 것)**:
+  | 이미지 | 크기 | 최근 빌드 | 태그 |
+  |---|---|---|---|
+  | `ghcr.io/dtslib1979/rvc-trainer` | **16.07 GB** (레이어 16) | 2026-09-17 | latest |
+  | `ghcr.io/dtslib1979/po-deepfake-cell` | **2.02 GB** (레이어 19) | 2026-09-21 | native |
+  - **존재 독립 검증(폰에서, docker 없이)**: GHCR 익명 토큰 엔드포인트가 **401 UNAUTHORIZED**(=존재하나 비공개) vs 없는 이름은 **403 DENIED**. 둘 다 401 → 실재 확인.
+  - ⚠️ **내가 처음에 "2개 = `cell/` 과 `cell/native/`"라고 한 것은 틀렸다** — 그 둘은 *같은 이미지의 두 빌드 변형*이다. 진짜 2개는 위 `rvc-trainer` · `po-deepfake-cell`.
+  - 16GB가 코드 대비 수천 배인 이유: 코드는 수십 KB지만 PyTorch/CUDA 런타임 + RVC 학습 모델까지 함께 얼어 있음. "프로그램 = 이 컴퓨터에 깔린 걸 빌려 씀 / 컨테이너 = 독립된 미니 컴퓨터를 통째로 복제해 아무 데나 꽂음".
+  - 빌드 정의: `cell/` → `po-deepfake-cell:latest`(상시 — 텔레그램 폰 도어 + MCP 에이전트 도어, `compose.yaml`/`cell.sh`), `cell/native/` → `:native`(불변 정본 — "지금 되는 황금 조합" 박제).
 - **폰이 이미 썼다**: 09-19 3회 독립 성공(미니PC 1 + 폰 2). 체인 = **폰 `workflow_dispatch` → Actions 러너가 ghcr 이미지 pull → 컨테이너 연산 → 텔레그램 QA → YouTube public**. 트리거 도구 = `po_deepfake_cloud_mcp.py`.
 - **내 오류(중요)**: **"폰에 docker/runc가 있는가"를 물었다. 그게 질문이 아니었다.** 폰은 컨테이너를 *돌리는* 게 아니라 *트리거*한다. 폰에서 Docker가 안 도는 건 실측 사실이 맞지만, 그 사실로 "컨테이너 경로 닫힘"을 도출한 것은 **무관한 명제를 결론 근거로 쓴 잘못된 추론**. 앞서 랩탑에 보낸 경고를 철회함.
 - **★ 이게 오늘 논쟁의 정답**: `cell/native/agent-door.minipc.sh` = 원하던 패턴이 **이미 구현돼 있음**. MCP 등록 `command` = `bash agent-door.minipc.sh` → 스크립트가 `docker run -i ... $IMG python $SRV`를 exec. → **MCP는 로컬처럼 보이고(stdio), 프로세스는 컨테이너 안에서 돈다. 호스트에 필요한 건 docker + bash뿐.** 폰 버전의 도어 = `workflow_dispatch` (런타임 불필요). **"저장 안 해도 호출"은 제안이 아니라 09-19부터 돌고 있는 실물.**
