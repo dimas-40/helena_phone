@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="**Boss 지시:** GCP OAuth부터 빨리 끝내라. 계정 관리 방법(환경변수) 문의. — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>📺 2026-09-12 — 유튜브 OAuth &quot;미발급&quot; 정정 · 실제 병목=SSOT 위치 분산 — S21 Phone Webzine</title>
+<link rel="canonical" href="https://dtslib1979.github.io//notebook/session-2026-09-12_youtube-oauth-resolved_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/dtslib1979#person",
+      "name": "dtslib",
+      "url": "https://github.com/dtslib1979",
+      "description": "경제방송 — 16레포×10블로그×6채널, 1인 미디어 출판·방송",
+      "sameAs": [
+        "https://github.com/dtslib1979",
+        "https://dtslib.kr",
+        "https://www.youtube.com/@dtslib-branch",
+        "https://www.youtube.com/@phoneparis-r6q",
+        "https://www.youtube.com/@alexandria-y6k",
+        "https://www.youtube.com/@artrew-i1w",
+        "https://www.youtube.com/@Parksy-webzine"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://dtslib1979.github.io//notebook/session-2026-09-12_youtube-oauth-resolved_Claude.html#webpage",
+      "url": "https://dtslib1979.github.io//notebook/session-2026-09-12_youtube-oauth-resolved_Claude.html",
+      "name": "📺 2026-09-12 — 유튜브 OAuth \"미발급\" 정정 · 실제 병목=SSOT 위치 분산",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/dtslib1979#person"
+      },
+      "author": {
+        "@id": "https://github.com/dtslib1979#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>📺 2026-09-12 — 유튜브 OAuth &quot;미발급&quot; 정정 · 실제 병목=SSOT 위치 분산</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · lakme-audio</div>
+    <h1>📺 2026-09-12 — 유튜브 OAuth &quot;미발급&quot; 정정 · 실제 병목=SSOT 위치 분산</h1>
+    <p class="deck">**Boss 지시:** GCP OAuth부터 빨리 끝내라. 계정 관리 방법(환경변수) 문의.</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/session-2026-09-12_youtube-oauth-resolved_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#0">0. 결론 먼저</a></li>
+<li><a href="#1-pc-wsl">1. 실측 검증 (PC 세션, WSL)</a></li>
+<li><a href="#2">2. 폰에 실제로 한 작업 (완료)</a></li>
+<li><a href="#3-6">3. 중요한 제약 — &ldquo;6채널 다 됐다&rdquo;가 아님</a></li>
+<li><a href="#4-boss">4. 토큰 관리 정책 (Boss 질문 답변)</a></li>
+<li><a href="#5">5. 남은 일</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <hr>
+<p>date: 2026-09-12<br>
+agent: Claude Code (PC/WSL 세션)<br>
+mark: _Claude<br>
+type: session-note<br>
+status: active<br>
+related:<br>
+  - session-2026-08-22_youtube-oauth_Claude.md<br>
+  - session-2026-08-22_quota-channel-map_Claude.md</p>
+<hr>
+<h1 id="2026-09-12-oauth-ssot">📺 2026-09-12 — 유튜브 OAuth &ldquo;미발급&rdquo; 정정 · 실제 병목=SSOT 위치 분산</h1>
+<blockquote>
+<p><strong>Boss 지시:</strong> GCP OAuth부터 빨리 끝내라. 계정 관리 방법(환경변수) 문의.<br>
+PC 세션(WSL)이 papyrus 클론을 뒤져서 검증·해결. 기록: <strong>_Claude</strong></p>
+</blockquote>
+<h2 id="0">0. 결론 먼저</h2>
+<p><strong>&ldquo;GCP 클라이언트 ID/시크릿 미발급&rdquo;은 틀린 진단이었다.</strong> 08-22 노트가 &ldquo;진짜 병목&rdquo;이라<br>
+적었던 그 자격증명은 <strong>이미 <code>~/dtslib-papyrus/tools/youtube/</code>에 존재</strong>했다 —<br>
+<code>client_secret.json</code>(GCP 프로젝트 <code>parksy-youtube</code>) + <code>accounts/token_b.json</code><br>
+(dtslib1979@gmail.com, 지금 6채널 SSOT와 정확히 일치) + <code>accounts/token_c.json</code><br>
+(Thomas.tj.Park@gmail.com, 교육방송 2채널).</p>
+<p>진짜 문제는 <strong>발급이 아니라 위치</strong> — 이 자격증명이 WSL/랩탑 papyrus 클론에만<br>
+있고 폰 런타임(<code>/root/work/.secrets.env</code>)으로 한 번도 동기화된 적이 없었음.<br>
+&ldquo;SSOT 따로 놀기&rdquo;의 또 다른 사례 (오늘 앞서 고친 <code>yt_upload.py</code> main/phone<br>
+채널키 사고와 같은 패턴).</p>
+<h2 id="1-pc-wsl">1. 실측 검증 (PC 세션, WSL)</h2>
+<pre><code>$ python3 -c &quot;creds.refresh(Request()); yt.channels().list(mine=True)&quot;
+✅ refresh 성공 (token_b.json, 마지막 수정 07-02 → 09-12에도 살아있음, 2달+ 경과)
+ - dtslib-branch UCxz800sMD27pk6X6HvxNS1g
+</code></pre>
+<p><code>accounts/channels.json</code>에 4개 구글계정 매핑 확정 기록 있음:<br>
+| id | email | 채널 |<br>
+|&mdash;|&mdash;|&mdash;|<br>
+| a | dimas.thomas.sancho@gmail.com | KR방송 5채널 (쿼터 미증설 — 보류) |<br>
+| <strong>b</strong> | <strong>dtslib1979@gmail.com</strong> | <strong>경제방송 6채널 (지금 폰 SSOT와 동일)</strong> |<br>
+| c | Thomas.tj.Park@gmail.com | 교육방송 2채널 (eae.kr/eae-univ) |<br>
+| d | dimas@dtslib.com | 명함도메인 2채널 |</p>
+<h2 id="2">2. 폰에 실제로 한 작업 (완료)</h2>
+<ol>
+<li><code>client_secret.json</code> + <code>accounts/token_b.json</code> 값 →<br>
+<code>/root/work/.secrets.env</code>의 <code>YOUTUBE_CLIENT_ID/SECRET/ACCESS_TOKEN/REFRESH_TOKEN</code>에 주입</li>
+<li><strong>버그 발견+수정</strong>: <code>scripts/yt_upload.py get_credentials()</code>가<br>
+<code>Credentials(..., scopes=SCOPES)</code>로 refresh 요청 — 이 토큰이 실제 발급받은<br>
+   스코프(구 <code>yt_oauth_auto.cjs</code>의 4스코프: youtube+analytics.readonly+<br>
+   spreadsheets+drive.file)와 yt_upload.py의 SCOPES(2개: youtube.upload+youtube)가<br>
+   달라서 <code>invalid_scope</code>로 refresh 거부됨.<br>
+   → <strong><code>scopes=</code> 파라미터 제거</strong>로 해결(스코프 미지정 시 서버가 원 발급 스코프<br>
+   그대로 사용). <code>yt_geo_origin.py</code>는 이 함수를 그대로 재사용하므로 자동 해결됨.</li>
+<li>실측 검증:<br>
+   - <code>python3 scripts/yt_upload.py --channel branch --stats</code> → 구독자 8 / 동영상 75 /<br>
+     조회수 11888 (실제 API 응답)<br>
+   - 쓰기 권한 실증: <code>--playlist-create</code> 테스트 → 생성 확인 → 삭제로 원복</li>
+</ol>
+<h2 id="3-6">3. 중요한 제약 — &ldquo;6채널 다 됐다&rdquo;가 아님</h2>
+<p><code>--stats</code>는 6채널 전부 조회 성공했지만, <strong>채널 통계는 공개 데이터라 인증 없이도<br>
+조회 가능</strong> — 이건 쓰기 권한 증명이 아님. 실제 <code>--playlist-create</code>로 쓰기 테스트한<br>
+결과, <strong>이 토큰(token_b)으로 실제 업로드/쓰기가 가능한 채널은 <code>@dtslib-branch</code><br>
+(본진) 1개뿐</strong>임을 확인함. <code>playlists.list(mine=True)</code>로 재확인해도 전부<br>
+<code>channelId: UCxz800sMD27pk6X6HvxNS1g</code>(branch)로만 귀속됨.</p>
+<p><strong>이유</strong>: Google Brand Account 구조상, 한 Google 로그인 밑에 여러 브랜드 채널이<br>
+있어도 OAuth 동의 시점에 &ldquo;활성 채널&rdquo;이던 것 하나에만 쓰기 권한이 귀속된다.<br>
+나머지 5채널(phoneparis/alexandria/artrew/parksy-webzine/espiritu)은 각각<br>
+<strong>채널 전환 후 재동의</strong>가 필요 — 이미 이 패턴을 자동화한 스크립트가<br>
+<code>~/dtslib-papyrus/tools/youtube/yt_oauth_channel.cjs</code>에 있음(브랜드 계정 전환+<br>
+동의 자동화, 07-21 삽질기록 <code>infra-history/21_YOUTUBE_BRAND_ACCOUNT_OAUTH_20260721.md</code><br>
+참조). 유일하게 자동화 불가한 구간 = 2FA 폰 푸시 승인(채널당 1회, 사람이 직접<br>
+눌러야 함).</p>
+<h2 id="4-boss">4. 토큰 관리 정책 (Boss 질문 답변)</h2>
+<table>
+<thead>
+<tr>
+<th>값</th>
+<th>갱신 필요?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLIENT_ID/SECRET</td>
+<td>거의 영구 (GCP 프로젝트 삭제 전까지 불변)</td>
+</tr>
+<tr>
+<td>REFRESH_TOKEN</td>
+<td><strong>정기 교체 불필요</strong> — 접근취소/6개월 미사용/비번변경 등 사고성 이벤트에만 무효화. 오늘 실측: 07-02 발급 토큰이 09-12에도 정상(2달+ 경과)</td>
+</tr>
+<tr>
+<td>ACCESS_TOKEN</td>
+<td>1시간마다 자동 만료 → refresh_token으로 스크립트가 자동 재발급, 수동 개입 불필요</td>
+</tr>
+</tbody>
+</table>
+<p>→ <code>.secrets.env</code>(환경변수) 관리가 정답이고 이미 그 구조. &ldquo;정기적으로 바꿔야<br>
+하나&rdquo; 걱정은 기우 — 사고 없는 한 세팅 1회로 영구 작동.</p>
+<h2 id="5">5. 남은 일</h2>
+<ul>
+<li>[ ] <code>token_c.json</code>(Thomas.tj.Park@gmail.com, eae.kr/eae-univ)도 동일 방식으로<br>
+      폰에 동기화 필요 시 진행</li>
+<li>[ ] branch 외 5채널 — <code>yt_oauth_channel.cjs @핸들</code>로 채널별 재동의 (2FA 승인은<br>
+      Boss가 폰에서 직접, 채널당 1회)</li>
+<li>[ ] <code>dimas.thomas.sancho@gmail.com</code>(계정 a) — 쿼터 미증설 상태라 보류 확정</li>
+</ul>
+<p><em>agent mark <code>_Claude</code> (PC/WSL 세션) · 2026-09-12</em></p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="session-2026-09-12_parksy-webzine-loop-ssot_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">신개념 잡지 루프 + 유튜브 채널 리네임 수습 + SSOT 단일화 결론 (_Claude · 2026-09-12)</span>
+        </a>
+    <a class="next" href="session-2026-09-12_youtube-parksy-webzine-oauth-pending_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">session 2026 09 12 youtube parksy webzine oauth pending Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>구축: 2026-07-23 ~ 2026-08-14 (23일)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine lakme-audio</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="2026-09-20 박씨와의 대화에서 확정된 배포 개념 정리. 딥페이크 클라우드 파이프라인(po-deepfake-cloud)을 — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>공장 선물 배포 모델 — &quot;시스템을 파는 것&quot; (_Claude) — S21 Phone Webzine</title>
+<link rel="canonical" href="https://dtslib1979.github.io//notebook/113-factory-gift-distribution-model_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/dtslib1979#person",
+      "name": "dtslib",
+      "url": "https://github.com/dtslib1979",
+      "description": "경제방송 — 16레포×10블로그×6채널, 1인 미디어 출판·방송",
+      "sameAs": [
+        "https://github.com/dtslib1979",
+        "https://dtslib.kr",
+        "https://www.youtube.com/@dtslib-branch",
+        "https://www.youtube.com/@phoneparis-r6q",
+        "https://www.youtube.com/@alexandria-y6k",
+        "https://www.youtube.com/@artrew-i1w",
+        "https://www.youtube.com/@Parksy-webzine"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://dtslib1979.github.io//notebook/113-factory-gift-distribution-model_Claude.html#webpage",
+      "url": "https://dtslib1979.github.io//notebook/113-factory-gift-distribution-model_Claude.html",
+      "name": "공장 선물 배포 모델 — \"시스템을 파는 것\" (_Claude)",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/dtslib1979#person"
+      },
+      "author": {
+        "@id": "https://github.com/dtslib1979#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>공장 선물 배포 모델 — &quot;시스템을 파는 것&quot; (_Claude)</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · lakme-audio</div>
+    <h1>공장 선물 배포 모델 — &quot;시스템을 파는 것&quot; (_Claude)</h1>
+    <p class="deck">2026-09-20 박씨와의 대화에서 확정된 배포 개념 정리. 딥페이크 클라우드 파이프라인(po-deepfake-cloud)을</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/113-factory-gift-distribution-model_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#1">1. 핵심 캐치프레이즈</a></li>
+<li><a href="#2">2. 이게 기존 배포와 다른 점 — &ldquo;시스템(공장)을 파는 것&rdquo;</a></li>
+<li><a href="#3">3. 시장에서의 위치 — 양극 사이의 빈자리</a></li>
+<li><a href="#4">4. 선물 메커니즘 (콜라보가 아니라 템플릿)</a></li>
+<li><a href="#5">5. &ldquo;편집 가능&rdquo;의 조건 — 컨테이너와 코드는 같은 것의 두 상태</a></li>
+<li><a href="#6">6. 현재 상태 / 다음 단계</a></li>
+<li><a href="#7">7. 관련</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <blockquote>
+<p>2026-09-20 박씨와의 대화에서 확정된 배포 개념 정리. 딥페이크 클라우드 파이프라인(po-deepfake-cloud)을<br>
+지인에게 배포하는 방식을 일반화한 것. 이 문서는 &ldquo;어떻게 선물하는가&rdquo;의 개념·메커니즘·현재 상태를 기록한다.</p>
+</blockquote>
+<h2 id="1">1. 핵심 캐치프레이즈</h2>
+<blockquote>
+<p><strong>&ldquo;내가 엔진을 주고, 너는 네 정체성을 꽂아라.&rdquo;</strong></p>
+</blockquote>
+<ul>
+<li>엔진(생산 시스템) = 컨테이너 + MCP + 파이프라인 = 박씨가 선물하는 것.</li>
+<li>정체성(원자재) = 얼굴·목소리·Grok 세션·토큰 = 받는 사람이 자기 것으로 꽂는 것.</li>
+</ul>
+<h2 id="2">2. 이게 기존 배포와 다른 점 — &ldquo;시스템(공장)을 파는 것&rdquo;</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>무엇을 파는가</th>
+<th>받는 사람의 지위</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>APK / PWA</td>
+<td>닫힌 소비자 아티팩트(설치만, 수정 불가, 벤더 소유)</td>
+<td>소비자로 고정</td>
+</tr>
+<tr>
+<td>SaaS (HeyGen·Synthesia 등)</td>
+<td>완제품·접근권</td>
+<td>소비자·구독자</td>
+</tr>
+<tr>
+<td><strong>이 모델</strong></td>
+<td><strong>생산 시스템(공장)</strong> — 엔진+파이프라인</td>
+<td><strong>주인(운영자)</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>일반 배포 = 완제품(콘텐츠)을 파는 것.</strong> 받는 사람은 소비자.</li>
+<li><strong>이 모델 = 생산 시스템(공장)을 파는 것.</strong> 받는 사람은 자기 정체성을 넣고 자기 산출물을 뽑는 주인.</li>
+<li><strong>주체성</strong>: 공장이 받는 사람의 계정·시스템·클라우드(GitHub 컨테이너) 안에서 돈다 → 받는 사람이 주인.</li>
+<li><strong>편집 가능성</strong>: 안이 전부 코드(스크립트·YAML·컨테이너)라 받는 사람이 편집할 수 있다.</li>
+</ul>
+<h2 id="3">3. 시장에서의 위치 — 양극 사이의 빈자리</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>소유/편집</th>
+<th>호스팅 부담</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SaaS</td>
+<td>벤더 소유, 닫힘</td>
+<td>없음(벤더 몫)</td>
+</tr>
+<tr>
+<td>셀프호스트(WordPress 등)</td>
+<td>내 소유, 편집 가능</td>
+<td><strong>높음</strong>(내가 설치·운영)</td>
+</tr>
+<tr>
+<td><strong>이 모델</strong></td>
+<td>내 소유, 편집 가능</td>
+<td><strong>없음</strong>(GitHub가 대행)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>&ldquo;편집 가능성은 셀프호스트 수준인데, 호스팅 부담은 GitHub가 지워버린&rdquo; 지점이 이 모델의 새 자리.</li>
+<li><strong>직접 경쟁자 없음.</strong> 부품은 시중에 흩어져 있음(오픈소스 AI 모델 RVC·GPT-SoVITS = &ldquo;엔진+정체성&rdquo;의 직계 조상 / AI 아바타 SaaS = 정체성 넣으면 영상 / BYOK·deploy-to-account = 주체성 조각). 그러나 &ldquo;내 클라우드 계정 + 말 조작 + 정체성 원자재 + 편집 가능 + 컨테이너 선물&rdquo; 5개를 하나의 상품으로 묶은 것은 못 봤다.</li>
+<li>기존 원칙 연결: <strong>&ldquo;도구 = 콘텐츠&rdquo;</strong> (콘텐츠를 만드는 도구·시스템 자체가 상품).</li>
+</ul>
+<h2 id="4">4. 선물 메커니즘 (콜라보가 아니라 템플릿)</h2>
+<ul>
+<li><strong>콜라보(협업자)는 안 맞음</strong> — 받는 사람을 &ldquo;내 레포&rdquo;에 넣는 것 → 내 계정에서 돌고 내 Actions 분을 씀 → 주체성 깨짐.</li>
+<li><strong>선물 = 템플릿 레포 + GHCR 컨테이너</strong>:<br>
+  1. 레포를 <strong>GitHub Template</strong>로 → 받는 사람 &ldquo;Use this template&rdquo; 1클릭 → 자기 계정에 독립 복제본(포크 아님, 자기 것).<br>
+  2. 컨테이너는 <strong>GHCR</strong>에 → public이면 자동 pull, private면 받는 사람 계정에 패키지 읽기 권한만 부여.<br>
+  3. 받는 사람이 <strong>시크릿 4개</strong> 꽂기(얼굴·목소리·Grok 세션·토큰) → 자기 계정에서 자기 분으로 공장 가동.</li>
+</ul>
+<pre><code>선물 = 템플릿 1클릭(자기 레포) → GHCR 컨테이너(엔진) → 자기 시크릿 4개(정체성) → 끝
+</code></pre>
+<ul>
+<li>마찰 제거 옵션: 원클릭 부트스트랩 스크립트(<code>curl | bash</code> — 템플릿 생성+시크릿 입력 안내 자동화) 얹으면 &ldquo;설치&rdquo;가 사실상 1줄.</li>
+</ul>
+<h2 id="5">5. &ldquo;편집 가능&rdquo;의 조건 — 컨테이너와 코드는 같은 것의 두 상태</h2>
+<table>
+<thead>
+<tr>
+<th>상태</th>
+<th>뭔가</th>
+<th>용도</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>코드(소스) = MCP 스크립트 + 워크플로 YAML + Dockerfile</td>
+<td>템플릿 레포에 담김</td>
+<td>편집의 대상</td>
+</tr>
+<tr>
+<td>이미지(컨테이너) = 그 코드를 빌드한 완제품</td>
+<td>GHCR에 있음</td>
+<td>그대로 실행</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>그냥 쓰기(편집 안 함)</strong> → 이미지 그대로 pull → 실행. (이미 되어 있음)</li>
+<li><strong>편집하기</strong> → 이미지가 아니라 소스를 가져가서 고친 뒤 다시 빌드 → 자기 이미지로.</li>
+</ul>
+<p>선물 패키지(템플릿 레포)에 필요한 <strong>3요소</strong>:<br>
+1. <strong>소스</strong> — MCP 코드 + 워크플로 YAML + Dockerfile (편집용).<br>
+2. <strong>빌드 워크플로</strong> — 코드 고치면 Dockerfile을 다시 빌드해 <strong>자기 GHCR로 push</strong> (지금 빠져 있음).<br>
+3. <strong>실행 워크플로</strong> — 그 이미지를 돌림 (있음).</p>
+<h2 id="6">6. 현재 상태 / 다음 단계</h2>
+<ul>
+<li>✅ 실행 워크플로 + 이미지(GHCR <code>po-deepfake-cell:native</code>) — 있음.</li>
+<li>⏳ <strong>빌드 워크플로만 템플릿에 추가하면</strong> &ldquo;가져가서 편집하라&rdquo;가 완전히 성립. 이것이 마지막 퍼즐.</li>
+<li>병행 진행 중(2026-09-20): 미니PC dev_aider 세션이 po-tutorial MCP를 같은 컨테이너에 굽는 작업 진행.</li>
+</ul>
+<h2 id="7">7. 관련</h2>
+<ul>
+<li>딥페이크 클라우드 파이프라인: [[deepfake-cloud-pipeline-complete]] · <code>HANDOFF_DEEPFAKE_MCP_CLOUD_2026-09-19.md</code></li>
+<li>배포 원칙: &ldquo;도구=콘텐츠&rdquo; · &ldquo;고정비·변동비0&rdquo; · &ldquo;온디바이스=구매자서비스&rdquo;</li>
+</ul>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="112-repo-inventory-master_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">전 레포 문서 재고 조사 — 종합 마스터 리포트</span>
+        </a>
+    <a class="next" href="78-pd-pipeline-whitepaper_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">78 pd pipeline whitepaper Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>구축: 2026-07-23 ~ 2026-08-14 (23일)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine lakme-audio</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

@@ -1208,6 +1208,14 @@
     "deck": "**Boss 지시 4단계:** ① 헬레나 보일러플레이트를 b세계(경제방송) 변수로 재배선 ② 스킨 10개 교체 ③ 레포→유튜브 동선을 10개 블로그에 반영 ④ 웹툰 솔루션 두 옵션 적용."
   },
   {
+    "src": "_notebook/BRIEFING-MCP-REPO-2026-09-21_Claude.md",
+    "out": "notebook/BRIEFING-MCP-REPO-2026-09-21_Claude.html",
+    "title": "MCP 기준 리팩토링 브리핑 — 1장 요약",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
     "src": "_notebook/100-phone-management-3layers_Claude.md",
     "out": "notebook/100-phone-management-3layers_Claude.html",
     "title": "📱 폰 관리 3계층 — 수리 라우팅 원칙 (2026-08-21)",
@@ -1270,6 +1278,14 @@
     "section": "Notebook",
     "kind": "md",
     "deck": "작성: 2026-09-04 · `_Claude` · Boss 지시 (\"연결 레포 전체 문서 파싱 + 재고조사 문서 전수\")"
+  },
+  {
+    "src": "_notebook/113-factory-gift-distribution-model_Claude.md",
+    "out": "notebook/113-factory-gift-distribution-model_Claude.html",
+    "title": "공장 선물 배포 모델 — \"시스템을 파는 것\" (_Claude)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "2026-09-20 박씨와의 대화에서 확정된 배포 개념 정리. 딥페이크 클라우드 파이프라인(po-deepfake-cloud)을"
   },
   {
     "src": "_notebook/78-pd-pipeline-whitepaper_Claude.md",
@@ -1414,6 +1430,46 @@
     "section": "Notebook",
     "kind": "md",
     "deck": "날짜: 2026-09-04 ~ 09-05 · `_Claude` · Boss 지시로 대화 이력 저장"
+  },
+  {
+    "src": "_notebook/session-2026-09-12_grok-editorial-production_Claude.md",
+    "out": "notebook/session-2026-09-12_grok-editorial-production_Claude.html",
+    "title": "그록 편집장 양산 파이프라인 확정 (_Claude · 2026-09-12)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss 확정: 물리 잡지 벤치마크 → 그록이 편집장으로 CLI 원큐 생성 → 보스가 스타일 편집 → 내가 4매체 루프로 양산."
+  },
+  {
+    "src": "_notebook/session-2026-09-12_parksy-webzine-loop-ssot_Claude.md",
+    "out": "notebook/session-2026-09-12_parksy-webzine-loop-ssot_Claude.html",
+    "title": "신개념 잡지 루프 + 유튜브 채널 리네임 수습 + SSOT 단일화 결론 (_Claude · 2026-09-12)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss 지시 흐름:** parksy-webzine(신개념 잡지) → 유튜브/티스토리 연결 확인 → 채널 리네임 발견·수습 → \"공통 SSOT 하나 + 역할 분리\" 확정 → 세션 저장."
+  },
+  {
+    "src": "_notebook/session-2026-09-12_youtube-oauth-resolved_Claude.md",
+    "out": "notebook/session-2026-09-12_youtube-oauth-resolved_Claude.html",
+    "title": "📺 2026-09-12 — 유튜브 OAuth \"미발급\" 정정 · 실제 병목=SSOT 위치 분산",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Boss 지시:** GCP OAuth부터 빨리 끝내라. 계정 관리 방법(환경변수) 문의."
+  },
+  {
+    "src": "_notebook/session-2026-09-12_youtube-parksy-webzine-oauth-pending_Claude.md",
+    "out": "notebook/session-2026-09-12_youtube-parksy-webzine-oauth-pending_Claude.html",
+    "title": "⏳ PENDING — @Parksy-webzine 채널 OAuth 재동의 중 invalid_request 블로킹",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
+  },
+  {
+    "src": "_notebook/session-2026-09-13_webtoon-interactive-standard_Claude.md",
+    "out": "notebook/session-2026-09-13_webtoon-interactive-standard_Claude.html",
+    "title": "세션 — 웹툰 인터랙티브 식자 파이프라인 확정 (_Claude · 2026-09-13)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": ""
   },
   {
     "src": "_notebook/tablet-broadcast-studio_Claude.md",

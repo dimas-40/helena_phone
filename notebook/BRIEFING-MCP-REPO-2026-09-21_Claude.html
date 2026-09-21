@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="MCP 기준 리팩토링 브리핑 — 1장 요약 — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>MCP 기준 리팩토링 브리핑 — 1장 요약 — S21 Phone Webzine</title>
+<link rel="canonical" href="https://dtslib1979.github.io//notebook/BRIEFING-MCP-REPO-2026-09-21_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/dtslib1979#person",
+      "name": "dtslib",
+      "url": "https://github.com/dtslib1979",
+      "description": "경제방송 — 16레포×10블로그×6채널, 1인 미디어 출판·방송",
+      "sameAs": [
+        "https://github.com/dtslib1979",
+        "https://dtslib.kr",
+        "https://www.youtube.com/@dtslib-branch",
+        "https://www.youtube.com/@phoneparis-r6q",
+        "https://www.youtube.com/@alexandria-y6k",
+        "https://www.youtube.com/@artrew-i1w",
+        "https://www.youtube.com/@Parksy-webzine"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://dtslib1979.github.io//notebook/BRIEFING-MCP-REPO-2026-09-21_Claude.html#webpage",
+      "url": "https://dtslib1979.github.io//notebook/BRIEFING-MCP-REPO-2026-09-21_Claude.html",
+      "name": "MCP 기준 리팩토링 브리핑 — 1장 요약",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/dtslib1979#person"
+      },
+      "author": {
+        "@id": "https://github.com/dtslib1979#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>MCP 기준 리팩토링 브리핑 — 1장 요약</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · lakme-audio</div>
+    <h1>MCP 기준 리팩토링 브리핑 — 1장 요약</h1>
+    
+    <div class="wz-meta">
+      <span>Source · _notebook/BRIEFING-MCP-REPO-2026-09-21_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#0">0. 새로 찾은 것 — 배포 구조가 &ldquo;전체 공개&rdquo;다</a></li>
+<li><a href="#1-12">1. 정리된 아이디어 12개</a></li>
+<li><a href="#2">2. 레포가 어떻게 바뀌나</a><ul>
+<li><a href="#_1">지금: 카탈로그가 둘인데 서로 안 맞는다</a></li>
+<li><a href="#mcp-3">바뀐 후: MCP 3분류가 페이지 뼈대</a></li>
+</ul>
+</li>
+<li><a href="#3">3. 뭐가 맞았고 뭐가 틀렸나</a><ul>
+<li><a href="#1-ai-7">① AI 오판 7건 — 전부 &ldquo;방향 과소평가&rdquo;</a></li>
+<li><a href="#2-boss-4">② Boss가 정정된 것 4건</a></li>
+</ul>
+</li>
+<li><a href="#4">4. 남은 것 — 우선순위</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <p><strong>2026-09-21 · 폰 세션 <code>_Claude</code> · 근거: 랩탑 세션 732행 전수 재파싱 + 외부 실측</strong></p>
+<hr>
+<h2 id="0">0. 새로 찾은 것 — 배포 구조가 &ldquo;전체 공개&rdquo;다</h2>
+<p><code>dtslib-cloud-appstore/.github/workflows/deploy.yml</code>:</p>
+<pre><code class="language-yaml">- uses: JamesIves/github-pages-deploy-action@v4
+  with:
+    branch: gh-pages
+    folder: .          # ← 레포 루트 전체를 그대로 공개 배포
+</code></pre>
+<p><strong>&ldquo;이 파일만 공개&rdquo; 스위치가 없다. 레포 = 공개가 기본값.</strong> gitignore된 것만 빠진다.</p>
+<table>
+<thead>
+<tr>
+<th>경로</th>
+<th>공개 상태</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DEVLOG_20260921.md</code> / <code>WHITEPAPER.md</code> / <code>CLAUDE.md</code></td>
+<td><strong>200</strong></td>
+</tr>
+<tr>
+<td><code>mcp/mcp-registry/index.json</code> (개인경로 <strong>40건</strong>)</td>
+<td><strong>200 · 23,776B</strong></td>
+</tr>
+<tr>
+<td><code>id_ed25519</code></td>
+<td>404 ✅ (gitignore 등록, 커밋 이력 0회 — 위생 양호)</td>
+</tr>
+</tbody>
+</table>
+<p>→ <code>index.json</code> 40건은 <strong>레지스트리 파일 하나의 문제가 아니다.</strong> 디렉터리 리스팅은 막혀 있지만<br>
+경로를 알면 파일은 그대로 받아진다. <strong>배포 정의(<code>folder: .</code>)를 바꿔야 닫힌다.</strong></p>
+<hr>
+<h2 id="1-12">1. 정리된 아이디어 12개</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>명제</th>
+<th>상태</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>MCP = 생각의 서식.</strong> 산출물로 나오려면 실행환경(컨테이너)이 필요</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>PC 없다는 가정</strong> — 상시설치 대신 GitHub 것을 빌림</td>
+<td>✅ 구현체 있음</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>레포 하나를 여러 디바이스가 공유</strong></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>투트랙</strong> — 나(ADB 연결): 다운로드 불필요 / 남: 받아가야 함</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>다운로드의 소멸</strong> — APK 무의미, curl 한 줄이 인스톨러</td>
+<td>✅ 업계 표준</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>설치 주체가 사람이 아니라 에이전트</strong> = 새 배포 플랫폼</td>
+<td>✅ 최고 통찰</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>private 유지 + PIN</strong> — Pro 4000원 유지 이유</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>장부 이원화</strong> — 소스도 &ldquo;공개 상태&rdquo;를 갖는 콘텐츠</td>
+<td>⚠️ 파일단위 스위치 불가</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>무거운 건 컨테이너로</strong></td>
+<td>✅ 실물 16GB</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>폰도 워크센터</strong></td>
+<td>⚠️ 배치만 실증</td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>백업 플랜</strong> — 한도 내 클라우드 → 넘으면 폰</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>이름 유지</strong> — 좌판+통제점+구름</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2">2. 레포가 어떻게 바뀌나</h2>
+<h3 id="_1">지금: 카탈로그가 둘인데 서로 안 맞는다</h3>
+<pre><code>apps.json                    22개  ← 랜딩페이지가 그리는 것
+                               └ install.command 있는 것 = 3개뿐
+mcp/mcp-registry/index.json  34개  ← 기계용 (MCP 실물)
+</code></pre>
+<p><strong>&ldquo;34개 MCP&rdquo;와 &ldquo;22개 앱&rdquo;이 같은 목록이 아니다.</strong> 페이지가 어느 쪽을 말하는지 불분명한 게<br>
+구조 전환이 막힌 진짜 원인.</p>
+<h3 id="mcp-3">바뀐 후: MCP 3분류가 페이지 뼈대</h3>
+<table>
+<thead>
+<tr>
+<th>부류</th>
+<th>무게</th>
+<th>배포 방식</th>
+<th>근거</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① 순수 로직</td>
+<td>수십 KB</td>
+<td><strong>코드 통일 → curl 한 줄</strong></td>
+<td><code>universal</code> <strong>17</strong></td>
+</tr>
+<tr>
+<td>② 브라우저/모델 의존</td>
+<td>중</td>
+<td>컨테이너/의존성 분기</td>
+<td><code>heavy_portable</code> <strong>5</strong></td>
+</tr>
+<tr>
+<td>③ 컨테이너 확정</td>
+<td>2~16 GB</td>
+<td><strong>GHCR 주소 50자</strong></td>
+<td><code>container_verified</code> <strong>7</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>배포처</strong>: Vercel ✂(404 확인 완료) → GitHub Pages 단독</li>
+<li><strong>통제점</strong>: private + PIN</li>
+<li><strong>페이지 성격</strong>: &ldquo;설치 안내&rdquo; → <strong>&ldquo;주문서/트리거 목록&rdquo;</strong></li>
+</ul>
+<p>⚠️ 레지스트리 <code>workcenter:[laptop,minipc,phone]</code> <strong>30개</strong>는 낙관치 —<br>
+폰은 <strong>배치 트리거만 실증</strong>, 상주 실행은 미구현.</p>
+<hr>
+<h2 id="3">3. 뭐가 맞았고 뭐가 틀렸나</h2>
+<h3 id="1-ai-7">① AI 오판 7건 — 전부 &ldquo;방향 과소평가&rdquo;</h3>
+<table>
+<thead>
+<tr>
+<th>AI의 오판</th>
+<th>실제</th>
+<th>교정</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&ldquo;폰=docker 없음 → 컨테이너 불가&rdquo;</td>
+<td><strong>트리거≠실행.</strong> 09-19 3회 실증</td>
+<td>Boss</td>
+</tr>
+<tr>
+<td>&ldquo;버셀 유령 미러 1개&rdquo;</td>
+<td><strong>9개</strong>였다</td>
+<td>Boss</td>
+</tr>
+<tr>
+<td>&ldquo;호출&rdquo;→&rdquo;트리거&rdquo;로 정정</td>
+<td>Boss의 &ldquo;호출&rdquo;이 이미 정확</td>
+<td>Boss</td>
+</tr>
+<tr>
+<td>폰이 뷰어일 뿐</td>
+<td>폰에서 독립 프로세스가 커밋까지 함</td>
+<td>Boss</td>
+</tr>
+<tr>
+<td>&ldquo;컨테이너 2개&rdquo;=<code>cell/</code>+<code>cell/native/</code></td>
+<td><code>rvc-trainer</code>+<code>po-deepfake-cell</code></td>
+<td>AI 자정정</td>
+</tr>
+<tr>
+<td>&ldquo;월 3,000분 무료&rdquo;</td>
+<td>실측 1,830~7,199분 전부 <strong>$0</strong></td>
+<td>AI 실측</td>
+</tr>
+<tr>
+<td>&ldquo;PC Chrome 열어라&rdquo; (폰인데)</td>
+<td><em>&ldquo;내가 핸드폰이잖아&rdquo;</em></td>
+<td>Boss</td>
+</tr>
+</tbody>
+</table>
+<p><strong>7건 중 5건을 Boss가 잡았다. 그리고 7건 전부 같은 방향 — AI가 &ldquo;안 된다&rdquo;고 과소평가.</strong></p>
+<h3 id="2-boss-4">② Boss가 정정된 것 4건</h3>
+<table>
+<thead>
+<tr>
+<th>Boss 발화</th>
+<th>정정</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&ldquo;에이전트가 설치를 대신한다&rdquo;</td>
+<td>업계 표준(<code>curl \| bash</code>) — 새로울 것 없음</td>
+</tr>
+<tr>
+<td>&ldquo;파일 단위 공개/비공개 스위치&rdquo;</td>
+<td>GitHub Pages는 레포/폴더 단위</td>
+</tr>
+<tr>
+<td>&ldquo;ADB가 MCP 호출 통로&rdquo;</td>
+<td>ADB는 <strong>화면·입력 조작</strong> 통로</td>
+</tr>
+<tr>
+<td>&ldquo;공짜는 무한이 아니다&rdquo;</td>
+<td>Boss가 <strong>먼저 정확히</strong> 짚음</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="4">4. 남은 것 — 우선순위</h2>
+<table>
+<thead>
+<tr>
+<th>순위</th>
+<th>항목</th>
+<th>상태</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td><code>index.json</code> 40건 + <strong><code>folder: .</code> 전체공개</strong></td>
+<td>❌ 살아있음</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td><code>/root/papyrus</code> PAT 평문 (계정 <code>dimas-40</code>)</td>
+<td>❌ 미폐기</td>
+</tr>
+<tr>
+<td>3</td>
+<td>랜딩페이지 구조 전환</td>
+<td>⏳ 랩탑 <code>287031a</code>까지</td>
+</tr>
+<tr>
+<td>4</td>
+<td>34개 중 3개만 curl 가능</td>
+<td>❌ <strong>진짜 병목</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>폰 → 상주 MCP 브릿지</td>
+<td>❌ 미구현</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>workcenter: phone</code> 30개</td>
+<td>⚠️ 낙관</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>rvc-trainer</code> 매뉴얼</td>
+<td>❌ 아직 &ldquo;수동&rdquo;</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><strong>한 줄: 개념 12개는 정합, 레포는 &ldquo;카탈로그+설치안내&rdquo; → &ldquo;3분류 주문서&rdquo;로 전환,<br>
+AI 오판 7건은 전부 과소평가였고, 실제로 열려 있는 건 1번·2번 두 개뿐.</strong></p>
+<p><em>저장: <code>_notebook/99-devlog.md</code> (커밋 <code>76910f6</code>) · 폰 세션 <code>_Claude</code> · 2026-09-21</em></p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="session-2026-08-27_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">세션 수첩 — S25 경제방송 배선 공사 + 파이프라인 갭 평가 (2026-08-27)</span>
+        </a>
+    <a class="next" href="100-phone-management-3layers_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">100 phone management 3layers Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>구축: 2026-07-23 ~ 2026-08-14 (23일)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine lakme-audio</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

@@ -87,6 +87,7 @@
   </header>
   <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
 <ul>
+<li><a href="#2026-09-13">🔴 세션 핸드오프 (2026-09-13) — 티스토리 로그인 문제, 다음 세션 최우선 확인</a></li>
 <li><a href="#parksytts-on-s25-ultra-2026-08-07">🚨 ParksyTTS on S25 Ultra — 일 시작할 때 꼭 읽기! (2026-08-07~)</a><ul>
 <li><a href="#_1">우리 컴퓨터(환경)</a></li>
 <li><a href="#npugpu-2026-08-11">지금 하고 있는 일 — NPU/GPU 가속 (2026-08-11 갱신)</a></li>
@@ -110,6 +111,7 @@
 <li><a href="#_8">현재 인프라 — 우리가 가진 도구들</a></li>
 <li><a href="#dtslib-papyrus-bossclaude-code-3-2026-08-18">dtslib-papyrus 허브 — 뇌 (Boss·Claude Code·누나 3자 연결 · 2026-08-18~)</a></li>
 <li><a href="#geo-17-2026-08-17">GEO 원조 스탬프 — 정체 인식 출판 파이프라인 (헌법 제17조 · 2026-08-17~)</a></li>
+<li><a href="#2026-09-19-mcp">🔴 새 핸드오프 (2026-09-19) — 딥페이크 MCP 클라우드 이식</a></li>
 </ul>
 </div>
 </nav>
@@ -120,7 +122,13 @@
     <button type="button" id="wzCopy" data-cursor>본문 복사</button>
   </div>
   <article class="wz-prose" id="wzProse" data-app="doc">
-    <blockquote>
+    <h2 id="2026-09-13">🔴 세션 핸드오프 (2026-09-13) — 티스토리 로그인 문제, 다음 세션 최우선 확인</h2>
+<blockquote>
+<p>전 세션 컨텍스트 꽉 참. WSL Claude가 정리한 해법·인수인계 전문:<br>
+<code>tistory-naver/HANDOFF_2026-09-13_LOGIN_SOLVED.md</code> 반드시 먼저 읽을 것.<br>
+요약: 캡차는 WSL이 삼성인터넷 CDP로 세션 빌려주는 방식으로 우회됨(폰 혼자는 불가).<br>
+정본 파이프라인은 <code>make_pair.sh --tistory</code> 하나뿐 — skin_inject.py/login_hil.py/login_phone.py는<br>
+전부 몰라서 만든 중복이니 쓰지 말 것. GitHub 토큰 노출 발견함, 폐기 필요.</p>
 <p>⚠️ <strong>일 시작하기 전에 꼭 <code>CONSTITUTION.md</code> (규칙책) 먼저 읽기!</strong><br>
 규칙책에는 &ldquo;우리가 왜 이 일을 하는지&rdquo;가 적혀 있어. 이 설명서는 &ldquo;어떻게 하는지&rdquo;를 알려주는 거야.<br>
 목적·불변 원칙·신원 규칙은 CONSTITUTION.md에, 작업 방법은 여기에.</p>
@@ -500,6 +508,14 @@ URL=&quot;https://페이지주소&quot; EP=에피소드ID bash scripts/produce_p
 <li><strong>⚠️ 한계(정직 — 과장 금지):</strong> JSON-LD는 <strong>블록체인/등기 아님</strong>(암호화·위변조방지·분산원장 없음). 법적 저작권도, 실시간 원조 판정도 아님. <strong>정본 화살표 = 확률적 우위.</strong> 진짜 해자는 퍼포먼스·진정성. &ldquo;노출이 빨라진다&rdquo;는 지금까지 가설 — <strong>측정 루프</strong>(Bing WMT AI 성과·GSC·AI 질의 스팟체크)로 증명할 것.</li>
 <li><strong>상세:</strong> <code>_notebook/99-devlog.md</code> GEO 항목 · 메모리 <code>geo-llm-origin-protection</code></li>
 </ul>
+<hr>
+<h2 id="2026-09-19-mcp">🔴 새 핸드오프 (2026-09-19) — 딥페이크 MCP 클라우드 이식</h2>
+<blockquote>
+<p>미니PC 쪽 세션이 남김. 자세한 내용: HANDOFF_DEEPFAKE_MCP_CLOUD_2026-09-19.md (이 레포 루트)<br>
+요약: PC없는 지인용 딥페이크 자동화를 GitHub Actions로 이식 중. 미니PC=개발, 이 세션=검증+마무리.<br>
+가장 급한 것: Grok 영상생성이 클라우드 헤드리스에서 실제로 되는지 확인(아직 미검증).<br>
+<strong>[2026-09-19 갱신] 미니PC 개발 완료 + 실제 성공 검증됨</strong> — 헤드리스 생성은 우회 결정(폰에서 직접 생성), RVC더빙+조립 클라우드는 end-to-end 실증 완료. 트리거 방법·버그 2건 상세는 HANDOFF 파일 §6 참고.</p>
+</blockquote>
   </article>
   <nav class="wz-pager">
     <a class="" href="constitution.html">

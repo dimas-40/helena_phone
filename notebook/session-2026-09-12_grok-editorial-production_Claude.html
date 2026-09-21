@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Boss 확정: 물리 잡지 벤치마크 → 그록이 편집장으로 CLI 원큐 생성 → 보스가 스타일 편집 → 내가 4매체 루프로 양산. — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>그록 편집장 양산 파이프라인 확정 (_Claude · 2026-09-12) — S21 Phone Webzine</title>
+<link rel="canonical" href="https://dtslib1979.github.io//notebook/session-2026-09-12_grok-editorial-production_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/dtslib1979#person",
+      "name": "dtslib",
+      "url": "https://github.com/dtslib1979",
+      "description": "경제방송 — 16레포×10블로그×6채널, 1인 미디어 출판·방송",
+      "sameAs": [
+        "https://github.com/dtslib1979",
+        "https://dtslib.kr",
+        "https://www.youtube.com/@dtslib-branch",
+        "https://www.youtube.com/@phoneparis-r6q",
+        "https://www.youtube.com/@alexandria-y6k",
+        "https://www.youtube.com/@artrew-i1w",
+        "https://www.youtube.com/@Parksy-webzine"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://dtslib1979.github.io//notebook/session-2026-09-12_grok-editorial-production_Claude.html#webpage",
+      "url": "https://dtslib1979.github.io//notebook/session-2026-09-12_grok-editorial-production_Claude.html",
+      "name": "그록 편집장 양산 파이프라인 확정 (_Claude · 2026-09-12)",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/dtslib1979#person"
+      },
+      "author": {
+        "@id": "https://github.com/dtslib1979#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>그록 편집장 양산 파이프라인 확정 (_Claude · 2026-09-12)</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · lakme-audio</div>
+    <h1>그록 편집장 양산 파이프라인 확정 (_Claude · 2026-09-12)</h1>
+    <p class="deck">Boss 확정: 물리 잡지 벤치마크 → 그록이 편집장으로 CLI 원큐 생성 → 보스가 스타일 편집 → 내가 4매체 루프로 양산.</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/session-2026-09-12_grok-editorial-production_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#1-5">1. 양산 파이프라인 (5단계)</a></li>
+<li><a href="#2-4">2. 4매체 루프</a></li>
+<li><a href="#3-worked-example-64">3. 첫 worked example — 64권 스킨 일괄 (그록 실행 실측)</a></li>
+<li><a href="#4">4. 남은 양산 조건 (공장 쪽 — 내 몫)</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <hr>
+<p>date: 2026-09-12<br>
+agent: Claude Code (폰 워크센터 공장장)<br>
+mark: _Claude<br>
+type: session-note<br>
+status: active<br>
+related:<br>
+  - session-2026-09-12_parksy-webzine-loop-ssot_Claude.md<br>
+  - _notebook/grok/BOSS.md</p>
+<hr>
+<h1 id="_claude-2026-09-12">그록 편집장 양산 파이프라인 확정 (_Claude · 2026-09-12)</h1>
+<blockquote>
+<p>Boss 확정: 물리 잡지 벤치마크 → 그록이 편집장으로 CLI 원큐 생성 → 보스가 스타일 편집 → 내가 4매체 루프로 양산.<br>
+원장 저장: <code>parksy-webzine/00_TRUTH/PRODUCTION.md</code></p>
+</blockquote>
+<h2 id="1-5">1. 양산 파이프라인 (5단계)</h2>
+<pre><code>잡지(물리) ─사진→ 파싱 ─→ 그록(편집장) ─생성→ 이미지/영상 ─→ 보스(스타일) ─→ 나(공장장) ─→ 4매체 루프
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th>담당</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>벤치마크 수집 — 일본 잡지 6~7 + 한국 잡지 ~10권 사진</td>
+<td>Boss</td>
+</tr>
+<tr>
+<td>이미지 파싱 — 레이아웃·편집 문법 디지털화</td>
+<td>파이프</td>
+</tr>
+<tr>
+<td>편집장 생성 — CLI Imagine/PD <strong>원큐 일괄</strong></td>
+<td>Grok</td>
+</tr>
+<tr>
+<td>스타일 편집 — &ldquo;표절 베이스라인&rdquo;에서 내 스타일로</td>
+<td>Boss</td>
+</tr>
+<tr>
+<td>공장 루프 — 웹진/유튜브/티스토리/웹툰 교차링크</td>
+<td>Claude(공장장)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>핵심:</strong> 베끼는 게 아니라 &ldquo;문법만 가져와서 내 잡지를 만든다&rdquo; (HOUSE.md 벤치마크).</p>
+<h2 id="2-4">2. 4매체 루프</h2>
+<pre><code>웹진(눕다) parksy-webzine → 유튜브(세우다) @Parksy-webzine → 티스토리(루프) kr-merit-aggro → 돌아옴 + 웹툰(곁)
+</code></pre>
+<h2 id="3-worked-example-64">3. 첫 worked example — 64권 스킨 일괄 (그록 실행 실측)</h2>
+<p>Boss 주문 → 그록 실행이 정확히 &ldquo;원큐 일괄&rdquo; 패턴. git 이력으로 확인:</p>
+<ul>
+<li><strong>주문(BOSS.md #20):</strong> 16×4=64권 &ldquo;초 A급&rdquo;. CLI Imagine 이미지 → 책 3D 스킨 덮어쓰기. 샘플 1~2장 TG → OK면 일괄.</li>
+<li><strong>실행:</strong></li>
+<li><code>a45129e</code> — 마스트헤드 골격 + 샘플 2권(FASHION Street/WATCH Classic).</li>
+<li><code>72febe3</code> — <strong>64권 일괄 스킨</strong> (+ <code>_rebuild_shelf.py</code> 87줄).</li>
+<li><strong>원칙:</strong> 사진은 호마다 다른 초A, 글자(PARKSY 마스트헤드·호명)는 <strong>웹 타이포 렌더</strong> (이미지에 글자 안 굽음).</li>
+</ul>
+<h2 id="4">4. 남은 양산 조건 (공장 쪽 — 내 몫)</h2>
+<ul>
+<li>[ ] 유튜브 <code>@Parksy-webzine</code> 쓰기권한 재동의 (2FA 1회 — 토큰은 이미 <code>.secrets.env</code>에 있음, branch만 쓰기 가능)</li>
+<li>[ ] Content FAB <code>video</code> 제품 BOM·레시피 등록</li>
+<li>[ ] 웹진 호 페이지 템플릿 + 루프 매니페스트</li>
+<li>[ ] 잡지 파싱 → 그록 산출물 수용 파이프</li>
+</ul>
+<p><em>agent mark <code>_Claude</code> · 2026-09-12 · 원장: parksy-webzine/00_TRUTH/PRODUCTION.md</em></p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="session-2026-09-05_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">세션 노트 — 2026-09-05 (박씨 프로덕트 판매 전략 확정)</span>
+        </a>
+    <a class="next" href="session-2026-09-12_parksy-webzine-loop-ssot_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">session 2026 09 12 parksy webzine loop ssot Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>구축: 2026-07-23 ~ 2026-08-14 (23일)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine lakme-audio</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>
