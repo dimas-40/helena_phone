@@ -8266,3 +8266,69 @@ Boss 확인 없이 병합하지 않았다.
   **오류 없이 조용히 안 그린다.** 영문만 렌더 확인. `python:3.12-slim`엔 fontconfig조차 없다.
 
 _폰 세션 `_Claude`_
+
+---
+
+## 2026-09-23 — 워크센터 실사: 빌드·연산·등록 (_Claude)
+
+Boss 질문: *"워크센터 안에서 빌드할 수 있게 연산할 수 있게 다 만들어 놨는지 확인해 봐."*
+**답: 아직 아니다.** 층별로 갈린다.
+
+### ① 연산 — ✅
+
+8코어 · 10GB(가용 3.1GB) · 64GB 여유. ffmpeg 8.1.2 · python3 3.14.4 · node 22 · git 2.53 · gh 2.46(`workflow` 스코프).
+**MCP 6종 전부 HTTP 200**(어제 수정분이 밤을 버팀). **MCP stdio 프로토콜도 폰에서 돈다** — `initialize` + `tools/list` 실측 성공.
+
+### ② 빌드 — ❌ 폰 안에서 못 한다
+
+**docker 없음 · podman 없음 · java 없음.** → 컨테이너 로컬 빌드 불가, APK 빌드 불가.
+**`gh` CLI로 Actions 트리거가 유일한 빌드 경로.** `parksy-image` active 워크플로:
+`build-cell-image` · `build-edit-image` · `cloud-full-pipeline` · `cloud-dub-render` · `cloud-tutorial`.
+(※ `po-deepfake-cell`·`rvc-trainer`는 **레포가 아니다**(404) — 이미지 이름이다.)
+
+### ③ 등록 — ❌ 0. 여기가 진짜 구멍
+
+`~/.claude.json`에 실제 서버 **0개**. `parksy-phone-smoke` 하나인데 `/tmp`라 재부팅 소멸 + PYTHONPATH 없어 지금도 import 실패.
+레지스트리 집계도 동일: 폰 `installed=9 · registered=0 · capable=7`.
+→ **"만들 수 있게"는 됐는데 "부를 수 있게"가 안 됐다.** 그래서 매번 내가 Bash로 직접 치는 상태.
+
+### ★ mcp SDK — "미설치"가 아니라 "설치된 파이썬이 사라졌다"
+
+레지스트리 blocker 9건이 전부 `"mcp SDK 미설치"`인데 **문구는 맞고 진단은 틀리다.**
+
+| 위치 | 상태 |
+|---|---|
+| `/data/.../python3.13/site-packages/mcp` (1.27.1, **설치 5월 27일**) | **고아** — Termux에 python3.13 바이너리가 없다(`python3 → python3.14`) |
+| `/root/.venvs/parksy-phone/lib` (2.2.0) | **살아있음** — `PYTHONPATH=` 주면 OK |
+
+proot python3(3.14.4)도 Termux python3(3.14)도 **둘 다** `import mcp` 실패.
+**`find`가 mcp 디렉터리를 찾아줘도 그 인터프리터가 살아있는지 먼저 봐야 한다.**
+
+### ★ `po-deepfake-cloud`는 SDK가 필요 없다 (실측)
+
+`mcp-servers/po_deepfake_cloud_mcp.py` — import가 `sys,json,base64,urllib.request,time,pathlib,os` 뿐.
+**JSON-RPC stdio를 손으로 구현.** `initialize` + `tools/list` 실측 OK —
+툴 2개(`po_deepfake_cloud_make`, `po_deepfake_cloud_status`). `cloud-full-pipeline.yml`을 dispatch하고
+run_id를 목록에서 매칭해 기다린다. → **의존성 0이라 등록은 즉시 가능.**
+
+### 레지스트리 ↔ 현실 불일치 (양쪽이 서로를 모른다)
+
+레지스트리가 아는 폰 9종과 **실제 살아있는 6종이 완전히 다르다.**
+그리고 **살아있는 6종은 mcp SDK를 안 쓴다** — 전부 Termux python3의 FastAPI/uvicorn **SSE** 서버다
+(`phone_*_mcp_sse.py`, `_v2/mcp_server_v2.py --sse`). SDK가 죽어도 얘들은 산다.
+**stdio 계열과 HTTP SSE 계열을 같은 "MCP"로 세면 집계가 계속 틀린다.**
+
+### 내가 낸 것 — 전체 파일스캔 폭주
+
+이 세션에서 내가 Bash로 돌린 `find /`가 **부모 셸과 함께 살아남아 146 CPU분**(876,893 ticks)을 태우고 있었다.
+발견 시 CPU 29.6%, 상태 `tl`. **죽였다.** proot에서 `/` 스캔은 정상 리눅스와 비용이 비교가 안 되고,
+Bash 툴 셸은 shell-snapshot을 source 하는 구조라 자식이 회수되지 않는다. `timeout`도 안 걸었다.
+→ 앞으로 아는 디렉터리로 좁히고, 전체를 훑을 땐 `timeout` 필수.
+
+### 손댈 수 있는 것 3개 (Boss 지시 대기)
+
+1. `po-deepfake-cloud` 등록 — 의존성 0, 즉시
+2. SDK 쓰는 7종 → PYTHONPATH 지정 등록
+3. 레지스트리 blocker 갱신 + 살아있는 6종 추가
+
+_폰 세션 `_Claude`_

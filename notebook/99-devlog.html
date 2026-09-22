@@ -644,6 +644,17 @@
 <li><a href="#_30">컨테이너가 아직 안 맞춘 것 (과장 금지)</a></li>
 </ul>
 </li>
+<li><a href="#2026-09-23-_claude">2026-09-23 — 워크센터 실사: 빌드·연산·등록 (_Claude)</a><ul>
+<li><a href="#1_1">① 연산 — ✅</a></li>
+<li><a href="#2_3">② 빌드 — ❌ 폰 안에서 못 한다</a></li>
+<li><a href="#3-0">③ 등록 — ❌ 0. 여기가 진짜 구멍</a></li>
+<li><a href="#mcp-sdk">★ mcp SDK — &ldquo;미설치&rdquo;가 아니라 &ldquo;설치된 파이썬이 사라졌다&rdquo;</a></li>
+<li><a href="#po-deepfake-cloud-sdk">★ po-deepfake-cloud는 SDK가 필요 없다 (실측)</a></li>
+<li><a href="#_31">레지스트리 ↔ 현실 불일치 (양쪽이 서로를 모른다)</a></li>
+<li><a href="#_32">내가 낸 것 — 전체 파일스캔 폭주</a></li>
+<li><a href="#3-boss">손댈 수 있는 것 3개 (Boss 지시 대기)</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav>
@@ -10806,6 +10817,66 @@ Boss 확인 없이 병합하지 않았다.</p>
 <li>한글 제목은 <strong>지금 안 나온다</strong> — 폰에 한글 폰트가 없고, drawtext는 없는 글자를<br>
 <strong>오류 없이 조용히 안 그린다.</strong> 영문만 렌더 확인. <code>python:3.12-slim</code>엔 fontconfig조차 없다.</li>
 </ul>
+<p><em>폰 세션 <code>_Claude</code></em></p>
+<hr>
+<h2 id="2026-09-23-_claude">2026-09-23 — 워크센터 실사: 빌드·연산·등록 (_Claude)</h2>
+<p>Boss 질문: <em>&ldquo;워크센터 안에서 빌드할 수 있게 연산할 수 있게 다 만들어 놨는지 확인해 봐.&rdquo;</em><br>
+<strong>답: 아직 아니다.</strong> 층별로 갈린다.</p>
+<h3 id="1_1">① 연산 — ✅</h3>
+<p>8코어 · 10GB(가용 3.1GB) · 64GB 여유. ffmpeg 8.1.2 · python3 3.14.4 · node 22 · git 2.53 · gh 2.46(<code>workflow</code> 스코프).<br>
+<strong>MCP 6종 전부 HTTP 200</strong>(어제 수정분이 밤을 버팀). <strong>MCP stdio 프로토콜도 폰에서 돈다</strong> — <code>initialize</code> + <code>tools/list</code> 실측 성공.</p>
+<h3 id="2_3">② 빌드 — ❌ 폰 안에서 못 한다</h3>
+<p><strong>docker 없음 · podman 없음 · java 없음.</strong> → 컨테이너 로컬 빌드 불가, APK 빌드 불가.<br>
+<strong><code>gh</code> CLI로 Actions 트리거가 유일한 빌드 경로.</strong> <code>parksy-image</code> active 워크플로:<br>
+<code>build-cell-image</code> · <code>build-edit-image</code> · <code>cloud-full-pipeline</code> · <code>cloud-dub-render</code> · <code>cloud-tutorial</code>.<br>
+(※ <code>po-deepfake-cell</code>·<code>rvc-trainer</code>는 <strong>레포가 아니다</strong>(404) — 이미지 이름이다.)</p>
+<h3 id="3-0">③ 등록 — ❌ 0. 여기가 진짜 구멍</h3>
+<p><code>~/.claude.json</code>에 실제 서버 <strong>0개</strong>. <code>parksy-phone-smoke</code> 하나인데 <code>/tmp</code>라 재부팅 소멸 + PYTHONPATH 없어 지금도 import 실패.<br>
+레지스트리 집계도 동일: 폰 <code>installed=9 · registered=0 · capable=7</code>.<br>
+→ <strong>&ldquo;만들 수 있게&rdquo;는 됐는데 &ldquo;부를 수 있게&rdquo;가 안 됐다.</strong> 그래서 매번 내가 Bash로 직접 치는 상태.</p>
+<h3 id="mcp-sdk">★ mcp SDK — &ldquo;미설치&rdquo;가 아니라 &ldquo;설치된 파이썬이 사라졌다&rdquo;</h3>
+<p>레지스트리 blocker 9건이 전부 <code>"mcp SDK 미설치"</code>인데 <strong>문구는 맞고 진단은 틀리다.</strong></p>
+<table>
+<thead>
+<tr>
+<th>위치</th>
+<th>상태</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/data/.../python3.13/site-packages/mcp</code> (1.27.1, <strong>설치 5월 27일</strong>)</td>
+<td><strong>고아</strong> — Termux에 python3.13 바이너리가 없다(<code>python3 → python3.14</code>)</td>
+</tr>
+<tr>
+<td><code>/root/.venvs/parksy-phone/lib</code> (2.2.0)</td>
+<td><strong>살아있음</strong> — <code>PYTHONPATH=</code> 주면 OK</td>
+</tr>
+</tbody>
+</table>
+<p>proot python3(3.14.4)도 Termux python3(3.14)도 <strong>둘 다</strong> <code>import mcp</code> 실패.<br>
+<strong><code>find</code>가 mcp 디렉터리를 찾아줘도 그 인터프리터가 살아있는지 먼저 봐야 한다.</strong></p>
+<h3 id="po-deepfake-cloud-sdk">★ <code>po-deepfake-cloud</code>는 SDK가 필요 없다 (실측)</h3>
+<p><code>mcp-servers/po_deepfake_cloud_mcp.py</code> — import가 <code>sys,json,base64,urllib.request,time,pathlib,os</code> 뿐.<br>
+<strong>JSON-RPC stdio를 손으로 구현.</strong> <code>initialize</code> + <code>tools/list</code> 실측 OK —<br>
+툴 2개(<code>po_deepfake_cloud_make</code>, <code>po_deepfake_cloud_status</code>). <code>cloud-full-pipeline.yml</code>을 dispatch하고<br>
+run_id를 목록에서 매칭해 기다린다. → <strong>의존성 0이라 등록은 즉시 가능.</strong></p>
+<h3 id="_31">레지스트리 ↔ 현실 불일치 (양쪽이 서로를 모른다)</h3>
+<p>레지스트리가 아는 폰 9종과 <strong>실제 살아있는 6종이 완전히 다르다.</strong><br>
+그리고 <strong>살아있는 6종은 mcp SDK를 안 쓴다</strong> — 전부 Termux python3의 FastAPI/uvicorn <strong>SSE</strong> 서버다<br>
+(<code>phone_*_mcp_sse.py</code>, <code>_v2/mcp_server_v2.py --sse</code>). SDK가 죽어도 얘들은 산다.<br>
+<strong>stdio 계열과 HTTP SSE 계열을 같은 &ldquo;MCP&rdquo;로 세면 집계가 계속 틀린다.</strong></p>
+<h3 id="_32">내가 낸 것 — 전체 파일스캔 폭주</h3>
+<p>이 세션에서 내가 Bash로 돌린 <code>find /</code>가 <strong>부모 셸과 함께 살아남아 146 CPU분</strong>(876,893 ticks)을 태우고 있었다.<br>
+발견 시 CPU 29.6%, 상태 <code>tl</code>. <strong>죽였다.</strong> proot에서 <code>/</code> 스캔은 정상 리눅스와 비용이 비교가 안 되고,<br>
+Bash 툴 셸은 shell-snapshot을 source 하는 구조라 자식이 회수되지 않는다. <code>timeout</code>도 안 걸었다.<br>
+→ 앞으로 아는 디렉터리로 좁히고, 전체를 훑을 땐 <code>timeout</code> 필수.</p>
+<h3 id="3-boss">손댈 수 있는 것 3개 (Boss 지시 대기)</h3>
+<ol>
+<li><code>po-deepfake-cloud</code> 등록 — 의존성 0, 즉시</li>
+<li>SDK 쓰는 7종 → PYTHONPATH 지정 등록</li>
+<li>레지스트리 blocker 갱신 + 살아있는 6종 추가</li>
+</ol>
 <p><em>폰 세션 <code>_Claude</code></em></p>
   </article>
   <nav class="wz-pager">
