@@ -1,0 +1,18 @@
+{
+  "output": "/sdcard/Download/parksy_phone_t_final.mp4",
+  "lane": "lecture",
+  "overlay": "Phone T",
+  "footer": "dtslib.kr",
+  "loudness": -14.0,
+
+  "_takes_설명": "테이크 경계 = 챕터 경계 = 모듈 경계 = 광고 브레이크. 파생 표준은 5분×3테이크.",
+  "_cuts_설명": "cuts 는 그 테이크의 원본 타임라인 기준 [시작,끝] 초. 뒤 컷이 앞 컷에 영향받지 않는다.",
+
+  "takes": [
+    {
+      "file": "/sdcard/DCIM/Screen recordings/Screen_Recording_20260922_134048_Chrome.mp4",
+      "title": "1. One Phone, One Studio",
+      "cuts": []
+    }
+  ]
+}
