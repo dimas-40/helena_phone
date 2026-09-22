@@ -34,7 +34,11 @@
 #     지금은 영문만 확실히 나온다. 없는 글자는 **오류 없이 조용히 안 그려진다.**
 set -euo pipefail
 
-HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 심볼릭 링크(/usr/local/bin/phonet)로 불려도 진짜 위치를 찾아야 한다.
+# ${BASH_SOURCE[0]} 만 쓰면 링크가 놓인 디렉터리가 나와서 yt_edit.py 를 못 찾는다.
+SELF="${BASH_SOURCE[0]}"
+while [ -L "$SELF" ]; do SELF="$(readlink "$SELF")"; done
+HERE="$(cd "$(dirname "$SELF")" && pwd)"
 TOOL="$HERE/yt_edit.py"
 
 die() { echo "오류: $*" >&2; exit 1; }

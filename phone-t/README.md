@@ -130,13 +130,17 @@ af = f"aselect='{keep}',asetpts=N/SR/TB"
 ## 6. 쓰는 법
 
 ```bash
+# 어디서든 `phonet` 한 마디로 (symlink 걸어 뒀다 — 실측 확인함)
+phonet --quick lecture "/sdcard/DCIM/Screen recordings/xxx.mp4"
+
 # ① job JSON — 테이크 여러 개·컷·챕터를 다 쓰려면 이쪽
-bash scripts/phonet.sh job.json
-bash scripts/phonet.sh job.json --dry-run     # 인코딩 없이 계획만
+phonet job.json
+phonet job.json --dry-run                     # 인코딩 없이 계획만
 
 # ② 빠른 모드 — 파일 하나를 레인에 태운다
-bash scripts/phonet.sh --quick lecture "/sdcard/DCIM/Screen recordings/xxx.mp4"
-bash scripts/phonet.sh --quick narration "/sdcard/.../xxx.mp4" /sdcard/Download/out.mp4
+phonet --quick lecture "/sdcard/DCIM/Screen recordings/xxx.mp4"
+phonet --quick narration "/sdcard/.../xxx.mp4" /sdcard/Download/out.mp4
+#  (안 걸려 있으면 bash scripts/phonet.sh ... 로 똑같이 된다)
 ```
 
 job JSON 스키마 (예시는 `phone-t/job.example.json`):
