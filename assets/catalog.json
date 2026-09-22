@@ -1216,6 +1216,14 @@
     "deck": ""
   },
   {
+    "src": "_notebook/114-parksy-phone-lecture-vol0-en_Claude.md",
+    "out": "notebook/114-parksy-phone-lecture-vol0-en_Claude.html",
+    "title": "Parksy Phone — Vol.0",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "**Use:** share the screen / read the blackboard while **screen recording**"
+  },
+  {
     "src": "_notebook/100-phone-management-3layers_Claude.md",
     "out": "notebook/100-phone-management-3layers_Claude.html",
     "title": "📱 폰 관리 3계층 — 수리 라우팅 원칙 (2026-08-21)",

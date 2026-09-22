@@ -597,6 +597,43 @@
 <li><a href="#4_1">4. 남은 것 — 우선순위대로</a></li>
 </ul>
 </li>
+<li><a href="#2026-09-21-css-0-_claude">2026-09-21 — 앱스토어 랜딩페이지 카드 CSS 0개 사건 + 레지스트리 공개노출 실제로 닫음 (_Claude)</a><ul>
+<li><a href="#1-css">① 카드가 지저분했던 진짜 원인 — CSS가 아예 없었다</a></li>
+<li><a href="#2_1">② 그 밖에 같이 고친 것</a></li>
+<li><a href="#3_1">③ &ldquo;닫힌 것처럼 보이는데 안 닫힌&rdquo; 패턴이 또 나왔다 (내 실수)</a></li>
+<li><a href="#4_2">④ 정직하게 남기는 것</a></li>
+</ul>
+</li>
+<li><a href="#2026-09-21-boss-_claude">2026-09-21 (이어서) — 첫 화면 순서: Boss가 &ldquo;절충&rdquo;을 골랐다 + 형 세션 리뷰 판정 (_Claude)</a><ul>
+<li><a href="#1-3">① 형(랩탑) 세션 리뷰 3건 판정 — 맞는 것 / 틀린 것</a></li>
+<li><a href="#2-boss">② Boss 결정 — &ldquo;절충: 히어로 + 맛보기&rdquo;</a></li>
+<li><a href="#3_2">③ 교훈 — 형 리뷰에 대하여</a></li>
+</ul>
+</li>
+<li><a href="#2026-09-22-mcp-_claude">2026-09-22 — MCP가 세션별로 다르게 나오는 이유 (폰 구동 관련) (_Claude)</a><ul>
+<li><a href="#1-mcp-3">① /mcp 목록은 전역이 아니다 — 3개 스코프의 합집합</a></li>
+<li><a href="#2-2026-09-22">② 실측 — 세션별로 이렇게 나온다 (2026-09-22)</a></li>
+<li><a href="#3-6-homedtsli">③ ★ 진짜 원인 — 그 6개는 전부 /home/dtsli/... 를 가리킨다</a></li>
+<li><a href="#4_3">④ 결론 — &ldquo;통일&rdquo;은 원리적으로 불가, 관제탑은 &ldquo;기록&rdquo;</a></li>
+<li><a href="#5-mcp">⑤ 폰이 MCP를 쓰려면 — 재료는 있고, 막는 건 하나</a></li>
+</ul>
+</li>
+<li><a href="#2026-09-22-4-adb-mcp-apk-_claude">2026-09-22 — 4대 이력 정본: ADB · MCP · 컨테이너 · APK (_Claude)</a><ul>
+<li><a href="#0-4">0. 먼저 지도 — 이 4개는 순서가 있는 층이다</a></li>
+<li><a href="#1-adb-boss-2026-08-21">① ADB — 어떻게 뚫었나 (Boss 발명, 2026-08-21 확정)</a></li>
+<li><a href="#2-mcp-2026-09-22">② MCP — 어떻게 만들고 어떻게 등록하나 (2026-09-22 확정)</a></li>
+<li><a href="#3_3">③ 컨테이너 — 어떻게 만들어야 하나</a></li>
+<li><a href="#4-apk-axis">④ APK — 어떻게 빌드하고 어떻게 폰에 올리나 (Axis 실측)</a></li>
+<li><a href="#5-pc-dev-batch">5. 오늘 찾아낸 것 — 카메라워크 합성 회로 (미니PC dev-batch)</a></li>
+</ul>
+</li>
+<li><a href="#2026-09-22-po-edit-cell-mcp-6-_claude">2026-09-22 — 앱스토어에 po-edit-cell 컨테이너 등록 + MCP 6종 복구 (_Claude)</a><ul>
+<li><a href="#1-mcp-6">한 일 ① — MCP 6종 전부 복구 (등록하다 발견)</a></li>
+<li><a href="#2-po-edit-cell">한 일 ② — po-edit-cell 앱스토어 등록</a></li>
+<li><a href="#indexjson">발견 — index.json은 닫혔고 나머지는 안 닫혔다</a></li>
+<li><a href="#_27">정직하게 — 내가 깨뜨린 게 아니다 (근거 있음)</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav>
@@ -9977,6 +10014,658 @@ mcp/mcp-registry/index.json  34개  ← 기계용 레지스트리 (MCP 실물 �
 </table>
 <p><strong>한 줄</strong>: 개념 12개는 정합(§1), 레포 구조는 &ldquo;카탈로그+설치안내&rdquo; → <strong>&ldquo;3분류 주문서&rdquo;</strong>로 전환(§2),<br>
 AI 오판 7건은 전부 방향 과소평가였고(§3①), 실제로 열려 있는 건 §4-1·§4-2 두 개뿐이다.</p>
+<p><em>폰 세션 <code>_Claude</code></em></p>
+<hr>
+<h2 id="2026-09-21-css-0-_claude">2026-09-21 — 앱스토어 랜딩페이지 카드 CSS 0개 사건 + 레지스트리 공개노출 실제로 닫음 (_Claude)</h2>
+<p><strong>계기:</strong> Boss가 랜딩페이지를 보고 &ldquo;하나도 정리 안 돼 있고 지저분하다&rdquo; → &ldquo;오버라이드에서 랜딩 페이지까지<br>
+포함해서 저 새끼 못 고쳤던 거 네가 지금 일괄 작업 다 해 버려.&rdquo;</p>
+<h3 id="1-css">① 카드가 지저분했던 진짜 원인 — CSS가 아예 없었다</h3>
+<p><code>.tool-icon</code> <code>.tool-name</code> <code>.tool-desc</code> <code>.tool-meta</code> <code>.tool-ver</code> <code>.tool-cat</code> <code>.tool-badge</code><br>
+<code>.status-row</code> <code>.status-dual</code> <code>.mcp-card</code> — <strong>10개 클래스 전부 CSS 규칙 0개.</strong><br>
+카드 마크업만 쓰고 스타일시트를 안 쓴 상태였다. 그래서 아이콘이 혼자 한 줄을 먹고<br>
+<code>v1.2</code> + 카테고리 태그가 여백 없이 붙어 나왔다. MCP/컨테이너만 <code>.sm-*</code>(스타일 있음)로<br>
+그려져서 유독 그 목록만 멀쩡해 보였던 것.</p>
+<p>→ 전 카테고리를 <code>.sm-*</code> 가로 행으로 통일 (아이콘 왼쪽 / 이름·배지·버전 / 설명 / 푸터).<br>
+미정의 클래스에 스타일을 채움. 카드 높이 164px → 106px.</p>
+<h3 id="2_1">② 그 밖에 같이 고친 것</h3>
+<table>
+<thead>
+<tr>
+<th>문제</th>
+<th>실체</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>첫 화면이 카드 벽</td>
+<td><code>&lt;section id="catalog"&gt;</code> 가 히어로보다 <strong>앞</strong>에 있었다 → 히어로 먼저, 카탈로그 기본 접힘</td>
+</tr>
+<tr>
+<td>MCP 카드 글자 겹침</td>
+<td><code>.exp-toggle</code>/<code>.verify-badge</code> 가 <code>position:absolute</code> 라 제목·버전 위에 찍혔다</td>
+</tr>
+<tr>
+<td>&ldquo;INVALID&rdquo; 소음</td>
+<td>MCP 카드 <strong>마다</strong> 상태칩이 INVALID — 방문자에게 &ldquo;고장&rdquo;으로 읽힘 → 제거</td>
+</tr>
+<tr>
+<td>배지 두 번</td>
+<td><code>renderWorkcenterBadges</code> 를 statusHtml 과 템플릿에서 <strong>중복 호출</strong></td>
+</tr>
+<tr>
+<td>페이지가 거짓말</td>
+<td>하드코딩 <code>60 tools (32 MCP · 2 Container)</code> → 실제 67/37/4/7. 이제 apps.json 에서 직접 센다</td>
+</tr>
+<tr>
+<td>히어로가 화면 한 장</td>
+<td>모바일에서 arch 노드 세로 3단 + 회전 화살표 → 가로 행 (700px→170px)</td>
+</tr>
+<tr>
+<td>마지막 카드 가림</td>
+<td>플로팅 버튼 86px vs 하단 여백 90px → 136px</td>
+</tr>
+<tr>
+<td>축 필터 어정쩡</td>
+<td>&ldquo;Factory&rdquo;만 다음 줄 홀로 → 가로 스크롤 한 줄</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3_1">③ &ldquo;닫힌 것처럼 보이는데 안 닫힌&rdquo; 패턴이 또 나왔다 (내 실수)</h3>
+<p>배포에서 <code>index.json</code> 을 빼려고 <code>exclude:</code> 입력을 썼다. <strong>JamesIves 액션에 그 입력이 없다</strong> —<br>
+러너 로그: <code>Unexpected input(s) 'exclude', valid inputs are [...]</code> 경고 후 <strong>그대로 무시.</strong><br>
+즉 커밋은 나갔고 개인경로 49건은 라이브에 그대로 남았다.</p>
+<p>→ 스테이징(<code>$RUNNER_TEMP/site</code> 로 rsync 후 그 폴더를 배포) + <strong>스테이징에 남아 있으면 배포 중단 가드</strong>로 재수정.<br>
+실측 확인: <code>mcp/mcp-registry/index.json</code> <strong>404</strong> · <code>apps.json</code>/<code>index.html</code> 200 · <code>WHY_MCP.md</code> 200(CNAME 유지).<br>
+<strong><code>folder: .</code> 전체공개 항목(§4-1)은 이걸로 닫혔다.</strong></p>
+<p>교훈: 액션 입력을 <strong>API 문서로 확인하지 않고</strong> &ldquo;고쳤다&rdquo;고 쓰면 안 된다. 이 레포에는 이미 전례가 있다<br>
+(<code>d7e7cc3</code> 이 &ldquo;개인경로 제거&rdquo;라 했으나 실제론 apps.json 만).</p>
+<h3 id="4_2">④ 정직하게 남기는 것</h3>
+<ul>
+<li><code>apps.json</code> 에는 아직 <code>/root/...</code> 경로 9건이 있다(폰 MCP 설치 커맨드 — 기능상 필요, 비밀 아님).</li>
+<li><code>registry-integrity</code> CI 게이트는 <strong>이전 8회 런 전부 실패</strong> 중이었다(내 커밋이 깬 게 아니다).<br>
+  apps.json ↔ 파일시스템 대조에서 유령 48+건. 이번엔 57건. <strong>손대지 않았다.</strong></li>
+<li>폰 <code>/mcp</code> 가 비어 있는 첫 번째 이유(<code>/root/.claude.json</code> 의 <code>mcpServers: None</code> + <code>mcp</code> SDK 미설치)는<br>
+<strong>여전히 미해결.</strong></li>
+</ul>
+<p><strong>커밋:</strong> <code>e386ee7</code> (랜딩+레지스트리+앱s) · <code>f60f066</code> (배포 스테이징)<br>
+<strong>검증:</strong> 라이브 URL Playwright 렌더 — JS 에러 0 · 아이콘 개행 0 · 칩/제목 겹침 0 · 가로 오버플로 0 · 카드 67장</p>
+<p><em>폰 세션 <code>_Claude</code></em></p>
+<hr>
+<h2 id="2026-09-21-boss-_claude">2026-09-21 (이어서) — 첫 화면 순서: Boss가 &ldquo;절충&rdquo;을 골랐다 + 형 세션 리뷰 판정 (_Claude)</h2>
+<h3 id="1-3">① 형(랩탑) 세션 리뷰 3건 판정 — 맞는 것 / 틀린 것</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>형의 지적</th>
+<th>판정</th>
+<th>근거</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>①</td>
+<td>&ldquo;<code>e386ee7</code>이 <code>11e5b14</code>의 첫 화면 순서를 조용히 뒤집었다&rdquo;</td>
+<td><strong>맞음</strong></td>
+<td><code>11e5b14</code>(15:18) §1 = &ldquo;첫화면에 상품 0개 → Catalog를 히어로보다 앞으로&rdquo;. 내 <code>e386ee7</code>(16:08)이 언급 없이 반전. 내 누락.</td>
+</tr>
+<tr>
+<td>②</td>
+<td>&ldquo;개인경로를 깔끔하게 닫았다&rdquo;</td>
+<td><strong>틀림</strong></td>
+<td>형 리뷰는 Bash 4회 전부 <code>git fetch/log/show</code>, <strong>curl 0회</strong>. 16:09~16:10 시점 index.json은 여전히 200 + 개인경로 49건. 내 <code>f60f066</code>이 16:11:17 착지.</td>
+</tr>
+<tr>
+<td>③</td>
+<td>&ldquo;미등록 6개&rdquo;</td>
+<td><strong>개수 맞고 명단 틀림</strong></td>
+<td><code>mcp_distributor</code>를 넣었는데 그건 <code>parksy-distributor</code>와 <strong>같은 파일</strong>(md5 <code>778ad8eb…</code> 폰=랩탑). 대신 <code>eae_platform</code>을 빠뜨림. → <strong>내가 md5를 릴레이 안 한 게 원인.</strong> 형이 &ldquo;미확인&rdquo;으로 표시한 건 올바른 행동이었다.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>진짜 미등록 6:</strong> parksy-rawmat · parksy-scm · eae-platform · pd-pipeline · webtoon-make · po-deepfake-cloud</p>
+<h3 id="2-boss">② Boss 결정 — &ldquo;절충: 히어로 + 맛보기&rdquo;</h3>
+<p>형이 &ldquo;폰 실측 디자인감사&rdquo;에서 낸 순서(상품 먼저)와 내가 되돌린 순서(히어로 먼저) 중<br>
+<strong>Boss가 제3안을 골랐다</strong>: 히어로(브랜드) 먼저 → 맛보기 카드 → [전체 67개 카탈로그 펼치기].<br>
+브랜드는 지키고, 첫 화면에 상품도 걸리게.</p>
+<p><strong>그런데 절충안이 처음엔 성립을 안 했다.</strong> 히어로가 <code>arch</code>/<code>dual</code>/<code>axis</code>까지 품고 있어<br>
+히어로 하나가 1100px+ — 첫 화면(412×915)에 맛보기 카드가 <strong>0장</strong> 걸렸다.<br>
+→ 구조 설명 블록을 히어로 밖, 맛보기 <strong>아래</strong>로 내렸다. 히어로 401px.<br>
+→ 실측 첫 화면에 카드 <strong>5장</strong> 노출.</p>
+<p>부수 정리:<br>
+- 히어로의 &ldquo;↓ 도구 스토어 열기&rdquo; 링크 제거 — 바로 아래 버튼과 같은 일을 한다<br>
+- 맛보기 = 카테고리마다 1장(최대 10장), 펼쳐진 카드 우선 → 목록이 아니라 <strong>지도</strong><br>
+- <code>F.openCatalog</code> 를 export 안 해서 버튼이 <code>is not a function</code> 으로 죽어 있었다 → 수정</p>
+<p><strong>커밋:</strong> <code>b8bbe29</code> (앱스토어 레포, pushed) — 커밋 메시지에 <strong>&ldquo;이 커밋은 e386ee7의 순서를 뒤집는다&rdquo;를 명시</strong>.<br>
+형이 지적한 &ldquo;조용한 반전&rdquo;을 반복하지 않기 위해.</p>
+<p><strong>라이브 실측</strong> (Playwright 412×915, 실제 URL — 로컬 아님):<br>
+맛보기 10장 · 첫 화면 5장 · 전체 67장 중복 0 · 통계 67/19/37/4 · 아이콘·이름 같은 줄 67/67 · 가로 오버플로 0 · JS 에러 0 · 카탈로그 기본 닫힘→클릭 시 67장 열림 · index.json 여전히 404.</p>
+<h3 id="3_2">③ 교훈 — 형 리뷰에 대하여</h3>
+<p>형의 지적은 <strong>①은 맞고 ②는 틀렸고 ③은 반쯤</strong>이었다. 그런데 ②가 틀린 이유가<br>
+&ldquo;형이 나쁘다&rdquo;가 아니라 <strong>형이 curl을 안 쳤기 때문</strong>이다 — git 이력만 보면 배포 상태는 안 보인다.<br>
+그리고 ③이 틀린 건 <strong>내가 md5를 릴레이 안 했기 때문</strong>이다. 형은 옳게 조심했다.<br>
+→ 결론: 리뷰 판정은 &ldquo;누가 맞나&rdquo;가 아니라 <strong>무엇을 안 봤나</strong>로 갈린다. 양쪽 다 증거를 덜 댔다.</p>
+<p><em>폰 세션 <code>_Claude</code></em></p>
+<hr>
+<h2 id="2026-09-22-mcp-_claude">2026-09-22 — MCP가 세션별로 다르게 나오는 이유 (폰 구동 관련) (_Claude)</h2>
+<blockquote>
+<p>Boss 질문: &ldquo;지금 /mcp 치면 각각 세션별로 어떻게 리스트들이 나오는 거냐?&rdquo;<br>
+→ 이 문서는 그 답 + 폰에서 MCP를 못 쓰는 이유의 <strong>실측 정본</strong>이다.<br>
+관련 후속작업 재개할 때 여기부터 읽을 것.</p>
+</blockquote>
+<h3 id="1-mcp-3">① <code>/mcp</code> 목록은 전역이 아니다 — 3개 스코프의 합집합</h3>
+<p><code>claude mcp add -s &lt;scope&gt;</code> 가 곧 그거다:</p>
+<table>
+<thead>
+<tr>
+<th>스코프</th>
+<th>저장 위치</th>
+<th>보이는 범위</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>local</strong> (기본값)</td>
+<td><code>~/.claude.json</code> → <code>projects["&lt;현재폴더&gt;"].mcpServers</code></td>
+<td><strong>그 폴더에서만</strong></td>
+</tr>
+<tr>
+<td><strong>user</strong></td>
+<td><code>~/.claude.json</code> → 최상위 <code>mcpServers</code></td>
+<td>그 프로필 전체</td>
+</tr>
+<tr>
+<td><strong>project</strong></td>
+<td>레포 루트 <code>.mcp.json</code></td>
+<td>레포에 커밋되면 공유</td>
+</tr>
+</tbody>
+</table>
+<p>어느 <code>~/.claude.json</code> 을 읽느냐는 <code>CLAUDE_CONFIG_DIR</code> 로 갈린다. 미니PC엔 프로필이 4개 있다.</p>
+<h3 id="2-2026-09-22">② 실측 — 세션별로 이렇게 나온다 (2026-09-22)</h3>
+<table>
+<thead>
+<tr>
+<th>세션</th>
+<th>읽는 config</th>
+<th><code>/mcp</code> 서버</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>폰 <code>/root/work</code></strong></td>
+<td><code>/root/.claude.json</code></td>
+<td><strong>0개</strong></td>
+</tr>
+<tr>
+<td>미니PC <code>.claude</code></td>
+<td><code>~/.claude/.claude.json</code></td>
+<td>1개</td>
+</tr>
+<tr>
+<td>미니PC <code>.claude-prod</code></td>
+<td><code>~/.claude-prod/.claude.json</code></td>
+<td>1개</td>
+</tr>
+<tr>
+<td><strong>미니PC <code>.claude-deepseek</code></strong></td>
+<td><code>~/.claude-deepseek/.claude.json</code></td>
+<td><strong>6개</strong> ← Boss가 본 화면</td>
+</tr>
+<tr>
+<td>미니PC 기본</td>
+<td><code>~/.claude.json</code></td>
+<td>user 3개 + project 2개(<code>/home/dtsli</code> 에서만)</td>
+</tr>
+</tbody>
+</table>
+<p>폰의 실제 값:</p>
+<pre><code>/root/.claude.json  → mcpServers: None
+                      projects: { &quot;/root/work&quot;: { &quot;mcpServers&quot;: {} } }
+CLAUDE_CONFIG_DIR   → 미설정
+/root/work/.mcp.json → 없음
+</code></pre>
+<p>미니PC 기본 프로필에서 project 스코프가 실제로 갈리는 증거:</p>
+<pre><code>[user]    devlog · eae-writer · bigtech-tutorial
+[project] + po-deepfake-cell · po-tutorial     ← /home/dtsli 에서만 추가됨
+</code></pre>
+<h3 id="3-6-homedtsli">③ ★ 진짜 원인 — 그 6개는 전부 <code>/home/dtsli/...</code> 를 가리킨다</h3>
+<pre><code>devlog        node /home/dtsli/bin/devlog-mcp.mjs
+eae-writer    /home/dtsli/workcenter/recipes/eae-writer/.venv/bin/python3 …
+po-deepfake   /home/dtsli/cell/agent-door.sh
+jail          /home/dtsli/rvc-venv/bin/python /home/dtsli/wsl-repos/parksy-image/…
+vision        /home/dtsli/vision-cell/vision-door.sh
+po-tutorial   /home/dtsli/cell/po-tutorial-shim.py
+</code></pre>
+<p><strong>MCP config 항목은 &ldquo;설정&rdquo;이 아니라 &ldquo;여기서 이 프로그램을 띄워라&rdquo;라는 실행 지시다.</strong><br>
+→ 그 프로그램이 그 기기에 없으면 등록해도 즉시 깨진다.<br>
+→ 그 6개를 폰에 그대로 복사하면 <strong>여섯 개 전부 죽는다.</strong></p>
+<h3 id="4_3">④ 결론 — &ldquo;통일&rdquo;은 원리적으로 불가, 관제탑은 &ldquo;기록&rdquo;</h3>
+<p>각 기기가 서로 다른 <strong>로컬 프로세스</strong>를 띄우는 구조라 목록을 같게 만들 수 없다.<br>
+6개가 미니PC에만 있는 건 설정 실수가 아니라 그 프로그램들이 미니PC 디스크에 있어서다.</p>
+<p>→ 그래서 앱스토어 <code>workcenter</code> 필드가 기기별 <code>{installed, registered, capable, blocker}</code> <strong>객체</strong>인 게 맞는 설계다.<br>
+   통일하는 게 아니라 <strong>기록</strong>하는 것. <strong>&ldquo;어느 기기에 무엇이 있고 왜 없는지 한눈에&rdquo;</strong> 가 관제탑의 일이다.</p>
+<h3 id="5-mcp">⑤ 폰이 MCP를 쓰려면 — 재료는 있고, 막는 건 하나</h3>
+<pre><code>/root/work/mcp-servers/
+  eae_mcp_writer.py · eae_mcp_platform.py · parksy_law_mcp.py
+  parksy_rawmat_mcp.py · parksy_scm_mcp.py · po_deepfake_cloud_mcp.py
+</code></pre>
+<p>막는 것 하나: <strong><code>mcp</code> SDK 미설치</strong></p>
+<pre><code>from mcp.server.fastmcp import FastMCP
+ModuleNotFoundError: No module named 'mcp'
+</code></pre>
+<p>(4개 중 3개가 정확히 이 한 줄에서 죽는다. <code>po_deepfake_cloud_mcp.py</code> 만 살아서 stdio 대기.)</p>
+<p><strong>정정:</strong> 메모리에 &ldquo;aiohttp 없어서 4개 죽어있음&rdquo;이라 적혀 있었는데 <strong>낡은 기록</strong>이다.<br>
+실측 <code>aiohttp 3.13.3</code> 설치돼 있음. 진짜 원인은 위 <code>mcp</code> SDK 하나.</p>
+<p>폰에서 도는 포트 실측: <code>8789</code> 만 응답(HTTP 404=살아있음), <code>3456·8015·8016·8018·8020·8023</code> 전부 무응답.<br>
+→ Termux 쪽 서비스가 안 떠 있는 상태. proot에서 MCP를 쓰려면 <strong>자기 경로를 가리키는 자기 항목</strong>을 등록해야 한다.</p>
+<p><strong>커밋:</strong> (아래) · <strong>아직 안 한 것:</strong> 폰 <code>/mcp</code> 실제 등록 (<code>pip install mcp</code> → <code>claude mcp add</code>)</p>
+<p><em>폰 세션 <code>_Claude</code></em></p>
+<hr>
+<h2 id="2026-09-22-4-adb-mcp-apk-_claude">2026-09-22 — 4대 이력 정본: ADB · MCP · 컨테이너 · APK (_Claude)</h2>
+<blockquote>
+<p>Boss 지시 원문: <em>&ldquo;지금 이거 MCP 어떻게 만들고 어떻게 했는지 컨테이너 어떻게 만들어야 되는지 ADB 어떻게 뚫었는지 APK 어떻게 빌드했는지 다 개발 이력에서 저장해 놔&rdquo;</em></p>
+<p>아래는 <strong>오늘(09-22) 실제로 명령을 쳐서 확인한 것만</strong> 적는다. 확인 안 된 것은 &ldquo;미검증&rdquo;이라고 표시했다.<br>
+목적: 나중에 이 4개를 <strong>다시 만들 수 있게</strong> 하는 것. 결과를 자랑하는 문서가 아니다.</p>
+</blockquote>
+<h3 id="0-4">0. 먼저 지도 — 이 4개는 순서가 있는 층이다</h3>
+<pre><code>④ APK      ← 눈에 보이는 것 (Axis 오버레이·저장·카테고리)
+③ MCP      ← 앱이 도구를 부르는 입구 (v2 SDK, 폰 자체 경로)
+② 컨테이너  ← 무거운 연산 (GHCR 이미지 3개, 두 레인)
+① ADB      ← 모든 것의 바닥 (Shizuku 5900)
+</code></pre>
+<p><strong>①이 안 뚫려 있으면 ②③④가 성립하지 않는다.</strong> 실제로 SMS 무인 판독·굿락 제어·삼성앱 25종 스윕이 전부 ① 위에서만 돌았다.<br>
+반대로 <strong>④는 ① 없이도 된다</strong> — 오버레이는 앱 안에서 도는 것이라 ADB가 필요 없다. 이 구분을 흐리면 &ldquo;왜 이건 되고 저건 안 되나&rdquo;에서 계속 헤맨다.</p>
+<hr>
+<h3 id="1-adb-boss-2026-08-21">① ADB — 어떻게 뚫었나 (Boss 발명, 2026-08-21 확정)</h3>
+<p><strong>삼성이 깨뜨려 놓은 것부터.</strong><br>
+- PC→폰 무선 페어링(SPAKE2)은 WireGuard/Tailscale 위에서 <strong>원천 불가</strong><br>
+- Android 15 Termux에서 <code>adb pair</code> localhost도 미지원<br>
+- <strong>핵심 원인:</strong> <code>5555</code>는 adb <strong>에뮬레이터 대역</strong>(5555~5585)이다. 이 폰은 5555를 에뮬레이터로 오인해 <code>emulator-5554 offline</code>으로 붙는다 → 어떤 클라이언트도 핸드셰이크 불가</p>
+<p><strong>해법 = 폰이 자기 자신과 페어링한다.</strong><br>
+1. 재부팅 → <code>service.adb.tcp.port=5555</code> 잠금 해제<br>
+2. Shizuku 포크에서 <strong>TCP 포트를 5900으로</strong> 지정 (에뮬레이터 대역 밖)<br>
+3. &ldquo;무선 디버깅으로 시작&rdquo; → <code>Successfully connected on port 5900</code><br>
+4. RSA <strong>&ldquo;항상 허용&rdquo;</strong> → 그 뒤로는 팝업 없이 붙는다<br>
+5. <code>adb tcpip 5900</code> 유지 → 어느 PC에서든 <code>adb connect &lt;폰IP&gt;:5900</code></p>
+<p><strong>실측 (2026-09-22, 이 proot에서 직접)</strong></p>
+<pre><code>/data/data/com.termux/files/usr/bin/adb devices
+  → 127.0.0.1:5900   device   model:SM_S938N
+adb shell id
+  → uid=2000(shell) context=u:r:shell:s0      ← root 아님
+adb exec-out screencap -p &gt; x.png                → 진짜 화면 PNG 376KB, 성공
+</code></pre>
+<ul>
+<li>커널 <code>6.6.77-android15</code>, <code>ro.serialno=R3CY609RRAR</code> (proot의 <code>uname</code> 6.17.0-PRoot-Distro는 <strong>가짜</strong>)</li>
+<li>열린 포트: <code>5037</code>(adb 서버) · <code>5900</code>(Shizuku adbd) · <code>5555</code> <strong>closed</strong></li>
+<li><code>input keyevent</code> exit=0, <code>dumpsys power/window/battery</code> 전부 동작</li>
+</ul>
+<p><strong>★ 여기서 제일 중요한 함정 (proot의 ABI 경계)</strong><br>
+| 도구 | proot에서 | 이유 |<br>
+|&mdash;|&mdash;|&mdash;|<br>
+| <code>adb</code> 바이너리 | <strong>실행됨</strong> | bionic ELF(<code>/system/bin/linker64</code>)를 proot이 그대로 exec |<br>
+| <code>rish</code> 런처 | <strong>안 됨</strong> (<code>Operation not permitted</code>) | shebang 해석 단계에서 막힘 |<br>
+→ <strong>ADB 클라이언트는 되고, Shizuku 권한 승격은 안 된다.</strong> rish가 필요한 일은 Termux 쪽에 위임해야 한다.</p>
+<p><strong>유지 장치:</strong> <code>/data/data/com.termux/files/home/.termux/boot/adb-watchdog-v2.sh</code> — 5분마다 adbd/Shizuku/5900 확인.<br>
+⚠️ Shizuku가 죽으면 <strong>앱을 띄우기만 하고 수동 시작이 필요</strong>하다(자동 복구 아님).</p>
+<p><strong>백그라운드 면제 (적용 완료, 재부팅 유지)</strong></p>
+<pre><code class="language-bash">rish -c 'settings put global settings_enable_monitor_phantom_procs false'
+rish -c 'cmd deviceidle whitelist +com.termux'
+rish -c 'cmd appops set com.termux RUN_ANY_IN_BACKGROUND allow'
+</code></pre>
+<p><strong>어디서 붙나 (실측)</strong></p>
+<table>
+<thead>
+<tr>
+<th>기기</th>
+<th>주소</th>
+<th>결과</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>폰 proot → 자기 자신</td>
+<td><code>127.0.0.1:5900</code></td>
+<td><code>device</code> (키 이미 인증, 팝업 없음)</td>
+</tr>
+<tr>
+<td>랩탑 DTSLIB (Windows)</td>
+<td>adb는 scrcpy 번들</td>
+<td><code>device</code> ✅</td>
+</tr>
+<tr>
+<td>미니PC dev-batch (Ubuntu)</td>
+<td><code>100.81.134.89</code></td>
+<td><code>device</code> ✅</td>
+</tr>
+<tr>
+<td>탭 S9</td>
+<td><code>100.86.15.50:5900</code></td>
+<td><code>device</code> ✅</td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ 랩탑 원격 셸 기본이 <strong>PowerShell</strong>이다 → <code>&amp;</code> 쓰면 파싱 에러, <code>;</code>를 쓸 것.</p>
+<hr>
+<h3 id="2-mcp-2026-09-22">② MCP — 어떻게 만들고 어떻게 등록하나 (2026-09-22 확정)</h3>
+<p><strong>먼저 &ldquo;MCP는 기기별로 다른 게 정상&rdquo;이다.</strong> config는 3스코프(local/user/project)의 <strong>합집합</strong>이고, 각 항목은 <em>&ldquo;여기서 이 프로그램을 띄워라&rdquo;</em>는 <strong>실행 지시</strong>다. 그 프로그램이 그 기기에 없으면 등록해도 즉시 깨진다.<br>
+→ 그래서 미니PC의 6개(<code>devlog</code>·<code>eae-writer</code>·<code>po-deepfake</code>·<code>jail</code>·<code>vision</code>·<code>po-tutorial</code>)는 <strong>전부 <code>/home/dtsli/...</code>를 가리킨다.</strong> 폰에 복사하면 여섯 개 전부 죽는다. 통일이 아니라 <strong>기록</strong>이 관제탑의 일이다.</p>
+<p><strong>설치 — 전역 설치는 실패한다. <code>--target</code>이 유일하게 통한 길이다.</strong></p>
+<pre><code class="language-bash">python3 -m pip install --break-system-packages \
+  --target /root/.venvs/parksy-phone/lib mcp
+# → mcp 2.2.0
+export PYTHONPATH=/root/.venvs/parksy-phone/lib     # 서버 실행 시 항상 붙는다
+</code></pre>
+<p>왜 이렇게까지 하냐:<br>
+- 전역 <code>pip install mcp</code> → <strong>실패.</strong> 데비안이 깔아둔 <code>idna 3.11</code>에 RECORD 파일이 없어 pip가 uninstall 못 함 (<code>error: uninstall-no-record-file</code>)<br>
+- <code>python3 -m venv</code> → <strong>불가.</strong> <code>python3-venv</code>(ensurepip) 미설치<br>
+- <code>--target</code>은 시스템 파이썬을 안 건드리고 <code>rm -rf</code>로 원복 가능</p>
+<p><strong>★ 제일 큰 함정 — mcp v2는 API가 바뀌었다.</strong> 인터넷의 v1 예제를 복사하면 반드시 죽는다.</p>
+<pre><code class="language-python"># ❌ v1 (동작 안 함) — FastMCP
+from mcp.server.fastmcp import FastMCP
+
+# ✅ v2 (실측 확인) — MCPServer
+from mcp.server.mcpserver import MCPServer
+server = MCPServer(&quot;이름&quot;, version=&quot;0.0.1&quot;)
+
+@server.tool()                    # 데코레이터
+def ping() -&gt; str:
+    &quot;&quot;&quot;설명은 docstring에서 자동 추출&quot;&quot;&quot;
+    return &quot;pong&quot;
+
+server.run(transport=&quot;stdio&quot;)
+</code></pre>
+<p><strong>검증은 import가 아니라 JSON-RPC 실측으로.</strong> import만 보면 거짓 성공이다.</p>
+<pre><code class="language-bash">{ printf '%s\n' '{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;initialize&quot;,&quot;params&quot;:{&quot;protocolVersion&quot;:&quot;2025-06-18&quot;,&quot;capabilities&quot;:{},&quot;clientInfo&quot;:{&quot;name&quot;:&quot;smoke&quot;,&quot;version&quot;:&quot;1.0&quot;}}}'
+  printf '%s\n' '{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;method&quot;:&quot;notifications/initialized&quot;}'
+  printf '%s\n' '{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quot;:&quot;tools/list&quot;,&quot;params&quot;:{}}'
+  printf '%s\n' '{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:3,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;ping&quot;,&quot;arguments&quot;:{}}}'
+  sleep 4
+} | PYTHONPATH=/root/.venvs/parksy-phone/lib python3 서버.py
+</code></pre>
+<p>→ initialize / tools-list / tools-call <strong>3단계 응답 전부</strong> 받아야 통과. <code>structuredContent</code>까지 확인.</p>
+<p><strong>등록</strong></p>
+<pre><code class="language-bash">claude mcp add &lt;이름&gt; --scope user \
+  -e PYTHONPATH=/root/.venvs/parksy-phone/lib \
+  -- python3 /경로/서버.py
+claude mcp list      # → ✔ Connected
+</code></pre>
+<p><strong>남은 함정:</strong> <code>--target</code> 설치본이 PYTHONPATH로 앞에 서면 <strong>시스템 패키지를 가린다.</strong><br>
+<code>cryptography 50.0.1</code> vs 시스템 <code>pyopenssl 25.3.0</code>(요구 &lt;47) <strong>불일치</strong>, <code>protobuf 7.36.0</code> vs <code>google-api-core</code>(요구 &lt;6).<br>
+→ MCP 서버에서 pyopenssl/google-api-core를 쓰면 깨진다. <strong>YouTube 업로드용 MCP를 만들 때 반드시 확인할 것.</strong></p>
+<p><strong>Python 3.14 우려는 기우였다.</strong> <code>pydantic_core-2.46.5-cp314-cp314-manylinux_2_17_aarch64.whl</code> 등 cp314 aarch64 휠이 정상 배포된다.</p>
+<hr>
+<h3 id="3_3">③ 컨테이너 — 어떻게 만들어야 하나</h3>
+<p><strong>먼저 오해 하나를 지운다: 폰은 컨테이너를 <em>돌리는</em> 게 아니라 <em>트리거</em>한다.</strong><br>
+Docker-on-Android 부재는 실측 사실이지만, 그걸로 &ldquo;컨테이너 경로 닫힘&rdquo;을 도출한 적이 있다 — <strong>무관한 명제를 결론 근거로 쓴 잘못된 추론</strong>이었다. 2026-09-19, 3회 독립 성공(미니PC 1 · 폰 2)으로 실증됐다.</p>
+<p><strong>GHCR 이미지 3개 (Boss 계정 실물)</strong></p>
+<table>
+<thead>
+<tr>
+<th>이미지</th>
+<th>크기</th>
+<th>정체</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ghcr.io/dtslib1979/rvc-trainer</code></td>
+<td><strong>16.07 GB</strong></td>
+<td>목소리 학습 (PyTorch/CUDA 런타임 + 모델까지 얼려 있음)</td>
+</tr>
+<tr>
+<td><code>ghcr.io/dtslib1979/po-deepfake-cell</code></td>
+<td><strong>2.02 GB</strong></td>
+<td>영상 제작 런타임 (생성 Grok + 더빙 RVC)</td>
+</tr>
+<tr>
+<td><code>ghcr.io/dtslib1979/po-edit-cell</code></td>
+<td><strong>581 MB</strong></td>
+<td>편집 (화면녹화 → YouTube 규격)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>존재 검증법 (docker 없이, 폰에서):</strong><br>
+<code>https://ghcr.io/token?scope=repository:OWNER/PKG:pull&amp;service=ghcr.io</code> → <strong>401 = 있으나 비공개</strong>, <strong>403 = 없음</strong>.<br>
+⚠️ <code>cell/</code>과 <code>cell/native/</code>는 <strong>같은 이미지의 두 빌드 변형</strong>이지 별개 컨테이너가 아니다(한 번 이걸로 오판했다).</p>
+<p><strong>설치 = 컬 한 줄</strong></p>
+<pre><code class="language-bash">echo &quot;&lt;PIN&gt;&quot; | docker login ghcr.io -u dtslib1979 --password-stdin &amp;&amp; \
+docker pull ghcr.io/dtslib1979/po-deepfake-cell:native
+claude mcp add po-deepfake-cell -- ~/cell/agent-door.sh
+</code></pre>
+<ul>
+<li><code>docker pull</code>이면 <code>~/rvc-webui-local</code>(550MB) <strong>불필요</strong> — 이미지에 <code>/app/rvc</code>로 구워져 있다. 그건 <code>build.sh</code>로 직접 빌드할 때만 필요</li>
+<li><strong>유통되는 건 2GB가 아니라 주소 50자다.</strong> 무게는 GitHub에 남는다</li>
+<li><strong>private GHCR = PIN 없으면 pull 자체가 401.</strong> Boss가 말한 &ldquo;내가 코드를 부여하는 통제점&rdquo;의 완벽한 구현(PWA는 링크만 알면 누구나 열림)</li>
+</ul>
+<p><strong>두 레인 (이게 핵심)</strong><br>
+- <strong>Lane A — 상주 MCP</strong>: MCP <code>command</code> = <code>bash agent-door.minipc.sh</code> → 스크립트가 <code>docker run -i ... $IMG python $SRV</code>를 exec. <strong>MCP는 로컬처럼 보이고(stdio), 프로세스는 컨테이너 안에서 돈다.</strong> 호스트에 필요한 건 docker + bash뿐. (랩탑판은 Chrome CDP 경로만 다름 — <code>--add-host</code> + 게이트웨이. 미니PC판은 <code>--network=host</code> + <code>127.0.0.1</code>)<br>
+- <strong>Lane B — 배치 트리거 (폰)</strong>: 폰 <code>workflow_dispatch</code> → Actions 러너가 ghcr 이미지 pull → 컨테이너 연산 → 텔레그램 QA → 발행. <strong>폰에 런타임 불필요.</strong></p>
+<p><strong>새 컨테이너를 만드는 순서 (po-edit-cell 사례가 정본)</strong><br>
+1. 소스를 <code>parksy-image</code> 레포 <code>cell/services/&lt;이름&gt;/</code>에 둔다 (<code>yt_edit.py</code> · <code>Dockerfile</code> · <code>selftest.sh</code>)<br>
+2. Actions 워크플로 <code>build-&lt;이름&gt;-image.yml</code>을 만든다<br>
+3. <strong><code>selftest.sh</code>가 이미지 안에서 실제 작업을 돌려 통과해야만 GHCR에 올라간다</strong> (검증은 컨텍스트가 아니라 이미지 안에서 — 오진 재발 방지)<br>
+4. 태그를 붙여 push. <code>:native</code> 승격은 별도 판단</p>
+<p><strong>po-edit-cell 실측 (2026-09-22)</strong><br>
+- 크기 당초 예상 130MB → <strong>581MB</strong> (Debian ffmpeg가 코덱 lib를 대량 의존)<br>
+- 10.2분 영상 → <strong>521초(8분 41초), 0.85× 실시간</strong>. 출력 609.8초 / 488MB / 1080x2340@60<br>
+- <strong>fps가 최대 레버.</strong> 30fps 0.44× · 60fps 0.73× — 그런데 <strong>60fps가 파일이 더 작다</strong>(398MB vs 481MB). &ldquo;30fps=빠르고 가벼움&rdquo;은 <strong>아니다</strong><br>
+- <code>ultrafast</code>는 함정: 23% 빨라지는데 파일이 <strong>3.6배</strong><br>
+- ⚠️ <strong>짧은 벤치마크에 속지 말 것</strong> — 30초 테스트 0.49×, 120초 0.21×, 10분 전체 0.85×. 길이를 늘려 재야 진짜 값이 나온다<br>
+- ⚠️ <strong><code>avg_frame_rate</code>을 fps로 쓰지 말 것</strong> — 삼성 녹화기는 VFR이라 물리 불가능한 값이 나온다(60 선언 → 82.73 실측). <code>r_frame_rate</code>(선언값) + 60fps 캡 + <code>-fps_mode cfr</code></p>
+<p><strong>호출 계층은 아직 없다</strong> — PC 없는 지인이 <em>어떻게 영상을 넣고 결과를 받는지</em>(job JSON + 테이크 업로드 → 아티팩트 회수)는 미구현. 지금은 이미지와 편집기만 존재한다.</p>
+<hr>
+<h3 id="4-apk-axis">④ APK — 어떻게 빌드하고 어떻게 폰에 올리나 (Axis 실측)</h3>
+<p><strong>빌드 경로:</strong> GitHub Actions(<code>apps/parksy-axis/**</code> push 트리거) → <code>flutter build apk --debug</code> → 릴리스 <code>parksy-axis-latest</code>에 업로드 → 폰이 내려받아 <code>adb install -r</code>.</p>
+<p><strong>★ 서명 고정 — 이걸 안 하면 앱 데이터가 날아간다.</strong><br>
+증상: <code>adb install -r</code>이 <code>SIGNATURE_MISMATCH</code>로 거부 → 지웠다 깔아야 함 → <strong>주입한 콘티·누적 라이브러리가 사라진다.</strong></p>
+<p>원인 두 가지(둘 다 밟았다):<br>
+1. GitHub 러너 이미지에 <code>~/.android/debug.keystore</code>가 <strong>아예 없다.</strong> Gradle이 즉석 생성하는데 컨테이너가 매번 새것이라 실행마다 키가 달라진다<br>
+2. 키스토어를 만들어도 <strong>Gradle이 그 파일을 안 쓴다.</strong> 실측: 키스토어 06:22:04 생성(지문 <code>75:3F:23:04:…</code>)인데 APK 인증서는 06:25:20 생성(<code>D1:23:10:4B:…</code>) — 그 사이 다른 키로 갈아치웠다</p>
+<p>해법 3종 세트:</p>
+<pre><code class="language-yaml"># ① 키스토어를 캐시로 물려준다
+- uses: actions/cache@v4
+  with: { path: ~/.android/debug.keystore, key: parksy-axis-debug-keystore-v2 }
+# ② 생성 전 상위 디렉터리를 만든다 — keytool은 mkdir을 안 한다
+- run: |
+    mkdir -p &quot;$HOME/.android&quot;
+    [ -f &quot;$KS&quot; ] || keytool -genkeypair -v -keystore &quot;$KS&quot; -storepass android \
+      -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 \
+      -validity 10000 -dname &quot;CN=Android Debug,O=Android,C=US&quot;
+# ③ build.gradle에서 경로를 못 박는다 (env로 주입)
+</code></pre>
+<pre><code class="language-groovy">signingConfigs {
+    def ciKeystore = System.getenv(&quot;AXIS_KEYSTORE&quot;)
+    if (ciKeystore != null &amp;&amp; file(ciKeystore).exists()) {
+        debug { storeFile file(ciKeystore); storePassword &quot;android&quot;
+                keyAlias &quot;androiddebugkey&quot;; keyPassword &quot;android&quot; }
+    }
+}
+</code></pre>
+<p><strong>④ 서명 게이트 — 어긋난 APK를 조용히 배포하느니 죽는다.</strong> <code>apksigner verify --print-certs</code>로 뽑은 SHA-256을 키스토어 지문과 비교, 다르면 <code>exit 1</code>.<br>
+결과: 두 번의 독립 실행이 같은 지문 <code>cac2b81b…</code> → <code>adb install -r</code> 덮어설치 성공, 데이터 보존 확인.</p>
+<p><strong>⚠️ 별개 함정 — 권한은 회수된다.</strong> 언인스톨하면 <code>SYSTEM_ALERT_WINDOW</code>가 <strong>회수된다.</strong> 회수된 채 오버레이를 띄우면 <code>BadTokenException: Unable to add window … permission denied for window type 2038</code>로 <strong>프로세스가 즉사</strong>한다. 복구는 한 줄:</p>
+<pre><code class="language-bash">adb shell appops set kr.parksy.axis SYSTEM_ALERT_WINDOW allow
+</code></pre>
+<p>덮어설치(<code>-r</code>)에서는 유지된다.</p>
+<p><strong><code>flutter_overlay_window 0.5.0</code> 함정 5종 — 백그라운드 무장에서 실제로 밟은 것</strong><br>
+1. <strong><code>FLAG_NOT_TOUCH_MODAL</code>은 키보드를 빼앗는다(가장 치명적).</strong> 그건 <strong>포커스 가능</strong>한 창을 만든다(플러그인도 그걸 알고 <code>focusPointer</code>라 부른다) → IME가 그 창에 붙는다 → 키보드는 뜨는데 글자가 앱으로 안 간다. 게다가 <strong>얻는 게 없다</strong>: 문서상 <code>FLAG_NOT_FOCUSABLE</code>이 <code>FLAG_NOT_TOUCH_MODAL</code>을 <strong>내포</strong>한다. 바깥 터치는 원래도 통과했다. → 플러그인 기본값 <code>FLAG_NOT_FOCUSABLE</code>이 옳다<br>
+2. <strong><code>WindowSetup.width/height</code>는 px인데 <code>resizeOverlay</code>는 dpToPx를 건다.</strong> <code>onStartCommand</code>는 그대로 픽셀로 쓰고 Dart 위젯은 같은 숫자를 <strong>dp</strong>로 그린다 → 260을 그냥 넣으면 창 260px / 내용 260dp(731px) → 잘린다<br>
+3. <strong><code>startY</code>는 px/dp 이중환산 버그.</strong> 상태바 85px가 -239px로 부풀어 BOTTOM 정렬 창이 28% 화면 밖으로 밀린다. <code>startY=0</code>을 <strong>명시</strong>하면 기본값 분기를 안 탄다<br>
+4. <strong>캐시 엔진을 안 버리면 설정이 안 갈린다.</strong> <code>OverlayService.onCreate</code>가 <code>FlutterEngineCache</code>에서 엔진을 재사용해, 파일을 바꿔도 Dart 위젯 트리(옛 설정)가 살아남는다. 무장 시 <code>destroy()</code> + <code>remove()</code> 필수<br>
+5. <strong>소켓은 INTERNET 권한 없이는 못 연다.</strong> <code>ServerSocket.bind</code>가 <code>EPERM errno=1</code>로 죽고 <code>try/catch</code>에 삼켜져 <strong>조용히</strong> 실패한다. loopback 전용이어도 권한은 필요하다</p>
+<p><strong>화면 없이 오버레이를 무장하는 입구 (<code>AxisArmReceiver</code>)</strong><br>
+오버레이 서비스는 <code>exported="false"</code>라 밖에서 못 연다. 그래서 <strong>앱 안에 문을 하나 내고</strong>, 그 문이 규격을 세팅한 뒤 열어준다.</p>
+<pre><code class="language-bash">am broadcast --user 0 -a kr.parksy.axis.ARM \
+  -n kr.parksy.axis/flutter.overlay.window.flutter_overlay_window.AxisArmReceiver \
+  --es rundown '&lt;콘티 JSON&gt;' --ei show 1
+</code></pre>
+<ul>
+<li><code>show=1</code> 저장 + 띄운다 / <code>show=0</code> 저장만 하고 화면은 안 건드린다(떠 있으면 소켓에 <code>reload</code>)</li>
+<li><code>OverlayService</code>의 창 크기·위치는 <code>WindowSetup</code>의 <strong>static 필드</strong>(package-private)에서 읽는다 → 이 클래스가 <strong>Java</strong>이고 <strong>플러그인 패키지 안</strong>에 있는 이유다. Kotlin/다른 패키지면 접근이 안 된다</li>
+<li>호출은 반드시 컴포넌트(<code>-n</code>)를 지정한다 — Android 14는 암시적 브로드캐스트를 막는다</li>
+</ul>
+<p><strong>오늘 실측으로 확인된 것</strong><br>
+- <code>fl=0x1010308</code>에 <code>0x8</code>(NOT_FOCUSABLE) 포함 → <strong>오버레이와 삼성 키보드가 동시에 뜬다</strong><br>
+- <code>[Overlay] ctl socket :8492</code> — 그 전까지 <strong>한 번도 동작한 적 없던</strong> 소켓이 살았다(<code>jump 3</code>으로 하이라이트가 실제로 이동)<br>
+- <code>overlayScale: 0.5</code>를 JSON만 고쳐 적용 → 365×421px, 화면 좌하단에 flush, <strong>앱을 다시 빌드하지 않았다</strong></p>
+<p><strong>⚠️ 오버레이의 정직한 한계 (과장 금지)</strong><br>
+화면의 <strong>24%</strong>(731×843 / 1080×2340)를 먹는다. 키보드(828px)가 올라오면 거의 전부 겹친다.<br>
+<strong>라이브 오버레이가 유일한 길인 이유는 Boss가 편집을 안 하기 때문이다.</strong> 후보정 합성이 가능하다면 그쪽이 엄밀히 더 낫다. 이건 도구의 우월이 아니라 <strong>워크플로의 선택</strong>이다.</p>
+<hr>
+<h3 id="5-pc-dev-batch">5. 오늘 찾아낸 것 — 카메라워크 합성 회로 (미니PC dev-batch)</h3>
+<p>Boss가 &ldquo;여기 세션에서 내가 카메라 워크 비디오 클립 합성 회로가 몇 개 있거든&rdquo;이라고 한 것의 실체. <strong>찾았다.</strong></p>
+<p><strong>위치:</strong> 미니PC <code>dev-batch</code> (<code>dtsli@100.81.134.89:22</code>)<br>
+<code>/tmp/claude-1000/-home-dtsli-work/1c5394be-6f18-4301-8367-558fc889f89a/scratchpad/</code></p>
+<p><strong>폰으로 복사 완료:</strong> <code>/root/work/_staging/ovl/camwork/</code></p>
+<p><strong>회로 (build_*.py) — <code>build_restore.py</code>가 확정판</strong></p>
+<pre><code>starts = [0.0, 2.6, 5.1]          # 원본에서 뜰 3개 지점
+SEG_LEN = 2.5                     # 세그먼트 2.5초
+매 세그먼트마다 flip을 토글, 같은 start가 연속되지 않게 회전
+[0:v]trim → setpts → crop=880:880:0:80 → scale=296:296 (+hflip) → concat
+</code></pre>
+<p>→ 원본 한 개로 25~26세그먼트 = <strong>63초</strong>. 회전·줌 없이 <strong>좌우반전만</strong>으로 베리에이션을 만든다.</p>
+<p><strong>결과물 규격</strong></p>
+<table>
+<thead>
+<tr>
+<th>파일</th>
+<th>규격</th>
+<th>정체</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>restore_1min.mp4</code></td>
+<td>340×380 · 25fps · <strong>63.0초</strong></td>
+<td><strong>최신 확정본</strong> (회색 링, 반전만)</td>
+</tr>
+<tr>
+<td><code>unit_1min.mp4</code> · <code>unit2~7_1min.mp4</code></td>
+<td>~1분</td>
+<td>시행착오 계열</td>
+</tr>
+<tr>
+<td><code>a_tv_frame.mp4</code></td>
+<td>402×650 · 5초</td>
+<td><strong>PARKSY 세로 TV 액자</strong> (초록 전원 LED)</td>
+</tr>
+<tr>
+<td><code>b_camera_frame.mp4</code></td>
+<td>300×488 · 5초</td>
+<td><strong>뷰파인더 액자</strong> (빨간 REC + 코너 브래킷)</td>
+</tr>
+<tr>
+<td><code>c_artistic.mp4</code></td>
+<td>300×536 · 5초</td>
+<td>아티스틱</td>
+</tr>
+<tr>
+<td><code>d_lens_circle.mp4</code></td>
+<td>340×340 · 5초</td>
+<td>원형 렌즈</td>
+</tr>
+<tr>
+<td><code>e_lens_green.mp4</code></td>
+<td>360×400 · 5초</td>
+<td><strong>다크그린 고급 렌즈</strong></td>
+</tr>
+<tr>
+<td><code>clip1.mp4</code> (960×960) · <code>clip2.mp4</code> (880×1040)</td>
+<td>~10초</td>
+<td><strong>원본 소재</strong> (Grok 생성)</td>
+</tr>
+</tbody>
+</table>
+<p>부속: <code>circle_mask.png</code> · <code>circle_mask_296.png</code> (원형 마스크), <code>check_*.png</code> 13장(프레임 검증), <code>a_tv_frame.png</code> · <code>b_camera_frame.png</code><br>
+→ <code>clip1.mp4</code>(5,882,388B)와 <code>clip2.mp4</code>(9,511,178B)는 폰 <code>/sdcard/Download/</code>의 <code>generated_video.mp4</code>·<code>grok_video_2026-09-22-14-02-13_1.mp4</code>와 <strong>바이트 크기까지 일치</strong> — 같은 소재다.</p>
+<p><strong>Boss가 말한 &ldquo;오른쪽에 오버레이 카메라 내레이션 영상&rdquo; = <code>a_tv_frame.mp4</code> / <code>b_camera_frame.mp4</code> 계열이다.</strong> 사람이 마이크 앞에서 말하는 영상이 액자에 들어가 있다.</p>
+<p><strong>오버레이에 얹으려면 남은 관문 (미검증 — 추측 아님, 안 해봤음)</strong><br>
+- 플러그인은 <strong>창을 하나만</strong> 만든다(<code>CACHED_TAG</code> 단일 · <code>WindowSetup</code> static 단일 · 서비스 단일) → 창 두 개가 아니라 <strong>아래를 덮는 창 하나에 좌=콘티 / 우=TV 두 칸</strong><br>
+- 오버레이 엔진은 <code>GeneratedPluginRegistrant.registerWith()</code>를 <strong>호출하지 않는다</strong> → 지금 상태로는 <code>video_player</code>가 안 붙는다. 등록 한 줄이 필요하다</p>
+<p><em>폰 세션 <code>_Claude</code></em></p>
+<hr>
+<h2 id="2026-09-22-po-edit-cell-mcp-6-_claude">2026-09-22 — 앱스토어에 po-edit-cell 컨테이너 등록 + MCP 6종 복구 (_Claude)</h2>
+<p>Boss 지시: &ldquo;dtslib-cloud-appstore 가서 오늘 만든 거 컨테이너 등록해 놔.&rdquo;</p>
+<h3 id="1-mcp-6">한 일 ① — MCP 6종 전부 복구 (등록하다 발견)</h3>
+<p>앱스토어를 등록하기 전에 &ldquo;이 컨테이너를 부르는 MCP가 있나&rdquo;를 확인하려다, <strong>폰의 MCP 6종이 전부 죽어 있는 걸</strong> 발견했다.<br>
+<code>/health</code> 실측: 8015·8016·8018·8020·8023 <strong>닫힘</strong>, 8789만 살아있음. watchdog 로그에 <strong>재시작 실패 18,981회</strong>.</p>
+<p>원인은 전부 <strong>&ldquo;설치 안 된 모듈&rdquo;</strong> 이었고 코드 버그는 하나뿐이었다.</p>
+<table>
+<thead>
+<tr>
+<th>빠진 것</th>
+<th>서버</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aiohttp</code></td>
+<td>8016·8018</td>
+<td></td>
+</tr>
+<tr>
+<td><code>soundfile</code></td>
+<td>8015</td>
+<td>pip wheel이 cffi까지 빌드. 실제 파일 읽기/쓰기로 검증</td>
+</tr>
+<tr>
+<td><code>pyworld</code></td>
+<td>8015</td>
+<td><strong><code>--no-build-isolation</code> 필수</strong> — 없으면 빌드 의존성으로 numpy를 소스 빌드하려다 실패. 빌드 후 F0 220Hz 추출 실측</td>
+</tr>
+<tr>
+<td><code>uvicorn</code></td>
+<td>8023</td>
+<td></td>
+</tr>
+<tr>
+<td><code>fastapi</code>·<code>pydantic</code></td>
+<td>8023</td>
+<td><strong><code>ANDROID_API_LEVEL=24</code> 필수</strong> — pydantic-core는 Rust(maturin)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Termux는 root로 <code>pkg</code>/<code>apt</code>를 거부한다(&ldquo;Ability to run this command as root has been disabled&rdquo;). <strong>pip로 우회</strong>하면 된다.</li>
+<li><strong>코드 버그 1건:</strong> <code>phone_publish_mcp_sse.py</code>는 <code>PORT</code> 환경변수만 읽는데 watchdog은 <code>--port 8020</code>을 넘기고 있었다<br>
+  → 인자 무시 → 기본값 8018로 떨어져 embed와 충돌(<code>bind 8018 address in use</code>). 스크립트가 <code>--port</code>를 읽게 고쳤다.</li>
+<li><strong>구조 버그 1건:</strong> 8023은 watchdog에 <strong>아예 없었다</strong>(<code>start_all_mcp.sh</code>가 부팅 때만 띄움). 죽으면 아무도 안 살림 → 블록 추가.</li>
+<li><strong>구조 버그 1건 더:</strong> watchdog이 <strong>5개 동시에 돌고 있었다</strong>(6111·6125·10019·17199·18891). 서로 경쟁하며 각자 재시작 →<br>
+  로그 폭증의 진짜 원인. 하나만 남기고 정리(로그 18,981회는 <code>.bak-2026-09-22</code>로 백업).</li>
+</ul>
+<p><strong>결과: 6종 전부 HTTP 200 실측.</strong> watchdog 로그도 1줄(시작)뿐.</p>
+<h3 id="2-po-edit-cell">한 일 ② — po-edit-cell 앱스토어 등록</h3>
+<p>SSOT 규칙(<code>apps.json</code> meta에 박혀 있음)대로 <strong>index.json 먼저 → apps.json 파생</strong>.<br>
+커밋 <code>2daa8f1</code> → push → 라이브 반영 curl 확인 (67개 → <strong>68개</strong>, <code>po-edit-cell</code> 포함).</p>
+<p><strong>가장 위험했던 지점 — 태그를 추측할 뻔했다.</strong> 빌드 워크플로에 <code>docker tag ...:native</code> 승격 단계가 있어서<br>
+<code>native</code>로 적을 뻔했는데, GHCR에서 실제로 읽어보니 <strong>태그는 날짜(<code>2026-09-22</code>)뿐이고 <code>native</code>는 없었다</strong><br>
+(승격 조건 미충족). 그대로 적었으면 <strong>받히지 않는 주소를 광고</strong>할 뻔했다.</p>
+<p>또 하나: <code>summary.unverified</code>(83)는 <strong>산식이 어디에도 문서화돼 있지 않고 어떤 가설로도 재현이 안 됐다</strong>(최근접 81).<br>
+<strong>추측으로 채우지 않고</strong> 그대로 두고 그 사실을 <code>summary.measured</code>에 적었다.</p>
+<p>실측값: 태그 <code>2026-09-22</code> · 레이어 8 · 압축 208.2MB · 빌드 시 581MB. <code>workcenter</code>는 <strong>전부 false</strong> —<br>
+호출 계층(agent-door·batch 파이프라인)이 미구현이라 true를 넣을 근거가 없다.</p>
+<h3 id="indexjson">발견 — index.json은 닫혔고 나머지는 안 닫혔다</h3>
+<p><code>deploy.yml</code>의 rsync <code>--exclude</code>가 <code>mcp/mcp-registry/index.json</code>만 뺀다. curl 실측:</p>
+<table>
+<thead>
+<tr>
+<th>404 ✅</th>
+<th>200 ⚠️ (아직 공개)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mcp/mcp-registry/index.json</code></td>
+<td><code>CLAUDE.md</code> · <code>status.json</code> · <code>WHITEPAPER.md</code> · <code>BRAND_FINAL.md</code> · <code>DEVLOG_*.md</code></td>
+</tr>
+</tbody>
+</table>
+<p>지난 세션의 &ldquo;레포 전체 공개&rdquo; 문제는 <strong>한 파일만</strong> 닫힌 상태다.</p>
+<h3 id="_27">정직하게 — 내가 깨뜨린 게 아니다 (근거 있음)</h3>
+<p><code>repo-guard</code>·<code>registry-integrity</code>가 빨간불인데, <code>git stash</code>로 <strong>변경 전 상태에서도 동일 실패(exit=1)</strong> 함을 확인했다.<br>
+GHOST 50→51로 1건 늘어난 건 사실이나 기존 부채는 안 건드렸다.</p>
 <p><em>폰 세션 <code>_Claude</code></em></p>
   </article>
   <nav class="wz-pager">
