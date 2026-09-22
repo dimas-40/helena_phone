@@ -7701,3 +7701,94 @@ _폰 세션 `_Claude`_
 → 결론: 리뷰 판정은 "누가 맞나"가 아니라 **무엇을 안 봤나**로 갈린다. 양쪽 다 증거를 덜 댔다.
 
 _폰 세션 `_Claude`_
+
+---
+
+## 2026-09-22 — MCP가 세션별로 다르게 나오는 이유 (폰 구동 관련) (_Claude)
+
+> Boss 질문: "지금 /mcp 치면 각각 세션별로 어떻게 리스트들이 나오는 거냐?"
+> → 이 문서는 그 답 + 폰에서 MCP를 못 쓰는 이유의 **실측 정본**이다.
+> 관련 후속작업 재개할 때 여기부터 읽을 것.
+
+### ① `/mcp` 목록은 전역이 아니다 — 3개 스코프의 합집합
+
+`claude mcp add -s <scope>` 가 곧 그거다:
+
+| 스코프 | 저장 위치 | 보이는 범위 |
+|---|---|---|
+| **local** (기본값) | `~/.claude.json` → `projects["<현재폴더>"].mcpServers` | **그 폴더에서만** |
+| **user** | `~/.claude.json` → 최상위 `mcpServers` | 그 프로필 전체 |
+| **project** | 레포 루트 `.mcp.json` | 레포에 커밋되면 공유 |
+
+어느 `~/.claude.json` 을 읽느냐는 `CLAUDE_CONFIG_DIR` 로 갈린다. 미니PC엔 프로필이 4개 있다.
+
+### ② 실측 — 세션별로 이렇게 나온다 (2026-09-22)
+
+| 세션 | 읽는 config | `/mcp` 서버 |
+|---|---|---|
+| **폰 `/root/work`** | `/root/.claude.json` | **0개** |
+| 미니PC `.claude` | `~/.claude/.claude.json` | 1개 |
+| 미니PC `.claude-prod` | `~/.claude-prod/.claude.json` | 1개 |
+| **미니PC `.claude-deepseek`** | `~/.claude-deepseek/.claude.json` | **6개** ← Boss가 본 화면 |
+| 미니PC 기본 | `~/.claude.json` | user 3개 + project 2개(`/home/dtsli` 에서만) |
+
+폰의 실제 값:
+```
+/root/.claude.json  → mcpServers: None
+                      projects: { "/root/work": { "mcpServers": {} } }
+CLAUDE_CONFIG_DIR   → 미설정
+/root/work/.mcp.json → 없음
+```
+
+미니PC 기본 프로필에서 project 스코프가 실제로 갈리는 증거:
+```
+[user]    devlog · eae-writer · bigtech-tutorial
+[project] + po-deepfake-cell · po-tutorial     ← /home/dtsli 에서만 추가됨
+```
+
+### ③ ★ 진짜 원인 — 그 6개는 전부 `/home/dtsli/...` 를 가리킨다
+
+```
+devlog        node /home/dtsli/bin/devlog-mcp.mjs
+eae-writer    /home/dtsli/workcenter/recipes/eae-writer/.venv/bin/python3 …
+po-deepfake   /home/dtsli/cell/agent-door.sh
+jail          /home/dtsli/rvc-venv/bin/python /home/dtsli/wsl-repos/parksy-image/…
+vision        /home/dtsli/vision-cell/vision-door.sh
+po-tutorial   /home/dtsli/cell/po-tutorial-shim.py
+```
+
+**MCP config 항목은 "설정"이 아니라 "여기서 이 프로그램을 띄워라"라는 실행 지시다.**
+→ 그 프로그램이 그 기기에 없으면 등록해도 즉시 깨진다.
+→ 그 6개를 폰에 그대로 복사하면 **여섯 개 전부 죽는다.**
+
+### ④ 결론 — "통일"은 원리적으로 불가, 관제탑은 "기록"
+
+각 기기가 서로 다른 **로컬 프로세스**를 띄우는 구조라 목록을 같게 만들 수 없다.
+6개가 미니PC에만 있는 건 설정 실수가 아니라 그 프로그램들이 미니PC 디스크에 있어서다.
+
+→ 그래서 앱스토어 `workcenter` 필드가 기기별 `{installed, registered, capable, blocker}` **객체**인 게 맞는 설계다.
+   통일하는 게 아니라 **기록**하는 것. **"어느 기기에 무엇이 있고 왜 없는지 한눈에"** 가 관제탑의 일이다.
+
+### ⑤ 폰이 MCP를 쓰려면 — 재료는 있고, 막는 건 하나
+
+```
+/root/work/mcp-servers/
+  eae_mcp_writer.py · eae_mcp_platform.py · parksy_law_mcp.py
+  parksy_rawmat_mcp.py · parksy_scm_mcp.py · po_deepfake_cloud_mcp.py
+```
+막는 것 하나: **`mcp` SDK 미설치**
+```
+from mcp.server.fastmcp import FastMCP
+ModuleNotFoundError: No module named 'mcp'
+```
+(4개 중 3개가 정확히 이 한 줄에서 죽는다. `po_deepfake_cloud_mcp.py` 만 살아서 stdio 대기.)
+
+**정정:** 메모리에 "aiohttp 없어서 4개 죽어있음"이라 적혀 있었는데 **낡은 기록**이다.
+실측 `aiohttp 3.13.3` 설치돼 있음. 진짜 원인은 위 `mcp` SDK 하나.
+
+폰에서 도는 포트 실측: `8789` 만 응답(HTTP 404=살아있음), `3456·8015·8016·8018·8020·8023` 전부 무응답.
+→ Termux 쪽 서비스가 안 떠 있는 상태. proot에서 MCP를 쓰려면 **자기 경로를 가리키는 자기 항목**을 등록해야 한다.
+
+**커밋:** (아래) · **아직 안 한 것:** 폰 `/mcp` 실제 등록 (`pip install mcp` → `claude mcp add`)
+
+_폰 세션 `_Claude`_
