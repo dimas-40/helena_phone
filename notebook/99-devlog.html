@@ -634,6 +634,16 @@
 <li><a href="#_27">정직하게 — 내가 깨뜨린 게 아니다 (근거 있음)</a></li>
 </ul>
 </li>
+<li><a href="#2026-09-22-phone-t-vfr-_claude">2026-09-22 저녁 — Phone T: 폰 안에서 도는 편집 라인 + 컷 버그 (VFR) (_Claude)</a><ul>
+<li><a href="#1-parksy-phone-vol0-_notebook114">한 일 ① — Parksy Phone Vol.0 영문 강의 (_notebook/114)</a></li>
+<li><a href="#2-phone-t">한 일 ② — Phone T: 폰 라인을 정본으로 세움</a></li>
+<li><a href="#3-vfr">★ 한 일 ③ — 컷이 조용히 무시되던 버그 (VFR)</a></li>
+<li><a href="#_28">발견 — 배포 가지가 갈려 있다 (라이브가 정체)</a></li>
+<li><a href="#_29">발견 — 컨테이너 이름은 안 바뀌었고, 앱스토어 등록은 덮였다</a></li>
+<li><a href="#2_2">정직하게 — 내가 낸 결함 2건</a></li>
+<li><a href="#_30">컨테이너가 아직 안 맞춘 것 (과장 금지)</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav>
@@ -10452,7 +10462,9 @@ claude mcp add po-deepfake-cell -- ~/cell/agent-door.sh
 - <strong>fps가 최대 레버.</strong> 30fps 0.44× · 60fps 0.73× — 그런데 <strong>60fps가 파일이 더 작다</strong>(398MB vs 481MB). &ldquo;30fps=빠르고 가벼움&rdquo;은 <strong>아니다</strong><br>
 - <code>ultrafast</code>는 함정: 23% 빨라지는데 파일이 <strong>3.6배</strong><br>
 - ⚠️ <strong>짧은 벤치마크에 속지 말 것</strong> — 30초 테스트 0.49×, 120초 0.21×, 10분 전체 0.85×. 길이를 늘려 재야 진짜 값이 나온다<br>
-- ⚠️ <strong><code>avg_frame_rate</code>을 fps로 쓰지 말 것</strong> — 삼성 녹화기는 VFR이라 물리 불가능한 값이 나온다(60 선언 → 82.73 실측). <code>r_frame_rate</code>(선언값) + 60fps 캡 + <code>-fps_mode cfr</code></p>
+- ⚠️ ~~<strong><code>avg_frame_rate</code>을 fps로 쓰지 말 것</strong> — 삼성 녹화기는 VFR이라 물리 불가능한 값이 나온다(60 선언 → 82.73 실측). <code>r_frame_rate</code>(선언값) + 60fps 캡 + <code>-fps_mode cfr</code>~~<br>
+  → <strong>2026-09-22 저녁 정정. 이 처방이 그대로 버그를 만들었다.</strong> 아래 「Phone T」 항목 참조.<br>
+<code>avg_frame_rate</code>는 <strong>출력 fps로는 쓰면 안 되지만, 컷 이어붙일 &lsquo;간격&rsquo;으로는 그 값이 맞다.</strong> 둘을 구분하지 않고 <code>r_frame_rate</code> 하나로 밀면 <strong>영상이 소리보다 17.7초 빨라진다.</strong></p>
 <p><strong>호출 계층은 아직 없다</strong> — PC 없는 지인이 <em>어떻게 영상을 넣고 결과를 받는지</em>(job JSON + 테이크 업로드 → 아티팩트 회수)는 미구현. 지금은 이미지와 편집기만 존재한다.</p>
 <hr>
 <h3 id="4-apk-axis">④ APK — 어떻게 빌드하고 어떻게 폰에 올리나 (Axis 실측)</h3>
@@ -10666,6 +10678,134 @@ SEG_LEN = 2.5                     # 세그먼트 2.5초
 <h3 id="_27">정직하게 — 내가 깨뜨린 게 아니다 (근거 있음)</h3>
 <p><code>repo-guard</code>·<code>registry-integrity</code>가 빨간불인데, <code>git stash</code>로 <strong>변경 전 상태에서도 동일 실패(exit=1)</strong> 함을 확인했다.<br>
 GHOST 50→51로 1건 늘어난 건 사실이나 기존 부채는 안 건드렸다.</p>
+<p><em>폰 세션 <code>_Claude</code></em></p>
+<hr>
+<h2 id="2026-09-22-phone-t-vfr-_claude">2026-09-22 저녁 — Phone T: 폰 안에서 도는 편집 라인 + 컷 버그 (VFR) (_Claude)</h2>
+<p>Boss 지시: <em>&ldquo;너는 컨테이너가 아니라 여기 [폰] 환경에서 조성을 해. 그러니까 백업 플랜이야.<br>
+… 핸드폰 안에서도 구동될 수 있는 백업 플랜 예비 전력처럼 만들어 놔 그거 보고 컨테이너하고<br>
+똑같이 만들면 되니까.&rdquo;</em></p>
+<h3 id="1-parksy-phone-vol0-_notebook114">한 일 ① — Parksy Phone Vol.0 영문 강의 (<code>_notebook/114</code>)</h3>
+<p>Boss 지시: <em>&ldquo;박씨 폰강의 이런 영문으로 만들어 봐.&rdquo;</em> (<strong>박씨 = Parksy 브랜드 = Boss 본인</strong> —<br>
+내가 제3자로 오독해 확인 질문까지 던졌다가 정정받았다. 별도 기록 필요.)</p>
+<p>집에 있는 강의 초안 형식(<code>40-lecture-draft-s21-voice-vol0_Grok.md</code>)의 <code>[Blackboard]</code> + <code>(Script)</code><br>
+구조를 그대로 써서 영문 13슬라이드. <strong>숫자는 전부 실측값만</strong>: 컨테이너 16.07GB/2.00GB/0.58GB ·<br>
+15분 영상 9분(필터 없음) vs 33분(필터) · 블러 한 장 38→12초 · 크롭 9.0/4.0% · loudnorm -16/-1.5/11 ·<br>
+폰 MCP 6종 · 카탈로그 68.<br>
+커밋 <code>2016edb</code> → 웹페이지 <code>3cdd808</code>, <strong>coverage gap 0</strong> 통과.</p>
+<h3 id="2-phone-t">한 일 ② — Phone T: 폰 라인을 정본으로 세움</h3>
+<p>알맹이는 <code>scripts/yt_edit.py</code> 하나. python3 표준 라이브러리 + ffmpeg CLI만 쓴다.<br>
+<strong>컨테이너(<code>python:3.12-slim</code> + ffmpeg)와 차이가 베이스 이미지뿐</strong> → 이 파일을 그대로 넣으면<br>
+컨테이너가 재현된다. pip 설치 0건, <code>requirements.txt</code> 없음. 커밋 <code>ffb85d0</code>·<code>626d923</code>.</p>
+<p><strong>★ 순서가 뒤집혀 있다 — 이게 이 항목의 핵심이다.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>어디</th>
+<th>무엇</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>정본</strong></td>
+<td>폰 <code>scripts/yt_edit.py</code></td>
+<td>고칠 때 <strong>여기를 고친다</strong></td>
+</tr>
+<tr>
+<td>사본</td>
+<td><code>ghcr.io/dtslib1979/po-edit-cell</code></td>
+<td>같은 파일 + ffmpeg</td>
+</tr>
+<tr>
+<td>사본</td>
+<td><code>parksy-image/cell/services/edit/yt_edit.py</code></td>
+<td><strong>아직 예전 코드</strong>(버그 + 레인 없음)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>진입점 <code>scripts/phonet.sh</code> → <code>/usr/local/bin/phonet</code> 심볼릭 링크.<br>
+  링크로 부르면 <code>${BASH_SOURCE[0]}</code>가 링크 위치를 가리켜 도구를 못 찾는다 → 풀어야 한다(실측 확인).</li>
+<li>레인 3종: <code>lecture</code>/<code>tour</code> = 1920x1080 · <code>narration</code> = 1080x1920. 크롭 <code>0.090</code>/<code>0.040</code>은<br>
+<strong>앱스토어 PWA <code>lecture-long/app.js:64</code>의 <code>S25_ULTRA</code> 값</strong>에서 온 것 — 추측이 아니다.</li>
+<li><strong>배경 블러는 한 장만 굽는다</strong>(<code>make_backdrop</code>). 매 프레임 38초 → 한 장 재사용 12초 (S25 Ultra 실측).<br>
+  뒤가 안 변하는데 매번 다시 계산하고 있었다.</li>
+<li>정본 문서: <code>phone-t/README.md</code> — 컨테이너가 똑같이 맞춰야 하는 상수·출처·버그·한계까지.</li>
+</ul>
+<h3 id="3-vfr">★ 한 일 ③ — 컷이 조용히 무시되던 버그 (VFR)</h3>
+<p>위 7979행의 처방(<strong>&ldquo;<code>avg_frame_rate</code> 말고 <code>r_frame_rate</code>를 쓰라&rdquo;</strong>)이 <strong>그대로 버그를 만들었다.</strong></p>
+<p>삼성 화면녹화는 VFR이다. 선언 <code>r_frame_rate=60/1</code>인데 실제 간격은 <code>avg_frame_rate=82.73</code>.<br>
+<code>setpts=N/FRAME_RATE/TB</code>로 이어붙이면 프레임 N을 <strong>N/60초</strong> 자리에 놓는다 — 실제 간격은 1/82.73초.</p>
+<blockquote>
+<p><strong>재현 실측:</strong> 소리 <strong>44.40초</strong>에 영상 <strong>62.10초</strong> — <strong>17.7초 어긋남.</strong> (컷이 안 먹은 것도 겹쳤다)</p>
+</blockquote>
+<p><strong>정정된 처방 — fps를 두 개로 나눈다:</strong></p>
+<table>
+<thead>
+<tr>
+<th>용도</th>
+<th>쓸 값</th>
+<th>방법</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>컷 이어붙일 간격</strong>(retime)</td>
+<td><code>avg_frame_rate</code> = nb_frames/duration</td>
+<td><code>setpts=N/{retime_fps:.6f}/TB</code></td>
+</tr>
+<tr>
+<td><strong>출력 fps</strong></td>
+<td>선언값 60 캡</td>
+<td><code>fps=60</code> <strong>필터</strong>(타임스탬프 인지 → 자동 복제/드롭)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>avg_frame_rate</code>는 &ldquo;평균 간격&rdquo;이라 이걸로 재타이밍하면 <strong>총 길이가 원본과 맞는다</strong> — 그게 동기를 되찾는 이유.</li>
+<li><strong>출력 옵션 <code>-r 60</code> / <code>-fps_mode cfr</code>로는 못 고친다</strong> — 타임스탬프를 모른 채 개수만 센다.</li>
+<li><strong><code>setpts=PTS-STARTPTS</code>도 안 된다</strong> — 동기화는 맞지만 <code>select</code>가 남긴 구멍을 메우지 않아<br>
+<strong>컷이 조용히 무시된다.</strong> 여기서 한 번 갈아엎었다.</li>
+</ul>
+<p><strong>정정 후 실측:</strong> 영상 <strong>44.38초</strong>(2663프레임) / 소리 <strong>44.40초</strong> — <strong>오차 0.02초, 컷도 적용됨.</strong><br>
+레인 출력 1920x1080, 44.366667 / 44.400000, 7.6MB — <strong>프레임을 눈으로 확인</strong><br>
+(<code>Phone T</code> 좌상단 · <code>dtslib.kr</code> 우하단 · 상태바 잘림 · 좌우 블러).<br>
+<code>--quick lecture</code> 6초 입력 → 1920x1080 CFR60, 영상·소리 둘 다 6.022333.</p>
+<h3 id="_28">발견 — 배포 가지가 갈려 있다 (라이브가 정체)</h3>
+<p><code>dimas-40/helena_phone</code>의 Pages는 <strong><code>main</code>에서 배포</strong>되는데 작업은 <strong><code>master</code>에 쌓인다</strong>.<br>
+실측: <code>master</code>가 74커밋 앞, <code>main</code>이 8커밋 앞. 병합 충돌 <strong>231건</strong>(대부분 생성물 + 덧붙임 충돌).</p>
+<p><strong>그래서 라이브에 오늘 것이 0건이다.</strong> 라이브 <code>notebook/99-devlog.html</code>에서 <code>po-edit-cell</code>·<code>MCP 6종</code>·<br>
+<code>2026-09-22</code> 전부 grep 0, 같은 파일 로컬 빌드본엔 8건/5건.<br>
+<strong>&ldquo;커밋했다·빌드했다&rdquo;와 &ldquo;라이브에 떴다&rdquo;가 이 레포에선 별개다.</strong> 공개 사이트를 건드리는 일이라<br>
+Boss 확인 없이 병합하지 않았다.</p>
+<h3 id="_29">발견 — 컨테이너 이름은 안 바뀌었고, 앱스토어 등록은 덮였다</h3>
+<ul>
+<li>이름 변경 없음. GHCR 태그는 <code>2026-09-22</code> 하나뿐(<code>native</code> 없음). <strong>GHCR에 rename 기능이 없다</strong> —<br>
+  바꾸려면 새 이름으로 다시 push 해야 한다. 문자열은 Boss 결정 사항.</li>
+<li>컨테이너 소스 위치 확인: <code>dtslib1979/parksy-image</code> → <code>cell/services/edit/</code>(Dockerfile·selftest.sh·yt_edit.py).</li>
+<li>내가 올린 앱스토어 항목을 <strong>다른 세션이 덮었다</strong>(<code>a0d1ce2</code>·<code>30ef1bf</code>·<code>2478a82</code>·<code>2c9eb87</code>).<br>
+  라이브 <code>apps.json</code>의 <code>po-edit-cell</code>은 지금 &ldquo;🛠 개발 중 (2026-09-22)&rdquo;, 확정 컨테이너는<br>
+<code>rvc-trainer</code> + <code>po-deepfake-cell</code> 둘. 그쪽이 &ldquo;컨테이너 2개 확정, 하나는 개발 중&rdquo;이라는<br>
+<strong>내가 없던 사실</strong>을 갖고 있었다. 같은 레지스트리를 동시에 편집 중 → 충돌 위험.</li>
+</ul>
+<h3 id="2_2">정직하게 — 내가 낸 결함 2건</h3>
+<ol>
+<li><strong>박씨를 제3자로 읽고 그 위에 결과물을 지었다.</strong> 전제 확인 없이 진행.</li>
+<li><strong>&ldquo;100.2초 성공&rdquo;을 검증 통과로 기록했다.</strong> 그 값은 47.48 + 52.69 = 100.17과 일치한다 —<br>
+   즉 <strong>컷이 안 먹은 값</strong>이다. 버그가 숨은 것을 통과로 읽었다.<br>
+   (이 숫자는 devlog엔 없고 내 세션 메모리에만 있다. 그쪽에 &ldquo;검증 통과로 인용 금지, 컷 걸어 다시 재라&rdquo;고<br>
+   정정해 뒀다.)</li>
+</ol>
+<p>공통점: <strong>그럴싸한 중간 산출물을 검증으로 착각한다.</strong> 헌법의 &ldquo;AI 출력 = 기술적 관성, 다시 세어라&rdquo;가<br>
+그대로 적용된 하루였다.</p>
+<h3 id="_30">컨테이너가 아직 안 맞춘 것 (과장 금지)</h3>
+<ul>
+<li><code>cell/services/edit/yt_edit.py</code>는 <strong>아직 예전 코드</strong> — VFR 버그 + 레인 없음.</li>
+<li>내가 &ldquo;컨테이너와 폰의 차이는 베이스 이미지뿐&rdquo;이라고 썼는데, <strong>컨테이너를 같은 파일에 실제로 돌려<br>
+  확인한 적은 없다.</strong> 그건 내 주장이다.</li>
+<li>한글 제목은 <strong>지금 안 나온다</strong> — 폰에 한글 폰트가 없고, drawtext는 없는 글자를<br>
+<strong>오류 없이 조용히 안 그린다.</strong> 영문만 렌더 확인. <code>python:3.12-slim</code>엔 fontconfig조차 없다.</li>
+</ul>
 <p><em>폰 세션 <code>_Claude</code></em></p>
   </article>
   <nav class="wz-pager">
