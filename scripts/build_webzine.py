@@ -273,6 +273,7 @@ NOTEBOOK_TITLES = {
     "infra-whitepaper-2026-08-27_Claude.md": "proot Ubuntu 1인 미디어 공장 기술백서",
     "session-2026-08-27_Claude.md": "세션 — S25 경제방송 배선 + 파이프라인 갭 평가",
     "BRIEFING-MCP-REPO-2026-09-21_Claude.md": "MCP 기준 리팩토링 브리핑 (1장)",
+    "114-parksy-phone-lecture-vol0-en_Claude.md": "Parksy Phone Vol.0 (영문) — 폰 하나가 공장 전체인 이유",
 }
 
 # Auto-discover every _notebook/*.md (overrides in NOTEBOOK_TITLES)
