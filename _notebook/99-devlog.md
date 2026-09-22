@@ -7792,3 +7792,367 @@ ModuleNotFoundError: No module named 'mcp'
 **커밋:** (아래) · **아직 안 한 것:** 폰 `/mcp` 실제 등록 (`pip install mcp` → `claude mcp add`)
 
 _폰 세션 `_Claude`_
+
+---
+
+## 2026-09-22 — 4대 이력 정본: ADB · MCP · 컨테이너 · APK (_Claude)
+
+> Boss 지시 원문: *"지금 이거 MCP 어떻게 만들고 어떻게 했는지 컨테이너 어떻게 만들어야 되는지 ADB 어떻게 뚫었는지 APK 어떻게 빌드했는지 다 개발 이력에서 저장해 놔"*
+>
+> 아래는 **오늘(09-22) 실제로 명령을 쳐서 확인한 것만** 적는다. 확인 안 된 것은 "미검증"이라고 표시했다.
+> 목적: 나중에 이 4개를 **다시 만들 수 있게** 하는 것. 결과를 자랑하는 문서가 아니다.
+
+### 0. 먼저 지도 — 이 4개는 순서가 있는 층이다
+
+```
+④ APK      ← 눈에 보이는 것 (Axis 오버레이·저장·카테고리)
+③ MCP      ← 앱이 도구를 부르는 입구 (v2 SDK, 폰 자체 경로)
+② 컨테이너  ← 무거운 연산 (GHCR 이미지 3개, 두 레인)
+① ADB      ← 모든 것의 바닥 (Shizuku 5900)
+```
+
+**①이 안 뚫려 있으면 ②③④가 성립하지 않는다.** 실제로 SMS 무인 판독·굿락 제어·삼성앱 25종 스윕이 전부 ① 위에서만 돌았다.
+반대로 **④는 ① 없이도 된다** — 오버레이는 앱 안에서 도는 것이라 ADB가 필요 없다. 이 구분을 흐리면 "왜 이건 되고 저건 안 되나"에서 계속 헤맨다.
+
+---
+
+### ① ADB — 어떻게 뚫었나 (Boss 발명, 2026-08-21 확정)
+
+**삼성이 깨뜨려 놓은 것부터.**
+- PC→폰 무선 페어링(SPAKE2)은 WireGuard/Tailscale 위에서 **원천 불가**
+- Android 15 Termux에서 `adb pair` localhost도 미지원
+- **핵심 원인:** `5555`는 adb **에뮬레이터 대역**(5555~5585)이다. 이 폰은 5555를 에뮬레이터로 오인해 `emulator-5554 offline`으로 붙는다 → 어떤 클라이언트도 핸드셰이크 불가
+
+**해법 = 폰이 자기 자신과 페어링한다.**
+1. 재부팅 → `service.adb.tcp.port=5555` 잠금 해제
+2. Shizuku 포크에서 **TCP 포트를 5900으로** 지정 (에뮬레이터 대역 밖)
+3. "무선 디버깅으로 시작" → `Successfully connected on port 5900`
+4. RSA **"항상 허용"** → 그 뒤로는 팝업 없이 붙는다
+5. `adb tcpip 5900` 유지 → 어느 PC에서든 `adb connect <폰IP>:5900`
+
+**실측 (2026-09-22, 이 proot에서 직접)**
+```
+/data/data/com.termux/files/usr/bin/adb devices
+  → 127.0.0.1:5900   device   model:SM_S938N
+adb shell id
+  → uid=2000(shell) context=u:r:shell:s0      ← root 아님
+adb exec-out screencap -p > x.png                → 진짜 화면 PNG 376KB, 성공
+```
+- 커널 `6.6.77-android15`, `ro.serialno=R3CY609RRAR` (proot의 `uname` 6.17.0-PRoot-Distro는 **가짜**)
+- 열린 포트: `5037`(adb 서버) · `5900`(Shizuku adbd) · `5555` **closed**
+- `input keyevent` exit=0, `dumpsys power/window/battery` 전부 동작
+
+**★ 여기서 제일 중요한 함정 (proot의 ABI 경계)**
+| 도구 | proot에서 | 이유 |
+|---|---|---|
+| `adb` 바이너리 | **실행됨** | bionic ELF(`/system/bin/linker64`)를 proot이 그대로 exec |
+| `rish` 런처 | **안 됨** (`Operation not permitted`) | shebang 해석 단계에서 막힘 |
+→ **ADB 클라이언트는 되고, Shizuku 권한 승격은 안 된다.** rish가 필요한 일은 Termux 쪽에 위임해야 한다.
+
+**유지 장치:** `/data/data/com.termux/files/home/.termux/boot/adb-watchdog-v2.sh` — 5분마다 adbd/Shizuku/5900 확인.
+⚠️ Shizuku가 죽으면 **앱을 띄우기만 하고 수동 시작이 필요**하다(자동 복구 아님).
+
+**백그라운드 면제 (적용 완료, 재부팅 유지)**
+```bash
+rish -c 'settings put global settings_enable_monitor_phantom_procs false'
+rish -c 'cmd deviceidle whitelist +com.termux'
+rish -c 'cmd appops set com.termux RUN_ANY_IN_BACKGROUND allow'
+```
+
+**어디서 붙나 (실측)**
+
+| 기기 | 주소 | 결과 |
+|---|---|---|
+| 폰 proot → 자기 자신 | `127.0.0.1:5900` | `device` (키 이미 인증, 팝업 없음) |
+| 랩탑 DTSLIB (Windows) | adb는 scrcpy 번들 | `device` ✅ |
+| 미니PC dev-batch (Ubuntu) | `100.81.134.89` | `device` ✅ |
+| 탭 S9 | `100.86.15.50:5900` | `device` ✅ |
+
+⚠️ 랩탑 원격 셸 기본이 **PowerShell**이다 → `&` 쓰면 파싱 에러, `;`를 쓸 것.
+
+---
+
+### ② MCP — 어떻게 만들고 어떻게 등록하나 (2026-09-22 확정)
+
+**먼저 "MCP는 기기별로 다른 게 정상"이다.** config는 3스코프(local/user/project)의 **합집합**이고, 각 항목은 *"여기서 이 프로그램을 띄워라"*는 **실행 지시**다. 그 프로그램이 그 기기에 없으면 등록해도 즉시 깨진다.
+→ 그래서 미니PC의 6개(`devlog`·`eae-writer`·`po-deepfake`·`jail`·`vision`·`po-tutorial`)는 **전부 `/home/dtsli/...`를 가리킨다.** 폰에 복사하면 여섯 개 전부 죽는다. 통일이 아니라 **기록**이 관제탑의 일이다.
+
+**설치 — 전역 설치는 실패한다. `--target`이 유일하게 통한 길이다.**
+```bash
+python3 -m pip install --break-system-packages \
+  --target /root/.venvs/parksy-phone/lib mcp
+# → mcp 2.2.0
+export PYTHONPATH=/root/.venvs/parksy-phone/lib     # 서버 실행 시 항상 붙는다
+```
+왜 이렇게까지 하냐:
+- 전역 `pip install mcp` → **실패.** 데비안이 깔아둔 `idna 3.11`에 RECORD 파일이 없어 pip가 uninstall 못 함 (`error: uninstall-no-record-file`)
+- `python3 -m venv` → **불가.** `python3-venv`(ensurepip) 미설치
+- `--target`은 시스템 파이썬을 안 건드리고 `rm -rf`로 원복 가능
+
+**★ 제일 큰 함정 — mcp v2는 API가 바뀌었다.** 인터넷의 v1 예제를 복사하면 반드시 죽는다.
+```python
+# ❌ v1 (동작 안 함) — FastMCP
+from mcp.server.fastmcp import FastMCP
+
+# ✅ v2 (실측 확인) — MCPServer
+from mcp.server.mcpserver import MCPServer
+server = MCPServer("이름", version="0.0.1")
+
+@server.tool()                    # 데코레이터
+def ping() -> str:
+    """설명은 docstring에서 자동 추출"""
+    return "pong"
+
+server.run(transport="stdio")
+```
+
+**검증은 import가 아니라 JSON-RPC 실측으로.** import만 보면 거짓 성공이다.
+```bash
+{ printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"smoke","version":"1.0"}}}'
+  printf '%s\n' '{"jsonrpc":"2.0","method":"notifications/initialized"}'
+  printf '%s\n' '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
+  printf '%s\n' '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"ping","arguments":{}}}'
+  sleep 4
+} | PYTHONPATH=/root/.venvs/parksy-phone/lib python3 서버.py
+```
+→ initialize / tools-list / tools-call **3단계 응답 전부** 받아야 통과. `structuredContent`까지 확인.
+
+**등록**
+```bash
+claude mcp add <이름> --scope user \
+  -e PYTHONPATH=/root/.venvs/parksy-phone/lib \
+  -- python3 /경로/서버.py
+claude mcp list      # → ✔ Connected
+```
+
+**남은 함정:** `--target` 설치본이 PYTHONPATH로 앞에 서면 **시스템 패키지를 가린다.**
+`cryptography 50.0.1` vs 시스템 `pyopenssl 25.3.0`(요구 <47) **불일치**, `protobuf 7.36.0` vs `google-api-core`(요구 <6).
+→ MCP 서버에서 pyopenssl/google-api-core를 쓰면 깨진다. **YouTube 업로드용 MCP를 만들 때 반드시 확인할 것.**
+
+**Python 3.14 우려는 기우였다.** `pydantic_core-2.46.5-cp314-cp314-manylinux_2_17_aarch64.whl` 등 cp314 aarch64 휠이 정상 배포된다.
+
+---
+
+### ③ 컨테이너 — 어떻게 만들어야 하나
+
+**먼저 오해 하나를 지운다: 폰은 컨테이너를 *돌리는* 게 아니라 *트리거*한다.**
+Docker-on-Android 부재는 실측 사실이지만, 그걸로 "컨테이너 경로 닫힘"을 도출한 적이 있다 — **무관한 명제를 결론 근거로 쓴 잘못된 추론**이었다. 2026-09-19, 3회 독립 성공(미니PC 1 · 폰 2)으로 실증됐다.
+
+**GHCR 이미지 3개 (Boss 계정 실물)**
+
+| 이미지 | 크기 | 정체 |
+|---|---|---|
+| `ghcr.io/dtslib1979/rvc-trainer` | **16.07 GB** | 목소리 학습 (PyTorch/CUDA 런타임 + 모델까지 얼려 있음) |
+| `ghcr.io/dtslib1979/po-deepfake-cell` | **2.02 GB** | 영상 제작 런타임 (생성 Grok + 더빙 RVC) |
+| `ghcr.io/dtslib1979/po-edit-cell` | **581 MB** | 편집 (화면녹화 → YouTube 규격) |
+
+**존재 검증법 (docker 없이, 폰에서):**
+`https://ghcr.io/token?scope=repository:OWNER/PKG:pull&service=ghcr.io` → **401 = 있으나 비공개**, **403 = 없음**.
+⚠️ `cell/`과 `cell/native/`는 **같은 이미지의 두 빌드 변형**이지 별개 컨테이너가 아니다(한 번 이걸로 오판했다).
+
+**설치 = 컬 한 줄**
+```bash
+echo "<PIN>" | docker login ghcr.io -u dtslib1979 --password-stdin && \
+docker pull ghcr.io/dtslib1979/po-deepfake-cell:native
+claude mcp add po-deepfake-cell -- ~/cell/agent-door.sh
+```
+- `docker pull`이면 `~/rvc-webui-local`(550MB) **불필요** — 이미지에 `/app/rvc`로 구워져 있다. 그건 `build.sh`로 직접 빌드할 때만 필요
+- **유통되는 건 2GB가 아니라 주소 50자다.** 무게는 GitHub에 남는다
+- **private GHCR = PIN 없으면 pull 자체가 401.** Boss가 말한 "내가 코드를 부여하는 통제점"의 완벽한 구현(PWA는 링크만 알면 누구나 열림)
+
+**두 레인 (이게 핵심)**
+- **Lane A — 상주 MCP**: MCP `command` = `bash agent-door.minipc.sh` → 스크립트가 `docker run -i ... $IMG python $SRV`를 exec. **MCP는 로컬처럼 보이고(stdio), 프로세스는 컨테이너 안에서 돈다.** 호스트에 필요한 건 docker + bash뿐. (랩탑판은 Chrome CDP 경로만 다름 — `--add-host` + 게이트웨이. 미니PC판은 `--network=host` + `127.0.0.1`)
+- **Lane B — 배치 트리거 (폰)**: 폰 `workflow_dispatch` → Actions 러너가 ghcr 이미지 pull → 컨테이너 연산 → 텔레그램 QA → 발행. **폰에 런타임 불필요.**
+
+**새 컨테이너를 만드는 순서 (po-edit-cell 사례가 정본)**
+1. 소스를 `parksy-image` 레포 `cell/services/<이름>/`에 둔다 (`yt_edit.py` · `Dockerfile` · `selftest.sh`)
+2. Actions 워크플로 `build-<이름>-image.yml`을 만든다
+3. **`selftest.sh`가 이미지 안에서 실제 작업을 돌려 통과해야만 GHCR에 올라간다** (검증은 컨텍스트가 아니라 이미지 안에서 — 오진 재발 방지)
+4. 태그를 붙여 push. `:native` 승격은 별도 판단
+
+**po-edit-cell 실측 (2026-09-22)**
+- 크기 당초 예상 130MB → **581MB** (Debian ffmpeg가 코덱 lib를 대량 의존)
+- 10.2분 영상 → **521초(8분 41초), 0.85× 실시간**. 출력 609.8초 / 488MB / 1080x2340@60
+- **fps가 최대 레버.** 30fps 0.44× · 60fps 0.73× — 그런데 **60fps가 파일이 더 작다**(398MB vs 481MB). "30fps=빠르고 가벼움"은 **아니다**
+- `ultrafast`는 함정: 23% 빨라지는데 파일이 **3.6배**
+- ⚠️ **짧은 벤치마크에 속지 말 것** — 30초 테스트 0.49×, 120초 0.21×, 10분 전체 0.85×. 길이를 늘려 재야 진짜 값이 나온다
+- ⚠️ **`avg_frame_rate`을 fps로 쓰지 말 것** — 삼성 녹화기는 VFR이라 물리 불가능한 값이 나온다(60 선언 → 82.73 실측). `r_frame_rate`(선언값) + 60fps 캡 + `-fps_mode cfr`
+
+**호출 계층은 아직 없다** — PC 없는 지인이 *어떻게 영상을 넣고 결과를 받는지*(job JSON + 테이크 업로드 → 아티팩트 회수)는 미구현. 지금은 이미지와 편집기만 존재한다.
+
+---
+
+### ④ APK — 어떻게 빌드하고 어떻게 폰에 올리나 (Axis 실측)
+
+**빌드 경로:** GitHub Actions(`apps/parksy-axis/**` push 트리거) → `flutter build apk --debug` → 릴리스 `parksy-axis-latest`에 업로드 → 폰이 내려받아 `adb install -r`.
+
+**★ 서명 고정 — 이걸 안 하면 앱 데이터가 날아간다.**
+증상: `adb install -r`이 `SIGNATURE_MISMATCH`로 거부 → 지웠다 깔아야 함 → **주입한 콘티·누적 라이브러리가 사라진다.**
+
+원인 두 가지(둘 다 밟았다):
+1. GitHub 러너 이미지에 `~/.android/debug.keystore`가 **아예 없다.** Gradle이 즉석 생성하는데 컨테이너가 매번 새것이라 실행마다 키가 달라진다
+2. 키스토어를 만들어도 **Gradle이 그 파일을 안 쓴다.** 실측: 키스토어 06:22:04 생성(지문 `75:3F:23:04:…`)인데 APK 인증서는 06:25:20 생성(`D1:23:10:4B:…`) — 그 사이 다른 키로 갈아치웠다
+
+해법 3종 세트:
+```yaml
+# ① 키스토어를 캐시로 물려준다
+- uses: actions/cache@v4
+  with: { path: ~/.android/debug.keystore, key: parksy-axis-debug-keystore-v2 }
+# ② 생성 전 상위 디렉터리를 만든다 — keytool은 mkdir을 안 한다
+- run: |
+    mkdir -p "$HOME/.android"
+    [ -f "$KS" ] || keytool -genkeypair -v -keystore "$KS" -storepass android \
+      -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 \
+      -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+# ③ build.gradle에서 경로를 못 박는다 (env로 주입)
+```
+```groovy
+signingConfigs {
+    def ciKeystore = System.getenv("AXIS_KEYSTORE")
+    if (ciKeystore != null && file(ciKeystore).exists()) {
+        debug { storeFile file(ciKeystore); storePassword "android"
+                keyAlias "androiddebugkey"; keyPassword "android" }
+    }
+}
+```
+**④ 서명 게이트 — 어긋난 APK를 조용히 배포하느니 죽는다.** `apksigner verify --print-certs`로 뽑은 SHA-256을 키스토어 지문과 비교, 다르면 `exit 1`.
+결과: 두 번의 독립 실행이 같은 지문 `cac2b81b…` → `adb install -r` 덮어설치 성공, 데이터 보존 확인.
+
+**⚠️ 별개 함정 — 권한은 회수된다.** 언인스톨하면 `SYSTEM_ALERT_WINDOW`가 **회수된다.** 회수된 채 오버레이를 띄우면 `BadTokenException: Unable to add window … permission denied for window type 2038`로 **프로세스가 즉사**한다. 복구는 한 줄:
+```bash
+adb shell appops set kr.parksy.axis SYSTEM_ALERT_WINDOW allow
+```
+덮어설치(`-r`)에서는 유지된다.
+
+**`flutter_overlay_window 0.5.0` 함정 5종 — 백그라운드 무장에서 실제로 밟은 것**
+1. **`FLAG_NOT_TOUCH_MODAL`은 키보드를 빼앗는다(가장 치명적).** 그건 **포커스 가능**한 창을 만든다(플러그인도 그걸 알고 `focusPointer`라 부른다) → IME가 그 창에 붙는다 → 키보드는 뜨는데 글자가 앱으로 안 간다. 게다가 **얻는 게 없다**: 문서상 `FLAG_NOT_FOCUSABLE`이 `FLAG_NOT_TOUCH_MODAL`을 **내포**한다. 바깥 터치는 원래도 통과했다. → 플러그인 기본값 `FLAG_NOT_FOCUSABLE`이 옳다
+2. **`WindowSetup.width/height`는 px인데 `resizeOverlay`는 dpToPx를 건다.** `onStartCommand`는 그대로 픽셀로 쓰고 Dart 위젯은 같은 숫자를 **dp**로 그린다 → 260을 그냥 넣으면 창 260px / 내용 260dp(731px) → 잘린다
+3. **`startY`는 px/dp 이중환산 버그.** 상태바 85px가 -239px로 부풀어 BOTTOM 정렬 창이 28% 화면 밖으로 밀린다. `startY=0`을 **명시**하면 기본값 분기를 안 탄다
+4. **캐시 엔진을 안 버리면 설정이 안 갈린다.** `OverlayService.onCreate`가 `FlutterEngineCache`에서 엔진을 재사용해, 파일을 바꿔도 Dart 위젯 트리(옛 설정)가 살아남는다. 무장 시 `destroy()` + `remove()` 필수
+5. **소켓은 INTERNET 권한 없이는 못 연다.** `ServerSocket.bind`가 `EPERM errno=1`로 죽고 `try/catch`에 삼켜져 **조용히** 실패한다. loopback 전용이어도 권한은 필요하다
+
+**화면 없이 오버레이를 무장하는 입구 (`AxisArmReceiver`)**
+오버레이 서비스는 `exported="false"`라 밖에서 못 연다. 그래서 **앱 안에 문을 하나 내고**, 그 문이 규격을 세팅한 뒤 열어준다.
+```bash
+am broadcast --user 0 -a kr.parksy.axis.ARM \
+  -n kr.parksy.axis/flutter.overlay.window.flutter_overlay_window.AxisArmReceiver \
+  --es rundown '<콘티 JSON>' --ei show 1
+```
+- `show=1` 저장 + 띄운다 / `show=0` 저장만 하고 화면은 안 건드린다(떠 있으면 소켓에 `reload`)
+- `OverlayService`의 창 크기·위치는 `WindowSetup`의 **static 필드**(package-private)에서 읽는다 → 이 클래스가 **Java**이고 **플러그인 패키지 안**에 있는 이유다. Kotlin/다른 패키지면 접근이 안 된다
+- 호출은 반드시 컴포넌트(`-n`)를 지정한다 — Android 14는 암시적 브로드캐스트를 막는다
+
+**오늘 실측으로 확인된 것**
+- `fl=0x1010308`에 `0x8`(NOT_FOCUSABLE) 포함 → **오버레이와 삼성 키보드가 동시에 뜬다**
+- `[Overlay] ctl socket :8492` — 그 전까지 **한 번도 동작한 적 없던** 소켓이 살았다(`jump 3`으로 하이라이트가 실제로 이동)
+- `overlayScale: 0.5`를 JSON만 고쳐 적용 → 365×421px, 화면 좌하단에 flush, **앱을 다시 빌드하지 않았다**
+
+**⚠️ 오버레이의 정직한 한계 (과장 금지)**
+화면의 **24%**(731×843 / 1080×2340)를 먹는다. 키보드(828px)가 올라오면 거의 전부 겹친다.
+**라이브 오버레이가 유일한 길인 이유는 Boss가 편집을 안 하기 때문이다.** 후보정 합성이 가능하다면 그쪽이 엄밀히 더 낫다. 이건 도구의 우월이 아니라 **워크플로의 선택**이다.
+
+---
+
+### 5. 오늘 찾아낸 것 — 카메라워크 합성 회로 (미니PC dev-batch)
+
+Boss가 "여기 세션에서 내가 카메라 워크 비디오 클립 합성 회로가 몇 개 있거든"이라고 한 것의 실체. **찾았다.**
+
+**위치:** 미니PC `dev-batch` (`dtsli@100.81.134.89:22`)
+`/tmp/claude-1000/-home-dtsli-work/1c5394be-6f18-4301-8367-558fc889f89a/scratchpad/`
+
+**폰으로 복사 완료:** `/root/work/_staging/ovl/camwork/`
+
+**회로 (build_*.py) — `build_restore.py`가 확정판**
+```
+starts = [0.0, 2.6, 5.1]          # 원본에서 뜰 3개 지점
+SEG_LEN = 2.5                     # 세그먼트 2.5초
+매 세그먼트마다 flip을 토글, 같은 start가 연속되지 않게 회전
+[0:v]trim → setpts → crop=880:880:0:80 → scale=296:296 (+hflip) → concat
+```
+→ 원본 한 개로 25~26세그먼트 = **63초**. 회전·줌 없이 **좌우반전만**으로 베리에이션을 만든다.
+
+**결과물 규격**
+
+| 파일 | 규격 | 정체 |
+|---|---|---|
+| `restore_1min.mp4` | 340×380 · 25fps · **63.0초** | **최신 확정본** (회색 링, 반전만) |
+| `unit_1min.mp4` · `unit2~7_1min.mp4` | ~1분 | 시행착오 계열 |
+| `a_tv_frame.mp4` | 402×650 · 5초 | **PARKSY 세로 TV 액자** (초록 전원 LED) |
+| `b_camera_frame.mp4` | 300×488 · 5초 | **뷰파인더 액자** (빨간 REC + 코너 브래킷) |
+| `c_artistic.mp4` | 300×536 · 5초 | 아티스틱 |
+| `d_lens_circle.mp4` | 340×340 · 5초 | 원형 렌즈 |
+| `e_lens_green.mp4` | 360×400 · 5초 | **다크그린 고급 렌즈** |
+| `clip1.mp4` (960×960) · `clip2.mp4` (880×1040) | ~10초 | **원본 소재** (Grok 생성) |
+
+부속: `circle_mask.png` · `circle_mask_296.png` (원형 마스크), `check_*.png` 13장(프레임 검증), `a_tv_frame.png` · `b_camera_frame.png`
+→ `clip1.mp4`(5,882,388B)와 `clip2.mp4`(9,511,178B)는 폰 `/sdcard/Download/`의 `generated_video.mp4`·`grok_video_2026-09-22-14-02-13_1.mp4`와 **바이트 크기까지 일치** — 같은 소재다.
+
+**Boss가 말한 "오른쪽에 오버레이 카메라 내레이션 영상" = `a_tv_frame.mp4` / `b_camera_frame.mp4` 계열이다.** 사람이 마이크 앞에서 말하는 영상이 액자에 들어가 있다.
+
+**오버레이에 얹으려면 남은 관문 (미검증 — 추측 아님, 안 해봤음)**
+- 플러그인은 **창을 하나만** 만든다(`CACHED_TAG` 단일 · `WindowSetup` static 단일 · 서비스 단일) → 창 두 개가 아니라 **아래를 덮는 창 하나에 좌=콘티 / 우=TV 두 칸**
+- 오버레이 엔진은 `GeneratedPluginRegistrant.registerWith()`를 **호출하지 않는다** → 지금 상태로는 `video_player`가 안 붙는다. 등록 한 줄이 필요하다
+
+_폰 세션 `_Claude`_
+
+---
+
+## 2026-09-22 — 앱스토어에 po-edit-cell 컨테이너 등록 + MCP 6종 복구 (_Claude)
+
+Boss 지시: "dtslib-cloud-appstore 가서 오늘 만든 거 컨테이너 등록해 놔."
+
+### 한 일 ① — MCP 6종 전부 복구 (등록하다 발견)
+
+앱스토어를 등록하기 전에 "이 컨테이너를 부르는 MCP가 있나"를 확인하려다, **폰의 MCP 6종이 전부 죽어 있는 걸** 발견했다.
+`/health` 실측: 8015·8016·8018·8020·8023 **닫힘**, 8789만 살아있음. watchdog 로그에 **재시작 실패 18,981회**.
+
+원인은 전부 **"설치 안 된 모듈"** 이었고 코드 버그는 하나뿐이었다.
+
+| 빠진 것 | 서버 | 비고 |
+|---|---|---|
+| `aiohttp` | 8016·8018 | |
+| `soundfile` | 8015 | pip wheel이 cffi까지 빌드. 실제 파일 읽기/쓰기로 검증 |
+| `pyworld` | 8015 | **`--no-build-isolation` 필수** — 없으면 빌드 의존성으로 numpy를 소스 빌드하려다 실패. 빌드 후 F0 220Hz 추출 실측 |
+| `uvicorn` | 8023 | |
+| `fastapi`·`pydantic` | 8023 | **`ANDROID_API_LEVEL=24` 필수** — pydantic-core는 Rust(maturin) |
+
+- Termux는 root로 `pkg`/`apt`를 거부한다("Ability to run this command as root has been disabled"). **pip로 우회**하면 된다.
+- **코드 버그 1건:** `phone_publish_mcp_sse.py`는 `PORT` 환경변수만 읽는데 watchdog은 `--port 8020`을 넘기고 있었다
+  → 인자 무시 → 기본값 8018로 떨어져 embed와 충돌(`bind 8018 address in use`). 스크립트가 `--port`를 읽게 고쳤다.
+- **구조 버그 1건:** 8023은 watchdog에 **아예 없었다**(`start_all_mcp.sh`가 부팅 때만 띄움). 죽으면 아무도 안 살림 → 블록 추가.
+- **구조 버그 1건 더:** watchdog이 **5개 동시에 돌고 있었다**(6111·6125·10019·17199·18891). 서로 경쟁하며 각자 재시작 →
+  로그 폭증의 진짜 원인. 하나만 남기고 정리(로그 18,981회는 `.bak-2026-09-22`로 백업).
+
+**결과: 6종 전부 HTTP 200 실측.** watchdog 로그도 1줄(시작)뿐.
+
+### 한 일 ② — po-edit-cell 앱스토어 등록
+
+SSOT 규칙(`apps.json` meta에 박혀 있음)대로 **index.json 먼저 → apps.json 파생**.
+커밋 `2daa8f1` → push → 라이브 반영 curl 확인 (67개 → **68개**, `po-edit-cell` 포함).
+
+**가장 위험했던 지점 — 태그를 추측할 뻔했다.** 빌드 워크플로에 `docker tag ...:native` 승격 단계가 있어서
+`native`로 적을 뻔했는데, GHCR에서 실제로 읽어보니 **태그는 날짜(`2026-09-22`)뿐이고 `native`는 없었다**
+(승격 조건 미충족). 그대로 적었으면 **받히지 않는 주소를 광고**할 뻔했다.
+
+또 하나: `summary.unverified`(83)는 **산식이 어디에도 문서화돼 있지 않고 어떤 가설로도 재현이 안 됐다**(최근접 81).
+**추측으로 채우지 않고** 그대로 두고 그 사실을 `summary.measured`에 적었다.
+
+실측값: 태그 `2026-09-22` · 레이어 8 · 압축 208.2MB · 빌드 시 581MB. `workcenter`는 **전부 false** —
+호출 계층(agent-door·batch 파이프라인)이 미구현이라 true를 넣을 근거가 없다.
+
+### 발견 — index.json은 닫혔고 나머지는 안 닫혔다
+
+`deploy.yml`의 rsync `--exclude`가 `mcp/mcp-registry/index.json`만 뺀다. curl 실측:
+
+| 404 ✅ | 200 ⚠️ (아직 공개) |
+|---|---|
+| `mcp/mcp-registry/index.json` | `CLAUDE.md` · `status.json` · `WHITEPAPER.md` · `BRAND_FINAL.md` · `DEVLOG_*.md` |
+
+지난 세션의 "레포 전체 공개" 문제는 **한 파일만** 닫힌 상태다.
+
+### 정직하게 — 내가 깨뜨린 게 아니다 (근거 있음)
+
+`repo-guard`·`registry-integrity`가 빨간불인데, `git stash`로 **변경 전 상태에서도 동일 실패(exit=1)** 함을 확인했다.
+GHOST 50→51로 1건 늘어난 건 사실이나 기존 부채는 안 건드렸다.
+
+_폰 세션 `_Claude`_
