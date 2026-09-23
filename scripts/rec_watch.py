@@ -24,19 +24,26 @@ Boss 그림 (원문):
           이후로는 안 먹는다. 그래서 여기서는 "확인 → 안 되면 크게 경고"만 한다.
           스스로 켜지지 않은 녹화는 Boss 가 손으로 켜야 한다는 뜻이다.
 
-  Camera com.samsung.android.video (나레이터 루프)
-        → scripts/camkit.py 가 담당. 문이 열렸다(2026-09-23):
-          cmd window set-ignore-orientation-request true  ← 이게 열쇠
-          am start --windowingMode 5 → am task resize <id> L T R B
-        실측 1080x2340 우하단 Rect(716,1631 - 1056,2180) 340x549 정확히 박힘.
+  나레이터 액자 (오른쪽 아래 CRT)
+        → kr.parksy.axis 안의 **네이티브 TvOverlayService**. Axis 문 하나로 뜬다:
+          am broadcast -a kr.parksy.axis.TV -n <AxisArmReceiver>
+
+        ⚠️ 2026-09-23 — 여기 원래 `camkit.py`(삼성 비디오 플레이어를 freeform 창으로)가
+        물려 있었다. **버렸다.** 실측으로 두 가지가 안 됐다:
+          ① 플레이어가 재생 컨트롤(▶·탐색바·0:10)을 같이 띄워 녹화에 찍힌다.
+             창 위에 파란 손잡이 막대도 붙는다.
+          ② **창이 1분을 못 버틴다** — 14:21 에 띄운 창이 14:22 에 사라졌다.
+             Boss 가 "잠깐 떴다가 사라지는 거 봤다"고 한 그 증상.
+        반면 TvOverlayService 는 포그라운드 서비스라 죽지 않고, 액자가 영상에
+        구워져 있어 컨트롤·장식이 **구조적으로 생길 수 없다.**
 
 쓰는 법:
-  python3 scripts/rec_watch.py                    # 감시 시작 (포그라운드)
-  python3 scripts/rec_watch.py --once             # 한 번만 스캔
-  python3 scripts/rec_watch.py --arm-now          # 감시 없이 지금 무장 (테스트)
-  python3 scripts/rec_watch.py --cam-on-now       # 카메라 키트만 지금 띄운다
-  python3 scripts/rec_watch.py --cam-style tv     # 녹화 감지 시 카메라 키트도 같이
-  python3 scripts/rec_watch.py --dir /tmp/x       # 감시 폴더 바꿔서 (테스트)
+  python3 scripts/rec_watch.py                 # 감시 시작 (포그라운드)
+  python3 scripts/rec_watch.py --once          # 한 번만 스캔
+  python3 scripts/rec_watch.py --arm-now       # 감시 없이 지금 무장 (테스트)
+  python3 scripts/rec_watch.py --tv-on-now     # 나레이터 액자만 지금 띄운다
+  python3 scripts/rec_watch.py --tv            # 녹화 감지 시 액자도 같이
+  python3 scripts/rec_watch.py --dir /tmp/x    # 감시 폴더 바꿔서 (테스트)
 
   백그라운드 상주:
   setsid nohup python3 scripts/rec_watch.py --daemon >/dev/null 2>&1 &
@@ -51,7 +58,6 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import axis_arm  # noqa: E402
-import camkit    # noqa: E402
 
 REC_DIR = "/sdcard/DCIM/Screen recordings"
 REC_GLOB = "Screen_Recording_*.mp4"
@@ -131,8 +137,8 @@ def pen_ensure(device):
 
 # ── 무장 ───────────────────────────────────────────────────────────────────
 
-def fire(device, cam_style=None):
-    """녹화가 시작됐다 — 저장된 콘티로 무장한다."""
+def fire(device, tv_on=False):
+    """녹화가 시작됐다 — 콘티로 무장하고, 원하면 나레이터 액자까지."""
     if not os.path.exists(axis_arm.STORE):
         log(f"  ⚠️ 저장된 콘티가 없다: {axis_arm.STORE} — "
             "먼저 `python3 scripts/axis_arm.py --url <URL> --show 0`")
@@ -144,14 +150,22 @@ def fire(device, cam_style=None):
     if not axis_arm.ensure_device(device):
         log(f"  ⚠️ adb 붙지 못함: {device}")
         return
-    # Axis 를 먼저 올린다 — 눈에 보이는 게 먼저다. 펜 확인은 dumpsys 라 2~4초 걸린다.
+    # 순서: **보이는 것 먼저.** Boss 요구가 "누르면 바로 뜬다"이므로 화면에
+    # 나타나는 두 창을 먼저 다 올리고, 레이저펜 확인은 맨 뒤로 뺀다.
+    # 펜 확인은 dumpsys 왕복 + 2초 대기라 2~4초를 먹는다 — 그 시간 동안
+    # Boss 눈에는 아직 아무것도 안 떠 있다.
+
+    # ① 콘티 (Flutter 창, 뜨는 데 ~1.4초)
     rc, out = axis_arm.arm(device, rd, show=1)
     log(f"  Axis 무장: {out}")
-    pen_ensure(device)
 
-    if cam_style:
-        # 카메라 키트 = 나레이터 루프를 우하단에. 띄우는 데 4~5초 걸린다(창 생성+리사이즈).
-        camkit.on(device, cam_style, "br", 340)
+    # ② 나레이터 액자 (네이티브 VideoView, broadcast 왕복 0.42초 · 재생 시작 ~2초)
+    if tv_on:
+        rc, out = axis_arm.tv(device, on=True)
+        log(f"  나레이터 액자: {out}")
+
+    # ③ 레이저펜 — 문이 없어 실패해도 나머지는 이미 떠 있다
+    pen_ensure(device)
 
 
 def main():
@@ -165,11 +179,10 @@ def main():
                     help="녹화 끝나면 Axis 내린다 (기본: 그대로 둔다)")
     ap.add_argument("--once", action="store_true", help="한 번만 스캔")
     ap.add_argument("--arm-now", action="store_true", help="감시 없이 즉시 무장")
-    ap.add_argument("--cam-style", default="none",
-                    choices=["none"] + sorted(camkit.STYLES),
-                    help="카메라 키트 스타일 (기본 none=안 띄움)")
-    ap.add_argument("--cam-on-now", action="store_true",
-                    help="감시 없이 카메라 키트만 지금 띄운다")
+    ap.add_argument("--tv", action="store_true",
+                    help="녹화 감지 시 나레이터 액자(CRT)도 같이 띄운다")
+    ap.add_argument("--tv-on-now", action="store_true",
+                    help="감시 없이 나레이터 액자만 지금 띄운다")
     ap.add_argument("--daemon", action="store_true", help="pidfile 쓴다")
     a = ap.parse_args()
 
@@ -177,15 +190,16 @@ def main():
         if not axis_arm.ensure_device(a.device):
             log(f"⚠️ adb 붙지 못함: {a.device}")
             return 2
-        fire(a.device, None if a.cam_style == "none" else a.cam_style)
+        fire(a.device, a.tv)
         return 0
 
-    if a.cam_on_now:
+    if a.tv_on_now:
         if not axis_arm.ensure_device(a.device):
             log(f"⚠️ adb 붙지 못함: {a.device}")
             return 2
-        return camkit.on(a.device, "tv" if a.cam_style == "none" else a.cam_style,
-                         "br", 340)
+        rc, out = axis_arm.tv(a.device, on=True)
+        log(f"나레이터 액자: {out}")
+        return rc
 
     if a.daemon:
         with open(PIDFILE, "w") as f:
@@ -218,7 +232,7 @@ def main():
                 f"({cur[newest][1] / 1024:.0f}KB, 파일나이 {age_of(newest):.1f}s)")
             if age_of(newest) > 60:
                 log("  ⚠️ 파일이 이미 60초 묵었다 — 시작이 아니라 **끝**을 잡았을 수 있다")
-            fire(a.device, None if a.cam_style == "none" else a.cam_style)
+            fire(a.device, a.tv)
             active, last_move = newest, time.time()
 
         if active and active in cur:
@@ -230,8 +244,9 @@ def main():
                 if a.off_on_stop:
                     axis_arm.disarm(a.device)
                     log("  Axis 하강")
-                    if a.cam_style != "none":
-                        camkit.off(a.device)
+                    if a.tv:
+                        axis_arm.tv(a.device, on=False)
+                        log("  나레이터 액자 하강")
                 active = None
 
         seen = cur

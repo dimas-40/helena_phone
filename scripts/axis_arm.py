@@ -11,12 +11,18 @@ Boss 그림: "내가 URL 주면 파싱해 가지고 카테고리 거기에다가
 
   ⚠️ rundown 없이 보내면 앱이 거부한다 — `W/AxisArm: ARM 인데 rundown 이 없습니다`
 
+  나레이터 액자 (오른쪽 아래 CRT) — 2026-09-23 추가:
+  am broadcast --user 0 -a kr.parksy.axis.TV \\
+    -n kr.parksy.axis/flutter.overlay.window.flutter_overlay_window.AxisArmReceiver
+
 쓰는 법:
   python3 scripts/axis_arm.py --url https://...        # URL 파싱 → 콘티 → 무장
   python3 scripts/axis_arm.py --stages "오프닝,주제,근거,반전,정리" --root "[LIVE] 강의 01"
   python3 scripts/axis_arm.py --off                    # 하강
   python3 scripts/axis_arm.py --show 0 --url ...       # 저장만 (화면 안 건드림)
   python3 scripts/axis_arm.py --last                   # 저장해 둔 콘티로 재무장
+  python3 scripts/axis_arm.py --tv                     # 나레이터 액자 띄운다
+  python3 scripts/axis_arm.py --tv-off                 # 액자 내린다
 """
 import argparse
 import json
@@ -33,6 +39,47 @@ COMPONENT = ("kr.parksy.axis/flutter.overlay.window."
              "flutter_overlay_window.AxisArmReceiver")
 STORE = os.path.expanduser("~/.axis_rundown.json")
 UA = "Mozilla/5.0 (Linux; Android 16) axis-arm/1.0"
+
+# ── 나레이터 액자 (오른쪽 아래 CRT) ────────────────────────────────────────
+#
+# 2026-09-23 정본 교체. 이전엔 `camkit.py` 가 **삼성 비디오 플레이어를 freeform
+# 창으로** 띄웠다. 버렸다. 이유 두 가지, 둘 다 실측:
+#
+#   ① 삼성 플레이어가 **재생 컨트롤(▶·탐색바·0:10)** 을 같이 띄운다 → 녹화에 찍힌다.
+#      창 위에 파란 손잡이 막대까지 붙는다.
+#   ② **창이 1분을 못 버틴다.** 14:21 에 띄운 창이 14:22 에 사라졌다. Boss 가
+#      "잠깐 떴다가 사라지는 거 봤다"고 한 그 증상이다.
+#
+# 대신 Boss 가 2026-09-22 에 직접 만든 `TvOverlayService`(네이티브 VideoView,
+# 포그라운드 서비스)가 이미 폰에 깔려 있었다 — `kr.parksy.axis` **v11.4.0**,
+# lastUpdateTime 09-22 18:31. 그게 어저께 "잘 띄워지더만" 하던 그 판이다.
+#
+#   액자는 **영상에 구워져 있다** (`assets/axis_tv.mp4` = `a_tv_frame.mp4`,
+#   둘 다 201711바이트). 그래서 합성이 필요 없다 — 파일 하나 재생하면 액자째 나온다.
+#   APK 자산이라 **저장소 권한도 필요 없다** (앱 권한에 READ_MEDIA_* 가 없다).
+#
+#   am broadcast --user 0 -a kr.parksy.axis.TV -n <COMPONENT>
+#   am broadcast --user 0 -a kr.parksy.axis.TV_OFF -n <COMPONENT>
+#
+#   extras(전부 선택): w/h 크기(dp, 기본 96x155 — 액자 비율 402:650)
+#                      x/y 오른쪽·아래 여백(dp, 기본 6/6) — **처음 띄울 때만**
+#                      video 절대경로(안 주면 APK 기본 액자) · mute 1=무음(기본)
+#
+#   ⚠️ x/y 는 Boss 가 손으로 끌면 그 자리가 저장되어 **이후 무시된다**
+#      (`shared_prefs/axis_tv_position.xml`). 명령으로 매번 되돌리면 Boss 가
+#      옮겨놓은 자리가 계속 풀린다 — 그래서 여기서도 안 준다.
+TV_ACTION = "kr.parksy.axis.TV"
+TV_OFF_ACTION = "kr.parksy.axis.TV_OFF"
+
+# ── 살아있는지 판별 (2026-09-23 실측) ──────────────────────────────────────
+#
+# 창 이름으로는 못 가른다. 콘티 창도 TV 창도 **둘 다 `kr.parksy.axis`** 로 뜬다.
+# 크기로도 못 가른다(콘티 366x422px · TV 270x436px — 너무 가깝다).
+# **서비스 레코드가 유일한 구분자다:**
+#     콘티 = kr.parksy.axis/flutter.overlay.window.flutter_overlay_window.OverlayService
+#     TV   = kr.parksy.axis/.TvOverlayService
+SVC_OVERLAY = "flutter_overlay_window.OverlayService"
+SVC_TV = "kr.parksy.axis/.TvOverlayService"
 
 
 # ── URL 파싱 ────────────────────────────────────────────────────────────────
@@ -152,8 +199,50 @@ def disarm(device):
     return broadcast(device, "kr.parksy.axis.OFF")
 
 
+def service_up(device, needle):
+    """그 서비스가 살아 있는가. dumpsys 한 번으로 둘 다 본다."""
+    rc, out = adb(device, "dumpsys activity services kr.parksy.axis", timeout=45)
+    return rc == 0 and needle in out
+
+
+def is_armed(device):
+    """콘티(Flutter 오버레이)가 떠 있는가."""
+    return service_up(device, SVC_OVERLAY)
+
+
+def is_tv(device):
+    """나레이터 액자가 떠 있는가."""
+    return service_up(device, SVC_TV)
+
+
+def tv(device, on=True, w=None, h=None, video=None, mute=True):
+    """나레이터 액자(CRT) 켜기/끄기.
+
+    크기·여백을 **주지 않는 게 기본**이다. 서비스가 액자 비율(402:650)로 크기를
+    계산하고, 오른쪽 아래 여백 6dp 로 앉힌다. 여기서 숫자를 정하면 서비스 기본값과
+    두 곳에서 관리하게 되어 반드시 어긋난다(AxisArmReceiver 주석의 같은 교훈).
+    """
+    parts = ["am", "broadcast", "--user", "0",
+             "-a", TV_ACTION if on else TV_OFF_ACTION, "-n", COMPONENT]
+    if on:
+        if w is not None:
+            parts += ["--ei", "w", str(w)]
+        if h is not None:
+            parts += ["--ei", "h", str(h)]
+        if video:
+            parts += ["--es", "video", video]
+        parts += ["--ei", "mute", "1" if mute else "0"]
+    return adb(device, *parts)
+
+
 def arm(device, rd, show=1, settle=1.5):
-    """OFF → (대기) → ARM. **무장은 반드시 이 함수로만.**
+    """무장. **반드시 이 함수로만.**
+
+    show=0 은 **저장만** 한다 — 화면을 건드리지 않는다. 예전엔 이 경우에도
+    OFF 를 먼저 보내서, "저장만"이라던 명령이 떠 있던 오버레이를 내려버렸다.
+    (`--show 0` 과 `--off` 가 같은 일을 하고 있었다.)
+
+    show=1 이고 **이미 떠 있을 때만** OFF → 대기 → ARM 을 탄다.
 
     ⚠️ 2026-09-23 실측 — 무장된 상태에서 ARM 을 다시 보내면 옛 프로세스가
     OverlayService.onDestroy 에서 죽는다:
@@ -168,9 +257,12 @@ def arm(device, rd, show=1, settle=1.5):
     **그게 녹화에 그대로 찍힌다.** OFF 로 먼저 내리고 1.5초 쉬면
     3회 반복 실측 전부 깨끗했다(창 4개 유지, 크래시 0).
     """
-    disarm(device)
-    time.sleep(settle)
-    return broadcast(device, "kr.parksy.axis.ARM", rd=rd, show=show)
+    if not show:
+        return broadcast(device, "kr.parksy.axis.ARM", rd=rd, show=0)
+    if is_armed(device):
+        disarm(device)
+        time.sleep(settle)
+    return broadcast(device, "kr.parksy.axis.ARM", rd=rd, show=1)
 
 
 def main():
@@ -181,6 +273,13 @@ def main():
     ap.add_argument("--show", type=int, default=1, help="1=띄운다 0=저장만")
     ap.add_argument("--off", action="store_true", help="오버레이 하강")
     ap.add_argument("--last", action="store_true", help="저장해 둔 콘티로 재무장")
+    ap.add_argument("--tv", action="store_true",
+                    help="나레이터 액자(CRT)를 오른쪽 아래에 띄운다")
+    ap.add_argument("--tv-off", action="store_true", help="나레이터 액자 내린다")
+    ap.add_argument("--tv-sound", action="store_true",
+                    help="액자 소리를 켠다 (기본 무음 — 녹화에 섞이지 않게)")
+    ap.add_argument("--tv-h", type=int, default=None,
+                    help="액자 세로 크기 dp (기본 96x155 — 액자 비율)")
     ap.add_argument("--device", default=DEFAULT_DEVICE)
     ap.add_argument("--dry-run", action="store_true", help="방송 없이 콘티만 출력")
     a = ap.parse_args()
@@ -191,6 +290,11 @@ def main():
 
     if a.off:
         rc, out = disarm(a.device)
+        print(out)
+        return rc
+
+    if a.tv or a.tv_off:
+        rc, out = tv(a.device, on=a.tv, h=a.tv_h, mute=not a.tv_sound)
         print(out)
         return rc
 
