@@ -5,11 +5,14 @@ Boss 그림 (원문):
   "화면 녹화하면은 그 오버레이키트 2개가 자동으로 연결돼 가지고 마치 화면 녹화에
    내장 기능처럼 활성화가 돼야 되고 ... 내가 그거 보면서 화면 녹화하면 되는 거고"
 
-경로:
-  삼성 녹화기 시작 → /sdcard/DCIM/Screen recordings/Screen_Recording_*.mp4 등장
-                   → (저장된 콘티 로드) Axis OFF→ARM
-                   → Laser Pen 그려지고 있는지 확인
-                   → (--cam-style 주면) 카메라 키트 우하단에
+경로 (2026-09-23 실녹화로 판정):
+  삼성 녹화 시작 → dumpsys media_projection 이 True 로 뒤집힘 (2초 안)
+                 → (저장된 콘티 로드) Axis 무장
+                 → (--tv 면) 나레이터 액자
+                 → Laser Pen 그려지고 있는지 확인
+
+  ⚠️ 파일 감시는 **시작 감지에 못 쓴다.** 삼성 녹화기는 mp4 를 **끝날 때** 만든다
+     (11초 녹화에서 10초 지점에 등장). ①이 그 자리를 대신한다.
 
 키트별 문 (2026-09-23 실측):
 
@@ -39,10 +42,11 @@ Boss 그림 (원문):
 
 쓰는 법:
   python3 scripts/rec_watch.py                 # 감시 시작 (포그라운드)
-  python3 scripts/rec_watch.py --once          # 한 번만 스캔
+  python3 scripts/rec_watch.py --tv            # 녹화 감지 시 액자도 같이
+  python3 scripts/rec_watch.py --probe         # 신호만 찍는다 (키트 안 띄움)
   python3 scripts/rec_watch.py --arm-now       # 감시 없이 지금 무장 (테스트)
   python3 scripts/rec_watch.py --tv-on-now     # 나레이터 액자만 지금 띄운다
-  python3 scripts/rec_watch.py --tv            # 녹화 감지 시 액자도 같이
+  python3 scripts/rec_watch.py --once          # 한 번만 스캔
   python3 scripts/rec_watch.py --dir /tmp/x    # 감시 폴더 바꿔서 (테스트)
 
   백그라운드 상주:
@@ -110,20 +114,23 @@ def recordings(d):
 #   · 녹화 전용 패키지 → 없다. 삼성 녹화기는 smartcapture 6.0.31.19 안에 들어있다.
 #
 # 대신 **시작 순간을 관측**한다. 버튼을 다는 것보다 이게 낫다 — Boss 가
-# 아무것도 안 눌러도 된다. 신호 셋, 싼 것부터:
+# 아무것도 안 눌러도 된다. 후보 셋을 세워놓고 2026-09-23 실녹화 1회로 판정했다:
 #
 #   ① media_projection — MediaProjection 은 녹화가 시작되기 **전에** 만들어진다.
-#      가장 이른 신호다. dumpsys 한 번이라 싸다.
-#      안 돌 때의 출력은 정확히 `Media Projection: \nnull` (실측).
+#      ★ 채택. 시작 2초 안에 잡혔다(주기 2초). 안 돌 때의 출력은 정확히
+#      `Media Projection: \nnull` (실측).
 #   ② notification — smartcapture 의 `CHANNEL_ID_RECORDING_SCREEN`('화면 녹화')
-#      채널에 상시 알림이 뜬다. ⚠️ **채널 정의는 평소에도 보인다** —
-#      `dumpsys notification` 의 AppSettings 절에 항상 있다. 그래서 채널 이름만
-#      찾으면 오탐이다. **NotificationRecord(=실제로 뜬 알림)** 를 봐야 한다.
-#   ③ 파일 — 기존 방식. 남겨두는 이유는 ① ② 가 다 실패했을 때의 바닥이고,
-#      Boss 가 "녹화 끝"을 판정하는 근거로도 쓴다(파일이 안 자라면 끝).
+#      채널. ✗ 실녹화 내내 False — 죽은 신호. (채널 정의만 보고 판정하면 평소에도
+#      켜진다고 거짓말한다. NotificationRecord 만 반응해야 한다.) 코드는 남기되
+#      기본으론 안 부른다 — 주기당 0.27초가 그냥 버려진다.
+#   ③ 파일 — 기존 방식. ✗ **끝날 때 생긴다.** 11초 녹화에서 10초 지점에 등장했다.
+#      시작 감지용으로는 원리적으로 못 쓴다. "끝" 판정의 바닥으로만 남긴다.
 #
-# 셋 중 뭐가 먼저 잡혔는지 **근거를 로그에 남긴다.** 그래야 실녹화 1회로
-# 어느 신호가 진짜인지 판정된다.
+# 판정 근거(raw):
+#   14:46:47 False 파일=8 → 14:46:49 True 파일=8 → 14:47:00 True 파일=9 → 14:47:02 False 파일=9
+#
+# 뭐가 잡혔는지 **근거를 로그에 남긴다** — 신호를 바꾸거나 늘릴 때 같은 방식으로
+# 실녹화 1회면 판정되게. `--probe` 가 그 판정 도구다.
 
 MP_CMD = "dumpsys media_projection"
 NOTI_CMD = "dumpsys notification --noredact"
@@ -157,16 +164,32 @@ def _noti_recording(device):
     return False
 
 
-def rec_state(device):
-    """(녹화중인가, 근거). 판단이 안 서면 (False, '판단불가')."""
+def rec_state(device, check_noti=False):
+    """(녹화중인가, 근거). 판단이 안 서면 (False, '판단불가').
+
+    ── 2026-09-23 실녹화로 판정 끝. **① media_projection 만 쓴다.** ─────────
+
+    Boss 가 12초 녹화한 실측(주기 2초):
+
+        14:46:47  media_projection=False  파일=8   ← 녹화 전
+        14:46:49  media_projection=True   파일=8   ← **시작. 2초 안에 잡혔다**
+        14:47:00  media_projection=True   파일=9   ← 파일이 이제야 등장
+        14:47:02  media_projection=False  파일=9   ← 끝
+
+    ② notification 은 **그 녹화 내내 False** 였다 — 죽은 신호다. 매칭식이 틀렸을
+    가능성도 있으니 코드는 남기되 기본으론 안 부른다(주기당 0.27초 절약).
+
+    ③ 파일은 **끝날 때 생긴다.** 11초짜리 녹화에서 10초 지점에 나타났다. 예전부터
+    걸려 있던 "시작에 만드나 끝에 만드나"의 답이 이것이다 — 시작 감지용으로는
+    원리적으로 못 쓴다. 그래서 여기서는 안 보고, "끝" 판정의 바닥으로만 남긴다.
+    """
     mp = _mp_recording(device)
     if mp:
         return True, "media_projection"
-    noti = _noti_recording(device)
-    if noti:
-        return True, "notification"
-    if mp is None and noti is None:
+    if mp is None:
         return False, "판단불가"
+    if check_noti and _noti_recording(device):
+        return True, "notification"
     return False, "없음"
 
 
