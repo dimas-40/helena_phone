@@ -97,6 +97,79 @@ def recordings(d):
     return out
 
 
+# ── 녹화 상태 감지 ─────────────────────────────────────────────────────────
+#
+# 삼성 녹화기 자체는 **SystemUI/SmartCapture 안**에 있다. 거기 버튼을 넣는 건
+# 못 한다 — `com.samsung.android.app.smartcapture` 는 시스템 서명 앱이고
+# 화면녹화 API 는 `signature|privileged` 로 잠겨 있다. 2026-09-23 시도해서
+# 막힌 문들 (다시 파지 말 것):
+#
+#   · ScreenRecorderProvider (content://com.samsung.android.app.screenrecorder.provider)
+#     → SecurityException. uid 2000 에게 ACCESS_SCREEN_RECORDER_SVC 가 없다.
+#   · ScreenRecorderReceiver → 필터가 설정 체크 액션뿐. 시작/끝 방송이 없다.
+#   · 녹화 전용 패키지 → 없다. 삼성 녹화기는 smartcapture 6.0.31.19 안에 들어있다.
+#
+# 대신 **시작 순간을 관측**한다. 버튼을 다는 것보다 이게 낫다 — Boss 가
+# 아무것도 안 눌러도 된다. 신호 셋, 싼 것부터:
+#
+#   ① media_projection — MediaProjection 은 녹화가 시작되기 **전에** 만들어진다.
+#      가장 이른 신호다. dumpsys 한 번이라 싸다.
+#      안 돌 때의 출력은 정확히 `Media Projection: \nnull` (실측).
+#   ② notification — smartcapture 의 `CHANNEL_ID_RECORDING_SCREEN`('화면 녹화')
+#      채널에 상시 알림이 뜬다. ⚠️ **채널 정의는 평소에도 보인다** —
+#      `dumpsys notification` 의 AppSettings 절에 항상 있다. 그래서 채널 이름만
+#      찾으면 오탐이다. **NotificationRecord(=실제로 뜬 알림)** 를 봐야 한다.
+#   ③ 파일 — 기존 방식. 남겨두는 이유는 ① ② 가 다 실패했을 때의 바닥이고,
+#      Boss 가 "녹화 끝"을 판정하는 근거로도 쓴다(파일이 안 자라면 끝).
+#
+# 셋 중 뭐가 먼저 잡혔는지 **근거를 로그에 남긴다.** 그래야 실녹화 1회로
+# 어느 신호가 진짜인지 판정된다.
+
+MP_CMD = "dumpsys media_projection"
+NOTI_CMD = "dumpsys notification --noredact"
+REC_CHANNEL = "CHANNEL_ID_RECORDING_SCREEN"
+REC_PKG = "com.samsung.android.app.smartcapture"
+
+
+def _mp_recording(device):
+    """MediaProjection 이 살아 있는가. 못 읽으면 None(모름)."""
+    rc, out = axis_arm.adb(device, MP_CMD, timeout=30)
+    if rc != 0:
+        return None
+    body = out.split("Media Projection:", 1)[-1].strip()
+    if not body:
+        return None
+    return body.splitlines()[0].strip() != "null"
+
+
+def _noti_recording(device):
+    """녹화 상시 알림이 실제로 떠 있는가. 못 읽으면 None(모름).
+
+    NotificationRecord 줄에만 반응한다 — 채널 정의(AppSettings 절)는 평소에도
+    있으므로 그걸로 판정하면 녹화 중이 아닐 때도 켜진다고 거짓말한다.
+    """
+    rc, out = axis_arm.adb(device, NOTI_CMD, timeout=45)
+    if rc != 0:
+        return None
+    for line in out.splitlines():
+        if "NotificationRecord" in line and REC_PKG in line and REC_CHANNEL in line:
+            return True
+    return False
+
+
+def rec_state(device):
+    """(녹화중인가, 근거). 판단이 안 서면 (False, '판단불가')."""
+    mp = _mp_recording(device)
+    if mp:
+        return True, "media_projection"
+    noti = _noti_recording(device)
+    if noti:
+        return True, "notification"
+    if mp is None and noti is None:
+        return False, "판단불가"
+    return False, "없음"
+
+
 def age_of(path):
     try:
         return time.time() - os.stat(path).st_mtime
@@ -184,6 +257,8 @@ def main():
     ap.add_argument("--tv-on-now", action="store_true",
                     help="감시 없이 나레이터 액자만 지금 띄운다")
     ap.add_argument("--daemon", action="store_true", help="pidfile 쓴다")
+    ap.add_argument("--probe", action="store_true",
+                    help="감지 신호만 찍는다 (오버레이 안 띄움) — 실녹화 판정용")
     a = ap.parse_args()
 
     if a.arm_now:
@@ -214,10 +289,24 @@ def main():
             log(f"  · {os.path.basename(p)}")
         return 0
 
-    active = None          # 녹화 중이라 보고 있는 파일
-    last_move = 0.0        # 마지막으로 파일이 자란 시각
+    # 감지 신호가 셋이라 로그에 **어느 게 먼저 잡혔는지**를 남긴다. 실녹화 1회로
+    # ①(media_projection) ②(notification) ③(파일) 중 뭐가 진짜인지 판정된다.
+    if a.probe:
+        log("  [probe] 신호만 찍는다 — 오버레이는 안 띄운다. 녹화를 시작해 보라.")
+        while True:
+            mp = _mp_recording(a.device)
+            noti = _noti_recording(a.device)
+            n = len(recordings(a.dir))
+            log(f"  media_projection={mp}  notification={noti}  파일={n}")
+            time.sleep(a.interval)
+
+    fired = False          # 지금 "녹화 중"이라고 보고 있는가
+    why_now = ""
+    active = None          # 파일 감시용 (보조)
+    last_move = 0.0
 
     while True:
+        t0 = time.time()
         try:
             cur = recordings(a.dir)
         except Exception as e:                      # noqa: BLE001
@@ -225,21 +314,42 @@ def main():
             time.sleep(a.interval)
             continue
 
+        on, why = rec_state(a.device)
+
         fresh = [p for p in cur if p not in seen]
         if fresh:
             newest = max(fresh, key=lambda p: cur[p][0])
-            log(f"● 녹화 시작 감지: {os.path.basename(newest)} "
-                f"({cur[newest][1] / 1024:.0f}KB, 파일나이 {age_of(newest):.1f}s)")
-            if age_of(newest) > 60:
-                log("  ⚠️ 파일이 이미 60초 묵었다 — 시작이 아니라 **끝**을 잡았을 수 있다")
-            fire(a.device, a.tv)
+            age = age_of(newest)
+            log(f"  · 새 파일: {os.path.basename(newest)} "
+                f"({cur[newest][1] / 1024:.0f}KB, 나이 {age:.1f}s)")
+            if age > 60:
+                # 삼성 녹화기가 파일을 **끝날 때** 만든다면 이 신호는 쓸모가 없다.
+                log("  ⚠️ 이 파일이 이미 60초 묵었다 — 시작이 아니라 끝을 잡았을 수 있다")
+            on, why = True, (why if why != "없음" else "file")
             active, last_move = newest, time.time()
 
-        if active and active in cur:
+        # 상태 판정과 파일 신호의 합치
+        if on and not fired:
+            log(f"● 녹화 시작 (근거: {why})")
+            fire(a.device, a.tv)
+            fired, why_now = True, why
+        elif not on and fired:
+            log(f"○ 녹화 끝 (근거: {why})")
+            if a.off_on_stop:
+                axis_arm.disarm(a.device)
+                log("  Axis 하강")
+                if a.tv:
+                    axis_arm.tv(a.device, on=False)
+                    log("  나레이터 액자 하강")
+            fired, why_now = False, ""
+
+        # 보조: 상태 신호가 판단불가일 때만 파일 성장으로 끝을 잡는다
+        if fired and active and active in cur:
             if cur[active] != seen.get(active):
                 last_move = time.time()
-            elif time.time() - last_move > a.stop_after:
-                log(f"○ 녹화 끝: {os.path.basename(active)} "
+            elif why == "판단불가" and time.time() - last_move > a.stop_after:
+                log(f"○ 녹화 끝(파일이 {a.stop_after:.0f}s 안 자람): "
+                    f"{os.path.basename(active)} "
                     f"({cur[active][1] / 1048576:.1f}MB)")
                 if a.off_on_stop:
                     axis_arm.disarm(a.device)
@@ -247,10 +357,10 @@ def main():
                     if a.tv:
                         axis_arm.tv(a.device, on=False)
                         log("  나레이터 액자 하강")
-                active = None
+                fired, active = False, None
 
         seen = cur
-        time.sleep(a.interval)
+        time.sleep(max(0.2, a.interval - (time.time() - t0)))
 
 
 if __name__ == "__main__":
