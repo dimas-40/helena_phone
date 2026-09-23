@@ -87,6 +87,10 @@
   </header>
   <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
 <ul>
+<li><a href="#28-api-_claude-2026-09-23">🗂 28레포 전수 파싱 — API 인덱스 (_Claude · 2026-09-23)</a></li>
+<li><a href="#buckley-chang-_grok-2026-09-23">🎬 Buckley Chang 랜딩 필름 (_Grok · 2026-09-23)</a></li>
+<li><a href="#alexandria-_grok-2026-09-23">🏛 Alexandria 인장 교체 (_Grok · 2026-09-23)</a></li>
+<li><a href="#alexandria-_grok-2026-09-23_1">🏛 Alexandria 랜딩 필름 (_Grok · 2026-09-23)</a></li>
 <li><a href="#40s-tg-_grok-2026-09-05">🎞 갤러리 40s 얼굴 합성 · 한국어 더빙 자기소개 TG (_Grok · 2026-09-05)</a></li>
 <li><a href="#cli-tg-1-_grok-2026-08-28">📷 갤러리 CLI 왕복 + 캔버스 품질 층 + TG 1장 (_Grok · 2026-08-28)</a></li>
 <li><a href="#imagine-18-_grok-2026-08-27">🖼 Imagine 캔버스 18기능 수첩 잠금 (_Grok · 2026-08-27)</a></li>
@@ -665,7 +669,22 @@
     <button type="button" id="wzCopy" data-cursor>본문 복사</button>
   </div>
   <article class="wz-prose" id="wzProse" data-app="doc">
-    <h3 id="40s-tg-_grok-2026-09-05">🎞 갤러리 40s 얼굴 합성 · 한국어 더빙 자기소개 TG (_Grok · 2026-09-05)</h3>
+    <h3 id="28-api-_claude-2026-09-23">🗂 28레포 전수 파싱 — API 인덱스 (_Claude · 2026-09-23)</h3>
+<p><strong>Boss:</strong> &ldquo;너 내 28개 레포 다 파싱해 봐.&rdquo;</p>
+<p><strong>한 일:</strong> <code>dtslib1979</code> 28레포 전수(클론 없이 <code>git/trees?recursive=1</code>) → 27,027파일 · 문서 15,286 · 3.26GB. <code>scripts/repo_index_Claude.py</code> · 리포트 <code>_notebook/115-repo-index-28_Claude.md</code> · 데이터 <code>_notebook/data/repo-index-28.json</code>. 출판부 게이트 <code>gap_count=0</code> 통과(207p 빌드).</p>
+<p><strong>파싱이 드러낸 것:</strong> (1) 28/28 <code>CLAUDE.md</code> 보유, 그중 <strong>27개가 동일 LAW-PACK 템플릿</strong> — 식당 레포에도 YouTube OAuth 매뉴얼이 박혀 있음. (2) <code>parksy-audio</code>만 예외인데 <strong>용량 1위(964MB)에 설명은 최소(1.2KB)</strong>. (3) 문서 77.5%가 <code>parksy-logs</code> 한 곳. (4) 13개 레포가 <strong>7월 30일 동시 정지</strong>(지사 계열 추정).<br>
+<strong>안 한 것:</strong> 문서 15,286개 <strong>본문은 안 읽음</strong> — 이번엔 트리·CLAUDE.md·메타데이터까지. 본문 다이제스트는 지시 대기.</p>
+<h3 id="buckley-chang-_grok-2026-09-23">🎬 Buckley Chang 랜딩 필름 (_Grok · 2026-09-23)</h3>
+<p><strong>Boss:</strong> buckleychang.com 랜딩을 파싱하고, 프로페셔널한 이미지·영상을 끼워 넣기.</p>
+<p><strong>한 일:</strong> 글만 있던 첫 화면에 밤 데스크 6초 루프(초록·노랑·빨강 신호등)를 넣음. YOU·HUB·ROUTE, Green/Yellow/Red, 파트너 의자, 연락 문. OG는 새 플레이트. 커밋 <code>58936cf</code>. 사람 얼굴은 안 그림. 구석의 기존 BC 인장 영상은 그대로.</p>
+<h3 id="alexandria-_grok-2026-09-23">🏛 Alexandria 인장 교체 (_Grok · 2026-09-23)</h3>
+<p><strong>Boss:</strong> 랜딩에 맨 먼저 나오는 엠블럼을 테마에 맞게 멋있게 갈아끼워.</p>
+<p><strong>한 일:</strong> 남색 기하+글자 마크를 숯색 고리·일곱 점·능선·기와·두 칸 등창으로 교체. 히어로 자리는 112px. <code>emblem.svg</code>와 32/192/512·favicon 같이. 커밋 <code>e383f70</code>.</p>
+<h3 id="alexandria-_grok-2026-09-23_1">🏛 Alexandria 랜딩 필름 (_Grok · 2026-09-23)</h3>
+<p><strong>Boss:</strong> <code>dtslib1979.github.io/alexandria-sanctuary</code> 랜딩을 읽고, 필요한 이미지·영상을 A급으로 만들어 끼워 넣기.</p>
+<p><strong>한 일:</strong> 글만 있던 첫 화면에 팔공산 푸른 시간 6초 루프와 게이트 7·길·서가 스틸을 넣음. 입주 페이지가 비어 있던 <code>assets/mountain-palgongsan.jpg</code>, 유튜브 배너·프로필도 채움. 커밋 <code>44d8819</code> → <code>main</code>.</p>
+<p><strong>안 한 것:</strong> 안쪽 페이지 히어로(그라데이션+GSAP)는 그대로. 사람 얼굴·조제 장면은 안 그림.</p>
+<h3 id="40s-tg-_grok-2026-09-05">🎞 갤러리 40s 얼굴 합성 · 한국어 더빙 자기소개 TG (_Grok · 2026-09-05)</h3>
 <p><strong>Boss:</strong> 갤러리 내 사진으로 얼굴 합성 + 한국어 더빙 자기소개 영상 → 텔레그램. 이어서 「40s 파일 제목 찾아와」·「해」.</p>
 <p><strong>찾음:</strong> <code>Pictures/40s.png</code> (마흔 얼굴) · <code>Quick Share/40'S.jpg</code> (도서관 수트). 옆에 <code>30s</code>/<code>50s</code>도 있음.</p>
 <p><strong>제작:</strong> 스틸 4 → 6초×4 → InJoonNeural 더빙 → concat 24.0s · 480×848 · 1.9MB.</p>
