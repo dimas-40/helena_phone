@@ -1232,6 +1232,14 @@
     "deck": "작성: `_Claude` · Boss 지시 (\"너 내 28개 레포 다 파싱해 봐\")"
   },
   {
+    "src": "_notebook/116-phone-t-worklog-parsed_Claude.md",
+    "out": "notebook/116-phone-t-worklog-parsed_Claude.html",
+    "title": "Phone T 작업일지 — 파싱 (2026-09-22 ~ 09-23)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss 지시: *\"화면 녹화 관련되어 있는 MCP 만들었던 폰티 이런 이름으로 만들어 놓고 컨테이너 만들려고 했던 거 그거 작업일지 파싱해\"*"
+  },
+  {
     "src": "_notebook/100-phone-management-3layers_Claude.md",
     "out": "notebook/100-phone-management-3layers_Claude.html",
     "title": "📱 폰 관리 3계층 — 수리 라우팅 원칙 (2026-08-21)",

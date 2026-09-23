@@ -1,8 +1,11 @@
 {
-  "generated": "2026-09-23T01:24:02Z",
-  "notebook_md_count": 163,
-  "notebook_html_count": 167,
-  "catalog_count": 207,
+  "generated": "2026-09-23T02:15:26Z",
+  "agent": "_Grok",
+  "notebook_md_count": 164,
+  "notebook_html_count": 168,
+  "catalog_count": 208,
+  "manual_titles": 130,
+  "auto_titled": 34,
   "missing_html": [],
   "orphan_html": [
     "notebook/40-lecture-chalkboard-vol0.html",
@@ -11,5 +14,7 @@
   ],
   "catalog_missing_on_disk": [],
   "gap_count": 0,
-  "policy": "Every _notebook/*.md must have notebook/*.html. Build via scripts/build_webzine.py. Agent: _Grok checks every session."
+  "ok": true,
+  "policy": "Every _notebook/*.md must have notebook/<same-stem>.html. Run: python3 scripts/build_webzine.py",
+  "live_app": "https://helena751107.github.io/helena_phone/notebook/webpage-coverage.html"
 }

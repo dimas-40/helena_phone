@@ -275,6 +275,7 @@ NOTEBOOK_TITLES = {
     "BRIEFING-MCP-REPO-2026-09-21_Claude.md": "MCP 기준 리팩토링 브리핑 (1장)",
     "114-parksy-phone-lecture-vol0-en_Claude.md": "Parksy Phone Vol.0 (영문) — 폰 하나가 공장 전체인 이유",
     "115-repo-index-28_Claude.md": "28레포 전수 파싱 — 인덱스",
+    "116-phone-t-worklog-parsed_Claude.md": "Phone T 작업일지 파싱 — 폰티·컨테이너·녹화 MCP",
 }
 
 # Auto-discover every _notebook/*.md (overrides in NOTEBOOK_TITLES)
