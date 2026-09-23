@@ -9,6 +9,7 @@ Boss 그림 (원문):
   삼성 녹화기 시작 → /sdcard/DCIM/Screen recordings/Screen_Recording_*.mp4 등장
                    → (저장된 콘티 로드) Axis OFF→ARM
                    → Laser Pen 그려지고 있는지 확인
+                   → (--cam-style 주면) 카메라 키트 우하단에
 
 키트별 문 (2026-09-23 실측):
 
@@ -23,11 +24,19 @@ Boss 그림 (원문):
           이후로는 안 먹는다. 그래서 여기서는 "확인 → 안 되면 크게 경고"만 한다.
           스스로 켜지지 않은 녹화는 Boss 가 손으로 켜야 한다는 뜻이다.
 
+  Camera com.samsung.android.video (나레이터 루프)
+        → scripts/camkit.py 가 담당. 문이 열렸다(2026-09-23):
+          cmd window set-ignore-orientation-request true  ← 이게 열쇠
+          am start --windowingMode 5 → am task resize <id> L T R B
+        실측 1080x2340 우하단 Rect(716,1631 - 1056,2180) 340x549 정확히 박힘.
+
 쓰는 법:
-  python3 scripts/rec_watch.py                 # 감시 시작 (포그라운드)
-  python3 scripts/rec_watch.py --once          # 한 번만 스캔
-  python3 scripts/rec_watch.py --arm-now       # 감시 없이 지금 무장 (테스트)
-  python3 scripts/rec_watch.py --dir /tmp/x    # 감시 폴더 바꿔서 (테스트)
+  python3 scripts/rec_watch.py                    # 감시 시작 (포그라운드)
+  python3 scripts/rec_watch.py --once             # 한 번만 스캔
+  python3 scripts/rec_watch.py --arm-now          # 감시 없이 지금 무장 (테스트)
+  python3 scripts/rec_watch.py --cam-on-now       # 카메라 키트만 지금 띄운다
+  python3 scripts/rec_watch.py --cam-style tv     # 녹화 감지 시 카메라 키트도 같이
+  python3 scripts/rec_watch.py --dir /tmp/x       # 감시 폴더 바꿔서 (테스트)
 
   백그라운드 상주:
   setsid nohup python3 scripts/rec_watch.py --daemon >/dev/null 2>&1 &
@@ -42,6 +51,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import axis_arm  # noqa: E402
+import camkit    # noqa: E402
 
 REC_DIR = "/sdcard/DCIM/Screen recordings"
 REC_GLOB = "Screen_Recording_*.mp4"
@@ -121,7 +131,7 @@ def pen_ensure(device):
 
 # ── 무장 ───────────────────────────────────────────────────────────────────
 
-def fire(device, tag):
+def fire(device, cam_style=None):
     """녹화가 시작됐다 — 저장된 콘티로 무장한다."""
     if not os.path.exists(axis_arm.STORE):
         log(f"  ⚠️ 저장된 콘티가 없다: {axis_arm.STORE} — "
@@ -134,9 +144,14 @@ def fire(device, tag):
     if not axis_arm.ensure_device(device):
         log(f"  ⚠️ adb 붙지 못함: {device}")
         return
-    pen_ensure(device)
+    # Axis 를 먼저 올린다 — 눈에 보이는 게 먼저다. 펜 확인은 dumpsys 라 2~4초 걸린다.
     rc, out = axis_arm.arm(device, rd, show=1)
     log(f"  Axis 무장: {out}")
+    pen_ensure(device)
+
+    if cam_style:
+        # 카메라 키트 = 나레이터 루프를 우하단에. 띄우는 데 4~5초 걸린다(창 생성+리사이즈).
+        camkit.on(device, cam_style, "br", 340)
 
 
 def main():
@@ -150,6 +165,11 @@ def main():
                     help="녹화 끝나면 Axis 내린다 (기본: 그대로 둔다)")
     ap.add_argument("--once", action="store_true", help="한 번만 스캔")
     ap.add_argument("--arm-now", action="store_true", help="감시 없이 즉시 무장")
+    ap.add_argument("--cam-style", default="none",
+                    choices=["none"] + sorted(camkit.STYLES),
+                    help="카메라 키트 스타일 (기본 none=안 띄움)")
+    ap.add_argument("--cam-on-now", action="store_true",
+                    help="감시 없이 카메라 키트만 지금 띄운다")
     ap.add_argument("--daemon", action="store_true", help="pidfile 쓴다")
     a = ap.parse_args()
 
@@ -157,8 +177,15 @@ def main():
         if not axis_arm.ensure_device(a.device):
             log(f"⚠️ adb 붙지 못함: {a.device}")
             return 2
-        fire(a.device, "수동")
+        fire(a.device, None if a.cam_style == "none" else a.cam_style)
         return 0
+
+    if a.cam_on_now:
+        if not axis_arm.ensure_device(a.device):
+            log(f"⚠️ adb 붙지 못함: {a.device}")
+            return 2
+        return camkit.on(a.device, "tv" if a.cam_style == "none" else a.cam_style,
+                         "br", 340)
 
     if a.daemon:
         with open(PIDFILE, "w") as f:
@@ -191,7 +218,7 @@ def main():
                 f"({cur[newest][1] / 1024:.0f}KB, 파일나이 {age_of(newest):.1f}s)")
             if age_of(newest) > 60:
                 log("  ⚠️ 파일이 이미 60초 묵었다 — 시작이 아니라 **끝**을 잡았을 수 있다")
-            fire(a.device, "감지")
+            fire(a.device, None if a.cam_style == "none" else a.cam_style)
             active, last_move = newest, time.time()
 
         if active and active in cur:
@@ -203,6 +230,8 @@ def main():
                 if a.off_on_stop:
                     axis_arm.disarm(a.device)
                     log("  Axis 하강")
+                    if a.cam_style != "none":
+                        camkit.off(a.device)
                 active = None
 
         seen = cur
