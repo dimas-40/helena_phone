@@ -235,7 +235,7 @@ def tv(device, on=True, w=None, h=None, video=None, mute=True):
     return adb(device, *parts)
 
 
-def arm(device, rd, show=1, settle=1.5):
+def arm(device, rd, show=1, settle=1.5, fresh=False):
     """무장. **반드시 이 함수로만.**
 
     show=0 은 **저장만** 한다 — 화면을 건드리지 않는다. 예전엔 이 경우에도
@@ -256,10 +256,30 @@ def arm(device, rd, show=1, settle=1.5):
     새 프로세스가 이어받아 화면은 살아나지만, 크래시 다이얼로그가 뜨면
     **그게 녹화에 그대로 찍힌다.** OFF 로 먼저 내리고 1.5초 쉬면
     3회 반복 실측 전부 깨끗했다(창 4개 유지, 크래시 0).
+
+    ── 그래서 이미 떠 있으면 **아예 안 건드린다** (2026-09-23) ────────────────
+    OFF→ARM 바운스보다 나은 길이 앱 안에 있었다. `show=0` 은 서비스를 죽이지
+    않고 **소켓에 reload 만 넣어 콘티를 갈아끼운다** — AxisArmReceiver 주석의
+    설계 의도가 정확히 이것이다("재시작 없음 = 안 깜빡임").
+
+    이 경로가 위 바운스보다 나은 이유 셋:
+      ① **Boss 가 끌어놓은 자리가 산다.** 창이 재시작되면 위치가 기본 좌하단으로
+         풀린다(실측: 끌어놓은 [40,1744] → 재무장 후 [0,1784]). 서비스를 안 죽이면
+         안 풀린다. Boss 요구 "전부 다 내가 위치 이동할 수 있게"가 이걸 요구한다.
+      ② **1.5초 대기가 사라진다.** 녹화 시작 경로가 그만큼 빨라진다.
+      ③ 크래시 경로를 아예 안 탄다 — 바운스는 크래시를 피하려던 것이지
+         없애려던 게 아니었다.
+
+    `fresh=True` 로 부르면 예전처럼 OFF→ARM 바운스를 탄다(창 규격을 바꿔야 할 때).
     """
     if not show:
         return broadcast(device, "kr.parksy.axis.ARM", rd=rd, show=0)
-    if is_armed(device):
+
+    if not fresh and is_armed(device):
+        # 살아 있는 창에 콘티만 갈아끼운다 — 자리·크기 그대로, 깜빡임 없음.
+        return broadcast(device, "kr.parksy.axis.ARM", rd=rd, show=0)
+
+    if fresh and is_armed(device):
         disarm(device)
         time.sleep(settle)
     return broadcast(device, "kr.parksy.axis.ARM", rd=rd, show=1)
@@ -281,6 +301,8 @@ def main():
     ap.add_argument("--tv-h", type=int, default=None,
                     help="액자 세로 크기 dp (기본 96x155 — 액자 비율)")
     ap.add_argument("--device", default=DEFAULT_DEVICE)
+    ap.add_argument("--fresh", action="store_true",
+                    help="떠 있어도 창을 새로 만든다 (자리·크기를 처음부터 다시 잡을 때)")
     ap.add_argument("--dry-run", action="store_true", help="방송 없이 콘티만 출력")
     a = ap.parse_args()
 
@@ -322,7 +344,7 @@ def main():
         return 0
 
     save(rd)
-    rc, out = arm(a.device, rd, show=a.show)
+    rc, out = arm(a.device, rd, show=a.show, fresh=a.fresh)
     print(out)
     print(f"[+] 콘티 저장: {STORE}" + (" (화면엔 안 띄움)" if a.show == 0 else ""))
     return rc
