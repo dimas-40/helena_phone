@@ -129,27 +129,103 @@ def fetch(path_or_url):
     return raw.decode("utf-8", "ignore")
 
 
-def _tidy(h, width=18):
-    """오버레이는 260px 폭이다 — 긴 헤딩을 카테고리 길이로 줄인다."""
+# ── 한 줄에 담기는 양 (2026-09-24 실측 + 소스 확인) ─────────────────────────
+#
+# 이 앱은 **폰트를 창 크기에 비례**시킨다. 창을 키우면 글자도 커진다:
+#
+#   lib/widgets/tree_view.dart:150
+#       s  = (창W/260 + 창H/300)/2      ← OverlayDefaults 260x300
+#       fs = 14*s,   px = 12*s
+#   android/.../AxisArmReceiver.java:174
+#       창 = (w × overlayScale) dp
+#
+# 그래서 **상자를 키워도 담기는 글자 수가 늘지 않는다.** 유도하면:
+#
+#   담기는 단위 = (w − K_HEAD·D) / (K_UNIT·D),   D = w/260 + h/300
+#
+# overlayScale 은 약분되어 사라진다 — 크게 잡든 작게 잡든 글자 수는 같다.
+#
+# 실측 검산(2026-09-24, 1080x2340 @450dpi): 콘티 w=260 h=450 → 창 365x632px
+#   = 130x225dp, s=0.625, fs=8.75dp. 그 화면에 "누나의 생각을"(한글6+공백1)이
+#   딱 들어갔다 → 6.0 단위.  식: (260 − 28.1·2.5)/(12.6·2.5) = 6.02  ✓
+#
+# ⚠️ 세로 맞춤 때문에 h 가 w 를 따라 커져서, 6단계 기준 담기는 양은 **어느
+#    상자 크기에서나 ~7.7단위로 포화**한다(w=300·400·500 전부 7.69).
+#    즉 **문장형 카테고리는 이 앱에서 수학적으로 안 들어간다.** 폭을 키우는 건
+#    여유를 사는 것뿐이고, 진짜 해법은 카테고리를 짧게 쓰는 것이다.
+#    (APK 를 고쳐 두 줄 줄바꿈을 켜면 되지만, 재설치 때 SYSTEM_ALERT_WINDOW
+#     권한이 회수되므로 그 값을 치를 만하지 않다. 메모리 참조.)
+K_HEAD = 28.1        # 테두리·여백·접두기호('├─ ')가 fs 에 비례해 먹는 양
+K_UNIT = 12.6        # 표시폭 1단위(한글 1자)가 fs 에 비례해 먹는 양
+ACTIVE_LOSS = 2.2    # 활성 행은 '◀●' 를 달고 있어 그만큼 글자가 덜 들어간다
+BOX_N_DEF = 5        # 기본 단계 수 — 담기는 글자 수가 여기서 정해진다
+                     # (n=5 → 6.8단위 / n=6 → 5.6 / n=7 → 4.4)
+
+
+def _disp_width(s):
+    """한글 1.0 · 그 외 0.55 로 센 표시폭. 한글 폰트가 라틴보다 넓다."""
+    return sum(0.55 if ord(c) < 0x2000 else 1.0 for c in s)
+
+
+def capacity(w, h):
+    """이 상자 한 줄에 담기는 표시폭 단위 수. overlayScale 곱하기 **전** w·h."""
+    D = w / 260.0 + h / 300.0
+    if D <= 0:
+        return 0.0
+    return max(0.0, (w - K_HEAD * D) / (K_UNIT * D))
+
+
+def title_capacity(w, h):
+    """제목줄에 담기는 단위 수 — 제목 폰트가 fs×1.1 이라 행보다 조금 넓다."""
+    D = w / 260.0 + h / 300.0
+    if D <= 0:
+        return 1.0
+    return max(1.0, (w - 12.0 * D) / (13.86 * D))
+
+
+def _cut_units(s, max_units):
+    """표시폭 max_units 안으로 자른다. 단어 경계를 살리되, 안 되면 글자로."""
+    if _disp_width(s) <= max_units:
+        return s
+    cur = ""
+    for word in s.split(" "):
+        trial = (cur + " " + word) if cur else word
+        if _disp_width(trial) <= max_units:
+            cur = trial
+        else:
+            break
+    if _disp_width(cur) >= max_units * 0.5:
+        return cur.rstrip(" ·—-|:+")      # 끊고 남은 구분기호는 뗀다
+    out, wsum = "", 0.0                       # 한 단어가 통째로 길다
+    for ch in s:
+        cw = 0.55 if ord(ch) < 0x2000 else 1.0
+        if wsum + cw > max_units:
+            break
+        out += ch
+        wsum += cw
+    return out.rstrip()
+
+
+def _tidy(h, max_units=None):
+    """긴 헤딩을 **화면이 실제로 담는 길이**로 줄인다.
+
+    예전엔 18글자로 잘랐는데 그건 담기는 양의 3배였다. 그래서 녹화본에
+    "구형 폰 한 ..." 처럼 잘려 나왔다 — 자르는 쪽과 그리는 쪽이 서로 다른
+    숫자를 알고 있었다. 이제 한 곳(capacity)만 본다.
+    """
     h = re.sub(r"^[\d]+(\.[\d]+)*[.)]?\s*", "", h.strip())      # 앞 번호 제거
     h = re.sub(r"\s*[(（].*?[)）]\s*", " ", h)                    # 괄호 부제 제거
     h = re.split(r"\s+[—–·|]\s+", h)[0]                          # 대시 뒤 부제 제거
     h = h.replace("**", "").strip(" ·—-|:")
-    if len(h) <= width:
-        return h
-    # 단어 중간에서 자르면 "구형 폰 한 대로 1인 미디어 스" 처럼 뭉툭해진다.
-    # 마지막 공백에서 끊는다 — 단, 너무 짧아지면(절반 미만) 그냥 자른다.
-    cut = h[:width]
-    sp = cut.rfind(" ")
-    return (cut[:sp] if sp >= width // 2 else cut).strip()
+    return _cut_units(h, DEFAULT_UNITS if max_units is None else max_units)
 
 
-def stages_from_url(url, limit=6):
+def stages_from_url(url, limit=BOX_N_DEF, max_units=None):
     p = _Heads()
     p.feed(fetch(url))
     seen, out = set(), []
     for h in p.heads:
-        h = _tidy(h)
+        h = _tidy(h, max_units)
         key = h.replace(" ", "")
         if len(h) < 2 or key in seen:
             continue
@@ -161,71 +237,87 @@ def stages_from_url(url, limit=6):
 
 # ── 무장 ────────────────────────────────────────────────────────────────────
 
-# ── 상자 높이 자동 계산 (2026-09-24 실측 + 소스 확인) ───────────────────────
+# ── 상자 크기 자동 (높이 + 폭) ──────────────────────────────────────────────
 #
-# 예전엔 h=300 **고정**이었다. 그래서 URL 파서가 뽑는 6단계에서 상자가 넘쳐
-# **마지막 카테고리가 화면에서 잘렸다** — 진행 상태판인데 끝이 안 보였다.
+# 세로 넘침 조건:  K·(w/260 + h/300)/2 > h      (K = s=1 기준 내용 높이)
+# h 에 대해 풀면:  h ≥ 15·K·w / (13·(600 − K))   ← K→600 이면 발산
 #
-# 왜 "그냥 크게 잡으면" 안 되는가: 앱이 **폰트를 창 크기에 비례**시킨다.
-# `lib/widgets/tree_view.dart:150`:
-#
-#     double _scale(BoxConstraints c) =>
-#         (c.maxWidth / 260 + c.maxHeight / 300) / 2;      // OverlayDefaults 260x300
-#     final fs = UIDefaults.fontSizeMedium * s;            // 14.0 * s
-#
-# 상자를 키우면 글자도 커져서 넘침이 잘 안 준다. 즉 **고정점 문제**다.
-#
-# 실측 3점("BOTTOM OVERFLOWED BY N" 을 읽어 역산, s=1 기준 내용높이 K):
-#     제목1줄 + 6단계  → 넘침 0    (딱 맞음)   K = 300
-#     제목2줄 + 6단계  → 넘침 15               K = 330
-#     제목1줄 + 12단계 → 넘침 107              K = 514
-#
-# 셋을 만족하는 식:   K = 56 + 30·제목줄수 + 35.7·단계수
-# 넘침 조건(K·(w/260 + h/300)/2 > h, w=260)을 h 에 대해 풀면:
-#
-#     h = 300·K / (600 − K)          ← K→600 이면 발산. 넘치면 상자만으론 못 살린다.
+# K 는 실측 3점("BOTTOM OVERFLOWED BY N" 를 읽어 역산)으로 맞췄다:
+#     제목1줄 + 6단계  → 넘침 0    K = 300
+#     제목2줄 + 6단계  → 넘침 15   K = 330
+#     제목1줄 + 12단계 → 넘침 107  K = 514
 K_BASE = 56.0
 K_TITLE = 30.0
 K_ROW = 35.7
-H_MAX = 700.0        # 이보다 큰 상자는 화면 밖으로 나간다. 넘으면 경고하고 자른다
-TITLE_WRAP = 12.0    # 제목이 이 "표시폭"에서 줄바꿈(실측 3점 전부 일치)
+H_MAX = 700.0        # 이보다 큰 상자는 화면 밖으로 나간다
+H_MIN = 220.0
+W_DEF = 340.0        # 창 = w×overlayScale = 170dp (화면 384dp 의 44%)
+TITLE_LINES_MAX = 1  # 제목도 여기까지만. 안 자르면 상자를 밀어올려 **담기는
+                     # 양을 오히려 깎는다** — 실측: 제목 4줄 → h=700 → 2.98단위.
+                     # 2줄로 늘리면 K_TITLE 30 을 더 먹어 단계당 1단위를 잃는다
+                     # (6단계 기준 5.58 → 4.55). 제목은 짧은 라벨로 쓴다.
 
 
-def _disp_width(s):
-    """한글 1.0 · 그 외 0.55 로 센 표시폭. 한글 폰트가 라틴보다 넓다."""
-    return sum(0.55 if ord(c) < 0x2000 else 1.0 for c in s)
+def _box_h(root, n, w, margin=1.06, title_lines_max=TITLE_LINES_MAX):
+    """이 (제목, 단계수, 폭) 에서 세로로 안 넘치는 높이 → (h, K).
 
-
-def _title_lines(root):
-    return max(1, math.ceil(_disp_width(root) / TITLE_WRAP))
-
-
-def auto_h(root, n):
-    """넘침 없는 상자 높이의 **출발점**. 확정값이 아니다.
-
-    ⚠️ 이 식은 **모자란다.** 실측: 어떤 콘티에서 382 를 냈는데 실제로는 450 이
-    필요했다(18% 부족). 이유는 위 되먹임 — 식은 제목 줄 수를 s=1 에서 고정해
-    놓고 세는데, 실제로는 상자를 키울수록 제목이 한 줄 더 접힌다.
-    정확히 맞추려면 `axis_arm.py --fit` 을 쓴다(화면을 보며 수렴시킨다).
-    여기서는 **너무 작지 않게** 잡는 것까지만 책임진다.
+    **제목 줄 수를 먼저 묶고** 높이를 푼다. 순서를 뒤집으면(높이 먼저) 제목이
+    접히며 상자를 키우고, 커진 상자가 다시 담기는 양을 깎는 나선에 빠진다.
     """
-    K = K_BASE + K_TITLE * _title_lines(root) + K_ROW * n
-    if K >= 600.0:
-        return int(H_MAX)
-    return int(min(H_MAX, 300.0 * K / (600.0 - K) + 15))
+    tw = _disp_width(root)
+    h = H_MIN
+    for _ in range(12):
+        allowed = title_lines_max * max(1.0, capacity(w, h))
+        tl = max(1, math.ceil(min(tw, allowed) / max(1.0, title_capacity(w, h))))
+        K = K_BASE + K_TITLE * tl + K_ROW * n
+        if K >= 600.0:
+            return H_MAX, K
+        need = (15.0 * K * w) / (13.0 * (600.0 - K))
+        nh = max(H_MIN, min(H_MAX, need * margin))
+        if abs(nh - h) < 1.0:
+            return nh, K
+        h = nh
+    return h, K
 
 
-def rundown(root, stages, pos="bottomLeft", w=260, h=None, theme="amber",
+def box_size(root, n, w=W_DEF):
+    """(w, h, 담기는단위) — 이 콘티가 다 들어가는 상자."""
+    h, _ = _box_h(root, n, w)
+    h = int(round(h))
+    return int(w), h, capacity(w, h)
+
+
+def usable_units(w, h):
+    """활성 행('◀●' 를 달고 있다)까지 감안해 **실제로 쓸 수 있는** 단위 수."""
+    return max(2.0, capacity(w, h) - ACTIVE_LOSS)
+
+
+DEFAULT_UNITS = usable_units(*box_size("", BOX_N_DEF)[:2])
+
+
+def rundown(root, stages, pos="bottomLeft", w=None, h=None, theme="amber",
             font="mono", opacity=0.92, stroke=1.5, scale=0.5):
-    """h=None 이면 **단계 수에 맞춰 높이를 계산한다** — 고정값이면 잘린다(위 주석)."""
+    """콘티 JSON.
+
+    w·h 를 안 주면 단계 수와 제목에 맞춰 잡고, **카테고리도 담기는 길이로
+    자른다.** 고정값으로 두면 자르는 쪽과 그리는 쪽이 다른 숫자를 알게 되어
+    반드시 어긋난다 — 2026-09-24 녹화본의 "구형 폰 한 ..." 이 그 사고다.
+    제목(root)은 자르지 않는다. 여러 줄로 접히기 때문이다.
+    """
+    n = len(stages)
+    if w is None:
+        w = int(W_DEF)
     if h is None:
-        h = auto_h(root, len(stages))
-        if h >= H_MAX and K_BASE + K_TITLE * _title_lines(root) + K_ROW * len(stages) >= 600.0:
-            print(f"[!] 단계가 너무 많다({len(stages)}개) — 상자를 {h:.0f}dp 로 잘랐다. "
+        h, K = _box_h(root, n, w)
+        h = int(round(h))
+        if K >= 600.0:
+            print(f"[!] 단계가 너무 많다({n}개) — 상자를 {h}dp 로 잘랐다. "
                   f"뒤쪽 카테고리가 안 보일 수 있다", file=sys.stderr)
-    return {"root": root, "stages": stages, "pos": pos, "w": w, "h": h,
-            "theme": theme, "font": font, "opacity": opacity,
-            "stroke": stroke, "overlayScale": scale, "version": 9}
+    cap = usable_units(w, h)
+    root = _cut_units(root, TITLE_LINES_MAX * capacity(w, h))
+    return {"root": root, "stages": [_cut_units(s, cap) for s in stages],
+            "pos": pos, "w": w, "h": h, "theme": theme, "font": font,
+            "opacity": opacity, "stroke": stroke, "overlayScale": scale, "version": 9}
 
 
 def adb(device, *remote, timeout=25):
@@ -354,7 +446,7 @@ def arm(device, rd, show=1, settle=1.5, fresh=False):
 
 # ── 넘침 측정 (화면에서 직접) ──────────────────────────────────────────────
 #
-# 위 auto_h() 는 **한 방에 못 맞춘다.** 상자를 키우면 s 가 커지고 → 폰트가 커지고
+# 위 _box_h() 는 **한 방에 못 맞춘다.** 상자를 키우면 s 가 커지고 → 폰트가 커지고
 # → 제목이 한 줄 더 접혀서 내용이 또 커진다. 되먹임이라 닫힌 식이 안 선다.
 # 실측: h=345 에서 제목 2줄·넘침 4.1px → h=382 로 키웠더니 제목 3줄·넘침 13px.
 # **키웠는데 더 나빠졌다.**
@@ -417,7 +509,8 @@ def fit_h(device, rd, tries=6, step=1.18, cap=900):
     재시작되니 Boss 가 끌어놓은 자리는 풀린다 — **그래서 이건 1회 보정용**이고,
     맞춘 값을 rundown() 이 기본값으로 쓰게 하는 게 목적이다.
     """
-    h = rd.get("h") or auto_h(rd.get("root", ""), len(rd.get("stages", [])))
+    h = rd.get("h") or _box_h(rd.get("root", ""), len(rd.get("stages", [])),
+                              rd.get("w", W_DEF))[0]
     for i in range(tries):
         rd = dict(rd, h=int(h))
         arm(device, rd, show=1, fresh=True)
