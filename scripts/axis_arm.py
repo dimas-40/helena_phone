@@ -26,6 +26,7 @@ Boss 그림: "내가 URL 주면 파싱해 가지고 카테고리 거기에다가
 """
 import argparse
 import json
+import math
 import os
 import re
 import subprocess
@@ -134,7 +135,13 @@ def _tidy(h, width=18):
     h = re.sub(r"\s*[(（].*?[)）]\s*", " ", h)                    # 괄호 부제 제거
     h = re.split(r"\s+[—–·|]\s+", h)[0]                          # 대시 뒤 부제 제거
     h = h.replace("**", "").strip(" ·—-|:")
-    return h[:width].strip()
+    if len(h) <= width:
+        return h
+    # 단어 중간에서 자르면 "구형 폰 한 대로 1인 미디어 스" 처럼 뭉툭해진다.
+    # 마지막 공백에서 끊는다 — 단, 너무 짧아지면(절반 미만) 그냥 자른다.
+    cut = h[:width]
+    sp = cut.rfind(" ")
+    return (cut[:sp] if sp >= width // 2 else cut).strip()
 
 
 def stages_from_url(url, limit=6):
@@ -154,8 +161,68 @@ def stages_from_url(url, limit=6):
 
 # ── 무장 ────────────────────────────────────────────────────────────────────
 
-def rundown(root, stages, pos="bottomLeft", w=260, h=300, theme="amber",
+# ── 상자 높이 자동 계산 (2026-09-24 실측 + 소스 확인) ───────────────────────
+#
+# 예전엔 h=300 **고정**이었다. 그래서 URL 파서가 뽑는 6단계에서 상자가 넘쳐
+# **마지막 카테고리가 화면에서 잘렸다** — 진행 상태판인데 끝이 안 보였다.
+#
+# 왜 "그냥 크게 잡으면" 안 되는가: 앱이 **폰트를 창 크기에 비례**시킨다.
+# `lib/widgets/tree_view.dart:150`:
+#
+#     double _scale(BoxConstraints c) =>
+#         (c.maxWidth / 260 + c.maxHeight / 300) / 2;      // OverlayDefaults 260x300
+#     final fs = UIDefaults.fontSizeMedium * s;            // 14.0 * s
+#
+# 상자를 키우면 글자도 커져서 넘침이 잘 안 준다. 즉 **고정점 문제**다.
+#
+# 실측 3점("BOTTOM OVERFLOWED BY N" 을 읽어 역산, s=1 기준 내용높이 K):
+#     제목1줄 + 6단계  → 넘침 0    (딱 맞음)   K = 300
+#     제목2줄 + 6단계  → 넘침 15               K = 330
+#     제목1줄 + 12단계 → 넘침 107              K = 514
+#
+# 셋을 만족하는 식:   K = 56 + 30·제목줄수 + 35.7·단계수
+# 넘침 조건(K·(w/260 + h/300)/2 > h, w=260)을 h 에 대해 풀면:
+#
+#     h = 300·K / (600 − K)          ← K→600 이면 발산. 넘치면 상자만으론 못 살린다.
+K_BASE = 56.0
+K_TITLE = 30.0
+K_ROW = 35.7
+H_MAX = 700.0        # 이보다 큰 상자는 화면 밖으로 나간다. 넘으면 경고하고 자른다
+TITLE_WRAP = 12.0    # 제목이 이 "표시폭"에서 줄바꿈(실측 3점 전부 일치)
+
+
+def _disp_width(s):
+    """한글 1.0 · 그 외 0.55 로 센 표시폭. 한글 폰트가 라틴보다 넓다."""
+    return sum(0.55 if ord(c) < 0x2000 else 1.0 for c in s)
+
+
+def _title_lines(root):
+    return max(1, math.ceil(_disp_width(root) / TITLE_WRAP))
+
+
+def auto_h(root, n):
+    """넘침 없는 상자 높이의 **출발점**. 확정값이 아니다.
+
+    ⚠️ 이 식은 **모자란다.** 실측: 어떤 콘티에서 382 를 냈는데 실제로는 450 이
+    필요했다(18% 부족). 이유는 위 되먹임 — 식은 제목 줄 수를 s=1 에서 고정해
+    놓고 세는데, 실제로는 상자를 키울수록 제목이 한 줄 더 접힌다.
+    정확히 맞추려면 `axis_arm.py --fit` 을 쓴다(화면을 보며 수렴시킨다).
+    여기서는 **너무 작지 않게** 잡는 것까지만 책임진다.
+    """
+    K = K_BASE + K_TITLE * _title_lines(root) + K_ROW * n
+    if K >= 600.0:
+        return int(H_MAX)
+    return int(min(H_MAX, 300.0 * K / (600.0 - K) + 15))
+
+
+def rundown(root, stages, pos="bottomLeft", w=260, h=None, theme="amber",
             font="mono", opacity=0.92, stroke=1.5, scale=0.5):
+    """h=None 이면 **단계 수에 맞춰 높이를 계산한다** — 고정값이면 잘린다(위 주석)."""
+    if h is None:
+        h = auto_h(root, len(stages))
+        if h >= H_MAX and K_BASE + K_TITLE * _title_lines(root) + K_ROW * len(stages) >= 600.0:
+            print(f"[!] 단계가 너무 많다({len(stages)}개) — 상자를 {h:.0f}dp 로 잘랐다. "
+                  f"뒤쪽 카테고리가 안 보일 수 있다", file=sys.stderr)
     return {"root": root, "stages": stages, "pos": pos, "w": w, "h": h,
             "theme": theme, "font": font, "opacity": opacity,
             "stroke": stroke, "overlayScale": scale, "version": 9}
@@ -285,6 +352,92 @@ def arm(device, rd, show=1, settle=1.5, fresh=False):
     return broadcast(device, "kr.parksy.axis.ARM", rd=rd, show=1)
 
 
+# ── 넘침 측정 (화면에서 직접) ──────────────────────────────────────────────
+#
+# 위 auto_h() 는 **한 방에 못 맞춘다.** 상자를 키우면 s 가 커지고 → 폰트가 커지고
+# → 제목이 한 줄 더 접혀서 내용이 또 커진다. 되먹임이라 닫힌 식이 안 선다.
+# 실측: h=345 에서 제목 2줄·넘침 4.1px → h=382 로 키웠더니 제목 3줄·넘침 13px.
+# **키웠는데 더 나빠졌다.**
+#
+# 그래서 마지막 한 단계는 화면을 본다. Flutter 는 넘칠 때 창 하단에 노란 줄무늬
+# 배너("BOTTOM OVERFLOWED BY N PIXELS")를 그린다. 그 노랑을 찾으면 넘친 것이다.
+
+def _window_frame(device):
+    """콘티 창(gr=BOTTOM LEFT)의 frame=[l,t][r,b]. 못 찾으면 None.
+
+    ⚠️ 창이 둘이다(콘티·TV). 이름도 크기도 같아서 **gravity 로 가른다** —
+    콘티는 BOTTOM LEFT, TV 는 TOP START. (axis_arm 주석의 그 함정)
+    """
+    rc, out = adb(device, "dumpsys window windows", timeout=45)
+    if rc != 0:
+        return None
+    blk = []
+    for line in out.splitlines():
+        if "Window #" in line:
+            blk = []
+            continue
+        blk.append(line)
+        if "frame=[" in line and any("BOTTOM LEFT" in b for b in blk):
+            m = re.search(r"frame=\[(-?\d+),(-?\d+)\]\[(-?\d+),(-?\d+)\]", line)
+            if m:
+                return tuple(int(g) for g in m.groups())
+    return None
+
+
+def overflow_px(device):
+    """지금 콘티 창의 넘침 픽셀 수. 0=안 넘침, None=못 쟀다."""
+    fr = _window_frame(device)
+    if not fr:
+        return None
+    l, t, r, b = fr
+    if r - l < 20 or b - t < 20:
+        return None
+    p = subprocess.run(["adb", "-s", device, "exec-out", "screencap", "-p"],
+                       capture_output=True, timeout=30)
+    if p.returncode != 0 or len(p.stdout) < 1000:
+        return None
+    try:
+        from PIL import Image
+        import io
+        im = Image.open(io.BytesIO(p.stdout)).convert("RGB")
+    except Exception:                                  # noqa: BLE001
+        return None
+    # 배너는 창 맨 아래에 붙는다. 아래 12% 만 본다.
+    band = im.crop((max(0, l), max(0, b - max(12, int((b - t) * 0.12))), r, b))
+    # 노랑: R·G 높고 B 낮음. 줄무늬라 몇 개만 있어도 잡힌다.
+    pix = band.get_flattened_data() if hasattr(band, "get_flattened_data") else band.getdata()
+    hit = sum(1 for px in pix if px[0] > 190 and px[1] > 190 and px[2] < 90)
+    return 1 if hit > 40 else 0
+
+
+def fit_h(device, rd, tries=6, step=1.18, cap=900):
+    """넘침이 사라질 때까지 상자 높이를 올린다. 화면을 보며 맞춘다.
+
+    높이는 창을 만들 때만 잡히므로 매번 --fresh 로 새로 만든다. 대신 창이
+    재시작되니 Boss 가 끌어놓은 자리는 풀린다 — **그래서 이건 1회 보정용**이고,
+    맞춘 값을 rundown() 이 기본값으로 쓰게 하는 게 목적이다.
+    """
+    h = rd.get("h") or auto_h(rd.get("root", ""), len(rd.get("stages", [])))
+    for i in range(tries):
+        rd = dict(rd, h=int(h))
+        arm(device, rd, show=1, fresh=True)
+        time.sleep(3.0)
+        ov = overflow_px(device)
+        print(f"  h={int(h):4d} → 넘침 {ov}")
+        if ov is None:
+            print("  [!] 넘침을 못 쟀다 — 창이 안 떴거나 screencap 실패")
+            return None
+        if ov == 0:
+            return int(h)
+        h *= step
+        if h > cap:
+            print(f"  [!] {cap}dp 까지 키워도 안 맞는다 — 내용을 줄여야 한다 "
+                  f"(단계 수·제목 길이)")
+            return None
+    print("  [!] 시도 횟수 초과")
+    return None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", help="파싱할 URL 또는 로컬 HTML 경로")
@@ -303,6 +456,8 @@ def main():
     ap.add_argument("--device", default=DEFAULT_DEVICE)
     ap.add_argument("--fresh", action="store_true",
                     help="떠 있어도 창을 새로 만든다 (자리·크기를 처음부터 다시 잡을 때)")
+    ap.add_argument("--fit", action="store_true",
+                    help="상자 높이를 화면 보며 맞춘다 (넘침 배너가 사라질 때까지)")
     ap.add_argument("--dry-run", action="store_true", help="방송 없이 콘티만 출력")
     a = ap.parse_args()
 
@@ -342,6 +497,14 @@ def main():
     print(json.dumps(rd, ensure_ascii=False))
     if a.dry_run:
         return 0
+
+    if a.fit:
+        print(f"[*] 높이 맞추기 — 시작 {rd['h']}dp")
+        got = fit_h(a.device, rd)
+        if got is None:
+            return 2
+        print(f"[+] 넘침 없는 높이: {got}dp")
+        rd = dict(rd, h=got)
 
     save(rd)
     rc, out = arm(a.device, rd, show=a.show, fresh=a.fresh)
