@@ -1,5 +1,17 @@
 # 📋 S21 Phone — 전체 개발일지
 
+### 🎬 dtslib.com 본사 랜딩 필름 (_Grok · 2026-09-24)
+
+**Boss:** 직전 세션(알렉산드리아·Buckley·branch)을 이어서 본사 랜딩도 같은 방식으로.
+
+**한 일:** `dtslib-papyrus` `docs/index.html` (= dtslib.com)에 밤 프레스 6초 무음 루프와 같은 방의 스틸 9장. 명함 `profile.png`는 유지. 커밋 `80014b4`.
+
+### 🎬 dtslib-branch 랜딩 필름 (_Grok · 2026-09-24)
+
+**Boss:** dtslib-branch 랜딩에 이미지·영상을 끼워 넣기. 이어서 「해」.
+
+**한 일:** 무대 뒤 빈 장부 6초 루프. World 모형 · Ledger · 문 · 오복집 방 · 선물 상자. 기존 DIMAS 초상은 유지. 원격이 앞서 있어 리베이스 후 `a9cef5c`.
+
 ### 🗂 28레포 전수 파싱 — API 인덱스 (_Claude · 2026-09-23)
 
 **Boss:** "너 내 28개 레포 다 파싱해 봐."
