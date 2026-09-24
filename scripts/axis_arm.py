@@ -537,7 +537,8 @@ def main():
     ap.add_argument("--stages", help="쉼표로 구분한 카테고리 (수동)")
     ap.add_argument("--root", default="", help="오버레이 상단 제목")
     ap.add_argument("--show", type=int, default=1, help="1=띄운다 0=저장만")
-    ap.add_argument("--off", action="store_true", help="오버레이 하강")
+    ap.add_argument("--off", action="store_true",
+                    help="키트 둘 다 내린다 (진행 상태판 + 나레이터 액자)")
     ap.add_argument("--last", action="store_true", help="저장해 둔 콘티로 재무장")
     ap.add_argument("--tv", action="store_true",
                     help="나레이터 액자(CRT)를 오른쪽 아래에 띄운다")
@@ -559,9 +560,13 @@ def main():
         return 2
 
     if a.off:
+        # "꺼"는 둘 다 꺼지는 뜻이다. 예전엔 콘티만 내려서, Boss 가 --off 를 쓰고도
+        # 나레이터 액자가 남아 있는 걸 봐야 알았다(2026-09-24 실측).
         rc, out = disarm(a.device)
         print(out)
-        return rc
+        rc2, out2 = tv(a.device, on=False)
+        print(out2)
+        return rc or rc2
 
     if a.tv or a.tv_off:
         rc, out = tv(a.device, on=a.tv, h=a.tv_h, mute=not a.tv_sound)
