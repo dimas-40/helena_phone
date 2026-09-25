@@ -1,12 +1,52 @@
 # 📋 S21 Phone — 전체 개발일지
 
+### 📒 랜딩 필름 관리 장부 (_Grok · 2026-09-25)
+
+이 아홉 곳은 Grok이 영상·이미지로 손댄 랜딩이다. 일지는 여기 `99-devlog.md`. 각 레포의 정본은 그 레포 `main`이다.
+
+| 라이브 | 레포 | 마지막 필름 커밋 | 지금 첫 화면 |
+|---|---|---|---|
+| [dtslib.com](https://dtslib.com/?v=press) | `dtslib1979/dtslib-papyrus` `docs/` | `80014b4` | 밤 프레스 6초. 명함 초상 유지 |
+| [알렉산드리아](https://dtslib1979.github.io/alexandria-sanctuary/) | `dtslib1979/alexandria-sanctuary` | `44d8819` · 인장 `e383f70` | 팔공산 루프. 인장에 글자 없음 |
+| [Buckley Chang](https://buckleychang.com/) | `dtslib1979/buckleychang.com` | `58936cf` | 밤 책상. 구석 인장 영상 유지 |
+| [dtslib-branch](https://dtslib1979.github.io/dtslib-branch/) | `dtslib1979/dtslib-branch` | `a9cef5c` | 무대 뒤 장부. DIMAS 초상 유지 |
+| [phoneparis.kr](https://phoneparis.kr/?v=nav) | `dtslib1979/phoneparis` | `2b8f011` | 비 오는 궁정. 구석 로고는 G |
+| [espiritu-tango](https://dtslib1979.github.io/espiritu-tango/?v=danza) | `dtslib1979/espiritu-tango` | `f31fe65` | 춤 영상 `EL CUERPO HABLA`, 아래 `LA PAUSA` |
+| [artrew.com](https://artrew.com/?v=atelier) | `dtslib1979/artrew` | `116cde3` | 밤 작업실. 유튜브 로고 영상은 영상 칸 |
+| [gohsyfashion.com](https://gohsyfashion.com/?v=fw) | `dtslib1979/gohsy-fashion` | `616457a` | 초록 스포트 스튜디오. 로고 도면 유지 |
+| [gohsyproduction.com](https://gohsyproduction.com/?v=booth) | `dtslib1979/gohsy-production` | `918d40a` | 빈 녹음 부스. 실물 얼굴은 [voice.html](https://gohsyproduction.com/voice.html) |
+
+규칙: 사람 얼굴은 있는 사진을 유지하거나 별도 페이지로 옮긴다. 새로 그리지 않는다. 그림 안에 글자를 넣지 않는다. 페이지 캐시는 약 10분이다.
+
+### 🎬 gohsyproduction.com 녹음 부스 (_Grok · 2026-09-25)
+
+**Boss:** gohsyproduction.com 랜딩을 A급으로. 성우 얼굴은 포함.
+
+**한 일:** `dtslib1979/gohsy-production`. 빈 부스 6초 무음 루프. 커밋 `bba0481`.
+
+**이어서:** 실물 얼굴은 랜딩에서 빼고 `voice.html`로. 랜딩은 `성우 얼굴 보기`로 연결. 커밋 `918d40a`. https://gohsyproduction.com/?v=booth · https://gohsyproduction.com/voice.html
+
+### 🎬 gohsyfashion.com FW 스튜디오 (_Grok · 2026-09-25)
+
+**Boss:** gohsyfashion.com 커스텀 도메인 레포 랜딩을 멋있게.
+
+**한 일:** `dtslib1979/gohsy-fashion`. 로고 도면 위에 초록 스포트 빈 스튜디오 6초 무음 루프. 네 채널 장면. 커밋 `616457a`. https://gohsyfashion.com/?v=fw
+
+### 🎬 artrew.com 밤 작업실 (_Grok · 2026-09-25)
+
+**Boss:** artrew.com 연결 레포 랜딩을 같은 방식으로 A급 영상·이미지.
+
+**한 일:** `dtslib1979/artrew`. 히어로 유튜브 로고 영상은 영상 칸으로 옮기고, 첫 화면은 빈 캔버스·황동 스탠드 6초 무음 루프. 네 채널·숍·길드 장면. 커밋 `116cde3`. https://artrew.com/?v=atelier
+
 ### 🎬 espiritu-tango 빈 밀롱가 (_Grok · 2026-09-25)
 
 **Boss:** 에스피리투 탱고를 평가하고, 영상·이미지를 프로급으로 넣어 업데이트.
 
 **판정:** 의식·70 BPM·도면·선언문·파트너는 이미 작품. 약한 자리는 글자와 Veo 워터마크가 박힌 댄서 클립.
 
-**한 일:** 그 클립을 빈 지하 연습실 6초 무음 루프로 교체. 다섯 층에 같은 방의 장면. 신발 엔딩과 도면은 유지. 커밋 `feaddcf`. https://dtslib1979.github.io/espiritu-tango/?v=milonga
+**한 일:** 그 클립을 빈 지하 연습실 6초 무음 루프로 교체. 다섯 층에 같은 방의 장면. 신발 엔딩과 도면은 유지. 커밋 `feaddcf`.
+
+**이어서:** 춤 영상 `magenta.mp4`는 파일을 지우지 않고 화면에서만 빠져 있었다. `f31fe65`에서 EL CUERPO HABLA 칸에 가로로 다시 걸고, 빈 연습실은 그 아래 LA PAUSA. https://dtslib1979.github.io/espiritu-tango/?v=danza
 
 ### 🎬 phoneparis.kr 궁정 필름 (_Grok · 2026-09-25)
 
