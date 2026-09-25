@@ -16,7 +16,7 @@
 | [gohsyfashion.com](https://gohsyfashion.com/?v=fw) | `dtslib1979/gohsy-fashion` | `616457a` | 초록 스포트 스튜디오. 로고 도면 유지 |
 | [gohsyproduction.com](https://gohsyproduction.com/?v=booth) | `dtslib1979/gohsy-production` | `918d40a` | 빈 녹음 부스. 실물 얼굴은 [voice.html](https://gohsyproduction.com/voice.html) |
 | [papafly.kr](https://papafly.kr/?v=ogikubo) | `dtslib1979/papafly` | `5303563` | 오기쿠보 밤 책상. 로고 영상은 소싱 칸 |
-| [eae-univ](https://dtslib1979.github.io/eae-univ/?v=book) | `dtslib1979/eae-univ` | `058d26b` | 가로 넘김 전자책. 터미널 원본은 `terminal.html` |
+| [eae-univ](https://dtslib1979.github.io/eae-univ/) | `dtslib1979/eae-univ` | `4023c13` | 랜딩은 터미널. 웹진 글만 가로 넘김 |
 
 규칙: 사람 얼굴은 있는 사진을 유지하거나 별도 페이지로 옮긴다. 새로 그리지 않는다. 그림 안에 글자를 넣지 않는다. 페이지 캐시는 약 10분이다.
 
@@ -24,7 +24,7 @@
 
 **Boss:** 모바일 엄지 스와이프 + 상단 위치 칩(트리 팝업) + 하단 단원 진행. 뒤로 가기는 이전 장. 한 장이 한 화면.
 
-**한 일:** `dtslib1979/eae-univ` 랜딩을 9장 책으로. 칩 `N장 > N쪽`, 목차 시트, `#p-N`. 원래 터미널은 `terminal.html`. 커밋 `058d26b`. https://dtslib1979.github.io/eae-univ/?v=book
+**한 일:** 랜딩을 터미널로 되돌림. 가로 넘김은 웹진 세부 글만. 칩·단원 진행·`#p-N`. 커밋 `4023c13`. https://dtslib1979.github.io/eae-univ/ · 예: https://dtslib1979.github.io/eae-univ/webzine/magnetic-capital.html
 
 ### 🎬 papafly.kr 오기쿠보 책상 (_Grok · 2026-09-25)
 
