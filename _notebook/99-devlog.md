@@ -17,8 +17,15 @@
 | [gohsyproduction.com](https://gohsyproduction.com/?v=booth) | `dtslib1979/gohsy-production` | `918d40a` | 빈 녹음 부스. 실물 얼굴은 [voice.html](https://gohsyproduction.com/voice.html) |
 | [papafly.kr](https://papafly.kr/?v=ogikubo) | `dtslib1979/papafly` | `5303563` | 오기쿠보 밤 책상. 로고 영상은 소싱 칸 |
 | [eae-univ](https://dtslib1979.github.io/eae-univ/) | `dtslib1979/eae-univ` | `4023c13` | 랜딩은 터미널. 웹진 글만 가로 넘김 |
+| [koosy.kr](https://koosy.kr/?v=coin) | `dtslib1979/koosy` | `01f9cbf` | 벨벳 책상 루프. 네 코인은 제목 아래. 초상은 운영 칸 |
 
 규칙: 사람 얼굴은 있는 사진을 유지하거나 별도 페이지로 옮긴다. 새로 그리지 않는다. 그림 안에 글자를 넣지 않는다. 페이지 캐시는 약 10분이다.
+
+### 🪙 koosy.kr 가족 코인 (_Grok · 2026-09-25)
+
+**Boss:** koosy.kr 레포를 파싱하고 이미지·영상을 적절히 넣어 멋있게.
+
+**한 일:** `dtslib1979/koosy`. 기존 네 코인(1–4.jpg)은 제목 아래와 매트릭스에. Veo 인장 영상은 진화 챕터로. 첫 화면은 벨벳 책상 6초 무음 루프. 쿠씨 초상은 운영 칸 유지. 커밋 `01f9cbf`. https://koosy.kr/?v=coin
 
 ### 📖 eae-univ 가로 전자책 (_Grok · 2026-09-25)
 
