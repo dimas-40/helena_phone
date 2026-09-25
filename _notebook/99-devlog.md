@@ -15,8 +15,15 @@
 | [artrew.com](https://artrew.com/?v=atelier) | `dtslib1979/artrew` | `116cde3` | 밤 작업실. 유튜브 로고 영상은 영상 칸 |
 | [gohsyfashion.com](https://gohsyfashion.com/?v=fw) | `dtslib1979/gohsy-fashion` | `616457a` | 초록 스포트 스튜디오. 로고 도면 유지 |
 | [gohsyproduction.com](https://gohsyproduction.com/?v=booth) | `dtslib1979/gohsy-production` | `918d40a` | 빈 녹음 부스. 실물 얼굴은 [voice.html](https://gohsyproduction.com/voice.html) |
+| [papafly.kr](https://papafly.kr/?v=ogikubo) | `dtslib1979/papafly` | `5303563` | 오기쿠보 밤 책상. 로고 영상은 소싱 칸 |
 
 규칙: 사람 얼굴은 있는 사진을 유지하거나 별도 페이지로 옮긴다. 새로 그리지 않는다. 그림 안에 글자를 넣지 않는다. 페이지 캐시는 약 10분이다.
+
+### 🎬 papafly.kr 오기쿠보 책상 (_Grok · 2026-09-25)
+
+**Boss:** papafly.kr 연결 레포 랜딩을 프로급으로.
+
+**한 일:** `dtslib1979/papafly`. Veo 로고 범퍼는 소싱 칸으로. 첫 화면은 비 오는 창, 헌 잡지, 필름 카메라, 작업 재킷 6초 무음 루프. 네 채널 장면. 커밋 `5303563`. https://papafly.kr/?v=ogikubo
 
 ### 🎬 gohsyproduction.com 녹음 부스 (_Grok · 2026-09-25)
 
