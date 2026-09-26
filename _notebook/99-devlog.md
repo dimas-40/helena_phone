@@ -2,7 +2,7 @@
 
 ### 📒 랜딩 필름 관리 장부 (_Grok · 2026-09-25)
 
-이 아홉 곳은 Grok이 영상·이미지로 손댄 랜딩이다. 일지는 여기 `99-devlog.md`. 각 레포의 정본은 그 레포 `main`이다.
+여기 적힌 곳은 Grok이 영상·이미지로 손댄 랜딩이다. 일지는 여기 `99-devlog.md`. 각 레포의 정본은 그 레포 `main`이다.
 
 | 라이브 | 레포 | 마지막 필름 커밋 | 지금 첫 화면 |
 |---|---|---|---|
@@ -18,8 +18,22 @@
 | [papafly.kr](https://papafly.kr/?v=ogikubo) | `dtslib1979/papafly` | `5303563` | 오기쿠보 밤 책상. 로고 영상은 소싱 칸 |
 | [eae-univ](https://dtslib1979.github.io/eae-univ/) | `dtslib1979/eae-univ` | `4023c13` | 랜딩은 터미널. 웹진 글만 가로 넘김 |
 | [koosy.kr](https://koosy.kr/?v=coin) | `dtslib1979/koosy` | `01f9cbf` | 벨벳 책상 루프. 네 코인은 제목 아래. 초상은 운영 칸 |
+| [gohsy.com](https://gohsy.com/?v=guild) | `dtslib1979/gohsy` | `edb4f858` | 빈 길드 책상. 네 코인은 제목 아래. 인장 영상은 진화 챕터. 초상은 운영 칸 |
+| [parksy-logs](https://dtslib1979.github.io/parksy-logs/?v=roll) | `dtslib1979/parksy-logs` `docs/` | `68592b9` | 빈 파피루스 6초. 롤러는 좌우. 네 칸은 채집·저장·도서관·출판 |
 
 규칙: 사람 얼굴은 있는 사진을 유지하거나 별도 페이지로 옮긴다. 새로 그리지 않는다. 그림 안에 글자를 넣지 않는다. 페이지 캐시는 약 10분이다.
+
+### 📜 parksy-logs 빈 파피루스 (_Grok · 2026-09-26)
+
+**Boss:** parksy-logs도 해당 이미지·영상으로, A급으로. 로그인이 끊긴 세션을 이어서.
+
+**한 일:** `dtslib1979/parksy-logs` `docs/`. 첫 화면은 밤 책상, 빈 파피루스, 녹색 갓 스탠드, 펜. 6초 무음 루프. 불은 한 번 따뜻해졌다가 같은 밝기로 돌아온다. 제목 아래 네 칸은 채집(폰), 저장(롤), 도서관(종이 더미), 출판(세 장). 같은 장면이 각 단계와 푸터 세 인장에 들어간다. 좌우 롤러는 경로를 고쳐 다시 보이게 했다. 본문 카피는 그대로. 사람 없음, 그림 안 글자 없음. 커밋 `68592b9`. https://dtslib1979.github.io/parksy-logs/?v=roll
+
+### 🎬 gohsy.com 빈 길드 책상 (_Grok · 2026-09-25)
+
+**Boss:** gohsy.com 랜딩을 쿠씨 작업처럼, 이미지와 영상을 만들어 끼워 넣기.
+
+**한 일:** `dtslib1979/gohsy`. 첫 화면은 숲녹색 방, 초록 벨벳, 리본 마이크, 빈 의자, 황동 접시. 6초 무음 루프. 불빛은 한 번 따뜻해졌다가 같은 밝기로 돌아온다. 제목 아래 네 칸은 레포에 있던 GOHSY · Wife · Daughter · Guild. 글자 있는 인장 영상 `assets/icons/logo-video.mp4`는 지우지 않고 진화 챕터에서 연다. 고씨 초상은 운영 칸. 커밋 `edb4f858`. https://gohsy.com/?v=guild
 
 ### 🪙 koosy.kr 가족 코인 (_Grok · 2026-09-25)
 
