@@ -101,16 +101,13 @@ def probe(path: Path) -> dict:
         n, d = (s or "0/0").split("/")
         return float(n) / float(d) if float(d) else 0.0
 
-    # 여기엔 **두 개의 다른 fps** 가 필요하다. 하나로 겸용하려다 2026-09-22 에
-    # 화면과 소리가 17.7초 어긋나는 사고가 났다. 역할이 다르다:
+    # fps 는 **출력 규격 하나만** 쓴다 — 컨테이너가 선언한 r_frame_rate, 60 으로 캡.
+    # avg 를 여기 쓰면 없는 프레임을 복제해 용량만 늘고 저더가 생긴다.
     #
-    #   fps (출력)   = 컨테이너가 선언한 r_frame_rate, 60 으로 캡.
-    #                  유튜브에 내보낼 규격이다. avg 를 여기 쓰면 없는 프레임을
-    #                  복제해 용량만 늘고 저더가 생긴다.
-    #   retime_fps   = 실제 **촬영** 간격 = nb_frames/duration (= avg_frame_rate).
-    #                  삼성 화면녹화기는 60 을 선언하고 82.73 으로 담는다.
-    #                  컷으로 생긴 빈 구간을 메울 때 프레임 사이 간격을 이 값으로
-    #                  놓아야 실제 시간이 보존된다. 60 으로 놓으면 44.5초가 62.1초가 된다.
+    # 예전엔 여기에 retime_fps(실제 촬영 간격)를 하나 더 두고 컷 이어붙일 때 썼는데,
+    # 그게 틀렸다 — VFR 은 구간마다 실제 밀도가 달라서 **평균 간격으로는 합이 안 맞는다**.
+    # 지금은 컷보다 먼저 fps=60 을 걸어 진짜 CFR 로 굳힌 뒤 자른다(`trim_filter` 주석).
+    # avg_frame_rate 는 이제 **참고용**(retime_fps, 남는 건 VFR 판정과 로그뿐).
     nominal = _rate(video.get("r_frame_rate"))
     average = _rate(video.get("avg_frame_rate"))
     if nominal <= 0:
@@ -129,27 +126,38 @@ def probe(path: Path) -> dict:
     }
 
 
-def trim_filter(cuts: list[list[float]], retime_fps: float) -> tuple[str | None, str | None]:
+def trim_filter(cuts: list[list[float]], fps: float) -> tuple[str | None, str | None]:
     """컷 구간을 '제외'하는 select 필터쌍을 만든다.
 
     between(t,s,e) 을 부정해 곱으로 잇는다. 쉼표는 필터 파서의 구분자라 \\, 로
     이스케이프해야 한다 — 이걸 빼먹으면 "No such filter" 로 죽는다.
+
+    ⚠️ **호출하는 쪽이 `fps={fps}` 를 이 체인보다 먼저 걸어야 한다.** 순서가 곧 정확도다.
+    자세한 이유는 아래 주석.
     """
     if not cuts:
         return None, None
     keep = "*".join(f"not(between(t\\,{s:.3f}\\,{e:.3f}))" for s, e in cuts)
-    # ⚠️ setpts=N/FRAME_RATE/TB 를 쓰면 안 된다 (2026-09-22 실측, 폰에서 잡음).
-    #    그 식은 프레임 N 을 N/60 초 자리에 놓는다 — 즉 **모든 프레임이 60fps 간격**이라고
-    #    가정하고 시간축을 다시 깐다. 그런데 삼성 화면녹화기는 선언 60fps 인데 실제
-    #    프레임 간격은 82.73fps 다(nb_frames 3928 / 47.48s). 그래서 44.5초짜리 컷이
-    #    62.1초로 늘어나고, 소리는 44.4초에 끝나 **화면과 소리가 17.7초 어긋났다**.
-    #    → 그래서 **프레임을 실제 촬영 간격(retime_fps)으로 다시 놓는다.** 이것도 두
-    #      가지 일이라 나눠서 봐야 한다:
-    #        · setpts=N/…/TB 는 select 가 남긴 **빈 구간을 메운다** (필수)
-    #        · 그 나눗셈 값이 곧 프레임 간격이다 → 여기 60 을 넣으면 위 사고가 난다
-    #      CFR 변환은 아래 fps 필터가 타임스탬프를 보고 알아서 한다.
-    #      (PTS-STARTPTS 만 쓰면 빈 구간이 안 메워져 **컷이 통째로 무시된다** — 실측)
-    vf = f"select='{keep}',setpts=N/{retime_fps:.6f}/TB"
+    # 컷의 시간 정확도는 전부 `setpts=N/<간격>` 의 그 **간격**에서 나온다. select 는
+    # 프레임을 골라낼 뿐이라 남은 프레임 사이에 구멍이 생기고, setpts 가 그 구멍을
+    # "N번째 프레임은 N/간격 초" 로 다시 놓아 메운다. 그러니 간격을 틀리게 주면
+    # 영상 길이만큼 통째로 틀어진다.
+    #
+    # 삼성 화면녹화기는 **VFR** 이다 — 선언 60fps 인데 실측 82.73fps 고, 게다가
+    # 구간마다 실제 밀도가 다르다(정지 화면 구간은 성기고 스크롤 구간은 촘촘하다).
+    # 그래서 **평균 간격(nb_frames/duration)을 쓰면 안 된다.** 평균은 맞아도 합이 안 맞는다:
+    #   2026-09-28 실측, 47.479s 원본 / 컷 [10,20] / 목표 37.479s
+    #     · 평균 82.73 을 간격으로: 영상 35.683s, 소리 37.300s → **1.617s 어긋남**
+    #       (컷 구간을 지운 뒤 남은 쪽이 평균보다 성겨서 2956프레임뿐이었다)
+    #     · 컷 없을 때는 오차가 드러나지 않아 "고쳤다"고 잘못 판단했었다.
+    #
+    # **해법은 값을 잘 고르는 게 아니라 순서를 바꾸는 것이다** — 먼저 `fps=60` 으로
+    # VFR 을 CFR 로 굳히면 프레임 간격이 **정말로** 균일해지고, 그때는 `setpts=N/60` 이
+    # 정의상 정확하다. 실측 37.46s (목표 37.479, 오차 0.02s).
+    #   · fps 필터는 타임스탬프를 읽어 복제/낙하하므로 실제 시간을 보존한다
+    #   · `setpts=PTS-STARTPTS` 만 쓰면 구멍이 안 메워져 **컷이 통째로 무시된다**(실측)
+    #   · `-r`/`-fps_mode cfr` 로는 못 한다 — 그건 타임스탬프를 모른 채 개수만 센다
+    vf = f"select='{keep}',setpts=N/{fps:.6f}/TB"
     af = f"aselect='{keep}',asetpts=N/SR/TB"
     return vf, af
 
@@ -211,19 +219,23 @@ def process_take(src: Path, dst: Path, cuts: list[list[float]], info: dict,
     전부 같은 코덱·fps·해상도로 맞춰야 concat demuxer 가 -c copy 로 붙일 수 있다.
     여기서 규격이 어긋나면 뒤에서 화면이 깨지거나 오디오가 밀린다.
     """
-    vf, af = trim_filter(cuts, info["retime_fps"])
+    # VFR → CFR 은 **fps 필터**로 한다. `-r`/`-fps_mode cfr` 로 강제하면 ffmpeg 가
+    # 타임스탬프를 무시하고 프레임을 나열만 해서 시간 왜곡이 난다.
+    # fps 필터는 타임스탬프를 읽고 프레임을 복제/낙하시켜 **실제 시간을 보존**한다.
+    #
+    # ⚠️ **이 fps 는 컷보다 먼저 걸려야 한다.** 컷 뒤에 걸면 select 가 남긴 구멍을
+    #    메울 때 쓸 간격을 알 수 없어 영상 길이가 어긋난다(2026-09-28: 1.6초).
+    #    순서 = fps → (컷) → crop/scale → 자막. 아래 두 경로 모두 그 순서로 조립한다.
+    fps_f = f"fps={info['fps']:.6f}"
+    vf, af = trim_filter(cuts, info["fps"])
     pre = f"{vf}," if vf else ""
 
     # 짝수 차원 강제 — yuv420p 는 홀수 폭/높이를 담지 못해 인코더가 죽는다.
     scale = "scale=trunc(iw/2)*2:trunc(ih/2)*2"
-    # VFR → CFR 은 **fps 필터**로 한다. `-r`/`-fps_mode cfr` 로 강제하면 ffmpeg 가
-    # 타임스탬프를 무시하고 프레임을 나열만 해서 시간 왜곡이 난다.
-    # fps 필터는 타임스탬프를 읽고 프레임을 복제/낙하시켜 **실제 시간을 보존**한다.
-    fps_f = f"fps={info['fps']:.6f}"
 
     # ── 레인 없음: 예전 경로 그대로 (-vf 하나로 끝난다) ────────────────────
     if not lane:
-        vf_all = f"{pre}{scale},{fps_f}" if pre else f"{scale},{fps_f}"
+        vf_all = f"{fps_f},{pre}{scale}" if pre else f"{scale},{fps_f}"
         cmd = ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(src), "-vf", vf_all]
         if af and info["has_audio"]:
             cmd += ["-af", af]
@@ -251,13 +263,19 @@ def process_take(src: Path, dst: Path, cuts: list[list[float]], info: dict,
     inputs = ["-i", str(src)]
     if portrait:
         # 세로 캔버스는 배경이 필요 없다 — 그대로 꽉 채운다.
-        head = f"[0:v]{pre}{crop},scale={cw}:{ch}:force_original_aspect_ratio=increase,crop={cw}:{ch}"
-        tail = head
+        head = f"[0:v]{fps_f},{pre}{crop},scale={cw}:{ch}:force_original_aspect_ratio=increase,crop={cw}:{ch}"
+        # ⚠️ 예전엔 `tail = head` 였다 — 같은 체인을 두 번 붙여 `[0:v]…[0:v]…` 가 되고
+        #    ffmpeg 가 "Trailing garbage after a filter" 로 죽었다. 즉 **세로 레인
+        #    (narration)은 한 번도 안 돌아간 코드였다**(2026-09-28 실측). 붙일 게 없으면 빈 문자열.
+        tail = ""
     else:
         bg = (work or Path(".")) / "bg.png"
         make_backdrop(src, info, cfg["canvas"], top, bottom, bg)
-        inputs += ["-loop", "1", "-i", str(bg)]
-        head = f"[0:v]{pre}{crop},scale=-2:{ch}:flags=lanczos[fg];"
+        # 배경도 **같은 fps 로** 깐다. 안 그러면 overlay 가 배경(기본 25fps)에 맞춰
+        # 출력을 25fps 로 낮춰버린다 — 정지 배경이라 눈에 띄진 않아도 강의 영상이
+        # 25fps 로 나간다(2026-09-28 실측). 뒤에서 fps 를 다시 걸어도 이미 깎인 뒤다.
+        inputs += ["-loop", "1", "-framerate", f"{info['fps']:.6f}", "-i", str(bg)]
+        head = f"[0:v]{fps_f},{pre}{crop},scale=-2:{ch}:flags=lanczos[fg];"
         tail = "[1:v][fg]overlay=(W-w)/2:(H-h)/2:shortest=1"
 
     font = find_font()
@@ -267,6 +285,10 @@ def process_take(src: Path, dst: Path, cuts: list[list[float]], info: dict,
     draw += f",drawtext=fontfile='{font}':text='{foot_txt}':x=w-tw-70:y=h-110:fontsize=40:fontcolor=white@0.75" \
         if (foot_txt and font) else ""
 
+    # ⚠️ fps 를 두 번 건다 — 앞(head)은 **컷의 시간축**을 위해, 여기는 **출력 규격**을 위해.
+    #    가로 레인은 배경 PNG 를 `-loop 1` 로 깔고 overlay 하는데, overlay 의 출력 fps 는
+    #    **첫 입력(배경 PNG, 기본 25fps)** 을 따라간다. 그래서 여기서 다시 60 으로 올려야
+    #    컨테이너가 60fps 로 나온다(안 걸면 25fps 로 나온다 — 2026-09-28 실측).
     fc = f"{head}{tail}{draw},{fps_f},format=yuv420p[vout]"
     maps = ["-map", "[vout]"]
     if info["has_audio"]:
