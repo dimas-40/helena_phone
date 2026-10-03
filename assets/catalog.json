@@ -1312,6 +1312,14 @@
     "deck": "2026-09-20 박씨와의 대화에서 확정된 배포 개념 정리. 딥페이크 클라우드 파이프라인(po-deepfake-cloud)을"
   },
   {
+    "src": "_notebook/117-three-node-music-workcenter_Claude.md",
+    "out": "notebook/117-three-node-music-workcenter_Claude.html",
+    "title": "3노드 음악 워크센터 — 스터디 전문 (2026-10-03)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "이 문서는 2026-10-03 세션에서 실측·리서치한 것을 전부 모은 것이다."
+  },
+  {
     "src": "_notebook/78-pd-pipeline-whitepaper_Claude.md",
     "out": "notebook/78-pd-pipeline-whitepaper_Claude.html",
     "title": "🎬 PD Pipeline 기술 백서 — URL 하나로 숏폼 자동 제작",
