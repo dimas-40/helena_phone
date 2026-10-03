@@ -1320,6 +1320,14 @@
     "deck": "이 문서는 2026-10-03 세션에서 실측·리서치한 것을 전부 모은 것이다."
   },
   {
+    "src": "_notebook/118-parksy-label-goal-real-bottleneck_Claude.md",
+    "out": "notebook/118-parksy-label-goal-real-bottleneck_Claude.html",
+    "title": "Parksy 레이블 — 목표 확정과 진짜 병목 (2026-10-03)",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "이 문서는 **Boss가 지금 무엇을 하려는지**를 정확히 남기기 위한 것이다."
+  },
+  {
     "src": "_notebook/78-pd-pipeline-whitepaper_Claude.md",
     "out": "notebook/78-pd-pipeline-whitepaper_Claude.html",
     "title": "🎬 PD Pipeline 기술 백서 — URL 하나로 숏폼 자동 제작",

@@ -676,6 +676,7 @@
 <li><a href="#_33">★ 검증 — 그 문서의 「최우선」 주장은 사실이었다</a></li>
 <li><a href="#2-09-22">같이 나온 버그 2개 (둘 다 09-22 코드)</a></li>
 <li><a href="#_34">문서에서 그 밖에 쓸 만한 것 / 낡은 것</a></li>
+<li><a href="#parksy-_claude-2026-10-03">Parksy 레이블 목표 확정 + 진짜 병목 (_Claude · 2026-10-03)</a></li>
 </ul>
 </li>
 </ul>
@@ -11119,6 +11120,44 @@ VFR 은 구간마다 실제 밀도가 다르다 — 정지 화면 구간은 성�
 <li>확인: 컨테이너 사본 <code>cell/services/edit/yt_edit.py</code> 는 origin/main 기준 <strong>여전히 324줄 구코드</strong><br>
   (<code>retime_fps</code> 0회). 폰 정본은 454줄. <strong>아직 안 올렸다 — Boss 결정 대기.</strong></li>
 </ul>
+<p><em>폰 세션 <code>_Claude</code></em></p>
+<hr>
+<h3 id="parksy-_claude-2026-10-03">Parksy 레이블 목표 확정 + 진짜 병목 (_Claude · 2026-10-03)</h3>
+<p><strong>전문: <code>_notebook/118-parksy-label-goal-real-bottleneck_Claude.md</code></strong> · 3노드 기술 인벤토리는 117.</p>
+<p><strong>전환점.</strong> Boss가 목표를 명확히 했다 — &ldquo;폰에서 음악 된다 증명&rdquo;이 아니라<br>
+<strong>퍼블릭 도메인 원곡 → 내 편곡 → 내가 만든 가상악기 → 내가 만든 가상보컬 → 실제 레이블.</strong><br>
+이건 새 계획이 아니라 parksy-audio <code>docs/01·02·06·07·10</code>에 이미 선언된 것(&ldquo;1인 악단&rdquo;)의 재확인이다.</p>
+<p><strong>병목 재정의 — 이게 이날의 핵심.</strong><br>
+&ldquo;왜 이렇게 힘들지&rdquo;의 답은 &ldquo;어려운 일을 해서&rdquo;가 아니라 <strong>어려운 자리에서 해서</strong>였다. 난이도가 셋으로 갈린다:<br>
+- ① 이미 풀린 것 (PD 소스·렌더·배포·편곡 자동화) — 더 고민 불필요<br>
+- ② 진짜 어려운 것 — <strong>그런데 &ldquo;녹음&rdquo;이 아니라 &ldquo;편집&rdquo;이 퀴트 지점</strong>이다.<br>
+  노트 컷·벨로시티 정렬·루프 포인트·SFZ 저작. 샘플 라이브러리 제작자가 관두는 자리가 여기고,<br>
+<strong>이건 파일 기반 결정적 작업이라 자동화된다</strong> → Boss가 1년 사이 강해진 지점이 정확히 여기.<br>
+  (Spitfire가 커진 이유 중 하나가 AUNTIE 엔진 = 편집 시스템화.)<br>
+- ③ 폰 때문에 생긴 것 — 진짜 일이지만 <strong>②의 병목을 향해 있지 않다.</strong></p>
+<p><strong>R6 재해석 (내 오독 정정).</strong> parksy-audio 027의 R6를 처음엔 &ldquo;렌더 백엔드 교체/품질 조정&rdquo;으로 읽었다.<br>
+틀렸다. <strong>SFZ = 자작 악기의 포맷</strong>이다. R6는 레이블의 핵심 부품이었고, 렌더 잡일로 축소해서 봤다.<br>
+⚠️ 단 <strong>029는 sfizz를 &ldquo;오케스트라&rdquo;와 묶어 보류</strong>시켰다 — 피아노 프레임에선 맞지만<br>
+<strong>자작 악기 경로가 문서에서 사라진다.</strong> 029 수정 시 한 줄 보충 필요.</p>
+<p><strong>028 과장 정정.</strong> parksy-audio <code>028</code>(내가 올린 것)에 &ldquo;026의 최대 갭을 닫았다&rdquo;고 썼는데 <strong>과장</strong>이다.<br>
+렌더한 건 <code>&lt;SOURCE WAVE FILE "src20.wav"&gt;</code> = WAV→WAV. 합성 경로를 안 건드렸다.<br>
+실증 범위는 &ldquo;폰에서 REAPER가 헤드리스로 렌더 명령을 받는다&rdquo;까지. <strong>MIDI→악기는 미검증.</strong></p>
+<p><strong>실측으로 찾은 것 (parksy-audio)</strong><br>
+- <strong>Salamander SF2 = 1.18GB</strong> (1,266,462,334 B). 028 램 표에 아예 없었다 → &ldquo;음악은 램을 안 먹는다&rdquo;는<br>
+  TimGM(5.9MB) 기준이라 그 주장은 무효.<br>
+- <strong>027이 기록한 Salamander 경로 3개가 전부 죽어 있다.</strong> 실제 파일은<br>
+<code>/mnt/c/Users/dtsli/새 폴더/01_PARKSY/fluidsynth/SalamanderGrandPiano-SF2-V3+20200602/</code> (Desktop→새 폴더 이동).<br>
+  D드라이브 사본은 <strong>0 바이트</strong>.<br>
+- <strong><code>pipeline/zero_compose.py:126-127</code>이 존재한 적 없는 경로 2개를 가리킨다</strong> → 살아있는 코드의 버그.<br>
+- <strong>phantom process killer는 이 폰에서 이미 꺼져 있다</strong> (<code>settings_enable_monitor_phantom_procs=false</code>).<br>
+- 문서 부패 실증: 027 작성 09-30 → 확인 10-03. <strong>사흘.</strong> 언제 죽었는지 아무도 몰랐다.</p>
+<p><strong>폰이 할 것 (029 §6 인수인계)</strong><br>
+- 2번: Salamander 정식 경로 확정 — 경로·크기 확보, <strong>sha256 미확보</strong><br>
+- 3번: 폰 FluidSynth Salamander 로딩 램 실측 — <strong>미착수</strong> (1.18GB 전송 필요)<br>
+- 4번: <code>mido</code> → <code>engines.daw build</code> → <strong>ReaSynth로 MIDI 렌더</strong> — <strong>미착수. 가장 싸고 028 과장을 실제로 닫는다</strong></p>
+<p><strong>Boss 직접 (에이전트 대행 불가)</strong><br>
+- 옛 봇 토큰 3개 <code>/revoke</code>: <code>8669426963</code>, <code>7634493765</code>, <code>8621929617</code> (git 이력에 남아 있음)<br>
+- <strong><code>Proot_25ultra</code> 토큰 재발급</strong> — 이 세션 채팅에 평문 노출됨 (내 실수)</p>
 <p><em>폰 세션 <code>_Claude</code></em></p>
   </article>
   <nav class="wz-pager">
