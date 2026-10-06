@@ -101,6 +101,12 @@
 </li>
 <li><a href="#3-2">3. 파이프라인 (2호부터 이대로)</a></li>
 <li><a href="#4">4. 함정 (이번에 밟은 것)</a></li>
+<li><a href="#45-parksykrchannelmusicianpiano-2026-10-06-boss">4.5 납품지 — parksy.kr/channel/musician/piano/ (2026-10-06 Boss 확정)</a><ul>
+<li><a href="#scriptsparksy_pushpy">올리는 법 — scripts/parksy_push.py</a></li>
+<li><a href="#_3">함정 (이번에 밟은 것)</a></li>
+<li><a href="#_4">⚠️ 사본이 둘로 갈린다</a></li>
+</ul>
+</li>
 <li><a href="#5">5. 남은 일</a></li>
 </ul>
 </div>
@@ -235,8 +241,8 @@ E4로 옮긴다 — 라단조가 &ldquo;라·미·라&rdquo;라는 어정쩡한 
   90.37 G2                            ← 되돌아옴
  125.89 F#2 → 128.02 B1 → 130.24 E2   ← 0:38의 정확히 +87.2초. 같은 자리
  158.56 E2 … 173.20 A2                ← 14.6초 마지막 어둠
- 173.20 A2 + A·C·E·C                  ← 5도로 감
- 176.80 D2 + D·F·A·D                  ← 2분 55초 만의 첫 완전 종지
+ 173.20 A2 + A·C·E·G                  ← A단조7. 조성이 여기서 뒤집힌다
+ 176.80 D2 + D·F·A·D                  ← 라단조 종지. 350Hz F가 F#보다 24dB 세다
 </code></pre>
 <h3 id="23">2.3 반복 검증 — 주장하기 전에 세라</h3>
 <p>&ldquo;같은 음악이 두 번 온다&rdquo;고 쓰기 전에 전반부 237음과 후반부 229음을 시각 0.35초 창으로 대조:<br>
@@ -314,11 +320,94 @@ ffmpeg -i original.ogg -i &lt;name&gt;.mp3 -filter_complex \
 </tbody>
 </table>
 <hr>
+<h2 id="45-parksykrchannelmusicianpiano-2026-10-06-boss">4.5 납품지 — <strong>parksy.kr/channel/musician/piano/</strong> (2026-10-06 Boss 확정)</h2>
+<blockquote>
+<p>Boss: &ldquo;https://parksy.kr/ 여기 <strong>뮤지션 박씨 폴더</strong> 여기에다 저장해 놔. <strong>앞으로도 계속 여기다 저장할 거야.</strong>&ldquo;</p>
+</blockquote>
+<p>레포 = <code>dtslib1979/parksy.kr</code> (<strong>private</strong>, 기본 브랜치 <code>main</code>, Pages = branch/main 루트 → <strong>커밋 = 즉시 공개</strong>).</p>
+<pre><code>channel/musician/piano/
+├── index.html                    ← 곡 목록 (여기서 계속 늘어난다)
+└── 01-satie-gymnopedie/
+    ├── index.html
+    ├── audio/combined.mp3        8.4MB
+    └── img/ 5장
+</code></pre>
+<p><strong>라이브 확인 (2026-10-06):</strong> 목록·곡·음원·이미지 전부 <strong>200</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>URL</th>
+<th>코드</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>https://parksy.kr/channel/musician/piano/</code></td>
+<td>200</td>
+</tr>
+<tr>
+<td><code>https://parksy.kr/channel/musician/piano/01-satie-gymnopedie/</code></td>
+<td>200</td>
+</tr>
+<tr>
+<td><code>…/01-satie-gymnopedie/audio/combined.mp3</code></td>
+<td>200 · audio/mp3</td>
+</tr>
+<tr>
+<td><code>…/01-satie-gymnopedie/img/satie-valadon-1893.jpg</code></td>
+<td>200 · image/jpeg</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scriptsparksy_pushpy">올리는 법 — <code>scripts/parksy_push.py</code></h3>
+<pre><code class="language-bash">set -a &amp;&amp; . ./.secrets.env &amp;&amp; set +a
+python3 scripts/parksy_push.py &lt;로컬폴더&gt; &quot;channel/musician/piano&quot; &quot;&lt;커밋 메시지&gt;&quot;
+</code></pre>
+<p>Git Data API 로 <strong>blob → tree → commit → ref</strong> 를 한 번에. 중간 상태가 안 남는다.<br>
+<code>DTSLIB_GITHUB_TOKEN</code> 은 <strong>죽었다</strong>(Bad credentials — 2026-10-06 실측). <strong><code>GITHUB_TOKEN</code></strong> 을 쓴다<br>
+(<code>dtslib1979/parksy.kr</code> 에 <strong>push 권한 있음</strong> 실측).</p>
+<h3 id="_3">함정 (이번에 밟은 것)</h3>
+<table>
+<thead>
+<tr>
+<th>함정</th>
+<th>증상</th>
+<th>처방</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>urllib 이 대용량 blob 에서 죽는다</strong></td>
+<td>11MB blob POST → <code>400 malformed</code></td>
+<td><strong>curl 로 보낸다.</strong> 같은 페이로드가 curl 로는 7초에 201</td>
+</tr>
+<tr>
+<td><strong>GitHub blob API 의 산발적 400</strong></td>
+<td>같은 요청이 어떤 땐 400 <code>malformed … resubmit</code></td>
+<td><strong>진짜로 재제출하면 된다</strong>(문구가 문자 그대로다). 400 도 재시도 대상에 넣을 것</td>
+</tr>
+<tr>
+<td><strong>private 레포지만 Pages 는 공개</strong></td>
+<td>커밋하는 순간 세계 공개</td>
+<td>올리기 전에 초안 확인. Boss 지시로 올리는 것이므로 게이트는 Boss 승인</td>
+</tr>
+<tr>
+<td><strong>canonical·JSON-LD 가 helena 주소로 남는다</strong></td>
+<td>검색엔진이 원조를 엉뚱한 데로 본다</td>
+<td>parksy.kr 판은 <code>parksy.kr/#person</code> · <code>parksy.kr/channel/musician/piano/…</code> 로 <strong>치환 후 업로드</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="_4">⚠️ 사본이 둘로 갈린다</h3>
+<p>로컬 작업본은 <code>helena_phone:music-channel/</code> 에도 있다. <strong>납품지는 parksy.kr 쪽</strong>이므로<br>
+둘을 계속 맞추거나, 한쪽을 버려야 한다. <strong>Boss 판단 대기.</strong></p>
+<hr>
 <h2 id="5">5. 남은 일</h2>
 <ul>
 <li>[ ] <strong>Boss 판정</strong> — RAW vs 조정렬 / 딜레이 유지 여부 / 페이지 문구</li>
-<li>[ ] <strong>공개 경로 결정</strong> — master→main 병합(충돌 231) vs 위성 레포(parksy-audio) 신설</li>
-<li>[ ] 미리보기 서버 정리 (<code>127.0.0.1:8793</code>, PID 32481)</li>
+<li>[x] ~~공개 경로~~ → <strong>parksy.kr/channel/musician/piano/</strong> (Boss 확정, §4.5)</li>
+<li>[x] ~~미리보기 서버~~ → 납품지는 parksy.kr (로컬 서버 불필요, 정리 대상)</li>
+<li>[ ] <strong>사본 정리</strong> — <code>helena_phone:music-channel/</code> 을 버릴지 Boss 판단</li>
 <li>[ ] 2호 — Bach Prelude in C BWV 846 (<code>_notebook/122</code> §3 우선순위 2)</li>
 <li>[ ] 이미지 자동 수급 스크립트 — 지금은 손으로 Commons API</li>
 <li>[ ] 42곡 소재 목록 확정 (<code>_notebook/122</code> §3은 6곡까지만)</li>

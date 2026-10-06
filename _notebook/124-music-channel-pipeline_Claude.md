@@ -90,8 +90,8 @@ E4로 옮긴다 — 라단조가 "라·미·라"라는 어정쩡한 화음이 �
   90.37 G2                            ← 되돌아옴
  125.89 F#2 → 128.02 B1 → 130.24 E2   ← 0:38의 정확히 +87.2초. 같은 자리
  158.56 E2 … 173.20 A2                ← 14.6초 마지막 어둠
- 173.20 A2 + A·C·E·C                  ← 5도로 감
- 176.80 D2 + D·F·A·D                  ← 2분 55초 만의 첫 완전 종지
+ 173.20 A2 + A·C·E·G                  ← A단조7. 조성이 여기서 뒤집힌다
+ 176.80 D2 + D·F·A·D                  ← 라단조 종지. 350Hz F가 F#보다 24dB 세다
 ```
 
 ### 2.3 반복 검증 — 주장하기 전에 세라
@@ -151,11 +151,60 @@ ffmpeg -i original.ogg -i <name>.mp3 -filter_complex \
 
 ---
 
+## 4.5 납품지 — **parksy.kr/channel/musician/piano/** (2026-10-06 Boss 확정)
+
+> Boss: "https://parksy.kr/ 여기 **뮤지션 박씨 폴더** 여기에다 저장해 놔. **앞으로도 계속 여기다 저장할 거야.**"
+
+레포 = `dtslib1979/parksy.kr` (**private**, 기본 브랜치 `main`, Pages = branch/main 루트 → **커밋 = 즉시 공개**).
+
+```
+channel/musician/piano/
+├── index.html                    ← 곡 목록 (여기서 계속 늘어난다)
+└── 01-satie-gymnopedie/
+    ├── index.html
+    ├── audio/combined.mp3        8.4MB
+    └── img/ 5장
+```
+
+**라이브 확인 (2026-10-06):** 목록·곡·음원·이미지 전부 **200**.
+
+| URL | 코드 |
+|---|---|
+| `https://parksy.kr/channel/musician/piano/` | 200 |
+| `https://parksy.kr/channel/musician/piano/01-satie-gymnopedie/` | 200 |
+| `…/01-satie-gymnopedie/audio/combined.mp3` | 200 · audio/mp3 |
+| `…/01-satie-gymnopedie/img/satie-valadon-1893.jpg` | 200 · image/jpeg |
+
+### 올리는 법 — `scripts/parksy_push.py`
+
+```bash
+set -a && . ./.secrets.env && set +a
+python3 scripts/parksy_push.py <로컬폴더> "channel/musician/piano" "<커밋 메시지>"
+```
+Git Data API 로 **blob → tree → commit → ref** 를 한 번에. 중간 상태가 안 남는다.
+`DTSLIB_GITHUB_TOKEN` 은 **죽었다**(Bad credentials — 2026-10-06 실측). **`GITHUB_TOKEN`** 을 쓴다
+(`dtslib1979/parksy.kr` 에 **push 권한 있음** 실측).
+
+### 함정 (이번에 밟은 것)
+| 함정 | 증상 | 처방 |
+|---|---|---|
+| **urllib 이 대용량 blob 에서 죽는다** | 11MB blob POST → `400 malformed` | **curl 로 보낸다.** 같은 페이로드가 curl 로는 7초에 201 |
+| **GitHub blob API 의 산발적 400** | 같은 요청이 어떤 땐 400 `malformed … resubmit` | **진짜로 재제출하면 된다**(문구가 문자 그대로다). 400 도 재시도 대상에 넣을 것 |
+| **private 레포지만 Pages 는 공개** | 커밋하는 순간 세계 공개 | 올리기 전에 초안 확인. Boss 지시로 올리는 것이므로 게이트는 Boss 승인 |
+| **canonical·JSON-LD 가 helena 주소로 남는다** | 검색엔진이 원조를 엉뚱한 데로 본다 | parksy.kr 판은 `parksy.kr/#person` · `parksy.kr/channel/musician/piano/…` 로 **치환 후 업로드** |
+
+### ⚠️ 사본이 둘로 갈린다
+로컬 작업본은 `helena_phone:music-channel/` 에도 있다. **납품지는 parksy.kr 쪽**이므로
+둘을 계속 맞추거나, 한쪽을 버려야 한다. **Boss 판단 대기.**
+
+---
+
 ## 5. 남은 일
 
 - [ ] **Boss 판정** — RAW vs 조정렬 / 딜레이 유지 여부 / 페이지 문구
-- [ ] **공개 경로 결정** — master→main 병합(충돌 231) vs 위성 레포(parksy-audio) 신설
-- [ ] 미리보기 서버 정리 (`127.0.0.1:8793`, PID 32481)
+- [x] ~~공개 경로~~ → **parksy.kr/channel/musician/piano/** (Boss 확정, §4.5)
+- [x] ~~미리보기 서버~~ → 납품지는 parksy.kr (로컬 서버 불필요, 정리 대상)
+- [ ] **사본 정리** — `helena_phone:music-channel/` 을 버릴지 Boss 판단
 - [ ] 2호 — Bach Prelude in C BWV 846 (`_notebook/122` §3 우선순위 2)
 - [ ] 이미지 자동 수급 스크립트 — 지금은 손으로 Commons API
 - [ ] 42곡 소재 목록 확정 (`_notebook/122` §3은 6곡까지만)
