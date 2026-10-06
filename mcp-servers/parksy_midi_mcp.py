@@ -329,12 +329,24 @@ def midi_arrange(
             notes = [[n[0], n[1], n[2] + shift, n[3]] for n in notes]
             transpose += shift
 
+    # 박은 **손대기 전 음들**에서 한 번만 추정한다. 늘인 뒤에 다시 추정하면 배수를
+    # 잘못 잡는다 — 실측(2026-10-06): 추정 102.9 BPM 짜리를 1.08배 늘였더니 재추정이
+    # 191.3 BPM(= 2 × 95.7) 을 냈다. estimate_bpm 은 온셋 간격 중앙값을 쓰는데, 그
+    # 중앙값이 박이 아니라 **세분음(16분)** 인 곡에서 배수가 튄다.
+    # 파일에 적힌 set_tempo 는 쓰지 않는다 — midi_extract 의 raw 는 120 placeholder 다.
+    est_bpm = mx.estimate_bpm(notes) or 0.0
+
     if time_scale != 1.0:
         notes = [[n[0] * time_scale, n[1] * time_scale, n[2], n[3]] for n in notes]
 
     # 원본 program 을 모르면 0 으로 본다 (midi_extract 는 0으로 쓴다)
     out_program = program if program >= 0 else 0
-    out_bpm = bpm if bpm and bpm > 0 else (mx.estimate_bpm(notes) or 120.0)
+    if bpm and bpm > 0:
+        out_bpm = bpm
+    elif est_bpm:
+        out_bpm = est_bpm / time_scale   # 느려졌으니 한 박도 그만큼 길다
+    else:
+        out_bpm = 120.0
 
     OUT.mkdir(parents=True, exist_ok=True)
     stem = _safe(out_name or (src.stem + "-arr"), "arr")
@@ -360,6 +372,8 @@ def midi_render(
     fmt: str = "mp3",
     gain: float = 0.7,
     reverb: float = 0.7,
+    delay_ms: int = 0,
+    delay_decay: float = 0.3,
     normalize: bool = True,
     out_name: str = "",
 ) -> str:
@@ -373,6 +387,8 @@ def midi_render(
         fmt: wav 또는 mp3.
         gain: 0.0~1.0 볼륨.
         reverb: 0.0~1.2 잔향. 0이면 끈다.
+        delay_ms: 0이면 딜레이 없음. 예: 120 이면 120ms 한 번 울린다.
+        delay_decay: 딜레이가 줄어드는 비율 0.0~0.9.
         normalize: True 면 ffmpeg loudnorm 으로 음량을 고른다.
         out_name: 출력 이름. 비우면 MIDI 이름을 따른다.
     """
@@ -412,27 +428,55 @@ def midi_render(
         err = (r.stderr or b"").decode("utf-8", "replace")[-400:]
         return "실패: fluidsynth 종료코드 %s\n%s" % (r.returncode, err)
 
+    # fluidsynth 는 잔향·코러스만 안다. 딜레이는 ffmpeg 몫이다.
+    # 순서: 딜레이 먼저(공간을 만든다) → loudnorm 나중(만든 공간까지 포함해 음량을 잡는다).
     ff = shutil.which("ffmpeg")
     notes = []
-    if fmt == "mp3":
+    filters = []
+    if delay_ms > 0:
+        filters.append("aecho=1.0:0.6:%d:%.2f"
+                       % (delay_ms, max(0.0, min(0.9, delay_decay))))
+    if normalize:
+        filters.append("loudnorm=I=-16:TP=-1.5:LRA=11")
+
+    dest = OUT / ("%s.%s" % (stem, fmt))
+    if filters or fmt == "mp3":
         if not ff:
-            return ("부분 성공: wav 는 나왔다 %s\n"
-                    "mp3 는 실패 — ffmpeg 가 없다. wav 를 쓴다." % wav)
-        codec = [ff, "-y", "-i", str(wav)]
-        if normalize:
-            codec += ["-af", "loudnorm=I=-16:TP=-1.5:LRA=11"]
-        codec += ["-codec:a", "libmp3lame", "-qscale:a", "2", str(dest)]
-        r2 = subprocess.run(codec, capture_output=True, timeout=600)
-        if r2.returncode != 0 or not dest.is_file():
-            return ("부분 성공: wav 는 나왔다 %s\nmp3 변환이 실패했다 — wav 를 쓴다." % wav)
-        if normalize:
-            notes.append("loudnorm -16 LUFS")
+            if fmt == "mp3":
+                return ("부분 성공: wav 는 나왔다 %s\n"
+                        "mp3 는 실패 — ffmpeg 가 없다. wav 를 쓴다." % wav)
+            notes.append("ffmpeg 가 없어 효과를 못 붙였다 (%s)" % " · ".join(filters))
+            dest = wav
+        else:
+            # wav 를 읽어 wav 에 쓰면 자기 자신을 물고 늘어진다 → 임시 파일 거쳐 바꿔치기
+            tmp = OUT / ("%s.eff.%s" % (stem, fmt))
+            codec = [ff, "-y", "-i", str(wav)]
+            if filters:
+                codec += ["-af", ",".join(filters)]
+            codec += (["-codec:a", "libmp3lame", "-qscale:a", "2"] if fmt == "mp3"
+                      else ["-codec:a", "pcm_s16le"])
+            codec.append(str(tmp))
+            r2 = subprocess.run(codec, capture_output=True, timeout=600)
+            if r2.returncode != 0 or not tmp.is_file():
+                if fmt == "mp3":
+                    return ("부분 성공: wav 는 나왔다 %s\n"
+                            "mp3 변환이 실패했다 — wav 를 쓴다." % wav)
+                notes.append("ffmpeg 후처리가 실패해 효과를 못 붙였다")
+                dest = wav
+            else:
+                tmp.replace(dest)
+                if delay_ms > 0:
+                    notes.append("딜레이 %dms · 감쇠 %.2f" % (delay_ms, delay_decay))
+                if normalize:
+                    notes.append("loudnorm -16 LUFS")
+    else:
+        dest = wav
+
+    if dest != wav:
         try:
             wav.unlink()
         except OSError:
             pass
-    else:
-        dest = wav
 
     size = dest.stat().st_size
     return "\n".join([
