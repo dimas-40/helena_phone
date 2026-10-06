@@ -107,7 +107,7 @@ def _fluidsynth():
 def midi_extract(
     url: str,
     name: str = "",
-    strategy: str = "strong",
+    strategy: str = "melody",
     grid: int = 4,
     key: str = "auto",
     bpm: float = 0.0,
@@ -121,8 +121,8 @@ def midi_extract(
     Args:
         url: YouTube 주소 또는 로컬 오디오 파일 경로.
         name: 출력 이름. 비우면 URL에서 딴다.
-        strategy: 단선율화 규칙. strong=가장 센 음, top=가장 높은 음, low=가장 낮은 음.
-            셋 다 휴리스틱이다. 어느 것도 멜로디를 보장하지 않는다.
+        strategy: 단선율화 규칙. melody=skyline+연속성(권장), strong=가장 센 음,
+            top=가장 높은 음, low=가장 낮은 음. 넷 다 휴리스틱이고 멜로디를 보장하지 않는다.
         grid: 양자화 격자. 4=16분음표, 0=끄기.
         key: auto 또는 C, D#m 처럼 강제 지정.
         bpm: 0이면 자동 추정. 자동 추정은 인간 연주에서 크게 틀린다.
@@ -353,19 +353,23 @@ def midi_arrange(
 def midi_render(
     path: str,
     sf2: str = "",
-    fmt: str = "wav",
-    gain: float = 0.6,
+    fmt: str = "mp3",
+    gain: float = 0.7,
+    reverb: float = 0.7,
+    normalize: bool = True,
     out_name: str = "",
 ) -> str:
     """MIDI를 소리로 렌더한다 (FluidSynth + GM 사운드폰트).
 
-    내 가상악기 렌더가 아니라 GM 기본 렌더다. 초안 확인용으로만 쓴다.
+    내 가상악기 렌더가 아니라 GM 렌더다. 초안 확인용으로만 쓴다.
 
     Args:
         path: MIDI 파일 경로.
         sf2: 사운드폰트 경로. 비우면 있는 것 중에 고른다.
         fmt: wav 또는 mp3.
         gain: 0.0~1.0 볼륨.
+        reverb: 0.0~1.2 잔향. 0이면 끈다.
+        normalize: True 면 ffmpeg loudnorm 으로 음량을 고른다.
         out_name: 출력 이름. 비우면 MIDI 이름을 따른다.
     """
     src = Path(path)
@@ -382,13 +386,20 @@ def midi_render(
         return "실패: fmt 는 wav 또는 mp3 다 (받은 값 %s)" % fmt
     if not 0.0 < gain <= 1.0:
         return "실패: gain 은 0 초과 1 이하다 (받은 값 %s)" % gain
+    if not 0.0 <= reverb <= 1.2:
+        return "실패: reverb 는 0~1.2 다 (받은 값 %s)" % reverb
 
     OUT.mkdir(parents=True, exist_ok=True)
     stem = _safe(out_name or src.stem, "render")
     wav = OUT / ("%s.wav" % stem)
     dest = OUT / ("%s.%s" % (stem, fmt))
 
-    cmd = [fs, "-ni", "-g", "%.2f" % gain, "-F", str(wav), font, str(src)]
+    cmd = [fs, "-ni", "-g", "%.2f" % gain,
+           "-o", "synth.reverb.active=%d" % (1 if reverb > 0 else 0),
+           "-o", "synth.reverb.room-size=%.2f" % min(reverb, 1.2),
+           "-o", "synth.reverb.level=0.85",
+           "-o", "synth.chorus.active=0",
+           "-F", str(wav), font, str(src)]
     try:
         r = subprocess.run(cmd, capture_output=True, timeout=900)
     except subprocess.TimeoutExpired:
@@ -397,16 +408,21 @@ def midi_render(
         err = (r.stderr or b"").decode("utf-8", "replace")[-400:]
         return "실패: fluidsynth 종료코드 %s\n%s" % (r.returncode, err)
 
+    ff = shutil.which("ffmpeg")
+    notes = []
     if fmt == "mp3":
-        ff = shutil.which("ffmpeg")
         if not ff:
             return ("부분 성공: wav 는 나왔다 %s\n"
                     "mp3 는 실패 — ffmpeg 가 없다. wav 를 쓴다." % wav)
-        r2 = subprocess.run([ff, "-y", "-i", str(wav), "-codec:a", "libmp3lame",
-                             "-qscale:a", "2", str(dest)],
-                            capture_output=True, timeout=600)
+        codec = [ff, "-y", "-i", str(wav)]
+        if normalize:
+            codec += ["-af", "loudnorm=I=-16:TP=-1.5:LRA=11"]
+        codec += ["-codec:a", "libmp3lame", "-qscale:a", "2", str(dest)]
+        r2 = subprocess.run(codec, capture_output=True, timeout=600)
         if r2.returncode != 0 or not dest.is_file():
             return ("부분 성공: wav 는 나왔다 %s\nmp3 변환이 실패했다 — wav 를 쓴다." % wav)
+        if normalize:
+            notes.append("loudnorm -16 LUFS")
         try:
             wav.unlink()
         except OSError:
@@ -419,8 +435,9 @@ def midi_render(
         "parksy-midi · 렌더",
         "결과 %s (%d bytes)" % (dest, size),
         "사운드폰트 %s" % font,
-        "gain %.2f · %s" % (gain, fmt),
-        "GM 기본 렌더다. 내 가상악기 렌더가 아니다.",
+        "gain %.2f · 잔향 %.2f · %s" % (gain, reverb, fmt),
+    ] + notes + [
+        "GM 렌더다. 내 가상악기 렌더가 아니다.",
     ])
 
 

@@ -24,6 +24,7 @@ Boss 2026-10-06:
 import argparse
 import json
 import os
+import statistics
 import subprocess
 import sys
 import tempfile
@@ -140,6 +141,68 @@ def read_notes(mid_path: Path):
 # 4. 단선율화 — 이 파이프라인의 핵심
 # ─────────────────────────────────────────────────────────────
 
+def melody_skyline(c, prev_pitch, max_leap=12, min_dur=0.04):
+    """한 화음 묶음에서 멜로디 음 하나를 고른다 — skyline + 연속성.
+
+    순수 skyline(무조건 최고음)은 반주 상성부·꾸밈음을 멜로디로 착각한다.
+    그래서 앞 멜로디 음에서 한 옥타브(max_leap) 안에 있는 후보를 먼저 본다.
+    그 안에 있으면 그중 최고음, 없으면 앞 음에 가장 가까운 음.
+
+    실측 근거(2026-10-06): 트뢰메라이(쉬만)에서 strong·top 전략 모두
+    음역이 F2~A#5(3.4옥타브)로 벌어졌다. 단선율 멜로디는 1옥타브 안이어야 한다.
+    """
+    if not c:
+        return None
+    # 꾸밈음 후보를 뒤로 미룬다 — 긴 음이 있으면 그쪽을 먼저 본다
+    long_notes = [n for n in c if (n[1] - n[0]) >= min_dur] or c
+    if prev_pitch is None:
+        return max(long_notes, key=lambda n: n[2])
+
+    near = [n for n in long_notes if abs(n[2] - prev_pitch) <= max_leap]
+    if near:
+        return max(near, key=lambda n: n[2])
+    # 옥타브 안에 후보가 없다 = 앞 음이 틀렸거나 새 악구다.
+    # 여기서 '앞 음에 가장 가까운 것'을 고르면 아래로 드리프트한다.
+    # 실측(2026-10-06): 그 규칙 때문에 트뢰메라이 멜로디가 A#1·F1까지 내려가
+    # 음역이 4.4옥타브로 벌어졌다. 멜로디는 위성부이므로 최고음을 잡는다.
+    return max(long_notes, key=lambda n: n[2])
+
+
+def smooth_melody(notes, window=7, max_dev=14):
+    """멜로디 선의 튀는 음을 중앙값으로 눌러준다.
+
+    멜로디는 매끄럽게 움직인다. 갑자기 30반음 아래로 떨어진 음은 멜로디가 아니라
+    베이스가 잘못 딸려온 것이다. 실측(2026-10-06): melody 전략이 트뢰메라이에서
+    84%를 5~6옥타브에 몰았는데 A#1 한 음이 튀어 음역이 4옥타브로 벌어졌다.
+
+    지우지 않고 **고친다** — 리듬이 사라지면 곡이 끊긴다.
+    같은 음이름에서 중앙값에 가장 가까운 옥타브로 옮긴다.
+
+    Returns: (고친 음 목록, 고친 개수)
+    """
+    if len(notes) < window:
+        return notes, 0
+    ordered = sorted(notes, key=lambda n: n[0])
+    pitches = [n[2] for n in ordered]
+    half = window // 2
+    fixed = 0
+    out = []
+    for i, n in enumerate(ordered):
+        lo, hi = max(0, i - half), min(len(pitches), i + half + 1)
+        med = int(statistics.median(pitches[lo:hi]))
+        if abs(n[2] - med) > max_dev:
+            # 같은 음이름 유지한 채 중앙값에 가장 가까운 옥타브로
+            cands = [med + 12 * k for k in range(-5, 6)]
+            new = min(cands, key=lambda p: (abs(p - n[2]), abs(p - med)))
+            out.append([n[0], n[1], new, n[3]])
+            fixed += 1
+        else:
+            out.append(list(n))
+    if fixed:
+        print(f"      멜로디 다듬기: 튄 음 {fixed}개를 중앙값으로 (창 {window}, 허용 {max_dev}반음)")
+    return out, fixed
+
+
 def monophonize(notes, strategy="strong", octave_dedup=True, onset_window=0.06):
     """동시발음을 하나의 선율로 접는다.
 
@@ -152,8 +215,9 @@ def monophonize(notes, strategy="strong", octave_dedup=True, onset_window=0.06):
        → **온셋이 가까운 것끼리** 묶는다. 실제 화음·옥타브 중복은 같은 시각에 뜬다.
 
     strategy:
-      strong — velocity 최대 (기본). 사람이 실제로 눌렀을 가능성이 큰 음
-      top    — 최고음. 멜로디가 위성부일 때
+      melody — skyline + 연속성 (권장). 멜로디를 노린다
+      strong — velocity 최대. 사람이 실제로 눌렀을 가능성이 큰 음
+      top    — 최고음. 순수 skyline 이라 반주 상성부를 멜로디로 착각한다
       low    — 최저음. 베이스 모티프를 뽑을 때
     """
     if not notes:
@@ -168,27 +232,39 @@ def monophonize(notes, strategy="strong", octave_dedup=True, onset_window=0.06):
             clusters.append([n])
 
     picked = []
+    prev_pitch = None
     for c in clusters:
         if len(c) == 1:
-            picked.append(list(c[0]))
-            continue
-        # 옥타브 중복 제거: 정확히 12반음 차이가 나는 짝이 있으면 하나만 남긴다
-        if octave_dedup:
-            by_pitch = {n[2]: n for n in c}
-            for p in list(by_pitch):
-                if p + 12 in by_pitch:
-                    hi, lo = by_pitch[p + 12], by_pitch[p]
-                    drop = hi if strategy != "top" else lo
-                    c = [x for x in c if x is not drop]
-        if not c:
-            continue
-        if strategy == "top":
-            win = max(c, key=lambda n: n[2])
-        elif strategy == "low":
-            win = min(c, key=lambda n: n[2])
-        else:  # strong
-            win = max(c, key=lambda n: (n[3], n[2]))
+            win = c[0]
+        else:
+            # 옥타브 중복 제거: 정확히 12반음 차이가 나는 짝이 있으면 하나만 남긴다
+            if octave_dedup:
+                by_pitch = {n[2]: n for n in c}
+                for p in list(by_pitch):
+                    if p + 12 in by_pitch:
+                        hi, lo = by_pitch[p + 12], by_pitch[p]
+                        if strategy == "top":
+                            drop = lo
+                        elif strategy == "melody" and prev_pitch is not None:
+                            # 앞 멜로디 음에 가까운 쪽을 남긴다
+                            drop = hi if abs(lo[2] - prev_pitch) <= abs(hi[2] - prev_pitch) else lo
+                        else:
+                            drop = hi
+                        c = [x for x in c if x is not drop]
+            if not c:
+                continue
+            if strategy == "top":
+                win = max(c, key=lambda n: n[2])
+            elif strategy == "low":
+                win = min(c, key=lambda n: n[2])
+            elif strategy == "melody":
+                win = melody_skyline(c, prev_pitch)
+                if win is None:
+                    continue
+            else:  # strong
+                win = max(c, key=lambda n: (n[3], n[2]))
         picked.append(list(win))
+        prev_pitch = win[2]
 
     # 레가토 정리: 다음 음이 시작하면 앞 음을 끊는다 (진짜 단선율)
     picked.sort(key=lambda n: n[0])
@@ -391,8 +467,9 @@ def main():
     ap.add_argument("src", help="유튜브 URL 또는 로컬 오디오 파일")
     ap.add_argument("-o", "--outdir", default="midi_out", help="출력 폴더")
     ap.add_argument("--name", default=None, help="출력 이름 (기본: 입력 파일명)")
-    ap.add_argument("--strategy", default="strong", choices=["strong", "top", "low"],
-                    help="단선율화 전략 (기본 strong=velocity 최대)")
+    ap.add_argument("--strategy", default="melody",
+                    choices=["melody", "strong", "top", "low"],
+                    help="단선율화 전략 (기본 melody=skyline+연속성)")
     ap.add_argument("--no-mono", action="store_true", help="단선율화 끄기(화음 유지)")
     ap.add_argument("--grid", type=int, default=4, help="양자화 격자 (4=16분음표, 0=끄기)")
     ap.add_argument("--quant-strength", type=float, default=1.0)
@@ -427,6 +504,8 @@ def main():
 
     if not args.no_mono:
         notes = monophonize(notes, strategy=args.strategy)
+        if args.strategy == "melody":
+            notes, _ = smooth_melody(notes)
     notes = denoise(notes)
 
     bpm = args.bpm or estimate_bpm(notes) or 120.0
