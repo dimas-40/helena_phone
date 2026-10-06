@@ -89,7 +89,7 @@
 <ul>
 <li><a href="#0">0. 한 줄</a></li>
 <li><a href="#1-1-1">1. 1호 실측 — 짐노페디 제1번</a><ul>
-<li><a href="#pd-raw">PD 레인 규칙 재확인 — RAW 그대로</a></li>
+<li><a href="#pd-raw">PD 레인 규칙 재확인 — RAW 그대로, 그리고 사후 증명</a></li>
 </ul>
 </li>
 <li><a href="#2">2. 감상 가이드 — 어떻게 &ldquo;진짜로 잰&rdquo; 타임라인을 만드는가</a><ul>
@@ -159,12 +159,65 @@ img/                5장, 1400px 이하로 축소 (원본 16MB → 202KB)
 </tr>
 </tbody>
 </table>
-<h3 id="pd-raw">PD 레인 규칙 재확인 — RAW 그대로</h3>
+<h3 id="pd-raw">PD 레인 규칙 재확인 — RAW 그대로, 그리고 <strong>사후 증명</strong></h3>
 <p><code>--no-mono --grid 0 --keep-raw</code> 로 돌렸지만 <strong>조 정렬은 걸렸다</strong> (43음 이동).<br>
 최종적으로 <strong>RAW를 렌더</strong>했다 (노트북 121 §6.5: PD 레인은 손대지 않은 채보).<br>
 <code>gymnopedie.mid</code>(조 정렬판)도 렌더해뒀다 — Boss가 원하면 교체.</p>
-<p>RAW vs 조정렬 차이: RAW의 스케일 밖 음은 <strong>C 30개 + F 13개 = 43개</strong> = 정확히 이동된 수.<br>
-어느 쪽이 맞는지는 <strong>귀로만 판정 가능</strong>하다. 확신 없이 결정하지 않는다.</p>
+<p>RAW와 조정렬의 차이는 <strong>스케일 밖 음 43개</strong>(C 30 · F 13)다. 처음엔 &ldquo;귀로만 판정 가능&rdquo;이라고<br>
+적었는데, <strong>원본 파형을 FFT로 재서 판정했다</strong> — 그리고 RAW가 맞았다.</p>
+<h4 id="_1">결말이 증거다 — 이 연주는 라단조로 끝난다</h4>
+<p>마지막 화음(176.80s~)의 스펙트럼:</p>
+<table>
+<thead>
+<tr>
+<th>주파수</th>
+<th>에너지</th>
+<th>음</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>73.1 Hz</td>
+<td>31.0 dB</td>
+<td>D2</td>
+</tr>
+<tr>
+<td>110.0</td>
+<td>42.3</td>
+<td>A2</td>
+</tr>
+<tr>
+<td>293.8</td>
+<td>37.7</td>
+<td>D4</td>
+</tr>
+<tr>
+<td><strong>350.0</strong></td>
+<td><strong>46.8</strong></td>
+<td><strong>F4</strong> ← 이 화음에서 가장 센 배음</td>
+</tr>
+<tr>
+<td>366.9</td>
+<td>23.0</td>
+<td>F#4 ← <strong>24dB 아래</strong></td>
+</tr>
+<tr>
+<td>440.8</td>
+<td>42.4</td>
+<td>A4</td>
+</tr>
+</tbody>
+</table>
+<p>→ <strong>D·F·A = 라단조.</strong> 직전 화음(173.20s~)은 A2·C4·E4·G3 = <strong>A단조7</strong>.<br>
+즉 <strong>Am7 → Dm</strong>, 곡은 장조로 시작해 <strong>단조로 끝난다.</strong></p>
+<p><strong>그리고 조 정렬이 이걸 지운다.</strong> D장조 스케일에 파(F)가 없으니 마지막 화음의 F4를<br>
+E4로 옮긴다 — 라단조가 &ldquo;라·미·라&rdquo;라는 어정쩡한 화음이 된다. RAW 파일에는 F4가 살아 있다.<br>
+재현 렌더도 확인: <strong>F 51.2dB / F# −0.6dB.</strong> 같은 라단조.</p>
+<p>⚠️ 귀로 못 듣는 내가 &ldquo;어느 쪽이 맞는지 모른다&rdquo;고 넘겼으면 <strong>웨이브에서 5분이면 끝날 일</strong>이었다.<br>
+<strong>소리 문제는 소리를 재서 푼다.</strong> 렌더 엔진이 바뀌어도 이 측정법은 남는다.</p>
+<h4 id="_2">부수 확인 — 시소의 정체</h4>
+<p>저음 블록(다음 저음까지)마다 화음을 모으면 딱 두 개다:<br>
+<strong>G장조7 (G·B·D·F#)</strong> ↔ <strong>D장조7 (D·F#·A·C#)</strong>. 곡 전체가 이 왕복이다.</p>
 <hr>
 <h2 id="2">2. 감상 가이드 — 어떻게 &ldquo;진짜로 잰&rdquo; 타임라인을 만드는가</h2>
 <p>⚠️ <strong>기억으로 시각을 적지 않는다.</strong> 전부 원본 파형과 MIDI에서 계산한 값이다.</p>
