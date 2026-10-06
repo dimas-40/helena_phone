@@ -88,23 +88,27 @@ related:
 > **⚠️ 함정:** `.secrets.env`의 `YOUTUBE_*`를 보고 "음악 채널 토큰"이라 가정하면 틀린다. `mine=true`가 돌려준 건 `dtslib-branch`다.
 > **b 토큰이라도 공개 채널 조회는 된다** → §1·§2 실측은 b 토큰으로 `id=`/`channelId=` 질의해서 얻음.
 
-### 3.2 음악 채널 토큰(계정 a)은 **폰에 없다**
+### 3.2 ~~음악 채널 토큰(계정 a)은 폰에 없다~~ → **해결됨 (2026-10-06)** ✅
 
-- 필요: `client_secret.json` + `accounts/token_a.json` (또는 `token_a__musician-parksy.json`)
-- `[기록]` 실물 위치 = **랩탑 WSL**: `/home/dtsli/parksy-audio/tools/youtube/{client_secret.json, accounts/token_a.json}`
-- `[실측]` 폰엔 없음 — `/root`, `/root/papyrus` 어디에도 `token_a.json` · `client_secret*.json` 없음
-- `[실측]` 파피루스 `tools/youtube/accounts/`엔 `channels.json` + 스크린샷만. 토큰 실물 없음.
+랩탑 6개 레포를 전수조사해 **채널별 토큰 18개를 폰으로 이식 완료.** 이제 음악 채널 쓰기 가능.
 
-### 3.3 능력 경계 (이게 핵심)
+- `[실측]` 랩탑 레포 6곳에 `tools/youtube/` 존재: `dtslib-localpc`·`dtslib-papyrus`·`parksy-audio`·`parksy-image`·`parksy-audio-daw`·`parksy-image-unit-lane`
+- `[실측]` **보물은 `parksy-image/tools/youtube/accounts/`** — **채널 하나씩 따로 인증한 토큰 15개**. 계정 a~d 전 채널을 덮는다. 전부 `youtube.upload` 스코프 O.
+- `[실측]` 페어 실증: `parksyimage_client_secret.json` + `parksyimage_token_musician.json` → **뮤지션 박씨** (`mine=true` 일치). `papyrus_token_a__musician-parksy` 도 동일 채널 — 둘 다 생존.
+- `[실측]` 도착지 = `/root/.secrets/youtube/` (**레포 밖**, gitignored). 지도 = `CHANNEL-MAP.json`. 토큰 값은 레포에 없음.
+- `[실측]` ⚠️ `token_d.json`(계정 d)은 **`invalid_grant` — 회수/만료된 죽은 토큰.** 나머지 18개 생존.
+
+### 3.3 능력 경계 (2026-10-06 갱신)
 
 | 능력 | 폰 현재 |
 |---|---|
-| 공개 채널/플레이리스트 **읽기** (아무 채널) | ✅ b 토큰으로 가능 |
-| 계정 b(@dtslib-branch) **쓰기** | ✅ 가능 |
-| **@musician-parksy 업로드·플레이리스트 수정** | ❌ **토큰 a 없음** |
-| WD 패스포트 접근 | ❌ 폰 미마운트 |
+| 공개 채널/플레이리스트 **읽기** (아무 채널) | ✅ |
+| **18채널 전부 읽기 + 쓰기** (계정 a·b·c, EAE, 박씨 5형제) | ✅ **러너 `scripts/ytch.py`** |
+| **@musician-parksy 업로드·플레이리스트 수정** | ✅ **토큰 확보** |
+| WD 패스포트 접근 | ❌ 폰 미마운트 (§6) |
+| 커뮤니티 게시 | ❌ API 없음 + 구독자 500 미달 (§10) |
 
-> 계정 a 토큰을 폰에 들이려면: (i) 랩탑에서 파일 이식(델타) 또는 (ii) **채널 최초 1회 Boss PC 동의**(`CLAUDE.md` 원칙 — `@musician-parksy`는 ❓미확인 9개 중 하나). `[미검증]`
+> 쓰기 능력은 스코프로 확증(`youtube` full / `youtube.upload`)했고 채널 API는 **비파괴 검증만** 했다 — 실제 업로드(`videos.insert`)는 아직 안 함. 검수 게이트 뒤에서만. `[미검증: 실제 업로드]`
 
 ---
 
@@ -163,21 +167,22 @@ related:
 
 | | 상태 |
 |---|---|
-| 공개 채널·플레이리스트 **읽기** (b 토큰) | ✅ |
-| 계정 b(@dtslib-branch) 운영 | ✅ |
-| **@musician-parksy 업로드 / 플레이리스트 수정** | ❌ 토큰 a 없음 |
+| 18채널 **읽기 + 쓰기** (`scripts/ytch.py`) | ✅ |
+| **@musician-parksy 업로드 / 플레이리스트 수정** | ✅ 토큰 확보 |
 | **WD 패스포트 저장** | ❌ 미마운트 + 레인 미구현 |
+| 커뮤니티 게시 | ❌ API 없음 + 구독자 미달 (§10) |
 | 노트북 기록·게이트 | ✅ |
 
 ---
 
 ## 8. 다음 작업 큐 (내가 주력으로 돌릴 것)
 
-1. **계정 a 토큰 확보** — 랩탑에서 `client_secret.json` + `token_a` 이식(델타) 또는 채널 최초동의. 도착지: `.secrets.env`(또는 별도 gitignored). `[미검증]`
-2. **플레이리스트 정합 교정** — 툴 타깃이 @blogger-parksy 소유(§2.2) → 의도 확인 후 musician 소유로 교정
+1. ~~계정 a 토큰 확보~~ → **완료 (2026-10-06)**. 18토큰 이식 + 러너 `scripts/ytch.py`. (§3.2)
+2. **플레이리스트 정합 교정** — 툴 타깃이 @blogger-parksy 소유(§2.2) → 이제 교정 **가능**(양쪽 채널 토큰 다 폰에 있음). 의도 확정 후 musician 소유로
 3. **쿼터 재승인** — 계정 a 60k 재신청(09-23 만료). 안 되면 하루 ~6편으로 스케줄
 4. **습작 → WD 아카이브 레인 설계** — 최종/습작 분기 규칙
 5. **업로드 실행 게이트 자동화** — 렌더·인코딩·메타·SRT까지 자동, 발행은 Boss 게이트
+6. **커뮤니티 500 구독 로드맵** — 탭 열리기 전까지 플레이리스트·고정댓글로 카페 대용
 
 ---
 
@@ -188,6 +193,8 @@ related:
 | 토큰 주인 가정 | `.secrets.env` YOUTUBE_* = **계정 b**(dtslib-branch). 음악 채널 아님 |
 | access token 만료 | `.secrets.env`의 access는 401. **refresh부터** |
 | playlist 소유채널 불일치 | 툴 타깃 3개가 **@blogger-parksy 소유**. 이름만 musician |
+| **죽은 토큰** | `papyrus token_d.json` = `invalid_grant`. 이식 시 생존 확인 필수 |
+| **레포별 시크릿 중복** | 6개 레포가 각자 `client_secret.json` 보유 — 토큰은 **그 시크릿 페어로만** 갱신됨. 섞으면 실패 |
 | 수치 부패 | `DIVISION-MAP.json` "232 videos" ≠ 실측 39 |
 | 자동 업로드 | 금지. 검수 게이트 필수 |
 | 파일 이식 | 대용량 바이너리 커밋 금지 → 델타 fetch/직접 전송 |
@@ -218,4 +225,45 @@ related:
 
 ---
 
-*agent mark `_Claude` · 2026-10-06 · 실측 좌표는 b 토큰(공개 읽기)으로 확보 — 계정 a 쓰기 경로는 미확보*
+## 11. 폰 러너 — `scripts/ytch.py` `[실측 2026-10-06]`
+
+랩탑 6레포에서 긁은 **채널별 토큰 18개**를 지도로 삼아, 폰에서 어느 채널이든 읽고 쓴다.
+기본 채널 = `musician-parksy`.
+
+```bash
+python3 scripts/ytch.py channels                      # 채널 지도 전체
+python3 scripts/ytch.py whoami                        # 기본=musician
+python3 scripts/ytch.py whoami --channel blogger-parksy
+python3 scripts/ytch.py playlists                     # 소유 플레이리스트
+python3 scripts/ytch.py videos --playlist PLjxh2pH0uEjrZCK0DDK6TGH1PFT06lrVi
+python3 scripts/ytch.py add <PLID> <VIDEOID>          # playlistItems.insert
+python3 scripts/ytch.py upload f.mp4 --title T --playlist PLID        # 계획만
+python3 scripts/ytch.py upload f.mp4 --title T --confirm             # 실행(게이트 후)
+```
+
+- 자격증명 = `/root/.secrets/youtube/` (**레포 밖**). 지도 = `CHANNEL-MAP.json`. 값은 절대 출력·커밋 안 함.
+- `.secrets.env`에 `MUSICIAN_CLIENT_SECRET`·`MUSICIAN_TOKEN`·`MUSICIAN_SECRET_DIR`(경로만) 등록됨.
+- **`--confirm` 없으면 업로드 안 함** = 자동 업로드 금지 규칙을 코드에 박음.
+
+### 11.1 채널 지도 (18 생존 + 1 죽음) `[실측]`
+
+| 슬러그 | 채널 | 영상 | 비고 |
+|---|---|---|---|
+| `musician-parksy` | **뮤지션 박씨** | 39 | ★ 배포 아카이브 |
+| `blogger-parksy` | 출판인 박씨 | 27 | 툴 타깃 플레이리스트 소유 |
+| `visualizer-parksy` | 화가 박씨 | 12 | |
+| `technician-parksy` | 기능인 박씨 | 9 | |
+| `philosopher-parksy` | 철학자 박씨 | 6 | |
+| `dtslib-branch` | dtslib-branch | 73 | 계정 b |
+| `EAE-University` | EAE Univ. | 95 | 계정 c |
+| `BeingEduartEngineer-4` | EAE Broadcast | 11 | |
+| `espiritu-tango`·`artrew-i1w`·`phoneparis-r6q`·`alexandria-y6k`·`justino-fashion` | (계정 b 계열) | — | Parksy-webzine 포함 |
+| `dtslib_com`·`dtslib_world` | dtslib_com/world | 1/0 | 계정 d |
+| `a`/`b`/`c` | 계정 토큰 (papyrus) | — | musician 채널 아님 |
+| `d` | — | — | ❌ `invalid_grant` 죽음 |
+
+> `parksy-image`의 토큰이 **채널 단위**라 §2.2의 플레이리스트 소유 불일치를 이제 양쪽에서 다 볼 수 있다.
+
+---
+
+*agent mark `_Claude` · 2026-10-06 · 갱신: 계정 a 토큰 18개 이식 + 러너 `ytch.py` 구축 완료. 실측은 `mine=true`/`playlistItems.list`(읽기)까지 — 실제 `videos.insert`는 미실행*
