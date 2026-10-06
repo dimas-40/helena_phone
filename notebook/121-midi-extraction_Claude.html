@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="2026-10-06 · `_Claude` — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>121. YouTube 음원 → MIDI 추출 — 폰에서 돈다 — S21 Phone Webzine</title>
+<link rel="canonical" href="https://dtslib1979.github.io//notebook/121-midi-extraction_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/dtslib1979#person",
+      "name": "dtslib",
+      "url": "https://github.com/dtslib1979",
+      "description": "경제방송 — 16레포×10블로그×6채널, 1인 미디어 출판·방송",
+      "sameAs": [
+        "https://github.com/dtslib1979",
+        "https://dtslib.kr",
+        "https://www.youtube.com/@dtslib-branch",
+        "https://www.youtube.com/@phoneparis-r6q",
+        "https://www.youtube.com/@alexandria-y6k",
+        "https://www.youtube.com/@artrew-i1w",
+        "https://www.youtube.com/@Parksy-webzine"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://dtslib1979.github.io//notebook/121-midi-extraction_Claude.html#webpage",
+      "url": "https://dtslib1979.github.io//notebook/121-midi-extraction_Claude.html",
+      "name": "121. YouTube 음원 → MIDI 추출 — 폰에서 돈다",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/dtslib1979#person"
+      },
+      "author": {
+        "@id": "https://github.com/dtslib1979#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>121. YouTube 음원 → MIDI 추출 — 폰에서 돈다</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · lakme-audio</div>
+    <h1>121. YouTube 음원 → MIDI 추출 — 폰에서 돈다</h1>
+    <p class="deck">2026-10-06 · `_Claude`</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/121-midi-extraction_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#0-boss">0. Boss의 질문과 답</a></li>
+<li><a href="#1-numba">1. 왜 폰에서 도는가 — numba 함정을 피했기 때문</a></li>
+<li><a href="#2-6">2. 파이프라인 6단계</a><ul>
+<li><a href="#2026-10-06-19">실측 검증 (2026-10-06, 19초 루프 소재)</a></li>
+</ul>
+</li>
+<li><a href="#3">3. 반드시 짚을 함정 (전부 실제로 밟았다)</a></li>
+<li><a href="#4">4. 만점으로 가는 리팩토링 — 확정된 것 / 휴리스틱인 것</a><ul>
+<li><a href="#_1">✅ 확정 (건드리지 말 것)</a></li>
+<li><a href="#_2">⚠️ 휴리스틱 (여기가 &ldquo;만점&rdquo;의 여지)</a></li>
+<li><a href="#boss-4">🎯 만점의 정의 (Boss 기준선 규칙 — 정본 §4)</a></li>
+</ul>
+</li>
+<li><a href="#5-boss">5. Boss가 말한 &ldquo;곱셈&rdquo;의 나머지 절반</a></li>
+<li><a href="#6">6. 사용법</a></li>
+<li><a href="#7">7. 남은 일</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <blockquote>
+<p>2026-10-06 · <code>_Claude</code><br>
+계기: <code>_notebook/120-channel-triangle_Claude.md</code> (사각형) · <code>_notebook/118-parksy-label-goal-real-bottleneck_Claude.md</code> (진짜 병목 = 편집)<br>
+실물: <code>scripts/midi_extract.py</code> (422행)</p>
+</blockquote>
+<hr>
+<h2 id="0-boss">0. Boss의 질문과 답</h2>
+<blockquote>
+<p>&ldquo;그러면 이제 미리 추출하는 솔루션은 나온 거냐? 어떻게 만점짜리로 리팩토링 해야 되냐&rdquo;</p>
+</blockquote>
+<p><strong>나왔다. 그리고 폰에서 돈다.</strong> — PC로 안 가도 된다.</p>
+<p>Boss가 기억한 옛 솔루션(<code>parksy-audio/pre-season/xtract/</code>)은 <strong><code>basic-pitch</code></strong> 를 썼다.<br>
+그건 이 폰에서 <strong>설치 불가</strong>(<code>numpy&lt;1.24</code> + <code>tensorflow</code>, Python 3.14에 휠 없음).<br>
+2026-03-15 <code>MUSIC-PIPELINE-DECISION</code> 문서가 &ldquo;Basic Pitch Termux 설치 불가 → PC WSL2&rdquo;로 결론낸 이유가 그것이다.</p>
+<p><strong>그 결정은 이 모델에 한해 낡았다.</strong> 우리는 <strong><code>piano_transcription_inference</code></strong> 로 간다 —<br>
+Qiuqiang Kong의 CRNN, <strong>PyTorch 전용</strong>(numba 없음). 폰에서 실제로 돌아간다.</p>
+<hr>
+<h2 id="1-numba">1. 왜 폰에서 도는가 — numba 함정을 피했기 때문</h2>
+<p><code>librosa.pyin</code> · <code>librosa.piptrack</code> 은 <strong>폰에서 크래시</strong>한다:</p>
+<pre><code>UNREACHABLE executed at .../llvm/lib/CodeGen/TargetSchedule.cpp:226!
+</code></pre>
+<p>numba JIT의 aarch64 LLVM 코드젠 버그다. (import는 되고 <strong>JIT 시점에</strong> 죽는다 — CLAUDE.md의 &ldquo;numba ARM64 크래시&rdquo;는 맞았지만 원인이 다르다.)</p>
+<p>→ <strong>numba를 한 줄도 안 타는 계보</strong>만 쓴다. torch 경로는 안전하다.<br>
+이것이 <code>basic-pitch</code>(numba/tf 계보) 대신 <code>piano_transcription_inference</code>(순수 torch)를 쓰는 <strong>유일한 이유</strong>다.</p>
+<hr>
+<h2 id="2-6">2. 파이프라인 6단계</h2>
+<pre><code>[1/6] 가져오기   yt-dlp -x --audio-format wav → 16kHz mono
+[2/6] 채보       piano_transcription_inference (torch CPU)
+[3/6] 단선율화   동시발음 접기 → 1음씩          ← 여기가 Boss가 말한 &quot;단선율 피아노&quot;의 핵심
+[4/6] 양자화     IOI 중앙값 → BPM 추정 → 1/16 격자 스냅
+[5/6] 조 정렬    Krumhansl-Schmuckler → 조성 추정 → 스케일 밖 음 스냅
+[6/6] 쓰기       GM program 0 (Acoustic Grand) · ppq 480 · mido
+</code></pre>
+<h3 id="2026-10-06-19">실측 검증 (2026-10-06, 19초 루프 소재)</h3>
+<pre><code>[3/6] 단선율화: 43음 → 32음 (동시발음 11개 접음, 전략=strong)
+[4/6] 양자화: 127.6 BPM · 1/16음표 격자 (strength=1.0)
+[5/6] 조 정렬: G4 minor — 스케일 밖 0음 이동
+최종 32음 · 127.6 BPM · G4 minor
+재읽기 32음 · 동시발음 0곳          ← 진짜 단선율 증명
+앞 20음: D4 D#4 F4 G4 D4 D#4 F4 G4 G4 D4 D#4 F4 G4 D4 D#4 F4 F4 G4 D4 D#4
+</code></pre>
+<p>모티프 <code>D4 → D#4 → F4 → G4</code> 가 그대로 살아났고, <strong>G minor로 확정</strong>됐다<br>
+(G단음계 = G A Bb C D Eb F — D#=Eb·F·G·D 전부 스케일 안, 스케일 밖 0음).<br>
+<code>재읽기 동시발음 0곳</code> = 파일을 다시 읽어 확인한 진짜 단선율.</p>
+<hr>
+<h2 id="3">3. 반드시 짚을 함정 (전부 실제로 밟았다)</h2>
+<table>
+<thead>
+<tr>
+<th>함정</th>
+<th>증상</th>
+<th>처방</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>load_audio()</code> 죽음</strong></td>
+<td><code>No librosa.core attribute audio</code></td>
+<td>라이브러리 함수 우회 → <code>librosa.load(path, sr, mono)</code> 로 배열 직접 전달</td>
+</tr>
+<tr>
+<td><strong><code>audioread</code> 미선언 의존</strong></td>
+<td><code>ModuleNotFoundError</code></td>
+<td><code>pip3 install --break-system-packages audioread</code></td>
+</tr>
+<tr>
+<td><strong><code>msg.time</code> 오독</strong></td>
+<td>15초 파일이 &ldquo;11225.00s&rdquo;</td>
+<td>delta tick이지 초가 아니다 → <code>mido.tick2second</code> 누적</td>
+</tr>
+<tr>
+<td><strong><code>time must be int</code></strong></td>
+<td>저장 실패</td>
+<td><code>last=0</code>(int) 강제. float 하나가 파일 전체를 막는다</td>
+</tr>
+<tr>
+<td><strong>단선율화 과붕괴</strong></td>
+<td>43음 → 19음, 첫 모티프 소실</td>
+<td><strong>겹침 체이닝</strong> 금지 → <strong>어택 근접(onset_window=0.06)</strong> 으로 클러스터링</td>
+</tr>
+<tr>
+<td><strong>비공개 영상</strong></td>
+<td><code>ERROR: Private video</code></td>
+<td>API로 <code>privacyStatus == "public"</code> 필터 후 소재 선정</td>
+</tr>
+</tbody>
+</table>
+<p><strong>단선율화가 가장 위험하다.</strong> 겹침(overlap)으로 묶으면 0.02초 음이 15초 음에 전이적으로 연결돼 곡이 뭉개진다.<br>
+어택 근접으로 묶어야 한다 — 이게 43→19 붕괴를 43→32 복구로 바꾼 한 줄이다.</p>
+<hr>
+<h2 id="4">4. 만점으로 가는 리팩토링 — 확정된 것 / 휴리스틱인 것</h2>
+<h3 id="_1">✅ 확정 (건드리지 말 것)</h3>
+<ul>
+<li>모델 선정 (<code>piano_transcription_inference</code>, 순수 torch)</li>
+<li>16kHz mono 정규화</li>
+<li>gm program 0 · ppq 480 · mido write</li>
+<li><strong>단선율화 = 어택 근접 클러스터링</strong> (겹침 체이닝은 폐기)</li>
+<li>재읽기 검증 (<code>동시발음 0곳</code>) 을 게이트로</li>
+</ul>
+<h3 id="_2">⚠️ 휴리스틱 (여기가 &ldquo;만점&rdquo;의 여지)</h3>
+<table>
+<thead>
+<tr>
+<th>파라미터</th>
+<th>현재</th>
+<th>문제</th>
+<th>만점 방향</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>onset_window</code></td>
+<td>0.06 고정</td>
+<td>빠른 곡/느린 곡 동일 취급</td>
+<td><strong>템포 연동</strong> — 추정 BPM의 1/16 길이에 비례</td>
+</tr>
+<tr>
+<td>양자화 <code>strength</code></td>
+<td>1.0 (전량 스냅)</td>
+<td>셋잇단·루바토 죽임</td>
+<td><strong>스윙/셋잇단 감지 시 격자 전환</strong> (4/4 → 4/3)</td>
+</tr>
+<tr>
+<td>조 추정</td>
+<td>곡 전체 1회</td>
+<td>전조(modulation) 놓침</td>
+<td><strong>마디 단위 국소 조 추정</strong></td>
+</tr>
+<tr>
+<td>옥타브 중복</td>
+<td><code>octave_dedup</code> 일괄</td>
+<td>실제 옥타브 연주를 지움</td>
+<td><strong>벨로시티/지속시간 비교 후 판단</strong></td>
+</tr>
+<tr>
+<td>벨로시티</td>
+<td>모델 출력 그대로</td>
+<td>GM 렌더가 밋밋</td>
+<td><strong>마스터 게이트에서 다이내믹 커브 재적용</strong></td>
+</tr>
+<tr>
+<td>반주 잔재</td>
+<td>필터 없음</td>
+<td>피아노 외 소리도 채보</td>
+<td><strong>스펙트럼 게이트</strong> (단선율 채널이면 불필요할 수도)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="boss-4">🎯 만점의 정의 (Boss 기준선 규칙 — 정본 §4)</h3>
+<blockquote>
+<p>&ldquo;[박씨 렌더링]의 결과물은 항상 <strong>Ref.AIVA · Ref.Gemini Song보다 좋아야</strong> 한다.&rdquo;</p>
+</blockquote>
+<p>즉 <strong>추출 정확도가 만점이 아니다. 렌더 결과가 기준선을 넘는 게 만점이다.</strong><br>
+추출은 수단이고, 채점은 <code>FluidSynth 렌더 → 사람 귀</code> 다.<br>
+→ 리팩토링 우선순위는 <strong>추출 정밀도 &lt; 렌더 청감</strong> 이다.</p>
+<hr>
+<h2 id="5-boss">5. Boss가 말한 &ldquo;곱셈&rdquo;의 나머지 절반</h2>
+<blockquote>
+<p>&ldquo;이게 곱해지려면은 진짜 괜찮은 <strong>피아노 단선율 YouTube 음악 채널</strong>이 있어야 될 거고&rdquo;</p>
+</blockquote>
+<p><strong>이 파이프라인은 소재 품질에 곱해진다.</strong> 소재가 나쁘면 곱은 0이다.</p>
+<p>소재 채널 선정 기준 (제안 — Boss 결재 필요):<br>
+1. <strong>단선율 피아노</strong> (반주·오케스트라 없음) — 단선율화가 이미 되지만, 원본이 깨끗할수록 손실이 적다<br>
+2. <strong>공개(public) 영상</strong> — 비공개는 yt-dlp가 못 뽑는다 (실측)<br>
+3. <strong>퍼블릭 도메인 원곡</strong> — 편곡·렌더·업로드까지 가면 <strong>저작권이 최종 병목</strong>이다<br>
+4. <strong>템포 안정</strong> — 루바토 심하면 양자화가 곡을 망친다<br>
+5. <strong>길이 2~5분</strong> — 200초(Clair de Lune)는 CPU에서 오래 걸린다</p>
+<p>⚠️ <strong>여기가 ④ 루프백과 만나는 지점이다.</strong> 저작권이 걸리는 원곡은<br>
+YouTube(③)로 못 보낸다 → <strong>parksy.kr 루프백(④)</strong> 으로 간다.<br>
+정본: <code>_notebook/120-channel-triangle_Claude.md</code> · <code>parksy.kr/docs/LOOPBACK-STRUCTURE.md</code></p>
+<hr>
+<h2 id="6">6. 사용법</h2>
+<pre><code class="language-bash"># 기본 — URL 하나로 끝
+python3 scripts/midi_extract.py &quot;https://www.youtube.com/watch?v=XXXX&quot; -o out/
+
+# 단선율 유지 보수
+python3 scripts/midi_extract.py SRC -o out/ --strategy strong --grid 4 --quant-strength 0.7
+python3 scripts/midi_extract.py SRC -o out/ --key G:minor --no-scale-snap
+</code></pre>
+<p>출력: <code>&lt;name&gt;.mid</code>(GM program 0) · <code>&lt;name&gt;.csv</code>(검수용) · <code>--keep-raw</code> 시 <code>&lt;name&gt;.raw.mid</code>(원본 채보)</p>
+<hr>
+<h2 id="7">7. 남은 일</h2>
+<ul>
+<li>[ ] <strong>실곡 검증</strong> — Debussy Clair de Lune(<code>ezJw7RrqvQ0</code>, 201초) 실측 진행 중. 루프 소재가 아닌 첫 실곡</li>
+<li>[ ] 소재 채널 기준 §5 — Boss 결재</li>
+<li>[ ] 휴리스틱 6종 §4 — 우선순위는 렌더 청감</li>
+<li>[ ] <strong>기준선 A/B</strong> — Ref.AIVA · Ref.Gemini Song과 나란히 렌더해 비교 (만점 판정)</li>
+</ul>
+<hr>
+<p><em><code>_Claude</code> · 2026-10-06 · 이 문서는 폰 proot의 MIDI 추출 정본이다.</em></p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="120-channel-triangle_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">뮤지션 박씨 — 사각형 정본 (Channel Quad + Loopback)</span>
+        </a>
+    <a class="next" href="78-pd-pipeline-whitepaper_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">78 pd pipeline whitepaper Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>구축: 2026-07-23 ~ 2026-08-14 (23일)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine lakme-audio</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

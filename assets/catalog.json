@@ -1344,6 +1344,14 @@
     "deck": "**Boss 지시 (2026-10-06):**"
   },
   {
+    "src": "_notebook/121-midi-extraction_Claude.md",
+    "out": "notebook/121-midi-extraction_Claude.html",
+    "title": "121. YouTube 음원 → MIDI 추출 — 폰에서 돈다",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "2026-10-06 · `_Claude`"
+  },
+  {
     "src": "_notebook/78-pd-pipeline-whitepaper_Claude.md",
     "out": "notebook/78-pd-pipeline-whitepaper_Claude.html",
     "title": "🎬 PD Pipeline 기술 백서 — URL 하나로 숏폼 자동 제작",
