@@ -88,6 +88,7 @@
   <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
 <ul>
 <li><a href="#_grok-2026-09-25">📒 랜딩 필름 관리 장부 (_Grok · 2026-09-25)</a></li>
+<li><a href="#parksykr-_claude-2026-10-06">🔷 삼각형이 아니라 사각형이었다 — parksy.kr 루프백 (_Claude · 2026-10-06)</a></li>
 <li><a href="#parksy-logs-_grok-2026-09-26">📜 parksy-logs 빈 파피루스 (_Grok · 2026-09-26)</a></li>
 <li><a href="#gohsycom-_grok-2026-09-25">🎬 gohsy.com 빈 길드 책상 (_Grok · 2026-09-25)</a></li>
 <li><a href="#koosykr-_grok-2026-09-25">🪙 koosy.kr 가족 코인 (_Grok · 2026-09-25)</a></li>
@@ -789,6 +790,13 @@
 </tbody>
 </table>
 <p>규칙: 사람 얼굴은 있는 사진을 유지하거나 별도 페이지로 옮긴다. 새로 그리지 않는다. 그림 안에 글자를 넣지 않는다. 페이지 캐시는 약 10분이다.</p>
+<h3 id="parksykr-_claude-2026-10-06">🔷 삼각형이 아니라 사각형이었다 — parksy.kr 루프백 (_Claude · 2026-10-06)</h3>
+<p><strong>Boss:</strong> &ldquo;폰 proot 수첩 · GitHub 이미지 레포 · YouTube — 이 세 개가 <strong>삼각형으로 같이 돌아가야 되니까 다 같이 저장</strong>해야 되는 거야.&rdquo;<br>
+이어서 네 번째 노드를 꺼냈다: &ldquo;<strong>https://parksy.kr/channel/musician/</strong> — 여기 내 방송국에서는 <strong>실제로 YouTube에서 할 수 없는 것들만</strong> 여기에서 <strong>루프백</strong> 돌아가지고. <strong>PWA 웹페이지로 경험</strong>할 수 있는, <strong>저작권이라든지 문제가 생길 때</strong>, <strong>영상이 아닌 앱</strong>으로 무언가를 해야 될 때 여기로 가서 <strong>영상이 아닌 콘텐츠 · 음원이 아닌 콘텐츠</strong>를 만들게 되는 거야. <strong>구조 정확하게 파악해.</strong>&ldquo;</p>
+<p><strong>파악한 것:</strong> 루프백은 기획이 아니라 <strong>이미 가동 중인 코드</strong>였다. <code>parksy.kr/design/loopback.js</code> 첫 줄이 <code>// PARKSY Loopback Services — YouTube가 못 해주는 것</code>이고, <code>loopback.css</code>는 <strong>모든 섹션 제목 뒤에 문자 그대로 <code>content: 'YouTube cannot do this'</code>를 렌더</strong>한다. 서비스 4종 = <code>initQuiz</code>(가동) · <code>initBGM</code>(loop 재생) · <code>initWebtoon</code>(티스토리 iframe) · <code>initPrompts</code>(프롬프트 체인 전문). 뒤 3종은 HTML에 <code>data-url</code>/<code>data-prompts</code>만 채우면 <code>DOMContentLoaded</code>가 자동 init — <strong>JS 수정 불필요</strong>. 다만 셋 다 지금 <code>Coming Soon</code>(빈칸 4개).</p>
+<p><strong>저장한 것(사각형 4노드 동시):</strong> ① 수첩 <code>119</code>(§10 정정) · <code>120</code>(사각형 정본) + 웹페이지 212장 gap 0 ② <code>parksy-image/MUSICIAN-CHANNEL-CHARTER.md</code> ③ 소개글 968자(이미 라이브) ④ <code>parksy.kr/docs/LOOPBACK-STRUCTURE.md</code>.</p>
+<p><strong>정정 1건:</strong> <code>119 §10</code>이 &ldquo;구독자 500 미달이라 게시물 탭 없음&rdquo;이라고 단정했는데 <strong>낡은 정보</strong>였다(2023 폐지). 탭은 실재한다 — <code>/@musician-parksy/community</code> 라이브(<code>FEcommunity_page</code>), 폰 앱에 게시물 탭 보임. <strong>막는 건 API 하나뿐</strong>이다.</p>
+<p><strong>폐기 1건:</strong> 랩탑 Windows Chrome Playwright GUI 자동화 — WSL 경계를 넘는 <code>--remote-debugging-pipe</code>를 Chrome이 거부(<code>Remote debugging pipe file descriptors are not open</code>). 게시물은 <strong>Paste Pipeline</strong>으로 간다(내가 Boss 폰 화면을 ADB로 잡지 않는다).</p>
 <h3 id="parksy-logs-_grok-2026-09-26">📜 parksy-logs 빈 파피루스 (_Grok · 2026-09-26)</h3>
 <p><strong>Boss:</strong> parksy-logs도 해당 이미지·영상으로, A급으로. 로그인이 끊긴 세션을 이어서.</p>
 <p><strong>한 일:</strong> <code>dtslib1979/parksy-logs</code> <code>docs/</code>. 첫 화면은 밤 책상, 빈 파피루스, 녹색 갓 스탠드, 펜. 6초 무음 루프. 불은 한 번 따뜻해졌다가 같은 밝기로 돌아온다. 제목 아래 네 칸은 채집(폰), 저장(롤), 도서관(종이 더미), 출판(세 장). 같은 장면이 각 단계와 푸터 세 인장에 들어간다. 좌우 롤러는 경로를 고쳐 다시 보이게 했다. 본문 카피는 그대로. 사람 없음, 그림 안 글자 없음. 커밋 <code>68592b9</code>. https://dtslib1979.github.io/parksy-logs/?v=roll</p>

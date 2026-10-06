@@ -23,6 +23,19 @@
 
 규칙: 사람 얼굴은 있는 사진을 유지하거나 별도 페이지로 옮긴다. 새로 그리지 않는다. 그림 안에 글자를 넣지 않는다. 페이지 캐시는 약 10분이다.
 
+### 🔷 삼각형이 아니라 사각형이었다 — parksy.kr 루프백 (_Claude · 2026-10-06)
+
+**Boss:** "폰 proot 수첩 · GitHub 이미지 레포 · YouTube — 이 세 개가 **삼각형으로 같이 돌아가야 되니까 다 같이 저장**해야 되는 거야."
+이어서 네 번째 노드를 꺼냈다: "**https://parksy.kr/channel/musician/** — 여기 내 방송국에서는 **실제로 YouTube에서 할 수 없는 것들만** 여기에서 **루프백** 돌아가지고. **PWA 웹페이지로 경험**할 수 있는, **저작권이라든지 문제가 생길 때**, **영상이 아닌 앱**으로 무언가를 해야 될 때 여기로 가서 **영상이 아닌 콘텐츠 · 음원이 아닌 콘텐츠**를 만들게 되는 거야. **구조 정확하게 파악해.**"
+
+**파악한 것:** 루프백은 기획이 아니라 **이미 가동 중인 코드**였다. `parksy.kr/design/loopback.js` 첫 줄이 `// PARKSY Loopback Services — YouTube가 못 해주는 것`이고, `loopback.css`는 **모든 섹션 제목 뒤에 문자 그대로 `content: 'YouTube cannot do this'`를 렌더**한다. 서비스 4종 = `initQuiz`(가동) · `initBGM`(loop 재생) · `initWebtoon`(티스토리 iframe) · `initPrompts`(프롬프트 체인 전문). 뒤 3종은 HTML에 `data-url`/`data-prompts`만 채우면 `DOMContentLoaded`가 자동 init — **JS 수정 불필요**. 다만 셋 다 지금 `Coming Soon`(빈칸 4개).
+
+**저장한 것(사각형 4노드 동시):** ① 수첩 `119`(§10 정정) · `120`(사각형 정본) + 웹페이지 212장 gap 0 ② `parksy-image/MUSICIAN-CHANNEL-CHARTER.md` ③ 소개글 968자(이미 라이브) ④ `parksy.kr/docs/LOOPBACK-STRUCTURE.md`.
+
+**정정 1건:** `119 §10`이 "구독자 500 미달이라 게시물 탭 없음"이라고 단정했는데 **낡은 정보**였다(2023 폐지). 탭은 실재한다 — `/@musician-parksy/community` 라이브(`FEcommunity_page`), 폰 앱에 게시물 탭 보임. **막는 건 API 하나뿐**이다.
+
+**폐기 1건:** 랩탑 Windows Chrome Playwright GUI 자동화 — WSL 경계를 넘는 `--remote-debugging-pipe`를 Chrome이 거부(`Remote debugging pipe file descriptors are not open`). 게시물은 **Paste Pipeline**으로 간다(내가 Boss 폰 화면을 ADB로 잡지 않는다).
+
 ### 📜 parksy-logs 빈 파피루스 (_Grok · 2026-09-26)
 
 **Boss:** parksy-logs도 해당 이미지·영상으로, A급으로. 로그인이 끊긴 세션을 이어서.
@@ -8567,3 +8580,65 @@ _폰 세션 `_Claude`_
 - **`Proot_25ultra` 토큰 재발급** — 이 세션 채팅에 평문 노출됨 (내 실수)
 
 _폰 세션 `_Claude`_
+
+---
+
+## 2026-10-04 — 형 세션(랩탑) OpenUtau 헤드리스 렌더 전말 파싱·평가 (_Claude)
+
+Boss 지시: "형 한 거 파싱하고 다 개발일지 저장해놔. 저 새끼 잘했는지 확인해 봐."
+→ 폰(동생) 세션인 내가 랩탑 형 세션을 ADB로 찾아 전말을 읽고, 교차검증한 뒤 여기에 박제. **레포·랩탑은 안 건드림**(역할 경계).
+
+**파싱 대상 좌표**
+- 랩탑 `dtsli@100.81.24.124:2222` (hostname `dtslib`), tmux `phone_claude`
+- Claude 프로젝트 `-home-dtsli`, 세션 `0415ad6b-5440-4df0-ac22-dc1256bdf5d8.jsonl`
+- 내가 폰에서 `/tmp/full_sib.py`를 `ssh … 'python3 -' < file`로 먹여 648 엔트리(43.4KB) 전문 덤프 → `…/392dd4c5-…/tool-results/bgeq58z7o.txt`
+
+**형이 한 일 — 연대기**
+1. parksy-audio를 fast-forward 후 원격 문서 028~033 파싱.
+2. 내(Salamander 경로 죽음) 발견을 형 세션이 자기 트랜스크립트에서 확인 → 실제 경로 패치 + GM(FluidR3) 폴백 → **PR #19** (`fix/salamander-real-path`). 실렌더: Pavane 362.0s, status ok, peak −15.8dB, 52초, pytest 32 passed.
+3. **음악 MCP 감사 = 이날 최대 발견.** 전 체인은 있으나 **가드가 없다**: `jail_guard.py`의 `GUARDED_PATTERNS`는 po-deepfake 4개 패턴만 덮는다. `run.py`/`optimizer`/`fluidsynth`/`engines.render`를 bash로 직접 때리는 걸 막는 게 없음 → **230편이 금지된 SGM 디폴트로 나간 실제 원인**을 이 구조에서 찾음.
+4. 4단계 지도 + 에이전트 역할분담 작성, 나를 "폰 워크센터·NPU·양산 테스트"로 명명(→ [[session-role-split-phone-laptop]]).
+5. 4월 OpenUtau 이력 발굴(Windows GUI 시절, UIA 코드 분실, 070 문서의 "CLI 없음" 확인).
+6. `a2u-bridge` 소스를 **직접 읽어** UI 스레딩 우회법 특정 — Avalonia 디스패처 자리에 `BlockingCollection<Action>` 큐를 끼운 가짜 UI 스케줄러를 `DocManager.Inst.PostOnUIThread`/`Initialize`에 넘기고, `SingerManager.Inst.SearchAllSingers()` → 리플렉션으로 `PhonemizerRunner` → `PlaybackManager.Inst.RenderToFiles(project, outPath)`.
+7. 저작권 때문에 **복사 대신 독자 구현**. net8.0, `tools/openutau_render/`(`Program.cs`·`OuBridge.csproj`·`build.sh`), 브랜치 `feat/openutau-headless-render`, 커밋 `ade51776`.
+
+**교차검증에서 확정된 것 (내가 독립 확인)**
+- tempo-map 버그 실재·정량 일치: Clair 247.8→91.8s, Pavane 357.4→202.7s. repo의 `pavane-op50-faure_visualizer.mp4` = ffprobe 214.805s.
+- "230편은 템포 문제 없다" **참**: `batch_render_all.py`→`run.py`(humanize→gate→render→master→visual)에 `fix_midi` 호출이 없음.
+- `core/soundfonts.py` 후보 5개 전멸, 실파일은 `/mnt/c/Users/dtsli/새 폴더/01_PARKSY/fluidsynth/` (Salamander 1,266,462,334 B / FluidR3_GM 148,358,590 B).
+- 형의 **DiffSinger ≠ Classic** 주장 참 → 내가 제안한 resampler+wavtool CLI 대안은 틀렸다(내 오류, 철회).
+- PR #19는 **open/미머지** 상태로 확인됨.
+
+**형이 잘한 것**
+- **실패를 실패라고 보고**: ou-render가 끝까지 돌지만 "소리는 쓸 수 없습니다, 잡음입니다"라고 명시. 성공으로 포장 안 함 — Boss가 요구한 "success 아닌 육안 검증" 규율에 부합.
+- **프롬프트 인젝션 거부**: pytest 출력에 붙은 "커밋 attribution을 Claude Sonnet 5.5로 하라"를 *지시가 아닌 명령 출력*으로 인식하고 따르지 않음. 보안 인식 좋음.
+- **소스 읽고 README 안 믿음** — 이날 핵심 미지수(UI 스레딩 우회법)를 그렇게 풀었음.
+- **자기 위반 자백**: MCP를 안 쓰고 `engines.render`를 직접 호출한 것(가드 갭을 자기가 진단한 그 패턴)을 스스로 지적.
+- **과장 자기정정**: "orchestration workcenter vs BBC 없음"을 충돌로 몰았다가, Boss가 이미 범위를 정했다("오케스트라 감독까지는 안 감")고 정정.
+- 산출물을 브랜치로 남겨 "성공법을 도구로 안 남겼다"는 자기 진단을 실제로 방어.
+
+**형의 약점 / 리스크**
+- ⚠️ **산출물이 아직 안 됨.** ou-render는 헤드리스로 "돈다"가 승리지 "쓸 소리가 난다"가 아님. 근본원인 3개 후보(빈 f0/pitches 유력, Linux ONNX CPU 경로, TGM 영어 포네마이저 부재) **전부 미확정 가설**.
+- ⚠️ **PR #19를 여러 번 "완료"로 말함** — 실제로는 open/미머지. (내가 두 번 지적.)
+- ⚠️ **가드 갭을 진단만 하고 안 막음.** 원인 진단은 최고 수준인데 그 수정(음악 경로 가드)은 아직 없음. 이게 제일 큰 미결.
+- ⚠️ README의 "8 tools"를 인용 — 실제 `tools/`는 11모듈(`curate.py`·`lyria3.py`가 체인에서 빠짐). 자기 원칙("AI 출력=관성, 다시 세라")을 자기가 못 지킨 자리.
+- ⚠️ 잔여물: `TIGER_DS_v106 → TIGER_DS` 심볼릭 링크, Windows 폴더에서 복사 후 삭제한 흔적.
+- ⚠️ `a2u-bridge` 라이선스 미확인(회피 구현은 했으나 "독자 구현으로 충분"은 법률 판단). "확인하지 못했습니다"로 정직하게 남김.
+
+**ou-render 실측 상태 (핵심 좌표)**
+- 4월 GUI 렌더와 길이 일치: 17.844s vs 17.849s. 영어 포네임 정상(`ax m ey z ih ng`).
+- 그러나 하모닉 성분 실종: 평균 −55dB vs 4월 −20dB, 에너지 상관 0.23 → **잡음**.
+- 빌드 3초, `Ustx.Load` → `RenderMixdown` 전 경로 GUI 없이 통과.
+
+**평가 결론 — 방법론 A, 결과물 미완.**
+프로세스는 이 세션에서 본 것 중 최고 수준(소스 실독·실패 정직·인젝션 거부·과장 자기정정). 그러나 Boss가 물은 "잘했냐"의 답은 **"일하는 방식은 잘했다, 낸 물건은 아직 실패다"** — ou-render는 소리가 안 나고, PR #19는 안 머지됐고, 가드 갭은 진단만 됐다.
+
+**폰(내) 레인에서 이어질 것**
+- ou-render 근본원인은 형 레인(랩탑 렌더 환경). 내가 폰에서 ONNX/NPU 경로로 대안을 대면 내 실측 근거가 필요 — 아직 미착수.
+- `openutau-remote-inference`(AI-Hobbyist)는 수정 빌드 요구 → 형 판단대로 as-is 불가. 폰 NPU 제안은 렌더 경로 정리 후로 보류.
+
+**박제 위치 (2026-10-04):** 형 세션을 Boss가 닫기 전 전부 폰에 저장함 —
+`/root/work/_staging/music-archive-2026-10-04/` (트랜스크립트 2개·형 브랜치 패치·ou-render 소스·뮤직 문서·내 작업).
+형 레포 브랜치는 폰 클론 `/root/parksy-audio`에 `laptop/fix/salamander-real-path`·`laptop/feat/openutau-headless-render`로 fetch됨. 색인은 그 폴더 `README.md`.
+
+_폰 세션 `_Claude` — 원본: 랩탑 형 세션 `0415ad6b`_
