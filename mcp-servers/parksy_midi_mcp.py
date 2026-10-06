@@ -260,7 +260,11 @@ def midi_report(path: str) -> str:
 
     # 소재 판정 — 추출 때 옆에 남긴 것이 있으면 읽는다.
     # 단선율화 뒤에는 격자 정보가 사라져 여기서 다시 계산할 수 없다.
-    side = p.with_suffix(".verdict.json")
+    # <name>_raw.mid 로 물어봐도 <name>.verdict.json 을 찾는다
+    cands = [p.with_suffix(".verdict.json")]
+    if p.stem.endswith("_raw"):
+        cands.append(p.with_name(p.stem[:-4] + ".verdict.json"))
+    side = next((c for c in cands if c.is_file()), cands[0])
     if side.is_file():
         try:
             v = json.loads(side.read_text(encoding="utf-8"))

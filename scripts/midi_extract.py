@@ -300,8 +300,15 @@ def estimate_bpm(notes):
     return bpm
 
 
-def quantize(notes, bpm, grid=4, strength=1.0):
-    """grid = 한 박을 몇 등분할지 (4 = 16분음표). strength 1.0 = 완전 스냅."""
+def quantize(notes, bpm, grid=4, strength=1.0, mono=False):
+    """grid = 한 박을 몇 등분할지 (4 = 16분음표). strength 1.0 = 완전 스냅.
+
+    mono=True 면 단선율로 보고 겹침을 밀어낸다. 격자 스냅은 각 온셋을 따로
+    반올림하므로, 30ms 차이로 이어지던 두 음이 같은 칸에 떨어져 **다시 화음이
+    된다.** 실측(2026-10-06): 레이크 루이스에서 547음 중 229곳이 그렇게 겹쳤다.
+
+    화성 모드(mono=False)에서는 건드리지 않는다 — 진짜 화음을 흩어놓으면 안 된다.
+    """
     if not bpm:
         return notes, None
     beat = 60.0 / bpm
@@ -310,6 +317,20 @@ def quantize(notes, bpm, grid=4, strength=1.0):
         for i in (0, 1):
             snapped = round(n[i] / step) * step
             n[i] = n[i] + (snapped - n[i]) * strength
+
+    if mono:
+        ordered = sorted(notes, key=lambda n: n[0])
+        pushed = 0
+        for i in range(1, len(ordered)):
+            prev, cur = ordered[i - 1], ordered[i]
+            if cur[0] - prev[0] < step - 1e-9:
+                cur[0] = prev[0] + step
+                pushed += 1
+            if cur[1] <= cur[0]:
+                cur[1] = cur[0] + step
+        if pushed:
+            print(f"      겹침 밀어내기: {pushed}개 (단선율 유지 — 격자에 눌려 다시 화음이 된 것)")
+
     print(f"[4/6] 양자화: {bpm:.1f} BPM · 1/{grid*4}음표 격자 (strength={strength})")
     return notes, (bpm, grid)
 
@@ -510,7 +531,8 @@ def main():
 
     bpm = args.bpm or estimate_bpm(notes) or 120.0
     if args.grid:
-        notes, _ = quantize(notes, bpm, grid=args.grid, strength=args.quant_strength)
+        notes, _ = quantize(notes, bpm, grid=args.grid,
+                            strength=args.quant_strength, mono=not args.no_mono)
 
     if args.key == "auto":
         tonic, mode = detect_key(notes)
