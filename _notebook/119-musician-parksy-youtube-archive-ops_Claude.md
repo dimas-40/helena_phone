@@ -194,4 +194,28 @@ related:
 
 ---
 
+## 10. 커뮤니티(게시판) 탭 — 왜 안 켜지나 `[실측 2026-10-06]`
+
+**설정 문제가 아니라 구조 + 자격 문제. 두 겹으로 막혀 있다.**
+
+### 10.1 API가 그 기능을 아예 안 연다
+- `[실측]` YouTube Data API v3 공식 디스커버리 문서 리소스 **32개 중 `communityPosts`/`posts` 없음**
+- `[실측]` `activities`는 **`list`만** — 옛 채널 공지용 `activities.insert`는 **2016 폐기**
+- ⚠️ `papyrus/tools/youtube/community.cjs`는 `yt.communityPosts.insert` 호출 → **존재하지 않는 유령 메서드** = 무조건 실패. "OAuth 미완"이 아니라 **API에 그게 없음**
+- → 커뮤니티 글은 **API로 못 쓴다.** Studio/GUI만 가능.
+
+### 10.2 채널이 자격 미달 (더 근본적)
+- 커뮤니티 탭은 **구독자 500명↑** 채널에만 열림 (정책)
+- `[실측]` @musician-parksy **구독자 1명** → 스튜디오에 "게시물" 탭 자체가 안 생김
+- made_for_kids=false · public · (다른 제약 아님)
+
+### 10.3 "카페 운영" 경로
+1. **전제 = 구독자 500.** 그 전엔 탭이 존재하지 않음 — 설정으로 못 켬.
+2. 500 넘겨도 **API 불가** → **Playwright GUI 자동화**로 Studio 게시 (레포에 동일 패턴: `update_musician_desc.cjs`·`yt_oauth_channel.cjs`). "API 없으면 GUI 자동화" 원칙 적용.
+3. 그 전 카페 대용: 댓글·고정댓글·플레이리스트(게시판처럼)·설명 링크·채널 홈 섹션.
+
+> 참고: papyrus `CLAUDE.md`의 "개발법 제1조 (Community-First)"는 **다른 개념**(조사 우선 개발법) — 유튜브 커뮤니티 탭과 무관.
+
+---
+
 *agent mark `_Claude` · 2026-10-06 · 실측 좌표는 b 토큰(공개 읽기)으로 확보 — 계정 a 쓰기 경로는 미확보*
