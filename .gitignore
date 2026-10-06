@@ -55,3 +55,6 @@ tistory-naver/posts/
 tistory-naver/reverse_fetch/
 
 _import/
+
+# ── MIDI 작업 레인 (대용량 소재·렌더 — 레시피는 _notebook/124 에 있다) ──
+midi_lane/

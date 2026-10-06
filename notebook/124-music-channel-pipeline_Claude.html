@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="2026-10-06 · `_Claude` — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>124. 박씨 렌더링 채널 — 1호 완성, 그리고 42호 레시피 — S21 Phone Webzine</title>
+<link rel="canonical" href="https://dtslib1979.github.io//notebook/124-music-channel-pipeline_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/dtslib1979#person",
+      "name": "dtslib",
+      "url": "https://github.com/dtslib1979",
+      "description": "경제방송 — 16레포×10블로그×6채널, 1인 미디어 출판·방송",
+      "sameAs": [
+        "https://github.com/dtslib1979",
+        "https://dtslib.kr",
+        "https://www.youtube.com/@dtslib-branch",
+        "https://www.youtube.com/@phoneparis-r6q",
+        "https://www.youtube.com/@alexandria-y6k",
+        "https://www.youtube.com/@artrew-i1w",
+        "https://www.youtube.com/@Parksy-webzine"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://dtslib1979.github.io//notebook/124-music-channel-pipeline_Claude.html#webpage",
+      "url": "https://dtslib1979.github.io//notebook/124-music-channel-pipeline_Claude.html",
+      "name": "124. 박씨 렌더링 채널 — 1호 완성, 그리고 42호 레시피",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/dtslib1979#person"
+      },
+      "author": {
+        "@id": "https://github.com/dtslib1979#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>124. 박씨 렌더링 채널 — 1호 완성, 그리고 42호 레시피</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · lakme-audio</div>
+    <h1>124. 박씨 렌더링 채널 — 1호 완성, 그리고 42호 레시피</h1>
+    <p class="deck">2026-10-06 · `_Claude`</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/124-music-channel-pipeline_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#0">0. 한 줄</a></li>
+<li><a href="#1-1-1">1. 1호 실측 — 짐노페디 제1번</a><ul>
+<li><a href="#pd-raw">PD 레인 규칙 재확인 — RAW 그대로</a></li>
+</ul>
+</li>
+<li><a href="#2">2. 감상 가이드 — 어떻게 &ldquo;진짜로 잰&rdquo; 타임라인을 만드는가</a><ul>
+<li><a href="#21">2.1 파형에서 얻는 것 — 침묵·경계</a></li>
+<li><a href="#22">2.2 음표에서 얻는 것 — 화성 골격</a></li>
+<li><a href="#23">2.3 반복 검증 — 주장하기 전에 세라</a></li>
+<li><a href="#24">2.4 재현 구간 시각</a></li>
+</ul>
+</li>
+<li><a href="#3-2">3. 파이프라인 (2호부터 이대로)</a></li>
+<li><a href="#4">4. 함정 (이번에 밟은 것)</a></li>
+<li><a href="#5">5. 남은 일</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <blockquote>
+<p>2026-10-06 · <code>_Claude</code><br>
+계기: Boss — &ldquo;42개를 YouTube에서 받아 쌀만데르로 렌더링 하면서 그 음원과 같이 이어 붙여 가지고,<br>
+각각 역사적 배경·평가·허세용 코멘트·플루치크 매칭 이유까지 넣어서 웹페이지를 만들어&rdquo;<br>
+산출물: <code>music-channel/01-satie-gymnopedie/</code> (음원 + 웹페이지)<br>
+앞 문서: <code>_notebook/122-pd-piano-emotion-map_Claude.md</code> (소재 지도) · <code>123-bgm-emotion-master_Claude.md</code> (마스터)</p>
+</blockquote>
+<hr>
+<h2 id="0">0. 한 줄</h2>
+<p><strong>원곡 연주와 우리 재현을 한 트랙에 이어 붙이고, 그 6분에 맞춰 스토리텔링하는 웹페이지.</strong></p>
+<p><code>music-channel/01-satie-gymnopedie/</code></p>
+<pre><code>index.html          30KB — 역사·평가·감정·약자사전·타임라인 17지점
+audio/combined.mp3  8.4MB — 원곡 183.6s + 침묵 2s + 재현 186.0s = 371.6s
+img/                5장, 1400px 이하로 축소 (원본 16MB → 202KB)
+</code></pre>
+<hr>
+<h2 id="1-1-1">1. 1호 실측 — 짐노페디 제1번</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>원곡 연주</td>
+<td>Robin Alciatore, piano · Wikimedia Commons <strong>Public domain</strong> · 183.59s</td>
+</tr>
+<tr>
+<td>채보</td>
+<td><code>piano_transcription_inference</code> · RAW 472음 · 83.5 BPM · D4 major · 180.6s</td>
+</tr>
+<tr>
+<td>렌더</td>
+<td>랩탑 fluidsynth + Salamander Grand Piano V3 · 잔향 0.85 · 딜레이 190ms · loudnorm −16 LUFS</td>
+</tr>
+<tr>
+<td>합본</td>
+<td>원곡 loudnorm(2패스) → 침묵 2초 → 재현 · <strong>−15.9 vs −15.7 LUFS</strong></td>
+</tr>
+<tr>
+<td>채보 소요</td>
+<td>9분 (183초 음원, CPU 553%)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pd-raw">PD 레인 규칙 재확인 — RAW 그대로</h3>
+<p><code>--no-mono --grid 0 --keep-raw</code> 로 돌렸지만 <strong>조 정렬은 걸렸다</strong> (43음 이동).<br>
+최종적으로 <strong>RAW를 렌더</strong>했다 (노트북 121 §6.5: PD 레인은 손대지 않은 채보).<br>
+<code>gymnopedie.mid</code>(조 정렬판)도 렌더해뒀다 — Boss가 원하면 교체.</p>
+<p>RAW vs 조정렬 차이: RAW의 스케일 밖 음은 <strong>C 30개 + F 13개 = 43개</strong> = 정확히 이동된 수.<br>
+어느 쪽이 맞는지는 <strong>귀로만 판정 가능</strong>하다. 확신 없이 결정하지 않는다.</p>
+<hr>
+<h2 id="2">2. 감상 가이드 — 어떻게 &ldquo;진짜로 잰&rdquo; 타임라인을 만드는가</h2>
+<p>⚠️ <strong>기억으로 시각을 적지 않는다.</strong> 전부 원본 파형과 MIDI에서 계산한 값이다.</p>
+<h3 id="21">2.1 파형에서 얻는 것 — 침묵·경계</h3>
+<p>50ms 창 RMS → <code>20*log10</code> → 중앙값 −8dB 문턱 → 0.25s 이상 연속 조용한 구간.<br>
+짐노페디: <strong>선두 침묵 2.15s · 88.55–90.35의 1.8s 침묵 · 미주 4.3s</strong>.<br>
+이 1.8초가 3분짜리 곡의 유일한 진짜 경계다 — 악보가 아니라 <strong>연주자가 만든 침묵</strong>.</p>
+<h3 id="22">2.2 음표에서 얻는 것 — 화성 골격</h3>
+<p>최저음(≤A2)만 뽑아 <strong>라벨이 바뀌는 시각</strong>을 찍는다. 그게 저음 진행이다.</p>
+<pre><code>   2.21 G2 ─┐
+   4.59 D2  │ 2.45초마다 G↔D 시소 (36초간)
+   7.09 G2 ─┘
+  38.67 F#2 → 40.76 B1 → 42.94 E2     ← 처음 깨짐. B1 = 곡 전체 최저음
+  71.45 E2 … 84.65 A2                 ← 13.2초간 D2로 안 돌아옴 = B 구간
+  90.37 G2                            ← 되돌아옴
+ 125.89 F#2 → 128.02 B1 → 130.24 E2   ← 0:38의 정확히 +87.2초. 같은 자리
+ 158.56 E2 … 173.20 A2                ← 14.6초 마지막 어둠
+ 173.20 A2 + A·C·E·C                  ← 5도로 감
+ 176.80 D2 + D·F·A·D                  ← 2분 55초 만의 첫 완전 종지
+</code></pre>
+<h3 id="23">2.3 반복 검증 — 주장하기 전에 세라</h3>
+<p>&ldquo;같은 음악이 두 번 온다&rdquo;고 쓰기 전에 전반부 237음과 후반부 229음을 시각 0.35초 창으로 대조:<br>
+<strong>72.6% 대응 · 시각 오차 중앙값 0.169s</strong>. → &ldquo;같은 음악&rdquo;이 아니라 <strong>&ldquo;같은 골격&rdquo;</strong> 이라고 써야 맞다.<br>
+(정확 반복이라 썼으면 과장이었다.)</p>
+<h3 id="24">2.4 재현 구간 시각</h3>
+<p><code>오프셋 = 원본 길이 + 침묵 = 183.589 + 2.0 = 185.589</code><br>
+채보는 원본 오디오의 절대시각을 그대로 쓰므로 <strong>시각만 더하면 된다</strong>. 그래서<br>
+원곡 1:28의 침묵이 재현 4:34에 그대로 있고, 그게 &ldquo;그냥 웨이브 튼 게 아니다&rdquo;의 증거가 된다.<br>
+<strong>이게 페이지에서 제일 강한 한 줄이다</strong> — 검증도 공짜다.</p>
+<hr>
+<h2 id="3-2">3. 파이프라인 (2호부터 이대로)</h2>
+<pre><code class="language-bash"># 1) 소재 — PD 연주 + PD 이미지를 Wikimedia Commons 에서 (User-Agent 필수, 없으면 403)
+#    파일: asset/original.ogg, asset/*.jpg|png
+
+# 2) 채보 (폰, ~10분) — PD 레인은 RAW
+PYTHONPATH=/root/.venvs/parksy-phone/lib python3 scripts/midi_extract.py \
+  asset/original.ogg -o . --name &lt;name&gt; --no-mono --grid 0 --keep-raw
+
+# 3) 렌더 (랩탑)
+scp &lt;name&gt;_raw.mid dtsli@100.81.24.124:~/tmp/&lt;slug&gt;/
+ssh ... 'fluidsynth -ni -g 0.75 -o synth.reverb.active=1 -o synth.reverb.room-size=0.85 \
+   -o synth.reverb.level=0.85 -o synth.chorus.active=0 \
+   -F r.wav &quot;&lt;SF2&gt;&quot; &lt;name&gt;_raw.mid &lt; /dev/null'      # ← &lt; /dev/null 없으면 heredoc 을 먹는다
+ssh ... 'ffmpeg -i r.wav -af &quot;aecho=1.0:0.6:190:0.28,loudnorm=I=-16:TP=-1.5:LRA=11&quot; \
+   -codec:a libmp3lame -qscale:a 2 &lt;name&gt;.mp3'
+
+# 4) 합본 (폰) — 원곡 2패스 loudnorm → 침묵 2s → 재현 concat
+ffmpeg -i original.ogg -i &lt;name&gt;.mp3 -filter_complex \
+ &quot;[0:a]loudnorm=...:measured_I=..:measured_TP=..:measured_LRA=..:measured_thresh=..:offset=..,aresample=44100,aformat=channel_layouts=stereo[a];\
+  [1:a]aresample=44100,aformat=channel_layouts=stereo[b];\
+  anullsrc=r=44100:cl=stereo,atrim=0:2.0[s];[a][s][b]concat=n=3:v=0:a=1[out]&quot; \
+ -map &quot;[out]&quot; audio/combined.mp3
+
+# 5) 이미지 축소 1400px 이하 (원본 16MB jpg 가 그대로 올라가면 안 된다)
+
+# 6) 웹페이지 — index.html 템플릿 복사 후 역사·평가·감정·타임라인 교체
+</code></pre>
+<hr>
+<h2 id="4">4. 함정 (이번에 밟은 것)</h2>
+<table>
+<thead>
+<tr>
+<th>함정</th>
+<th>증상</th>
+<th>처방</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>fluidsynth 가 stdin 을 먹는다</strong></td>
+<td>ssh heredoc 스크립트가 첫 렌더 뒤 전부 사라짐. <code>Parse error ... 'ho "==="'</code></td>
+<td><code>fluidsynth ... &lt; /dev/null</code>. <code>ffmpeg -f null -</code> 과 <strong>같은 부류</strong> — 소리 도구는 stdin 을 본다</td>
+</tr>
+<tr>
+<td><strong><code>ffmpeg -v error</code> 는 volumedetect 를 숨긴다</strong></td>
+<td>&ldquo;무음 검사했는데 출력이 없다&rdquo;</td>
+<td>volumedetect 는 INFO 레벨. <code>-v error</code> 빼고 <code>-hide_banner</code></td>
+</tr>
+<tr>
+<td><strong>원본이 −25.9 LUFS 로 아주 조용하다</strong></td>
+<td>재현(−15.7)과 10dB 차이</td>
+<td>원본에 2패스 loudnorm. 그냥 gain 주면 TP +3.1 dBTP 로 클리핑</td>
+</tr>
+<tr>
+<td><strong>16MB jpg</strong></td>
+<td>그대로 Pages 에 올라감</td>
+<td><code>scale='min(1400,iw)':-2</code> 로 축소. 16MB → 202KB</td>
+</tr>
+<tr>
+<td><strong>Pages 는 <code>main</code>, 작업은 <code>master</code></strong></td>
+<td>새 페이지가 안 뜬다 (118커밋 차이)</td>
+<td>미리보기는 로컬 http.server. <strong>공개는 Boss 판단</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="5">5. 남은 일</h2>
+<ul>
+<li>[ ] <strong>Boss 판정</strong> — RAW vs 조정렬 / 딜레이 유지 여부 / 페이지 문구</li>
+<li>[ ] <strong>공개 경로 결정</strong> — master→main 병합(충돌 231) vs 위성 레포(parksy-audio) 신설</li>
+<li>[ ] 미리보기 서버 정리 (<code>127.0.0.1:8793</code>, PID 32481)</li>
+<li>[ ] 2호 — Bach Prelude in C BWV 846 (<code>_notebook/122</code> §3 우선순위 2)</li>
+<li>[ ] 이미지 자동 수급 스크립트 — 지금은 손으로 Commons API</li>
+<li>[ ] 42곡 소재 목록 확정 (<code>_notebook/122</code> §3은 6곡까지만)</li>
+</ul>
+<hr>
+<p><em><code>_Claude</code> · 2026-10-06 · 1호 완성 · 2호부터 이 레시피를 그대로 쓴다</em></p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="123-bgm-emotion-master_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">123. BGM 감정 마스터 — Plutchik 24감정 × 클리셰 문법 × PD 피아노</span>
+        </a>
+    <a class="next" href="78-pd-pipeline-whitepaper_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">78 pd pipeline whitepaper Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>구축: 2026-07-23 ~ 2026-08-14 (23일)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine lakme-audio</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>

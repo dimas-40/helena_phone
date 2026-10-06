@@ -73,6 +73,7 @@ jobs:
             --exclude='helena-faith/' --exclude='helena-metalcare/' \
             --exclude='helena-programming/' \
             --exclude='browser-env/' --exclude='.aider*' \
+            --exclude='midi_lane/' \
             --exclude='**/__pycache__/' --exclude='*.pyc' \
             --exclude='assets/mobile-shot-*.png' --exclude='assets/pw-*.png' \
             ./ _site/
