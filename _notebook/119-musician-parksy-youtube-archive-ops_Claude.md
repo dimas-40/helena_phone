@@ -266,4 +266,64 @@ python3 scripts/ytch.py upload f.mp4 --title T --confirm             # 실행(�
 
 ---
 
-*agent mark `_Claude` · 2026-10-06 · 갱신: 계정 a 토큰 18개 이식 + 러너 `ytch.py` 구축 완료. 실측은 `mine=true`/`playlistItems.list`(읽기)까지 — 실제 `videos.insert`는 미실행*
+## 12. 발행 레저 — 공개/비공개 두 레인 `[Boss 지시 2026-10-06]`
+
+> Boss: "공개 비공개를 **습작 자동화**와 **내 결재 이후 포스팅**의 레저 구분 설정을 줘"
+
+**말로 금지하지 않고 코드로 강제한다.** 규칙 = `configs/publish-policy.json` · 상태 = `configs/publish-ledger.json` · 집행 = `scripts/ytch.py stage|publish|ledger`.
+
+### 12.1 레인 구분
+
+| 레인 | 누가 | 산출 | privacy |
+|---|---|---|---|
+| **A. 습작 자동화** | 파이프라인·AI | `draft`(습작) → `review`(결재대기) | **private** |
+| **B. 결재 후 포스팅** | **Boss** | `approved`(결재됨) → `published`(공개) | private → **public** |
+
+### 12.2 상태 5종
+
+| 상태 | 한국어 | privacy | 전이 주체 |
+|---|---|---|---|
+| `draft` | 습작 | private | pipeline |
+| `review` | 결재대기 | private | pipeline |
+| `approved` | 결재됨 | private | **boss** |
+| `published` | 공개 | **public** | **boss** |
+| `retired` | 보관 | private | boss |
+
+### 12.3 강제 게이트 — 실측으로 확인 `[실측 2026-10-06]`
+
+```
+$ ytch.py stage 8qvBCM4Ftzw published
+⛔ 거부 — 'published'(공개)는 Boss 결재가 필요한 전이다.
+   쓰는 법: stage <id> published --by Boss
+
+$ ytch.py publish <id>          # --by 없이
+⛔ 거부 — 공개는 Boss 결재 없이 불가.
+
+$ ytch.py stage <id> review     # 파이프라인 레인
+✅ draft → review (결재대기)  privacy=private
+```
+
+→ **`approved_by`·`approved_at` 기록 없이는 공개 전이가 코드에서 막힌다.** `videos.update`로 privacy를 직접 바꾸고 기록을 남긴다.
+
+### 12.4 레저 초기 시드 `[실측]`
+
+`ytch.py ledger --sync` → **50편 = 39 published / 10 draft / 1 review.**
+(채널 통계 "영상 39"는 **공개만** 센 값. 실제 업로드 50, 비공개 11.)
+
+### 12.5 기준선 규칙 — Boss 정정 `[Boss]`
+
+> "AIVA, Gemini Song 카테고리는 내가 옛날에 **구독해서 생성했던 AI 생성물의 수준을 베이스라인**으로 설정하려고 한 거야. **이거보다 좋은 게 무조건 나와야** 되는 거라 내가 샘플로 넣어놓은 거야."
+
+→ **`Ref.` = 참조가 아니라 "넘어야 할 기준선(reference bar)".** 내가 처음에 "이름과 내용 불일치"로 오진했으나 **Boss 의도가 맞았다**(철회).
+- `Ref.Gemini Song` = Boss가 Gemini 구독 시절 생성한 CM송·응원가·로고송 8편
+- `Ref.AIVA` = AIVA 알고리듬 샘플 10종 + MIDI 임포트 2편
+- **규칙: [박씨 렌더링]의 결과물은 이 둘보다 항상 좋아야 한다.**
+
+### 12.6 플레이리스트 규칙 (실측 문제에서 도출)
+
+`[박씨 렌더링]` 24칸 중 **9편이 비공개** → 시청자는 15편만 봄.
+→ **규칙: `draft`/`review`/`approved`는 공개 재생목록에 넣지 않는다.** 비공개가 공개 재생목록을 오염시킨다.
+
+---
+
+*agent mark `_Claude` · 2026-10-06 · 갱신: 계정 a 토큰 18개 이식 + 러너 `ytch.py` + 발행 레저(공개/비공개 게이트) 구축. 실측은 읽기·상태 전이까지 — 실제 영상 업로드(`videos.insert`)는 미실행*

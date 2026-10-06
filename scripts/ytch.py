@@ -94,13 +94,16 @@ class YT:
             raise SystemExit(f"❌ [{self.slug}] HTTP {e.code}: {e.read().decode()[:400]}")
 
 
+BOOL_FLAGS = {"confirm", "sync"}
+
+
 def parse_args(argv):
     pos, opt, i = [], {}, 0
     while i < len(argv):
         a = argv[i]
         if a.startswith("--"):
             k = a[2:]
-            if k == "confirm":
+            if k in BOOL_FLAGS:
                 opt[k] = True
             else:
                 opt[k] = argv[i + 1]
@@ -204,8 +207,129 @@ def cmd_upload(p, o):
         cmd_add([o["playlist"], r["id"]], {"channel": slug})
 
 
+# ---------- 레저(공개/비공개 레인) ----------
+POLICY = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "configs", "publish-policy.json")
+LEDGER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "configs", "publish-ledger.json")
+
+
+def _policy():
+    return json.load(open(POLICY, encoding="utf-8"))
+
+
+def _ledger():
+    if os.path.exists(LEDGER):
+        return json.load(open(LEDGER, encoding="utf-8"))
+    return {"updated": None, "videos": {}}
+
+
+def _save_ledger(led):
+    import datetime
+    led["updated"] = datetime.datetime.now().isoformat(timespec="seconds")
+    json.dump(led, open(LEDGER, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+
+
+def _set_privacy(y, vid, privacy):
+    cur = y.req(f"{API}/videos?part=status&id={vid}")["items"][0]["status"]
+    cur["privacyStatus"] = privacy
+    y.req(f"{API}/videos?part=status", "PUT", {"id": vid, "status": cur})
+
+
+def cmd_ledger(_p, o):
+    """현재 공개/비공개 상태를 레저로 뽑는다. --sync 면 API에서 새로 읽는다."""
+    y = YT(o.get("channel", DEFAULT_CHANNEL))
+    led = _ledger()
+    if o.get("sync"):
+        ids, tok = [], None
+        while True:
+            u = f"{API}/playlistItems?part=snippet&playlistId=UU{y.channel_id[2:]}&maxResults=50" + (f"&pageToken={tok}" if tok else "")
+            d = y.req(u); ids += [i["snippet"]["resourceId"]["videoId"] for i in d["items"]]
+            tok = d.get("nextPageToken")
+            if not tok:
+                break
+        import datetime
+        seen = set()
+        for i in range(0, len(ids), 50):
+            d = y.req(f"{API}/videos?part=status,snippet&id={','.join(ids[i:i+50])}")
+            for v in d["items"]:
+                vid = v["id"]; seen.add(vid)
+                rec = led["videos"].get(vid, {})
+                rec["title"] = v["snippet"]["title"]
+                rec["published_at"] = v["snippet"]["publishedAt"][:10]
+                rec["privacy"] = v["status"]["privacyStatus"]
+                # API 상태로부터 추정 — 공개면 published, 아니면 기존 기록 유지(없으면 draft)
+                if v["status"]["privacyStatus"] == "public":
+                    rec.setdefault("state", "published")
+                    rec["state"] = "published"
+                else:
+                    rec.setdefault("state", "draft")
+                    rec.setdefault("first_seen", datetime.datetime.now().isoformat(timespec="seconds"))
+                led["videos"][vid] = rec
+        _save_ledger(led)
+        print(f"동기화: {len(seen)}편")
+    from collections import Counter
+    c = Counter(v.get("state", "?") for v in led["videos"].values())
+    p = _policy()["states"]
+    print(f"레저 {len(led['videos'])}편 · 갱신 {led.get('updated')}")
+    for s, n in c.most_common():
+        st = p.get(s, {})
+        print(f"  {s:10s} {st.get('ko','?'):6s} → {st.get('privacy','?'):8s} {n:>3d}편")
+    print("\n※ 공개(published)는 Boss 결재 기록이 있어야 코드가 허용한다.")
+
+
+def cmd_stage(p, o):
+    """상태 전이. published는 결재 기록 없으면 거부된다."""
+    if len(p) < 2:
+        raise SystemExit("usage: stage <videoId> <draft|review|approved|published|retired> [--by NAME] [--channel S]")
+    vid, target = p[0], p[1]
+    pol = _policy()
+    if target not in pol["states"]:
+        raise SystemExit(f"❌ 없는 상태: {target} (가능: {', '.join(pol['states'])})")
+    led = _ledger()
+    rec = led["videos"].setdefault(vid, {"title": ""})
+    cur = rec.get("state", "draft")
+    st = pol["states"][target]
+
+    import datetime
+    now = datetime.datetime.now().isoformat(timespec="seconds")
+    # 게이트: 사람 결재가 필요한 상태
+    if st.get("by") == "boss" and not (o.get("by") or rec.get("approved_by")):
+        raise SystemExit(
+            f"⛔ 거부 — '{target}'({st['ko']})는 Boss 결재가 필요한 전이다.\n"
+            f"   자동화는 절대 공개하지 않는다 (rule: {pol['rules']['note']})\n"
+            f"   쓰는 법: stage {vid} {target} --by Boss"
+        )
+    if st.get("by") == "boss" and o.get("by"):
+        rec["approved_by"] = o["by"]
+        rec["approved_at"] = now
+
+    trans = f"{cur}->{target}"
+    if cur != target and trans not in pol["transitions"] and not (o.get("by")):
+        raise SystemExit(f"⛔ 정의되지 않은 전이: {trans} (policy.transitions 참조)")
+
+    y = YT(o.get("channel", DEFAULT_CHANNEL))
+    if pol["rules"].get("enforce_privacy"):
+        _set_privacy(y, vid, st["privacy"])
+    rec["state"] = target
+    rec["privacy"] = st["privacy"]
+    rec["changed_at"] = now
+    rec["history"] = rec.get("history", []) + [{"at": now, "from": cur, "to": target, "by": o.get("by", st.get("by"))}]
+    _save_ledger(led)
+    print(f"✅ {vid}  {cur} → {target} ({st['ko']})  privacy={st['privacy']}"
+          + (f"  · 결재: {o['by']}" if o.get("by") else ""))
+
+
+def cmd_publish(p, o):
+    """결재 후 공개. --by 없으면 무조건 거부."""
+    if not p:
+        raise SystemExit("usage: publish <videoId> --by Boss [--channel S]")
+    if not o.get("by"):
+        raise SystemExit("⛔ 거부 — 공개는 Boss 결재 없이 불가. --by Boss 를 명시하라.")
+    cmd_stage([p[0], "published"], o)
+
+
 CMDS = {"channels": cmd_channels, "whoami": cmd_whoami, "playlists": cmd_playlists,
-        "videos": cmd_videos, "add": cmd_add, "upload": cmd_upload}
+        "videos": cmd_videos, "add": cmd_add, "upload": cmd_upload,
+        "ledger": cmd_ledger, "stage": cmd_stage, "publish": cmd_publish}
 
 if __name__ == "__main__":
     if len(sys.argv) < 2 or sys.argv[1] not in CMDS:

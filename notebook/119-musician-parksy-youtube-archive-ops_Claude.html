@@ -120,6 +120,15 @@
 <li><a href="#111-18-1">11.1 채널 지도 (18 생존 + 1 죽음) [실측]</a></li>
 </ul>
 </li>
+<li><a href="#12-boss-2026-10-06">12. 발행 레저 — 공개/비공개 두 레인 [Boss 지시 2026-10-06]</a><ul>
+<li><a href="#121">12.1 레인 구분</a></li>
+<li><a href="#122-5">12.2 상태 5종</a></li>
+<li><a href="#123-2026-10-06">12.3 강제 게이트 — 실측으로 확인 [실측 2026-10-06]</a></li>
+<li><a href="#124">12.4 레저 초기 시드 [실측]</a></li>
+<li><a href="#125-boss-boss">12.5 기준선 규칙 — Boss 정정 [Boss]</a></li>
+<li><a href="#126">12.6 플레이리스트 규칙 (실측 문제에서 도출)</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav>
@@ -628,7 +637,107 @@ python3 scripts/ytch.py upload f.mp4 --title T --confirm             # 실행(�
 <p><code>parksy-image</code>의 토큰이 <strong>채널 단위</strong>라 §2.2의 플레이리스트 소유 불일치를 이제 양쪽에서 다 볼 수 있다.</p>
 </blockquote>
 <hr>
-<p><em>agent mark <code>_Claude</code> · 2026-10-06 · 갱신: 계정 a 토큰 18개 이식 + 러너 <code>ytch.py</code> 구축 완료. 실측은 <code>mine=true</code>/<code>playlistItems.list</code>(읽기)까지 — 실제 <code>videos.insert</code>는 미실행</em></p>
+<h2 id="12-boss-2026-10-06">12. 발행 레저 — 공개/비공개 두 레인 <code>[Boss 지시 2026-10-06]</code></h2>
+<blockquote>
+<p>Boss: &ldquo;공개 비공개를 <strong>습작 자동화</strong>와 <strong>내 결재 이후 포스팅</strong>의 레저 구분 설정을 줘&rdquo;</p>
+</blockquote>
+<p><strong>말로 금지하지 않고 코드로 강제한다.</strong> 규칙 = <code>configs/publish-policy.json</code> · 상태 = <code>configs/publish-ledger.json</code> · 집행 = <code>scripts/ytch.py stage|publish|ledger</code>.</p>
+<h3 id="121">12.1 레인 구분</h3>
+<table>
+<thead>
+<tr>
+<th>레인</th>
+<th>누가</th>
+<th>산출</th>
+<th>privacy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A. 습작 자동화</strong></td>
+<td>파이프라인·AI</td>
+<td><code>draft</code>(습작) → <code>review</code>(결재대기)</td>
+<td><strong>private</strong></td>
+</tr>
+<tr>
+<td><strong>B. 결재 후 포스팅</strong></td>
+<td><strong>Boss</strong></td>
+<td><code>approved</code>(결재됨) → <code>published</code>(공개)</td>
+<td>private → <strong>public</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="122-5">12.2 상태 5종</h3>
+<table>
+<thead>
+<tr>
+<th>상태</th>
+<th>한국어</th>
+<th>privacy</th>
+<th>전이 주체</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>draft</code></td>
+<td>습작</td>
+<td>private</td>
+<td>pipeline</td>
+</tr>
+<tr>
+<td><code>review</code></td>
+<td>결재대기</td>
+<td>private</td>
+<td>pipeline</td>
+</tr>
+<tr>
+<td><code>approved</code></td>
+<td>결재됨</td>
+<td>private</td>
+<td><strong>boss</strong></td>
+</tr>
+<tr>
+<td><code>published</code></td>
+<td>공개</td>
+<td><strong>public</strong></td>
+<td><strong>boss</strong></td>
+</tr>
+<tr>
+<td><code>retired</code></td>
+<td>보관</td>
+<td>private</td>
+<td>boss</td>
+</tr>
+</tbody>
+</table>
+<h3 id="123-2026-10-06">12.3 강제 게이트 — 실측으로 확인 <code>[실측 2026-10-06]</code></h3>
+<pre><code>$ ytch.py stage 8qvBCM4Ftzw published
+⛔ 거부 — 'published'(공개)는 Boss 결재가 필요한 전이다.
+   쓰는 법: stage &lt;id&gt; published --by Boss
+
+$ ytch.py publish &lt;id&gt;          # --by 없이
+⛔ 거부 — 공개는 Boss 결재 없이 불가.
+
+$ ytch.py stage &lt;id&gt; review     # 파이프라인 레인
+✅ draft → review (결재대기)  privacy=private
+</code></pre>
+<p>→ <strong><code>approved_by</code>·<code>approved_at</code> 기록 없이는 공개 전이가 코드에서 막힌다.</strong> <code>videos.update</code>로 privacy를 직접 바꾸고 기록을 남긴다.</p>
+<h3 id="124">12.4 레저 초기 시드 <code>[실측]</code></h3>
+<p><code>ytch.py ledger --sync</code> → <strong>50편 = 39 published / 10 draft / 1 review.</strong><br>
+(채널 통계 &ldquo;영상 39&rdquo;는 <strong>공개만</strong> 센 값. 실제 업로드 50, 비공개 11.)</p>
+<h3 id="125-boss-boss">12.5 기준선 규칙 — Boss 정정 <code>[Boss]</code></h3>
+<blockquote>
+<p>&ldquo;AIVA, Gemini Song 카테고리는 내가 옛날에 <strong>구독해서 생성했던 AI 생성물의 수준을 베이스라인</strong>으로 설정하려고 한 거야. <strong>이거보다 좋은 게 무조건 나와야</strong> 되는 거라 내가 샘플로 넣어놓은 거야.&rdquo;</p>
+</blockquote>
+<p>→ <strong><code>Ref.</code> = 참조가 아니라 &ldquo;넘어야 할 기준선(reference bar)&rdquo;.</strong> 내가 처음에 &ldquo;이름과 내용 불일치&rdquo;로 오진했으나 <strong>Boss 의도가 맞았다</strong>(철회).<br>
+- <code>Ref.Gemini Song</code> = Boss가 Gemini 구독 시절 생성한 CM송·응원가·로고송 8편<br>
+- <code>Ref.AIVA</code> = AIVA 알고리듬 샘플 10종 + MIDI 임포트 2편<br>
+- <strong>규칙: [박씨 렌더링]의 결과물은 이 둘보다 항상 좋아야 한다.</strong></p>
+<h3 id="126">12.6 플레이리스트 규칙 (실측 문제에서 도출)</h3>
+<p><code>[박씨 렌더링]</code> 24칸 중 <strong>9편이 비공개</strong> → 시청자는 15편만 봄.<br>
+→ <strong>규칙: <code>draft</code>/<code>review</code>/<code>approved</code>는 공개 재생목록에 넣지 않는다.</strong> 비공개가 공개 재생목록을 오염시킨다.</p>
+<hr>
+<p><em>agent mark <code>_Claude</code> · 2026-10-06 · 갱신: 계정 a 토큰 18개 이식 + 러너 <code>ytch.py</code> + 발행 레저(공개/비공개 게이트) 구축. 실측은 읽기·상태 전이까지 — 실제 영상 업로드(<code>videos.insert</code>)는 미실행</em></p>
   </article>
   <nav class="wz-pager">
     <a class="" href="118-parksy-label-goal-real-bottleneck_Claude.html">

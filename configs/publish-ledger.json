@@ -1,0 +1,325 @@
+{
+ "updated": "2026-10-06T10:45:01",
+ "videos": {
+  "8qvBCM4Ftzw": {
+   "title": "🎤 Composer Cut — Pavane Op.50 (Fauré) [Serenity 95 / Transcend 85]",
+   "state": "review",
+   "privacy": "private",
+   "changed_at": "2026-10-06T10:44:48",
+   "history": [
+    {
+     "at": "2026-10-06T10:44:48",
+     "from": "draft",
+     "to": "review",
+     "by": "pipeline"
+    }
+   ],
+   "published_at": "2026-07-06",
+   "first_seen": "2026-10-06T10:45:01"
+  },
+  "R3Z0RIh0MhE": {
+   "title": "🎧 DJ Pick — Barcarolle Op.60 (Chopin) [Serenity 60 / Warmth 90]",
+   "published_at": "2026-07-06",
+   "privacy": "private",
+   "state": "draft",
+   "first_seen": "2026-10-06T10:45:01"
+  },
+  "EVFOvOAh7fg": {
+   "title": "Vivaldi — Daily Edition (Parksy Audio Auto)",
+   "published_at": "2026-05-16",
+   "privacy": "private",
+   "state": "draft",
+   "first_seen": "2026-10-06T10:45:01"
+  },
+  "QHTAOEdJ_xw": {
+   "title": "Dvorak — Daily Edition (Parksy Audio Auto)",
+   "published_at": "2026-05-15",
+   "privacy": "private",
+   "state": "draft",
+   "first_seen": "2026-10-06T10:45:01"
+  },
+  "hHgTYEahWtg": {
+   "title": "Tchaikovsky — Daily Edition (Parksy Audio Auto)",
+   "published_at": "2026-05-13",
+   "privacy": "private",
+   "state": "draft",
+   "first_seen": "2026-10-06T10:45:01"
+  },
+  "3DIGc-keacE": {
+   "title": "Faure - Pavane Op.50 (Salamander BGM Score 90B)",
+   "published_at": "2026-05-12",
+   "privacy": "private",
+   "state": "draft",
+   "first_seen": "2026-10-06T10:45:01"
+  },
+  "EQqIgg2fwRw": {
+   "title": "박씨 자작곡 v3 - Bach Counterpoint (I-IV-V-I)",
+   "published_at": "2026-05-12",
+   "privacy": "private",
+   "state": "draft",
+   "first_seen": "2026-10-06T10:45:01"
+  },
+  "Ce-jj5aaclY": {
+   "title": "박씨 자작곡 v2 - Bruckner Sacred",
+   "published_at": "2026-05-12",
+   "privacy": "private",
+   "state": "draft",
+   "first_seen": "2026-10-06T10:45:01"
+  },
+  "rowal0X5fJo": {
+   "title": "박씨 자작곡 v2 - Mahler Symphonic Tragedy",
+   "published_at": "2026-05-12",
+   "privacy": "private",
+   "state": "draft",
+   "first_seen": "2026-10-06T10:45:01"
+  },
+  "3zAfa5dOlTQ": {
+   "title": "박씨 자작곡 — Joy (Grieg, SEA Auto)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "WyXLxdQqbnw": {
+   "title": "박씨 자작곡 — Spirit (Brahms, SEA Auto)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "C4uSV6R0Bcc": {
+   "title": "박씨 자작곡 — Romance (Schumann, SEA Auto)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "9j5ny47lMs0": {
+   "title": "박씨 자작곡 — Nocturne (Schubert, SEA Auto)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "qquhEg2kWAw": {
+   "title": "박씨 자작곡 — Drama (Beethoven, Dark)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "pgvuXAUiFws": {
+   "title": "박씨 자작곡 — Joy (Mozart, SEA Auto)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "sth7rYQa1x8": {
+   "title": "박씨 자작곡 — Meditation (Bach, SEA Auto)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "MegDuaBd0w0": {
+   "title": "Faure - Pavane Op.50 (Arranged Edition — 7-Stage Expression)",
+   "published_at": "2026-05-12",
+   "privacy": "private",
+   "state": "draft",
+   "first_seen": "2026-10-06T10:45:01"
+  },
+  "P2S3BC1LieY": {
+   "title": "Bach — Daily Edition (Parksy Audio Auto)",
+   "published_at": "2026-05-12",
+   "privacy": "private",
+   "state": "draft",
+   "first_seen": "2026-10-06T10:45:01"
+  },
+  "SaIGz7Y7mxw": {
+   "title": "Faure - Pavane Op.50 (Dark Edition — TOH4 + Fire ASMR)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "mGFaSpHIfQk": {
+   "title": "Debussy - Clair de Lune (Dark Edition — TOH4 + Fire ASMR)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "vLqeHTGtqtI": {
+   "title": "Liszt - Consolation No.3 (Dark Edition — TOH4 + Fire ASMR)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "nGKgMpf5qGM": {
+   "title": "Chopin - Nocturne Op.9 No.1 (Dark Edition — TOH4 + Fire ASMR)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "DOZeks_sgDs": {
+   "title": "Faure - Pavane Op.50 (Salamander Piano + Rain ASMR)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "lFwMiQle_Zw": {
+   "title": "Chopin - Nocturne Op.9 No.1 (Salamander Piano + Rain ASMR)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "ezJw7RrqvQ0": {
+   "title": "Debussy - Clair de Lune (Salamander Piano + Rain ASMR)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "n5m5U0Warvo": {
+   "title": "Liszt - Consolation No.3 (Salamander Piano + Rain ASMR)",
+   "published_at": "2026-05-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "fR4NUWlb2No": {
+   "title": "dtslib logo song_80Euro",
+   "published_at": "2026-02-23",
+   "privacy": "public",
+   "state": "published"
+  },
+  "Ffb2i3zLVsY": {
+   "title": "동선 스튜디오 CM송 No.1",
+   "published_at": "2026-02-21",
+   "privacy": "public",
+   "state": "published"
+  },
+  "95SEAGuVcpM": {
+   "title": "dtslib 오프닝 CM송 No.2",
+   "published_at": "2026-02-21",
+   "privacy": "public",
+   "state": "published"
+  },
+  "ywkY53_dHqA": {
+   "title": "dtslib 오프닝 CM송 No1",
+   "published_at": "2026-02-21",
+   "privacy": "public",
+   "state": "published"
+  },
+  "AKrLTCYazMw": {
+   "title": "고쉬 프로덕션 CM송 No2",
+   "published_at": "2026-02-21",
+   "privacy": "public",
+   "state": "published"
+  },
+  "bgstvWOwaNY": {
+   "title": "고쉬 프로덕션 CM송 No.1",
+   "published_at": "2026-02-21",
+   "privacy": "public",
+   "state": "published"
+  },
+  "IYsiWF549Pc": {
+   "title": "남도현 응원가 No.1",
+   "published_at": "2026-02-21",
+   "privacy": "public",
+   "state": "published"
+  },
+  "S-5hw7NTIHg": {
+   "title": "호야당 CM송 No.1",
+   "published_at": "2026-02-21",
+   "privacy": "public",
+   "state": "published"
+  },
+  "J3Zh54aQKm0": {
+   "title": "Panis Angelicus_Franck",
+   "published_at": "2026-02-19",
+   "privacy": "public",
+   "state": "published"
+  },
+  "xCnucTlRwZ8": {
+   "title": "Ave Verum_Mozart",
+   "published_at": "2026-02-19",
+   "privacy": "public",
+   "state": "published"
+  },
+  "V-DhunIGgTc": {
+   "title": "Pavane Op.50",
+   "published_at": "2026-02-19",
+   "privacy": "public",
+   "state": "published"
+  },
+  "WzqgKSZN9xM": {
+   "title": "Chopin Barcarolle Op.60",
+   "published_at": "2026-02-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "6fD2n7YUN4k": {
+   "title": "Consolation No3",
+   "published_at": "2026-02-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "CVkQFl2NUG8": {
+   "title": "Chopin Noturne Op.9 No1",
+   "published_at": "2026-02-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "Dc6RP_6axuk": {
+   "title": "Claire de Lune",
+   "published_at": "2026-02-12",
+   "privacy": "public",
+   "state": "published"
+  },
+  "B2xgnE-GfuY": {
+   "title": "80s Disco A-",
+   "published_at": "2025-12-02",
+   "privacy": "public",
+   "state": "published"
+  },
+  "R3YoJHW1gHo": {
+   "title": "AIVA_Import MIDI_Liszt",
+   "published_at": "2025-06-05",
+   "privacy": "public",
+   "state": "published"
+  },
+  "D6L4rKH37Rc": {
+   "title": "AIVA_Import MIDI_Tchaikovsky",
+   "published_at": "2025-06-05",
+   "privacy": "public",
+   "state": "published"
+  },
+  "mfDsbjnWc2w": {
+   "title": "AIVA creations 80s techno 10 samples",
+   "published_at": "2025-06-05",
+   "privacy": "public",
+   "state": "published"
+  },
+  "IkYAH9U9UaE": {
+   "title": "AIVA creations 80s disco 10 samples",
+   "published_at": "2025-06-05",
+   "privacy": "public",
+   "state": "published"
+  },
+  "qSfcFzjEWjY": {
+   "title": "AIVA creations 90s new age 10 samples",
+   "published_at": "2025-06-05",
+   "privacy": "public",
+   "state": "published"
+  },
+  "SY8R9IlcZ5E": {
+   "title": "AIVA creations Tropical house 10 samples",
+   "published_at": "2025-06-05",
+   "privacy": "public",
+   "state": "published"
+  },
+  "1ZxgNuXiLro": {
+   "title": "AIVA creations Soundtrack 10 samples",
+   "published_at": "2025-06-05",
+   "privacy": "public",
+   "state": "published"
+  },
+  "ZJZ_AkAeveQ": {
+   "title": "AIVA creations JAZZ PIANO 10 samples",
+   "published_at": "2025-06-05",
+   "privacy": "public",
+   "state": "published"
+  }
+ }
+}

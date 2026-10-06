@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "channel": "musician-parksy",
+  "channel_id": "UCun6b2HD3ekp35PhqbTfOlg",
+  "declared": "2026-10-06",
+  "principle": "자동화는 절대 공개하지 않는다. 공개는 Boss 결재 뒤에만.",
+
+  "_lanes": {
+    "설명": "공개/비공개를 가르는 두 레인(레저 구분)",
+    "lane_A_습작자동화": "파이프라인·AI가 만든 산출물은 전부 draft(비공개)로 떨어진다. 사람이 안 보면 아무도 못 본다.",
+    "lane_B_결재후포스팅": "Boss가 승인한 것만 published(공개). 승인 기록(approved_by·approved_at) 없이는 코드가 거부한다."
+  },
+
+  "states": {
+    "draft": {
+      "ko": "습작",
+      "privacy": "private",
+      "by": "pipeline",
+      "auto": true,
+      "desc": "자동화가 만든 초안. 아직 아무에게도 안 보임"
+    },
+    "review": {
+      "ko": "결재대기",
+      "privacy": "private",
+      "by": "pipeline",
+      "auto": true,
+      "desc": "TG로 Boss에게 올라간 상태. 여전히 비공개"
+    },
+    "approved": {
+      "ko": "결재됨",
+      "privacy": "private",
+      "by": "boss",
+      "auto": false,
+      "desc": "Boss 승인 완료. 발행 직전(아직 비공개)"
+    },
+    "published": {
+      "ko": "공개",
+      "privacy": "public",
+      "by": "boss",
+      "auto": false,
+      "desc": "발행됨. 시청자에게 보임"
+    },
+    "retired": {
+      "ko": "보관",
+      "privacy": "private",
+      "by": "boss",
+      "auto": false,
+      "desc": "내림. 플레이리스트에서 뺀다"
+    }
+  },
+
+  "transitions": {
+    "draft->review": { "by": "pipeline", "requires": [] },
+    "review->approved": { "by": "boss", "requires": ["approved_by", "approved_at"] },
+    "approved->published": { "by": "boss", "requires": ["approved_by", "approved_at"] },
+    "review->draft": { "by": "boss", "requires": [] },
+    "approved->draft": { "by": "boss", "requires": [] },
+    "published->retired": { "by": "boss", "requires": ["approved_by", "approved_at"] }
+  },
+
+  "rules": {
+    "auto_publish": false,
+    "default_on_create": "draft",
+    "publish_requires": ["approved_by", "approved_at"],
+    "approval_channel": "telegram",
+    "enforce_privacy": true,
+    "note": "publish(공개) 전이는 approved_by·approved_at 없으면 scripts/ytch.py가 거부한다."
+  },
+
+  "playlists": {
+    "박씨 렌더링": "PLjxh2pH0uEjrZCK0DDK6TGH1PFT06lrVi",
+    "Parksy BGM": "PLjxh2pH0uEjqkF-ta-4ySDzQ9kow4NI6j",
+    "Ref.Gemini Song": "PLjxh2pH0uEjrFDjfuPEmkmzSsUAX_LbbN",
+    "Ref.AIVA": "PLjxh2pH0uEjoNUxa0KW4nim_9GpI9ki1X"
+  },
+
+  "baselines": {
+    "설명": "Boss가 옛 구독 시절 생성해 넣어둔 AI 산출물 샘플. 이름의 'Ref.'는 참조가 아니라 '넘어야 할 기준선(reference bar)'이다. 내 결과물은 무조건 이보다 좋아야 한다.",
+    "Ref.Gemini Song": {
+      "tool": "Google Gemini",
+      "role": "baseline",
+      "bar": "내 곡이 이보다 나아야 한다",
+      "contents": "Boss가 Gemini 구독 시절 생성한 CM송·응원가·로고송 8편 (호야당·고쉬프로덕션·dtslib·동선스튜디오)"
+    },
+    "Ref.AIVA": {
+      "tool": "AIVA",
+      "role": "baseline",
+      "bar": "내 곡이 이보다 나아야 한다",
+      "contents": "AIVA 알고리듬 생성 샘플 10종 + AIVA MIDI 임포트 2편"
+    }
+  },
+
+  "playlist_rule": {
+    "설명": "상태 → 플레이리스트 배치",
+    "published": "주제에 맞는 재생목록에 넣는다",
+    "draft/review/approved": "재생목록에 넣지 않는다(비공개가 공개 재생목록을 오염시킨다 — 2026-10-06 실측: [박씨 렌더링] 24칸 중 9편이 비공개였음)",
+    "retired": "재생목록에서 뺀다"
+  }
+}
