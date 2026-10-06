@@ -26,7 +26,9 @@ ROOT = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
 PORT = int(sys.argv[2] if len(sys.argv) > 2 else 8791)
 LIVE = "--live" in sys.argv
 BASE = "https://parksy.kr/channel/musician/piano"
-PAGES = [("01", "01-satie-gymnopedie"), ("02", "02-bach-prelude-c")]
+_LANE = Path("/root/work/midi_lane/pd")
+# 곡 폴더만 — [0-9][0-9]- 로 좁히지 않으면 site/assets/ 가 곡으로 잡힌다.
+PAGES = [(p.name[:2], p.name) for p in sorted(_LANE.glob("*/site/[0-9][0-9]-*/"))]
 WIDTHS = [(360, 740), (414, 896), (768, 1024), (1280, 900)]
 
 

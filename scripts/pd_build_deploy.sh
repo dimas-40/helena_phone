@@ -15,7 +15,9 @@
 set -euo pipefail
 LANE=/root/work/midi_lane/pd
 cd "$LANE"
-PIECES=(01-satie-gymnopedie 02-bach-prelude-c)
+# 폴더 이름을 자동으로 긁는다 — 곡이 48개가 되면 손으로 적는 건 반드시 틀린다.
+# [0-9][0-9]- 로 좁힌다. 안 그러면 site/assets/ 같은 폴더가 곡으로 잡힌다.
+PIECES=($(ls -d */site/[0-9][0-9]-*/ 2>/dev/null | sed 's|.*/site/||; s|/$||' | sort))
 SRC_ASSETS=02-bach-prelude-c/site/assets   # 공용 자산 정본은 여기 하나뿐이다
 
 rm -rf _deploy _localtest
