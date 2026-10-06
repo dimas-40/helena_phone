@@ -24,7 +24,8 @@ import numpy as np
 import soundfile as sf
 
 sys.path.insert(0, str(Path(__file__).parent))
-from pd_midi_notes import notes_from_midi  # noqa: E402
+from pd_midi_notes import notes_from_midi
+import pd_bass as _bass  # noqa: E402
 
 PEAK_BUCKETS = 2400
 
@@ -46,34 +47,22 @@ def peaks_b64(path, buckets=PEAK_BUCKETS):
     return base64.b64encode(q.tobytes()).decode(), len(d) / float(sr)
 
 
-def bass_blocks(notes, cluster=0.15):
-    """저음 음높이가 바뀌는 시각들. 칸 경계로 쓴다.
+def bass_blocks(notes):
+    """저음 칸의 경계 시각들. 정의는 pd_bass.py 한 곳에만 있다.
 
-    한 화음은 저음이 여럿 동시에 울린다(D2·D3·F4…). 그걸 다 경계로 세면
-    간격 0.001초짜리 칸이 생긴다. 그래서 먼저 onset 을 묶고(cluster),
-    묶음마다 **가장 낮은 음** 하나만 본다.
+    여기서 따로 세면 **띠 그림과 페이지의 숫자가 서로 다른 것을 세게 된다** — 실제로 그랬다.
+    (그때는 채보가 놓친 자리를 '안 바뀐 칸'으로 세서, 띠에도 없는 멈춤이 그려졌다.)
     """
-    lo = sorted((n for n in notes if n[2] <= 50), key=lambda n: n[0])
-    if not lo:
-        return None
-    groups, cur, t0 = [], [], None
-    for s, _d, p in lo:
-        if t0 is None or s - t0 <= cluster:
-            cur.append((s, p))
-        else:
-            groups.append(cur)
-            cur, t0 = [(s, p)], s
-        if t0 is None:
-            t0 = s
-    if cur:
-        groups.append(cur)
-    b, last = [], None
-    for g in groups:
-        p = min(x[1] for x in g)
-        if p != last:
-            b.append(round(g[0][0], 3))
-            last = p
-    return b
+    bl = _bass.bass_blocks(notes)
+    out = []
+    for k, b in enumerate(bl):
+        out.append(b["start"])
+        # 저음이 끊긴 자리는 따로 한 칸으로 드러낸다.
+        # 안 그러면 띠 그림이 그 구멍을 '안 바뀐 넓은 칸'으로 칠해, 없는 멈춤을 그린다.
+        nxt = bl[k + 1]["start"] if k + 1 < len(bl) else None
+        if nxt is not None and nxt - b["end"] > 1.0:
+            out.append(b["end"])
+    return out
 
 
 def grid_blocks(notes, count):

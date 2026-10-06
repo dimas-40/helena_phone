@@ -24,7 +24,7 @@ QUEUE = [
     ("05", "트로이메라이 Op.15 No.7", "Robert Schumann, 1838", "신뢰 · 신뢰", "05-schumann-traumerei"),
     ("06", "전주곡 올림다단조 Op.3 No.2", "Sergei Rachmaninoff, 1892", "분노 · 분노", "06-rachmaninoff-csm"),
     ("07", "사랑의 꿈 No.3", "Franz Liszt, 1850", "사랑 (기쁨+신뢰)", "07-liszt-liebestraum"),
-    ("08", "발라드 No.1", "Frédéric Chopin, 1835", "회한 (슬픔+혐오)", None),
+    ("08", "발라드 No.1", "Frédéric Chopin, 1835", "회한 (슬픔+혐오)", "08-chopin-ballade1"),
     ("09", "환희의 송가 (피아노 편)", "Ludwig van Beethoven, 1824", "희망 (기대+신뢰)", None),
     ("10", "야상곡 Op.9 No.2", "Frédéric Chopin, 1832", "감상 (신뢰+슬픔)", None),
     ("11", "발트슈타인 1악장", "Ludwig van Beethoven, 1804", "낙관 (기대+기쁨)", None),
