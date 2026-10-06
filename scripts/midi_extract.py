@@ -191,9 +191,12 @@ def smooth_melody(notes, window=7, max_dev=14):
         lo, hi = max(0, i - half), min(len(pitches), i + half + 1)
         med = int(statistics.median(pitches[lo:hi]))
         if abs(n[2] - med) > max_dev:
-            # 같은 음이름 유지한 채 중앙값에 가장 가까운 옥타브로
-            cands = [med + 12 * k for k in range(-5, 6)]
-            new = min(cands, key=lambda p: (abs(p - n[2]), abs(p - med)))
+            # 원래 음에서 옥타브만 옮긴다 — 음이름(pitch class)을 절대 바꾸지 않는다.
+            # ⚠️ med + 12k 로 하면 음이름이 중앙값의 것으로 바뀐다. 그건 음을 고치는 게
+            #    아니라 다른 음을 지어내는 것이다. 실측(2026-10-06): 레이크 루이스에서
+            #    그 버그가 원본에 없는 D2를 만들어냈다 (원본 최저음은 E2).
+            cands = [n[2] + 12 * k for k in range(-5, 6)]
+            new = min(cands, key=lambda p: abs(p - med))
             out.append([n[0], n[1], new, n[3]])
             fixed += 1
         else:
