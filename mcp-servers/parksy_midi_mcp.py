@@ -250,14 +250,30 @@ def midi_report(path: str) -> str:
     pitches = [n[2] for n in notes]
     span = notes[-1][1] - notes[0][0]
 
-    return "\n".join([
+    lines = [
         "parksy-midi · %s" % p.name,
         "음 %d개 · ppq %s · 길이 %.1f초" % (len(notes), ppq, span),
         "음역 %s ~ %s" % (mx.note_name(min(pitches)), mx.note_name(max(pitches))),
         "조 %s %s · BPM 추정 %.1f" % (mx.note_name(60 + tonic), mode, bpm),
         "동시발음 %d곳 %s" % (overlap, "(단선율)" if overlap == 0 else "(화음 있음)"),
-        "앞 16음 " + " ".join(mx.note_name(n[2]) for n in ordered[:16]),
-    ])
+    ]
+
+    # 소재 판정 — 추출 때 옆에 남긴 것이 있으면 읽는다.
+    # 단선율화 뒤에는 격자 정보가 사라져 여기서 다시 계산할 수 없다.
+    side = p.with_suffix(".verdict.json")
+    if side.is_file():
+        try:
+            v = json.loads(side.read_text(encoding="utf-8"))
+            lines.append("소재 %s — 격자정렬 %s%% · 어긋남 %s%%" % (
+                v.get("verdict", "?"), v.get("grid_pct", "?"), v.get("smear_pct", "?")))
+        except (OSError, ValueError):
+            pass
+    else:
+        lines.append("소재 판정 없음 — 단선율화 뒤라 격자 정보가 없다. "
+                     "원본으로 보려면 추출 때 --keep-raw 를 켠다.")
+
+    lines.append("앞 16음 " + " ".join(mx.note_name(n[2]) for n in ordered[:16]))
+    return "\n".join(lines)
 
 
 @server.tool()

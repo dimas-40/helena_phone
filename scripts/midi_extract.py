@@ -308,6 +308,40 @@ def denoise(notes, min_dur=0.05, min_vel=20):
     return out
 
 
+def source_verdict(notes, grid_sec=0.125, tol=0.06, min_notes=40):
+    """이 채보가 기계(MIDI 렌더)에서 나온 것인지 사람 연주인지 판정한다.
+
+    사람은 화음을 동시에 누르지 못한다. 온셋이 수 ms 어긋나 흩어진다.
+    MIDI 렌더는 격자에 딱 맞아 온셋 간격이 정확한 배수로 떨어진다.
+
+    실측(2026-10-06):
+      Clair de Lune (인간)  — 10ms 미만 어긋남 25.9% · 격자 정렬 26.0%
+      Träumerei   (MIDI 렌더) — 10ms 미만 어긋남  0.0% · 격자 정렬 96.9%
+
+    Returns: (판정, 격자정렬률, 어긋남률, 근거문자열)
+    """
+    ons = sorted(n[0] for n in notes)
+    iv = [b - a for a, b in zip(ons, ons[1:])]
+    if len(iv) < min_notes:
+        return "판정불가", 0.0, 0.0, f"음이 너무 적다 ({len(notes)}개, 최소 {min_notes}개)"
+    smear = sum(1 for d in iv if 0 < d < 0.01)
+    grid = sum(1 for d in iv if d > 0 and abs(d / grid_sec - round(d / grid_sec)) < tol)
+    n = len(iv)
+    grid_pct, smear_pct = 100.0 * grid / n, 100.0 * smear / n
+
+    if grid_pct >= 80.0:
+        verdict = "기계(MIDI 렌더)"
+        note = "격자에 딱 맞는다. 이 소재는 뽑기에 좋다."
+    elif grid_pct >= 50.0:
+        verdict = "애매"
+        note = "격자에 반쯤 맞는다. 양자화된 연주이거나 전사가 흔들린 것이다."
+    else:
+        verdict = "사람 연주"
+        note = "온셋이 흩어져 있다. 템포·성부 추출이 부정확해진다."
+    return (verdict, grid_pct, smear_pct,
+            f"{note} (음 {len(notes)}개, 간격 {n}개 기준)")
+
+
 # ─────────────────────────────────────────────────────────────
 # 6. 쓰기 — 표준화된 단일 트랙 MIDI
 # ─────────────────────────────────────────────────────────────
@@ -384,6 +418,11 @@ def main():
             shutil.copy(raw_mid, outdir / f"{name}_raw.mid")
         notes, ppq, tempo = read_notes(raw_mid)
 
+    # 소재 판정 — 단선율화 전 원본으로 본다 (동시발음 정보가 살아 있어야 한다)
+    verdict, grid_pct, smear_pct, why = source_verdict(notes)
+    print(f"[2.5/6] 소재 판정: {verdict} — 격자정렬 {grid_pct:.1f}% · 어긋남 {smear_pct:.1f}%")
+    print(f"        {why}")
+
     print(f"[3/6] 원본 전사: {len(notes)}음 · ppq={ppq}")
 
     if not args.no_mono:
@@ -406,6 +445,15 @@ def main():
 
     mid = write_midi(notes, outdir / f"{name}.mid", bpm=bpm, program=args.program)
     csv = write_csv(notes, outdir / f"{name}.csv")
+
+    # 소재 판정을 옆에 남긴다 — 단선율화 뒤에는 격자 정보가 사라지기 때문이다
+    import json as _json
+    (outdir / f"{name}.verdict.json").write_text(_json.dumps({
+        "source": args.src, "verdict": verdict,
+        "grid_pct": round(grid_pct, 1), "smear_pct": round(smear_pct, 1),
+        "raw_notes": len(notes) if args.keep_raw else None,
+        "why": why, "name": name,
+    }, ensure_ascii=False, indent=1), encoding="utf-8")
 
     print(f"[6/6] 완료")
     print(f"      MIDI : {mid}")
