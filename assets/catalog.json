@@ -1352,6 +1352,30 @@
     "deck": "2026-10-06 · `_Claude`"
   },
   {
+    "src": "_notebook/122-pd-piano-emotion-map_Claude.md",
+    "out": "notebook/122-pd-piano-emotion-map_Claude.html",
+    "title": "122. Plutchik 감정 수레바퀴 × 퍼블릭 도메인 피아노 — BGM 소재 지도",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "2026-10-06 · `_Claude`"
+  },
+  {
+    "src": "_notebook/123-bgm-emotion-master_Claude.md",
+    "out": "notebook/123-bgm-emotion-master_Claude.html",
+    "title": "123. BGM 감정 마스터 — Plutchik 24감정 × 클리셰 문법 × PD 피아노",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "2026-10-06 · `_Claude`"
+  },
+  {
+    "src": "_notebook/124-music-channel-pipeline_Claude.md",
+    "out": "notebook/124-music-channel-pipeline_Claude.html",
+    "title": "124. 박씨 렌더링 채널 — 1호 완성, 그리고 42호 레시피",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "2026-10-06 · `_Claude`"
+  },
+  {
     "src": "_notebook/78-pd-pipeline-whitepaper_Claude.md",
     "out": "notebook/78-pd-pipeline-whitepaper_Claude.html",
     "title": "🎬 PD Pipeline 기술 백서 — URL 하나로 숏폼 자동 제작",

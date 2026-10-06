@@ -102,6 +102,11 @@
 </li>
 <li><a href="#5-boss">5. Boss가 말한 &ldquo;곱셈&rdquo;의 나머지 절반</a></li>
 <li><a href="#6">6. 사용법</a></li>
+<li><a href="#65-pd-raw-2026-10-06">6.5 PD 레인 결론 — RAW에 손질은 두 가지면 충분하다 (2026-10-06)</a><ul>
+<li><a href="#2">이 과정에서 드러난 버그 2개 (둘 다 고침)</a></li>
+<li><a href="#fluidsynth">딜레이는 fluidsynth에 없다</a></li>
+</ul>
+</li>
 <li><a href="#7">7. 남은 일</a></li>
 </ul>
 </div>
@@ -294,6 +299,51 @@ python3 scripts/midi_extract.py SRC -o out/ --key G:minor --no-scale-snap
 </code></pre>
 <p>출력: <code>&lt;name&gt;.mid</code>(GM program 0) · <code>&lt;name&gt;.csv</code>(검수용) · <code>--keep-raw</code> 시 <code>&lt;name&gt;.raw.mid</code>(원본 채보)</p>
 <hr>
+<h2 id="65-pd-raw-2026-10-06">6.5 PD 레인 결론 — RAW에 손질은 두 가지면 충분하다 (2026-10-06)</h2>
+<blockquote>
+<p>Boss: &ldquo;여기 상태에서 약간의 효과 지연과 속도 정도만 바꿔도 충분할 것 같아.&rdquo;<br>
+(여기 상태 = ② 손대지 않은 추출 MIDI, 레이크 루이스 809음)</p>
+</blockquote>
+<p><strong>단선율화·양자화·조정렬을 PD 레인에서는 아예 걸지 않는다.</strong> 809음 그대로 두고<br>
+속도와 공간만 준다. 실측: <code>time_scale=1.08</code> + 딜레이 190ms(감쇠 0.28) + 잔향 0.85<br>
+→ 170초가 194.6초(잔향 꼬리 포함). 텔레그램 message 143.</p>
+<p><strong>단선율화가 PD 레인에서 해로운 이유</strong> — 809음 중 245음(30%)을 버린다. 그 30%가<br>
+화음의 여음이고, 그게 곧 피아노 소리다. PD 레인은 &ldquo;원곡 그대로&rdquo;가 목적이므로<br>
+버릴 이유가 없다. <strong>단선율은 편곡 레인(DAW)에서 성부를 나눌 때만 쓴다.</strong></p>
+<h3 id="2">이 과정에서 드러난 버그 2개 (둘 다 고침)</h3>
+<table>
+<thead>
+<tr>
+<th>버그</th>
+<th>증상</th>
+<th>원인</th>
+<th>처방</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>박 배수 오류</strong></td>
+<td>102.9 BPM을 1.08배 <strong>느리게</strong> 했는데 결과가 191.3 BPM</td>
+<td><code>midi_arrange</code>가 <strong>늘인 뒤</strong> 음들로 <code>estimate_bpm</code>을 다시 돌렸다. 중앙값 IOI가 박이 아니라 세분음(16분)인 곡에서 배수가 튄다</td>
+<td>손대기 <strong>전</strong> 음들에서 한 번만 추정 → <code>est_bpm / time_scale</code></td>
+</tr>
+<tr>
+<td><strong>RAW의 set_tempo가 거짓</strong></td>
+<td>RAW 파일에 <code>set_tempo=500000</code>(120 BPM)</td>
+<td><code>--keep-raw</code> 경로가 추정값이 아니라 기본 120을 써 넣었다</td>
+<td>파일 tempo를 믿지 말 것. <code>midi_report</code>의 &ldquo;BPM 추정&rdquo;은 <code>estimate_bpm</code>이지 파일 값이 아니다</td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ 소리에는 영향이 없다 — <code>write_midi</code>는 초를 눈금으로 옮길 뿐이라 재생 속도는<br>
+<code>time_scale</code>만이 정한다. <strong>BPM 오류는 DAW로 넘겼을 때 마디선으로 나타난다.</strong><br>
+즉 편곡 레인에서는 치명적이고 PD 레인에서는 무해하다.</p>
+<h3 id="fluidsynth">딜레이는 fluidsynth에 없다</h3>
+<p>잔향·코러스는 fluidsynth가 알고, <strong>딜레이는 ffmpeg <code>aecho</code> 몫</strong>이다.<br>
+<code>midi_render(delay_ms=190, delay_decay=0.28)</code> → <code>aecho=1.0:0.6:190:0.28</code>.<br>
+순서: <strong>딜레이 먼저 → loudnorm 나중.</strong> 뒤집으면 만든 공간이 음량 계산에서 빠진다.<br>
+(wav를 읽어 wav에 쓰면 자기 자신을 물고 늘어지므로 임시 파일 거쳐 바꿔치기한다.)</p>
+<hr>
 <h2 id="7">7. 남은 일</h2>
 <ul>
 <li>[ ] <strong>실곡 검증</strong> — Debussy Clair de Lune(<code>ezJw7RrqvQ0</code>, 201초) 실측 진행 중. 루프 소재가 아닌 첫 실곡</li>
@@ -309,9 +359,9 @@ python3 scripts/midi_extract.py SRC -o out/ --key G:minor --no-scale-snap
           <span class="dir">Previous</span>
           <span class="title">뮤지션 박씨 — 사각형 정본 (Channel Quad + Loopback)</span>
         </a>
-    <a class="next" href="78-pd-pipeline-whitepaper_Claude.html">
+    <a class="next" href="122-pd-piano-emotion-map_Claude.html">
           <span class="dir">Next</span>
-          <span class="title">78 pd pipeline whitepaper Claude</span>
+          <span class="title">122 pd piano emotion map Claude</span>
         </a>
   </nav>
   <div class="wz-related">
