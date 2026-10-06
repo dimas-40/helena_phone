@@ -27,9 +27,16 @@ img/                5장, 1400px 이하로 축소 (원본 16MB → 202KB)
 |---|---|
 | 원곡 연주 | Robin Alciatore, piano · Wikimedia Commons **Public domain** · 183.59s |
 | 채보 | `piano_transcription_inference` · RAW 472음 · 83.5 BPM · D4 major · 180.6s |
-| 렌더 | 랩탑 fluidsynth + Salamander Grand Piano V3 · 잔향 0.85 · 딜레이 190ms · loudnorm −16 LUFS |
+| 렌더 | 랩탑 + Salamander Grand Piano V3 · 잔향 0.85 · 딜레이 190ms · loudnorm −16 LUFS |
 | 합본 | 원곡 loudnorm(2패스) → 침묵 2초 → 재현 · **−15.9 vs −15.7 LUFS** |
 | 채보 소요 | 9분 (183초 음원, CPU 553%) |
+
+⚠️ **1호의 렌더 엔진을 지금 검증할 수 없다.** 이 표는 원래 "fluidsynth"라고 적었는데,
+2026-10-06에 랩탑에 들어가려니 SSH 키가 거부됐다(`Permission denied (publickey,password)`) —
+`~/tmp/sal/run.sh` 를 직접 볼 수 없었다. **2호는 sfizz_render 인 게 확실**하고(내가 돌렸다),
+1호는 기록(이 표)만 남았다. 확증 없이 "fluidsynth였다"고도 "sfizz였다"고도 못 쓴다.
+**다음에 랩탑 들어갈 때 `~/tmp/sal/run.sh` 와 `build2.log` 로 확정할 것.** 그때까지
+1호 공개 페이지의 엔진 표기는 손대지 않는다(모르는 걸 고치면 그것도 거짓말이다).
 
 ### PD 레인 규칙 재확인 — RAW 그대로, 그리고 **사후 증명**
 
@@ -66,6 +73,58 @@ E4로 옮긴다 — 라단조가 "라·미·라"라는 어정쩡한 화음이 �
 #### 부수 확인 — 시소의 정체
 저음 블록(다음 저음까지)마다 화음을 모으면 딱 두 개다:
 **G장조7 (G·B·D·F#)** ↔ **D장조7 (D·F#·A·C#)**. 곡 전체가 이 왕복이다.
+
+---
+
+## 1.5 2호 — 바흐 프렐류드 C장조 BWV 846 (2026-10-06)
+
+| 항목 | 값 |
+|---|---|
+| 원곡 연주 | **Kimiko Ishizaka**, piano · Wikimedia Commons **CC0 1.0** (raw 위키텍스트에서 `{{cc-zero}}` 확인) · 162.92s |
+| 채보 | RAW · **553음** · 온셋 379개 · 간격 중앙값 0.2773s · 선두 침묵 1.30s |
+| 렌더 | 랩탑 **sfizz_render 1.2.3** + Salamander Grand Piano V3 (SFZ) · loudnorm −16 LUFS |
+| 합본 | 원곡 + 침묵 2.0s + 재현 = **326.51s** |
+
+### 왜 YouTube 를 안 쓰나 — Boss 가 물어서 적어둔다
+Boss: *"YouTube 음원에서 내려받아 가지고 음원 추출한 다음에 그거 쌀만대로 렌더링하고 있는 거 맞아?"*
+**앞부분은 아니다.** 파이프라인(추출→채보→렌더→이어붙이기)은 맞지만 **소스가 YouTube 가 아니다.**
+작곡가가 PD 라도 **연주·녹음에는 별개 저작권**이 있다(퍼포먼스/레코딩 라이선스).
+그래서 Commons 에서 **라이선스가 메타데이터에 명시된 녹음만** 골랐다 — 1호 Public domain, 2호 CC0.
+
+### 2호에서 잰 것 (전부 파형·MIDI 에서, 기억 아님)
+
+| 물음 | 답 | 어떻게 알았나 |
+|---|---|---|
+| 마디당 음 수 | **16~17** (34마디), 마지막 마디만 **4** | MIDI 온셋을 4.430s 마디로 잘라 셈 |
+| 슈베ン케 마디가 있나 | **없다** | 있으면 36마디다. 553음 ÷ 35마디 = 15.8 |
+| 파#→내림라 (22→23마디) | **F#2 93.0Hz(41.2dB) @91.5s → G#2 104.0Hz(43.1dB) @96.5s** | 원본 스펙트럼. **렌더도 재현함**(F#2 53.1dB · G#2 103.5Hz 53.5dB) |
+| 다이내믹 | LRA **7.20 LU** (1호 짐노페디는 12.00) | loudnorm 1패스 |
+| 마지막 화음 | C·E·G 4옥타브, 152.5s→162.92s **약 11초** | MIDI 지속시간 |
+| 감정 자리 | **신뢰/수용** (기쁨/평온과 겹침) | §1 표 · 123 문서 §1② |
+
+**"34마디 동안 한 번도 안 어긋났다"가 이 곡의 감정 그 자체다** — 플루치크의 신뢰(trust) 최약강도
+수용(acceptance)이 그거다. 그래서 하수(BGM)로 깔아도 안 지친다.
+
+### 페이지 — 다크 시네마틱 + 인터랙티브 (Boss 지시로 전면 교체)
+
+> Boss: *"웹페이지 디자인 좀 멋있게 만들어 봐 세련되게. 너무 촌스럽잖아. 인터랙티브한 요소도 하나도 없고."*
+> → 종이 테마 폐기. 1호의 베이지 테마가 그 "촌스러움"이었다.
+
+`site/assets/piano.css` + `site/assets/piano.js` = **42곡 공용 디자인 시스템**.
+곡 페이지는 `data.js`(음표·파형)만 갈아끼우면 된다.
+
+| 요소 | 무엇에 물렸나 |
+|---|---|
+| 하단 독(웨이브폼·재생·구간칩) | 오디오. 파형 클릭 = 탐색, 구간 칩이 원곡/침묵/재현으로 자동 전환 |
+| 타임라인 12지점 | 클릭 = 그 시각으로 점프. 재생 중이면 **현재 지점이 켜진다** |
+| 피아노롤 | 553음을 원곡(warm)·재현(cool) **양쪽 다** 그림. 반투명 = 같은 음이 두 번 |
+| 마디 스트립 | 마디당 음 수. **마지막 마디만 빨강** — 위의 "4음"이 눈에 보인다 |
+| 감정 바퀴 | 8칸 SVG. hover 하면 설명이 바뀐다. **신뢰 칸이 teal** |
+| 약자 사전 | 입력창이 12개 항목을 실시간 필터 |
+
+⚠️ **`.rv` 등장 애니메이션은 `html.js` 로 잠가야 한다.** 안 그러면 JS 없는 환경(그리고
+스크린샷)에서 **본문 전체가 opacity:0** — 안 보이는 본문은 본문이 아니다.
+`<head>` 에 `<script>document.documentElement.className+=' js';</script>` 한 줄로 깜빡임도 막는다.
 
 ---
 
@@ -117,12 +176,11 @@ E4로 옮긴다 — 라단조가 "라·미·라"라는 어정쩡한 화음이 �
 PYTHONPATH=/root/.venvs/parksy-phone/lib python3 scripts/midi_extract.py \
   asset/original.ogg -o . --name <name> --no-mono --grid 0 --keep-raw
 
-# 3) 렌더 (랩탑)
+# 3) 렌더 (랩탑) — 2호부터는 sfizz_render + SFZ
 scp <name>_raw.mid dtsli@100.81.24.124:~/tmp/<slug>/
-ssh ... 'fluidsynth -ni -g 0.75 -o synth.reverb.active=1 -o synth.reverb.room-size=0.85 \
-   -o synth.reverb.level=0.85 -o synth.chorus.active=0 \
-   -F r.wav "<SF2>" <name>_raw.mid < /dev/null'      # ← < /dev/null 없으면 heredoc 을 먹는다
-ssh ... 'ffmpeg -i r.wav -af "aecho=1.0:0.6:190:0.28,loudnorm=I=-16:TP=-1.5:LRA=11" \
+ssh ... '~/salamander/sfizz_render --sfz "<SFZ>" --midi <name>_raw.mid \
+   --wav r.wav --samplerate 44100'
+ssh ... 'ffmpeg -i r.wav -af "loudnorm=I=-16:TP=-1.5:LRA=11" \
    -codec:a libmp3lame -qscale:a 2 <name>.mp3'
 
 # 4) 합본 (폰) — 원곡 2패스 loudnorm → 침묵 2s → 재현 concat
@@ -143,6 +201,8 @@ ffmpeg -i original.ogg -i <name>.mp3 -filter_complex \
 
 | 함정 | 증상 | 처방 |
 |---|---|---|
+| **Salamander 는 SF2 가 아니라 SFZ 다** | 랩탑에 SF2 를 찾으니 없다. 메모리엔 "SF2 1.18GB" 라고 적혀 있었다 | 실제 자산은 `SalamanderGrandPianoV3_44.1khz16bit.tar.bz2` (**488MB**, archive.org). fluidsynth 로는 못 연다 → **`sfizz_render`**. `~/salamander/` 에 영구 설치할 것 — `~/tmp/` 에 두면 또 사라진다 |
+| **sfizz 1.2.3 tarball 은 빌드가 안 된다** | `CMake Error at cmake/SfizzDeps.cmake:81 (add_subdirectory)` — 원인이 화면에 안 보인다 | tarball 에 **git 서브모듈이 없다**(`external/st_audiofile`). `git clone --depth 1 --branch 1.2.3 --recurse-submodules --shallow-submodules` 로 받아야 한다. cmake 실패 시 **출력을 파일로 빼서 grep** 할 것 |
 | **fluidsynth 가 stdin 을 먹는다** | ssh heredoc 스크립트가 첫 렌더 뒤 전부 사라짐. `Parse error ... 'ho "==="'` | `fluidsynth ... < /dev/null`. `ffmpeg -f null -` 과 **같은 부류** — 소리 도구는 stdin 을 본다 |
 | **`ffmpeg -v error` 는 volumedetect 를 숨긴다** | "무음 검사했는데 출력이 없다" | volumedetect 는 INFO 레벨. `-v error` 빼고 `-hide_banner` |
 | **원본이 −25.9 LUFS 로 아주 조용하다** | 재현(−15.7)과 10dB 차이 | 원본에 2패스 loudnorm. 그냥 gain 주면 TP +3.1 dBTP 로 클리핑 |
@@ -160,20 +220,37 @@ ffmpeg -i original.ogg -i <name>.mp3 -filter_complex \
 ```
 channel/musician/piano/
 ├── index.html                    ← 곡 목록 (여기서 계속 늘어난다)
-└── 01-satie-gymnopedie/
-    ├── index.html
-    ├── audio/combined.mp3        8.4MB
-    └── img/ 5장
+├── assets/                       ← 42곡 공용 (2호에서 신설)
+│   ├── piano.css                 다크 시네마틱 디자인 시스템
+│   └── piano.js                  인터랙션 (독·롤·바퀴·타임라인)
+├── 01-satie-gymnopedie/
+│   ├── index.html                자체 <style> 인라인 (구 테마)
+│   ├── audio/combined.mp3        8.4MB
+│   └── img/ 5장
+└── 02-bach-prelude-c/
+    ├── index.html                assets/ 를 링크
+    ├── data.js                   12KB — 음표 553개 + 파형 (base64)
+    ├── audio/combined.mp3        7.5MB
+    └── img/ 4장
 ```
 
-**라이브 확인 (2026-10-06):** 목록·곡·음원·이미지 전부 **200**.
+**라이브 확인 (2026-10-06, 2호 업로드 후):** 전부 **200**.
 
 | URL | 코드 |
 |---|---|
-| `https://parksy.kr/channel/musician/piano/` | 200 |
-| `https://parksy.kr/channel/musician/piano/01-satie-gymnopedie/` | 200 |
-| `…/01-satie-gymnopedie/audio/combined.mp3` | 200 · audio/mp3 |
-| `…/01-satie-gymnopedie/img/satie-valadon-1893.jpg` | 200 · image/jpeg |
+| `https://parksy.kr/channel/musician/piano/` | 200 (목록에 01·02) |
+| `…/01-satie-gymnopedie/` · `…/audio/combined.mp3` | 200 |
+| `https://parksy.kr/channel/musician/piano/02-bach-prelude-c/` | 200 |
+| `…/02-bach-prelude-c/data.js` | 200 · application/javascript |
+| `…/02-bach-prelude-c/audio/combined.mp3` | 200 · audio/mp3 |
+| `…/02-bach-prelude-c/img/*.jpg` (4장) | 200 · image/jpeg |
+| `…/assets/piano.css` · `…/assets/piano.js` | 200 |
+
+**라이브 동작 검증 (Playwright, 2026-10-06):** 553음 로드 · 재생 1.69s 진행 ·
+타임라인 클릭 → `2:44` 로 점프 + 칩이 `재현 · 살라만더` 로 전환 · 콘솔 에러 0.
+
+⚠️ **Pages 빌드에 ~40초 걸린다.** 업로드 직후 curl 하면 **404 가 뜬다** — 실패가 아니다.
+`200` 이 나올 때까지 폴링할 것. (이번에 처음에 404 6개 보고 놀랐다.)
 
 ### 올리는 법 — `scripts/parksy_push.py`
 
@@ -201,13 +278,19 @@ Git Data API 로 **blob → tree → commit → ref** 를 한 번에. 중간 상
 
 ## 5. 남은 일
 
-- [ ] **Boss 판정** — RAW vs 조정렬 / 딜레이 유지 여부 / 페이지 문구
+- [x] ~~2호 — Bach Prelude in C BWV 846~~ → **완성·납품** (§1.5)
 - [x] ~~공개 경로~~ → **parksy.kr/channel/musician/piano/** (Boss 확정, §4.5)
 - [x] ~~미리보기 서버~~ → 납품지는 parksy.kr (로컬 서버 불필요, 정리 대상)
+- [ ] **Boss 판정** — RAW vs 조정렬 / 딜레이 유지 여부 / 페이지 문구 / **다크 테마 수용 여부**
+- [ ] **1호를 새 디자인으로 이식할지** — Boss 가 "촌스럽다"고 한 건 1호 테마다.
+      2호만 새 옷을 입으면 채널 안에서 두 곡이 따로 논다. **Boss 판단 대기.**
+- [ ] **1호 렌더 엔진 확정** — 랩탑 SSH 키가 막혀 못 봤다(§1 ⚠️). `~/tmp/sal/run.sh`
 - [ ] **사본 정리** — `helena_phone:music-channel/` 을 버릴지 Boss 판단
-- [ ] 2호 — Bach Prelude in C BWV 846 (`_notebook/122` §3 우선순위 2)
+- [ ] **`midi_lane/` 은 gitignored** — 42곡 소재(원본 ogg·MIDI·렌더)가 **폰에만** 있다.
+      폰이 죽으면 소재가 사라진다. 42곡 다 모이기 전에 어디론가 올려야 한다. **Boss 판단 대기.**
 - [ ] 이미지 자동 수급 스크립트 — 지금은 손으로 Commons API
 - [ ] 42곡 소재 목록 확정 (`_notebook/122` §3은 6곡까지만)
+- [ ] 3호 — `_notebook/122` §3 우선순위 3
 
 ---
 

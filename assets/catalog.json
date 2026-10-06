@@ -1362,7 +1362,7 @@
   {
     "src": "_notebook/123-bgm-emotion-master_Claude.md",
     "out": "notebook/123-bgm-emotion-master_Claude.html",
-    "title": "123. BGM 감정 마스터 — Plutchik 24감정 × 클리셰 문법 × PD 피아노",
+    "title": "123. BGM 감정 마스터 — Plutchik 40칸(정본 48 중 3차 dyad 8 제외) × 클리셰 문법 × PD 피아노",
     "section": "Notebook",
     "kind": "md",
     "deck": "2026-10-06 · `_Claude`"

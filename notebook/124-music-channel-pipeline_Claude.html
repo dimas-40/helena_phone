@@ -92,6 +92,12 @@
 <li><a href="#pd-raw">PD 레인 규칙 재확인 — RAW 그대로, 그리고 사후 증명</a></li>
 </ul>
 </li>
+<li><a href="#15-2-c-bwv-846-2026-10-06">1.5 2호 — 바흐 프렐류드 C장조 BWV 846 (2026-10-06)</a><ul>
+<li><a href="#youtube-boss">왜 YouTube 를 안 쓰나 — Boss 가 물어서 적어둔다</a></li>
+<li><a href="#2-midi">2호에서 잰 것 (전부 파형·MIDI 에서, 기억 아님)</a></li>
+<li><a href="#boss">페이지 — 다크 시네마틱 + 인터랙티브 (Boss 지시로 전면 교체)</a></li>
+</ul>
+</li>
 <li><a href="#2">2. 감상 가이드 — 어떻게 &ldquo;진짜로 잰&rdquo; 타임라인을 만드는가</a><ul>
 <li><a href="#21">2.1 파형에서 얻는 것 — 침묵·경계</a></li>
 <li><a href="#22">2.2 음표에서 얻는 것 — 화성 골격</a></li>
@@ -153,7 +159,7 @@ img/                5장, 1400px 이하로 축소 (원본 16MB → 202KB)
 </tr>
 <tr>
 <td>렌더</td>
-<td>랩탑 fluidsynth + Salamander Grand Piano V3 · 잔향 0.85 · 딜레이 190ms · loudnorm −16 LUFS</td>
+<td>랩탑 + Salamander Grand Piano V3 · 잔향 0.85 · 딜레이 190ms · loudnorm −16 LUFS</td>
 </tr>
 <tr>
 <td>합본</td>
@@ -165,6 +171,12 @@ img/                5장, 1400px 이하로 축소 (원본 16MB → 202KB)
 </tr>
 </tbody>
 </table>
+<p>⚠️ <strong>1호의 렌더 엔진을 지금 검증할 수 없다.</strong> 이 표는 원래 &ldquo;fluidsynth&rdquo;라고 적었는데,<br>
+2026-10-06에 랩탑에 들어가려니 SSH 키가 거부됐다(<code>Permission denied (publickey,password)</code>) —<br>
+<code>~/tmp/sal/run.sh</code> 를 직접 볼 수 없었다. <strong>2호는 sfizz_render 인 게 확실</strong>하고(내가 돌렸다),<br>
+1호는 기록(이 표)만 남았다. 확증 없이 &ldquo;fluidsynth였다&rdquo;고도 &ldquo;sfizz였다&rdquo;고도 못 쓴다.<br>
+<strong>다음에 랩탑 들어갈 때 <code>~/tmp/sal/run.sh</code> 와 <code>build2.log</code> 로 확정할 것.</strong> 그때까지<br>
+1호 공개 페이지의 엔진 표기는 손대지 않는다(모르는 걸 고치면 그것도 거짓말이다).</p>
 <h3 id="pd-raw">PD 레인 규칙 재확인 — RAW 그대로, 그리고 <strong>사후 증명</strong></h3>
 <p><code>--no-mono --grid 0 --keep-raw</code> 로 돌렸지만 <strong>조 정렬은 걸렸다</strong> (43음 이동).<br>
 최종적으로 <strong>RAW를 렌더</strong>했다 (노트북 121 §6.5: PD 레인은 손대지 않은 채보).<br>
@@ -225,6 +237,127 @@ E4로 옮긴다 — 라단조가 &ldquo;라·미·라&rdquo;라는 어정쩡한 
 <p>저음 블록(다음 저음까지)마다 화음을 모으면 딱 두 개다:<br>
 <strong>G장조7 (G·B·D·F#)</strong> ↔ <strong>D장조7 (D·F#·A·C#)</strong>. 곡 전체가 이 왕복이다.</p>
 <hr>
+<h2 id="15-2-c-bwv-846-2026-10-06">1.5 2호 — 바흐 프렐류드 C장조 BWV 846 (2026-10-06)</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>원곡 연주</td>
+<td><strong>Kimiko Ishizaka</strong>, piano · Wikimedia Commons <strong>CC0 1.0</strong> (raw 위키텍스트에서 <code>{{cc-zero}}</code> 확인) · 162.92s</td>
+</tr>
+<tr>
+<td>채보</td>
+<td>RAW · <strong>553음</strong> · 온셋 379개 · 간격 중앙값 0.2773s · 선두 침묵 1.30s</td>
+</tr>
+<tr>
+<td>렌더</td>
+<td>랩탑 <strong>sfizz_render 1.2.3</strong> + Salamander Grand Piano V3 (SFZ) · loudnorm −16 LUFS</td>
+</tr>
+<tr>
+<td>합본</td>
+<td>원곡 + 침묵 2.0s + 재현 = <strong>326.51s</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="youtube-boss">왜 YouTube 를 안 쓰나 — Boss 가 물어서 적어둔다</h3>
+<p>Boss: <em>&ldquo;YouTube 음원에서 내려받아 가지고 음원 추출한 다음에 그거 쌀만대로 렌더링하고 있는 거 맞아?&rdquo;</em><br>
+<strong>앞부분은 아니다.</strong> 파이프라인(추출→채보→렌더→이어붙이기)은 맞지만 <strong>소스가 YouTube 가 아니다.</strong><br>
+작곡가가 PD 라도 <strong>연주·녹음에는 별개 저작권</strong>이 있다(퍼포먼스/레코딩 라이선스).<br>
+그래서 Commons 에서 <strong>라이선스가 메타데이터에 명시된 녹음만</strong> 골랐다 — 1호 Public domain, 2호 CC0.</p>
+<h3 id="2-midi">2호에서 잰 것 (전부 파형·MIDI 에서, 기억 아님)</h3>
+<table>
+<thead>
+<tr>
+<th>물음</th>
+<th>답</th>
+<th>어떻게 알았나</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>마디당 음 수</td>
+<td><strong>16~17</strong> (34마디), 마지막 마디만 <strong>4</strong></td>
+<td>MIDI 온셋을 4.430s 마디로 잘라 셈</td>
+</tr>
+<tr>
+<td>슈베ン케 마디가 있나</td>
+<td><strong>없다</strong></td>
+<td>있으면 36마디다. 553음 ÷ 35마디 = 15.8</td>
+</tr>
+<tr>
+<td>파#→내림라 (22→23마디)</td>
+<td><strong>F#2 93.0Hz(41.2dB) @91.5s → G#2 104.0Hz(43.1dB) @96.5s</strong></td>
+<td>원본 스펙트럼. <strong>렌더도 재현함</strong>(F#2 53.1dB · G#2 103.5Hz 53.5dB)</td>
+</tr>
+<tr>
+<td>다이내믹</td>
+<td>LRA <strong>7.20 LU</strong> (1호 짐노페디는 12.00)</td>
+<td>loudnorm 1패스</td>
+</tr>
+<tr>
+<td>마지막 화음</td>
+<td>C·E·G 4옥타브, 152.5s→162.92s <strong>약 11초</strong></td>
+<td>MIDI 지속시간</td>
+</tr>
+<tr>
+<td>감정 자리</td>
+<td><strong>신뢰/수용</strong> (기쁨/평온과 겹침)</td>
+<td>§1 표 · 123 문서 §1②</td>
+</tr>
+</tbody>
+</table>
+<p><strong>&ldquo;34마디 동안 한 번도 안 어긋났다&rdquo;가 이 곡의 감정 그 자체다</strong> — 플루치크의 신뢰(trust) 최약강도<br>
+수용(acceptance)이 그거다. 그래서 하수(BGM)로 깔아도 안 지친다.</p>
+<h3 id="boss">페이지 — 다크 시네마틱 + 인터랙티브 (Boss 지시로 전면 교체)</h3>
+<blockquote>
+<p>Boss: <em>&ldquo;웹페이지 디자인 좀 멋있게 만들어 봐 세련되게. 너무 촌스럽잖아. 인터랙티브한 요소도 하나도 없고.&rdquo;</em><br>
+→ 종이 테마 폐기. 1호의 베이지 테마가 그 &ldquo;촌스러움&rdquo;이었다.</p>
+</blockquote>
+<p><code>site/assets/piano.css</code> + <code>site/assets/piano.js</code> = <strong>42곡 공용 디자인 시스템</strong>.<br>
+곡 페이지는 <code>data.js</code>(음표·파형)만 갈아끼우면 된다.</p>
+<table>
+<thead>
+<tr>
+<th>요소</th>
+<th>무엇에 물렸나</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>하단 독(웨이브폼·재생·구간칩)</td>
+<td>오디오. 파형 클릭 = 탐색, 구간 칩이 원곡/침묵/재현으로 자동 전환</td>
+</tr>
+<tr>
+<td>타임라인 12지점</td>
+<td>클릭 = 그 시각으로 점프. 재생 중이면 <strong>현재 지점이 켜진다</strong></td>
+</tr>
+<tr>
+<td>피아노롤</td>
+<td>553음을 원곡(warm)·재현(cool) <strong>양쪽 다</strong> 그림. 반투명 = 같은 음이 두 번</td>
+</tr>
+<tr>
+<td>마디 스트립</td>
+<td>마디당 음 수. <strong>마지막 마디만 빨강</strong> — 위의 &ldquo;4음&rdquo;이 눈에 보인다</td>
+</tr>
+<tr>
+<td>감정 바퀴</td>
+<td>8칸 SVG. hover 하면 설명이 바뀐다. <strong>신뢰 칸이 teal</strong></td>
+</tr>
+<tr>
+<td>약자 사전</td>
+<td>입력창이 12개 항목을 실시간 필터</td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong><code>.rv</code> 등장 애니메이션은 <code>html.js</code> 로 잠가야 한다.</strong> 안 그러면 JS 없는 환경(그리고<br>
+스크린샷)에서 <strong>본문 전체가 opacity:0</strong> — 안 보이는 본문은 본문이 아니다.<br>
+<code>&lt;head&gt;</code> 에 <code>&lt;script&gt;document.documentElement.className+=' js';&lt;/script&gt;</code> 한 줄로 깜빡임도 막는다.</p>
+<hr>
 <h2 id="2">2. 감상 가이드 — 어떻게 &ldquo;진짜로 잰&rdquo; 타임라인을 만드는가</h2>
 <p>⚠️ <strong>기억으로 시각을 적지 않는다.</strong> 전부 원본 파형과 MIDI에서 계산한 값이다.</p>
 <h3 id="21">2.1 파형에서 얻는 것 — 침묵·경계</h3>
@@ -262,12 +395,11 @@ E4로 옮긴다 — 라단조가 &ldquo;라·미·라&rdquo;라는 어정쩡한 
 PYTHONPATH=/root/.venvs/parksy-phone/lib python3 scripts/midi_extract.py \
   asset/original.ogg -o . --name &lt;name&gt; --no-mono --grid 0 --keep-raw
 
-# 3) 렌더 (랩탑)
+# 3) 렌더 (랩탑) — 2호부터는 sfizz_render + SFZ
 scp &lt;name&gt;_raw.mid dtsli@100.81.24.124:~/tmp/&lt;slug&gt;/
-ssh ... 'fluidsynth -ni -g 0.75 -o synth.reverb.active=1 -o synth.reverb.room-size=0.85 \
-   -o synth.reverb.level=0.85 -o synth.chorus.active=0 \
-   -F r.wav &quot;&lt;SF2&gt;&quot; &lt;name&gt;_raw.mid &lt; /dev/null'      # ← &lt; /dev/null 없으면 heredoc 을 먹는다
-ssh ... 'ffmpeg -i r.wav -af &quot;aecho=1.0:0.6:190:0.28,loudnorm=I=-16:TP=-1.5:LRA=11&quot; \
+ssh ... '~/salamander/sfizz_render --sfz &quot;&lt;SFZ&gt;&quot; --midi &lt;name&gt;_raw.mid \
+   --wav r.wav --samplerate 44100'
+ssh ... 'ffmpeg -i r.wav -af &quot;loudnorm=I=-16:TP=-1.5:LRA=11&quot; \
    -codec:a libmp3lame -qscale:a 2 &lt;name&gt;.mp3'
 
 # 4) 합본 (폰) — 원곡 2패스 loudnorm → 침묵 2s → 재현 concat
@@ -292,6 +424,16 @@ ffmpeg -i original.ogg -i &lt;name&gt;.mp3 -filter_complex \
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><strong>Salamander 는 SF2 가 아니라 SFZ 다</strong></td>
+<td>랩탑에 SF2 를 찾으니 없다. 메모리엔 &ldquo;SF2 1.18GB&rdquo; 라고 적혀 있었다</td>
+<td>실제 자산은 <code>SalamanderGrandPianoV3_44.1khz16bit.tar.bz2</code> (<strong>488MB</strong>, archive.org). fluidsynth 로는 못 연다 → <strong><code>sfizz_render</code></strong>. <code>~/salamander/</code> 에 영구 설치할 것 — <code>~/tmp/</code> 에 두면 또 사라진다</td>
+</tr>
+<tr>
+<td><strong>sfizz 1.2.3 tarball 은 빌드가 안 된다</strong></td>
+<td><code>CMake Error at cmake/SfizzDeps.cmake:81 (add_subdirectory)</code> — 원인이 화면에 안 보인다</td>
+<td>tarball 에 <strong>git 서브모듈이 없다</strong>(<code>external/st_audiofile</code>). <code>git clone --depth 1 --branch 1.2.3 --recurse-submodules --shallow-submodules</code> 로 받아야 한다. cmake 실패 시 <strong>출력을 파일로 빼서 grep</strong> 할 것</td>
+</tr>
 <tr>
 <td><strong>fluidsynth 가 stdin 을 먹는다</strong></td>
 <td>ssh heredoc 스크립트가 첫 렌더 뒤 전부 사라짐. <code>Parse error ... 'ho "==="'</code></td>
@@ -327,12 +469,20 @@ ffmpeg -i original.ogg -i &lt;name&gt;.mp3 -filter_complex \
 <p>레포 = <code>dtslib1979/parksy.kr</code> (<strong>private</strong>, 기본 브랜치 <code>main</code>, Pages = branch/main 루트 → <strong>커밋 = 즉시 공개</strong>).</p>
 <pre><code>channel/musician/piano/
 ├── index.html                    ← 곡 목록 (여기서 계속 늘어난다)
-└── 01-satie-gymnopedie/
-    ├── index.html
-    ├── audio/combined.mp3        8.4MB
-    └── img/ 5장
+├── assets/                       ← 42곡 공용 (2호에서 신설)
+│   ├── piano.css                 다크 시네마틱 디자인 시스템
+│   └── piano.js                  인터랙션 (독·롤·바퀴·타임라인)
+├── 01-satie-gymnopedie/
+│   ├── index.html                자체 &lt;style&gt; 인라인 (구 테마)
+│   ├── audio/combined.mp3        8.4MB
+│   └── img/ 5장
+└── 02-bach-prelude-c/
+    ├── index.html                assets/ 를 링크
+    ├── data.js                   12KB — 음표 553개 + 파형 (base64)
+    ├── audio/combined.mp3        7.5MB
+    └── img/ 4장
 </code></pre>
-<p><strong>라이브 확인 (2026-10-06):</strong> 목록·곡·음원·이미지 전부 <strong>200</strong>.</p>
+<p><strong>라이브 확인 (2026-10-06, 2호 업로드 후):</strong> 전부 <strong>200</strong>.</p>
 <table>
 <thead>
 <tr>
@@ -343,22 +493,38 @@ ffmpeg -i original.ogg -i &lt;name&gt;.mp3 -filter_complex \
 <tbody>
 <tr>
 <td><code>https://parksy.kr/channel/musician/piano/</code></td>
+<td>200 (목록에 01·02)</td>
+</tr>
+<tr>
+<td><code>…/01-satie-gymnopedie/</code> · <code>…/audio/combined.mp3</code></td>
 <td>200</td>
 </tr>
 <tr>
-<td><code>https://parksy.kr/channel/musician/piano/01-satie-gymnopedie/</code></td>
+<td><code>https://parksy.kr/channel/musician/piano/02-bach-prelude-c/</code></td>
 <td>200</td>
 </tr>
 <tr>
-<td><code>…/01-satie-gymnopedie/audio/combined.mp3</code></td>
+<td><code>…/02-bach-prelude-c/data.js</code></td>
+<td>200 · application/javascript</td>
+</tr>
+<tr>
+<td><code>…/02-bach-prelude-c/audio/combined.mp3</code></td>
 <td>200 · audio/mp3</td>
 </tr>
 <tr>
-<td><code>…/01-satie-gymnopedie/img/satie-valadon-1893.jpg</code></td>
+<td><code>…/02-bach-prelude-c/img/*.jpg</code> (4장)</td>
 <td>200 · image/jpeg</td>
+</tr>
+<tr>
+<td><code>…/assets/piano.css</code> · <code>…/assets/piano.js</code></td>
+<td>200</td>
 </tr>
 </tbody>
 </table>
+<p><strong>라이브 동작 검증 (Playwright, 2026-10-06):</strong> 553음 로드 · 재생 1.69s 진행 ·<br>
+타임라인 클릭 → <code>2:44</code> 로 점프 + 칩이 <code>재현 · 살라만더</code> 로 전환 · 콘솔 에러 0.</p>
+<p>⚠️ <strong>Pages 빌드에 ~40초 걸린다.</strong> 업로드 직후 curl 하면 <strong>404 가 뜬다</strong> — 실패가 아니다.<br>
+<code>200</code> 이 나올 때까지 폴링할 것. (이번에 처음에 404 6개 보고 놀랐다.)</p>
 <h3 id="scriptsparksy_pushpy">올리는 법 — <code>scripts/parksy_push.py</code></h3>
 <pre><code class="language-bash">set -a &amp;&amp; . ./.secrets.env &amp;&amp; set +a
 python3 scripts/parksy_push.py &lt;로컬폴더&gt; &quot;channel/musician/piano&quot; &quot;&lt;커밋 메시지&gt;&quot;
@@ -404,13 +570,19 @@ python3 scripts/parksy_push.py &lt;로컬폴더&gt; &quot;channel/musician/piano
 <hr>
 <h2 id="5">5. 남은 일</h2>
 <ul>
-<li>[ ] <strong>Boss 판정</strong> — RAW vs 조정렬 / 딜레이 유지 여부 / 페이지 문구</li>
+<li>[x] ~~2호 — Bach Prelude in C BWV 846~~ → <strong>완성·납품</strong> (§1.5)</li>
 <li>[x] ~~공개 경로~~ → <strong>parksy.kr/channel/musician/piano/</strong> (Boss 확정, §4.5)</li>
 <li>[x] ~~미리보기 서버~~ → 납품지는 parksy.kr (로컬 서버 불필요, 정리 대상)</li>
+<li>[ ] <strong>Boss 판정</strong> — RAW vs 조정렬 / 딜레이 유지 여부 / 페이지 문구 / <strong>다크 테마 수용 여부</strong></li>
+<li>[ ] <strong>1호를 새 디자인으로 이식할지</strong> — Boss 가 &ldquo;촌스럽다&rdquo;고 한 건 1호 테마다.<br>
+      2호만 새 옷을 입으면 채널 안에서 두 곡이 따로 논다. <strong>Boss 판단 대기.</strong></li>
+<li>[ ] <strong>1호 렌더 엔진 확정</strong> — 랩탑 SSH 키가 막혀 못 봤다(§1 ⚠️). <code>~/tmp/sal/run.sh</code></li>
 <li>[ ] <strong>사본 정리</strong> — <code>helena_phone:music-channel/</code> 을 버릴지 Boss 판단</li>
-<li>[ ] 2호 — Bach Prelude in C BWV 846 (<code>_notebook/122</code> §3 우선순위 2)</li>
+<li>[ ] <strong><code>midi_lane/</code> 은 gitignored</strong> — 42곡 소재(원본 ogg·MIDI·렌더)가 <strong>폰에만</strong> 있다.<br>
+      폰이 죽으면 소재가 사라진다. 42곡 다 모이기 전에 어디론가 올려야 한다. <strong>Boss 판단 대기.</strong></li>
 <li>[ ] 이미지 자동 수급 스크립트 — 지금은 손으로 Commons API</li>
 <li>[ ] 42곡 소재 목록 확정 (<code>_notebook/122</code> §3은 6곡까지만)</li>
+<li>[ ] 3호 — <code>_notebook/122</code> §3 우선순위 3</li>
 </ul>
 <hr>
 <p><em><code>_Claude</code> · 2026-10-06 · 1호 완성 · 2호부터 이 레시피를 그대로 쓴다</em></p>
@@ -418,7 +590,7 @@ python3 scripts/parksy_push.py &lt;로컬폴더&gt; &quot;channel/musician/piano
   <nav class="wz-pager">
     <a class="" href="123-bgm-emotion-master_Claude.html">
           <span class="dir">Previous</span>
-          <span class="title">123. BGM 감정 마스터 — Plutchik 24감정 × 클리셰 문법 × PD 피아노</span>
+          <span class="title">123. BGM 감정 마스터 — Plutchik 40칸(정본 48 중 3차 dyad 8 제외) × 클리셰 문법 × PD 피아노</span>
         </a>
     <a class="next" href="78-pd-pipeline-whitepaper_Claude.html">
           <span class="dir">Next</span>
