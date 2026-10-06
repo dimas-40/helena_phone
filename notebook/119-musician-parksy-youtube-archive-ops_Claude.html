@@ -110,10 +110,10 @@
 <li><a href="#7">7. 폰에서 지금 되는 것 / 안 되는 것</a></li>
 <li><a href="#8">8. 다음 작업 큐 (내가 주력으로 돌릴 것)</a></li>
 <li><a href="#9">9. 함정 기록 (재발 방지)</a></li>
-<li><a href="#10-2026-10-06">10. 커뮤니티(게시판) 탭 — 왜 안 켜지나 [실측 2026-10-06]</a><ul>
+<li><a href="#10-api-2026-10-06-2026-10-06">10. 커뮤니티(게시판) 탭 — 막는 건 API 하나뿐 [실측 2026-10-06 · 2026-10-06 정정]</a><ul>
 <li><a href="#101-api">10.1 API가 그 기능을 아예 안 연다</a></li>
-<li><a href="#102">10.2 채널이 자격 미달 (더 근본적)</a></li>
-<li><a href="#103">10.3 &ldquo;카페 운영&rdquo; 경로</a></li>
+<li><a href="#102">10.2 ~~채널이 자격 미달~~ → 철회. 탭은 이미 열려 있다 [실측]</a></li>
+<li><a href="#103">10.3 &ldquo;카페 운영&rdquo; 경로 (정정판)</a></li>
 </ul>
 </li>
 <li><a href="#11-scriptsytchpy-2026-10-06">11. 폰 러너 — scripts/ytch.py [실측 2026-10-06]</a><ul>
@@ -329,7 +329,7 @@ related:<br>
 </tr>
 <tr>
 <td>커뮤니티 게시</td>
-<td>❌ API 없음 + 구독자 500 미달 (§10)</td>
+<td>❌ <strong>API에 엔드포인트 없음</strong> → GUI/Paste Pipeline (§10)</td>
 </tr>
 </tbody>
 </table>
@@ -443,7 +443,7 @@ related:<br>
 </tr>
 <tr>
 <td>커뮤니티 게시</td>
-<td>❌ API 없음 + 구독자 미달 (§10)</td>
+<td>❌ API 없음 (탭은 실재) → Paste Pipeline (§10)</td>
 </tr>
 <tr>
 <td>노트북 기록·게이트</td>
@@ -459,7 +459,7 @@ related:<br>
 <li><strong>쿼터 재승인</strong> — 계정 a 60k 재신청(09-23 만료). 안 되면 하루 ~6편으로 스케줄</li>
 <li><strong>습작 → WD 아카이브 레인 설계</strong> — 최종/습작 분기 규칙</li>
 <li><strong>업로드 실행 게이트 자동화</strong> — 렌더·인코딩·메타·SRT까지 자동, 발행은 Boss 게이트</li>
-<li><strong>커뮤니티 500 구독 로드맵</strong> — 탭 열리기 전까지 플레이리스트·고정댓글로 카페 대용</li>
+<li>~~커뮤니티 500 구독 로드맵~~ → <strong>철회.</strong> 탭은 이미 실재한다(§10 정정). 남은 건 <strong>API 부재</strong>뿐 → Paste Pipeline으로 게시</li>
 </ol>
 <hr>
 <h2 id="9">9. 함정 기록 (재발 방지)</h2>
@@ -506,8 +506,12 @@ related:<br>
 </tbody>
 </table>
 <hr>
-<h2 id="10-2026-10-06">10. 커뮤니티(게시판) 탭 — 왜 안 켜지나 <code>[실측 2026-10-06]</code></h2>
-<p><strong>설정 문제가 아니라 구조 + 자격 문제. 두 겹으로 막혀 있다.</strong></p>
+<h2 id="10-api-2026-10-06-2026-10-06">10. 커뮤니티(게시판) 탭 — 막는 건 API 하나뿐 <code>[실측 2026-10-06 · 2026-10-06 정정]</code></h2>
+<blockquote>
+<p>⚠️ <strong>이 절은 한 번 오진했다가 정정했다.</strong> (커밋 <code>08b3335</code>가 낡은 주장을 담고 있었다)<br>
+처음엔 &ldquo;구독자 500 미달이라 탭이 없다&rdquo;고 썼는데 <strong>틀렸다.</strong> 탭은 <strong>실재한다.</strong></p>
+</blockquote>
+<p><strong>설정 문제도 자격 문제도 아니다. 막는 건 API 하나뿐이다.</strong></p>
 <h3 id="101-api">10.1 API가 그 기능을 아예 안 연다</h3>
 <ul>
 <li><code>[실측]</code> YouTube Data API v3 공식 디스커버리 문서 리소스 <strong>32개 중 <code>communityPosts</code>/<code>posts</code> 없음</strong></li>
@@ -515,17 +519,27 @@ related:<br>
 <li>⚠️ <code>papyrus/tools/youtube/community.cjs</code>는 <code>yt.communityPosts.insert</code> 호출 → <strong>존재하지 않는 유령 메서드</strong> = 무조건 실패. &ldquo;OAuth 미완&rdquo;이 아니라 <strong>API에 그게 없음</strong></li>
 <li>→ 커뮤니티 글은 <strong>API로 못 쓴다.</strong> Studio/GUI만 가능.</li>
 </ul>
-<h3 id="102">10.2 채널이 자격 미달 (더 근본적)</h3>
+<h3 id="102">10.2 ~~채널이 자격 미달~~ → <strong>철회. 탭은 이미 열려 있다</strong> <code>[실측]</code></h3>
 <ul>
-<li>커뮤니티 탭은 <strong>구독자 500명↑</strong> 채널에만 열림 (정책)</li>
-<li><code>[실측]</code> @musician-parksy <strong>구독자 1명</strong> → 스튜디오에 &ldquo;게시물&rdquo; 탭 자체가 안 생김</li>
-<li>made_for_kids=false · public · (다른 제약 아님)</li>
+<li>❌ ~~&rdquo;구독자 500명↑ 필요&rdquo;~~ — <strong>낡은 정보</strong>(2023년 폐지). 여러 2026 출처가 일치.</li>
+<li>✅ <code>[실측]</code> 채널에 <strong><code>/@musician-parksy/community</code> 라이브</strong> — <code>browseId: FEcommunity_page</code>,<br>
+<code>enable_community_page_on_desktop: true</code></li>
+<li>✅ <code>[실측]</code> <strong>폰 YouTube 앱에 &ldquo;게시물&rdquo; 탭이 보인다</strong> (구독자 1명인데도)</li>
+<li>made_for_kids=false · public · 어드밴스드 기능 · 징계 없음 → 자격 충족</li>
+<li><strong>결론: 자격은 이미 있다. 설정으로 켤 것도 없다.</strong></li>
 </ul>
-<h3 id="103">10.3 &ldquo;카페 운영&rdquo; 경로</h3>
+<h3 id="103">10.3 &ldquo;카페 운영&rdquo; 경로 (정정판)</h3>
 <ol>
-<li><strong>전제 = 구독자 500.</strong> 그 전엔 탭이 존재하지 않음 — 설정으로 못 켬.</li>
-<li>500 넘겨도 <strong>API 불가</strong> → <strong>Playwright GUI 자동화</strong>로 Studio 게시 (레포에 동일 패턴: <code>update_musician_desc.cjs</code>·<code>yt_oauth_channel.cjs</code>). &ldquo;API 없으면 GUI 자동화&rdquo; 원칙 적용.</li>
-<li>그 전 카페 대용: 댓글·고정댓글·플레이리스트(게시판처럼)·설명 링크·채널 홈 섹션.</li>
+<li>~~구독자 500 대기~~ → <strong>불필요.</strong> 탭은 지금 열려 있다.</li>
+<li><strong>막는 건 API뿐</strong> → <strong>GUI가 유일 경로.</strong></li>
+<li>그 GUI는 <strong>Boss 폰</strong>이다. ⚠️ <strong>ADB로 폰을 잡으면 Boss 작업을 뺏는다</strong><br>
+   (2026-10-06 Boss 항의: &ldquo;왜 자꾸 내 핸드폰 화면 뺏기는 거냐&rdquo;) → <strong>Paste Pipeline</strong>:<br>
+   Claude 원고 → <code>tg.sh</code>로 Telegram 배달 → <strong>Boss가 복사붙여넣기 → 발행</strong>.</li>
+<li>랩탑 Chrome GUI 자동화는 <strong>실패 확인</strong> — Windows Chrome이 WSL 경계를 넘는<br>
+<code>--remote-debugging-pipe</code>를 거부(<code>Remote debugging pipe file descriptors are not open</code>),<br>
+   Chrome 136+는 기본 프로필 원격 디버깅 차단. <strong>이 경로 폐기.</strong></li>
+<li>채널 정체가 &ldquo;<strong>되어가는 과정의 오픈</strong>&ldquo;이므로 게시물 1호 주제는 정해져 있다:<br>
+   채널 소개 개편 + 습작/정규 구분 + 기준선(<code>Ref.</code>) 선언.</li>
 </ol>
 <blockquote>
 <p>참고: papyrus <code>CLAUDE.md</code>의 &ldquo;개발법 제1조 (Community-First)&rdquo;는 <strong>다른 개념</strong>(조사 우선 개발법) — 유튜브 커뮤니티 탭과 무관.</p>
@@ -744,9 +758,9 @@ $ ytch.py stage &lt;id&gt; review     # 파이프라인 레인
           <span class="dir">Previous</span>
           <span class="title">Parksy 레이블 — 목표 확정과 진짜 병목 (2026-10-03)</span>
         </a>
-    <a class="next" href="78-pd-pipeline-whitepaper_Claude.html">
+    <a class="next" href="120-channel-triangle_Claude.html">
           <span class="dir">Next</span>
-          <span class="title">78 pd pipeline whitepaper Claude</span>
+          <span class="title">120 channel triangle Claude</span>
         </a>
   </nav>
   <div class="wz-related">

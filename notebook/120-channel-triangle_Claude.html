@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="**Boss 지시 (2026-10-06):** — S21 Phone Webzine">
+<meta name="theme-color" content="#0a0908">
+<meta name="application-name" content="S21 Phone">
+<title>뮤지션 박씨 — 사각형 정본 (Channel Quad + Loopback) — S21 Phone Webzine</title>
+<link rel="canonical" href="https://dtslib1979.github.io//notebook/120-channel-triangle_Claude.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://github.com/dtslib1979#person",
+      "name": "dtslib",
+      "url": "https://github.com/dtslib1979",
+      "description": "경제방송 — 16레포×10블로그×6채널, 1인 미디어 출판·방송",
+      "sameAs": [
+        "https://github.com/dtslib1979",
+        "https://dtslib.kr",
+        "https://www.youtube.com/@dtslib-branch",
+        "https://www.youtube.com/@phoneparis-r6q",
+        "https://www.youtube.com/@alexandria-y6k",
+        "https://www.youtube.com/@artrew-i1w",
+        "https://www.youtube.com/@Parksy-webzine"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://dtslib1979.github.io//notebook/120-channel-triangle_Claude.html#webpage",
+      "url": "https://dtslib1979.github.io//notebook/120-channel-triangle_Claude.html",
+      "name": "뮤지션 박씨 — 사각형 정본 (Channel Quad + Loopback)",
+      "inLanguage": "ko",
+      "publisher": {
+        "@id": "https://github.com/dtslib1979#person"
+      },
+      "author": {
+        "@id": "https://github.com/dtslib1979#person"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" href="../icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/webzine.css">
+</head>
+<body>
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+<header class="wz-mast">
+  <a class="brand" href="../index.html">S21 <em>Phone</em></a>
+  <div class="wz-mast-actions">
+    <button type="button" class="wz-burger" data-nav-toggle aria-label="메뉴" aria-expanded="false">☰</button>
+    <nav class="wz-nav">
+      <a href="../index.html">Home</a>
+      <a href="../archive.html">Archive</a>
+      <a href="../index.html#library">Library</a>
+      <a href="../index.html#agents">Agents</a>
+      <button type="button" data-theme-toggle>Theme</button>
+      <a class="pill gold" href="../index.html#install">Install</a>
+    </nav>
+  </div>
+</header>
+<main class="wz-shell">
+  <div class="wz-crumb">
+    <a href="../index.html">Webzine</a><span class="sep">/</span>
+    <span>Notebook</span><span class="sep">/</span>
+    <span>뮤지션 박씨 — 사각형 정본 (Channel Quad + Loopback)</span>
+  </div>
+  <header class="wz-hero">
+    <div class="wz-kicker">Notebook · lakme-audio</div>
+    <h1>뮤지션 박씨 — 사각형 정본 (Channel Quad + Loopback)</h1>
+    <p class="deck">**Boss 지시 (2026-10-06):**</p>
+    <div class="wz-meta">
+      <span>Source · _notebook/120-channel-triangle_Claude.md</span>
+      <span>Kind · markdown</span>
+      <span>S21 Phone Editorial</span>
+    </div>
+  </header>
+  <nav class="wz-toc" aria-label="목차"><div class="label">Contents</div><div class="toc">
+<ul>
+<li><a href="#0">0. 사각형 — 네 노드가 같이 돈다</a><ul>
+<li><a href="#3-4">③과 ④의 분업 — 이게 핵심이다</a></li>
+</ul>
+</li>
+<li><a href="#1-4-2026-10-06">1. ④ 루프백의 실제 구조 [실측 2026-10-06 · 코드 확인]</a><ul>
+<li><a href="#11">1.1 위치</a></li>
+<li><a href="#12">1.2 엔진이 선언한 목적 — 코드 첫 줄</a></li>
+<li><a href="#13-4-windowparksyloopback">1.3 서비스 4종 (window.ParksyLoopback)</a></li>
+<li><a href="#14-4">1.4 퀴즈 4모듈 (내장 데이터)</a></li>
+<li><a href="#15">1.5 채널 페이지의 나머지 (루프백 아닌 부분)</a></li>
+<li><a href="#16">1.6 역 전체에서의 위치</a></li>
+<li><a href="#17">1.7 트릴로지에서의 위치</a></li>
+</ul>
+</li>
+<li><a href="#2-boss">2. 채널 정체 — 되어가는 과정의 기록 [Boss]</a></li>
+<li><a href="#3-boss-118">3. 어디로 가는가 [Boss · 118]</a><ul>
+<li><a href="#4">여기서 ④가 다시 필요해진다 — 저작권</a></li>
+</ul>
+</li>
+<li><a href="#4-boss-2026-10-06">4. 공개/비공개 레저 — 두 레인 [Boss 지시 2026-10-06]</a></li>
+<li><a href="#5-boss">5. 기준선 규칙 [Boss 정정]</a></li>
+<li><a href="#6-2026-10-06-boss">6. 재생목록 (2026-10-06 Boss 수작업 반영) [실측]</a></li>
+<li><a href="#7">7. 동기화 표 — 무엇이 어디에 사는가</a></li>
+<li><a href="#8-2026-10-06">8. 노드별 현재 상태 [실측 2026-10-06]</a></li>
+<li><a href="#9">9. 함정 기록</a></li>
+</ul>
+</div>
+</nav>
+  <div class="wz-appbar" role="toolbar" aria-label="Document tools">
+    <input type="search" id="wzSearch" class="wz-search" placeholder="페이지 내 검색…" autocomplete="off">
+    <button type="button" id="wzFoldAll" data-cursor>접기</button>
+    <button type="button" id="wzExpandAll" data-cursor>펼치기</button>
+    <button type="button" id="wzCopy" data-cursor>본문 복사</button>
+  </div>
+  <article class="wz-prose" id="wzProse" data-app="doc">
+    <hr>
+<p>date: 2026-10-06<br>
+agent: Claude<br>
+mark: _Claude<br>
+type: charter<br>
+status: active<br>
+location: S25 Ultra proot (오프라인 상주 정본)<br>
+related:<br>
+  - 119-musician-parksy-youtube-archive-ops_Claude.md<br>
+  - 118-parksy-label-goal-real-bottleneck_Claude.md<br>
+  - 117-three-node-music-workcenter_Claude.md</p>
+<hr>
+<h1 id="channel-quad-loopback">뮤지션 박씨 — 사각형 정본 (Channel Quad + Loopback)</h1>
+<blockquote>
+<p><strong>Boss 지시 (2026-10-06):</strong><br>
+&ldquo;폰 proot 우분투 업무수첩 · GitHub 이미지 레포 · YouTube 이 채널,<br>
+<strong>이 세 개가 삼각형으로 같이 돌아가야 되니까 다 같이 저장해야 되는 거야.</strong>&ldquo;</p>
+<p>그리고 <strong>네 번째 노드</strong>:<br>
+&ldquo;세계가 완벽하게 물려서 돌아갈 거고 <strong>https://parksy.kr/channel/musician/</strong> —<br>
+여기 내 방송국에서는 <strong>실제로 YouTube에서 할 수 없는 것들만</strong> 여기에서 <strong>루프백</strong> 돌아가지고.<br>
+내가 <strong>PWA 웹페이지로 경험</strong>할 수 있는,<br>
+<strong>YouTube 저작권이라든지 이런 게 문제가 생길 때</strong>,<br>
+<strong>영상이 아닌 앱</strong>으로 무언가를 해야 될 때는 여기로 가서<br>
+<strong>영상이 아닌 콘텐츠 · 음원이 아닌 콘텐츠</strong>를 만들게 되는 거야. <strong>구조 정확하게 파악해.</strong>&ldquo;</p>
+<p>그리고 채널의 정체:<br>
+&ldquo;<strong>옛날에는 그냥 습작</strong>이었고, <strong>이제부터 제대로 채널 운영하면서 AI 활용해서<br>
+진짜 음악가가 되어 가는 과정 — 그 과정 자체를 오픈</strong>하고 만든 음악들을 여기다 게시할 거야.&rdquo;</p>
+</blockquote>
+<hr>
+<h2 id="0">0. 사각형 — 네 노드가 같이 돈다</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>노드</th>
+<th>실물</th>
+<th>역할</th>
+<th>방향</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>①</td>
+<td><strong>폰 proot 업무수첩</strong></td>
+<td><code>/root/work/_notebook/</code> (+ <code>notebook/*.html</code>)</td>
+<td>기억·판단·함정·실측</td>
+<td>뇌</td>
+</tr>
+<tr>
+<td>②</td>
+<td><strong>GitHub 이미지 레포</strong></td>
+<td><code>dtslib1979/parksy-image</code></td>
+<td>정체성·자산의 <strong>공개 정본</strong></td>
+<td>정본</td>
+</tr>
+<tr>
+<td>③</td>
+<td><strong>YouTube</strong></td>
+<td>@musician-parksy <code>UCun6b2HD3ekp35PhqbTfOlg</code></td>
+<td><strong>송출(out)</strong> — 영상·음원</td>
+<td>送</td>
+</tr>
+<tr>
+<td>④</td>
+<td><strong>parksy.kr 방송국</strong></td>
+<td><code>parksy.kr/channel/musician/</code> · 레포 <code>dtslib1979/parksy.kr</code></td>
+<td><strong>루프백(return)</strong> — YouTube가 못 하는 것</td>
+<td>還</td>
+</tr>
+</tbody>
+</table>
+<p><strong>원칙: 하나를 바꾸면 넷 다 저장한다.</strong><br>
+(2026-10-06 실제로 깨졌다 — Boss가 YouTube에서 재생목록 이름을 바꿨는데<br>
+소개글·수첩·레포가 옛 이름을 들고 있었다.)</p>
+<h3 id="3-4">③과 ④의 분업 — 이게 핵심이다</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>③ YouTube</th>
+<th>④ parksy.kr 루프백</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>매체</td>
+<td><strong>영상 · 음원</strong></td>
+<td><strong>영상 아님 · 음원 아님</strong></td>
+</tr>
+<tr>
+<td>형식</td>
+<td>파일(MP4/오디오)</td>
+<td><strong>앱 (PWA, 상호작용)</strong></td>
+</tr>
+<tr>
+<td>제약</td>
+<td><strong>저작권·Content ID·정책</strong>이 걸린다</td>
+<td>걸리지 않는다 (내 루트)</td>
+</tr>
+<tr>
+<td>소비</td>
+<td>보다</td>
+<td><strong>경험하다</strong> (누르고, 풀고, 틀고)</td>
+</tr>
+<tr>
+<td>한계</td>
+<td>YouTube 정책이 상한</td>
+<td>내가 만든 것만 있으면 무한</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>④는 ③의 실패 처리장이 아니라 ③의 반대편이다.</strong><br>
+YouTube에서 <strong>못 하는 것만</strong> ④로 온다. 할 수 있는 걸 ④로 가져오면 중복이다.</p>
+</blockquote>
+<hr>
+<h2 id="1-4-2026-10-06">1. ④ 루프백의 실제 구조 <code>[실측 2026-10-06 · 코드 확인]</code></h2>
+<h3 id="11">1.1 위치</h3>
+<pre><code>parksy.kr/                       ← 역 로비 (1F Lobby, 5개 채널)
+parksy.kr/channel/musician/      ← CH.04 MUSICIAN TV  ← 루프백이 사는 방
+parksy.kr/design/loopback.js     ← 엔진 (187행)
+parksy.kr/design/loopback.css    ← 껍데기
+</code></pre>
+<h3 id="12">1.2 엔진이 선언한 목적 — 코드 첫 줄</h3>
+<pre><code class="language-javascript">// PARKSY Loopback Services — YouTube가 못 해주는 것
+</code></pre>
+<p>그리고 <code>loopback.css</code>는 <strong>모든 섹션 제목 뒤에 문자 그대로 이 문장을 붙인다</strong>:</p>
+<pre><code class="language-css">.lb-section-title::after {
+  content: 'YouTube cannot do this';
+}
+</code></pre>
+<p>→ 루프백은 아이디어가 아니라 <strong>이미 구현된 4종 서비스</strong>다.</p>
+<h3 id="13-4-windowparksyloopback">1.3 서비스 4종 (<code>window.ParksyLoopback</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>서비스</th>
+<th>init 함수</th>
+<th>하는 일</th>
+<th>현재 상태</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>퀴즈</strong></td>
+<td><code>initQuiz(container, moduleKey)</code></td>
+<td>KR Merit 자가진단 — 문항·정답 데이터가 JS에 내장</td>
+<td>✅ 4모듈 가동</td>
+</tr>
+<tr>
+<td><strong>BGM 플레이어</strong></td>
+<td><code>initBGM(container, audioUrl)</code></td>
+<td><code>data-url</code>의 오디오를 <strong>루프 재생</strong> (<code>audio.loop = true</code>)</td>
+<td>⏳ <code>data-url=""</code> → &ldquo;Coming Soon&rdquo;</td>
+</tr>
+<tr>
+<td><strong>웹툰 뷰어</strong></td>
+<td><code>initWebtoon(container, tistoryUrl)</code></td>
+<td>티스토리 CDN을 <strong>iframe으로 임베드</strong></td>
+<td>⏳ <code>data-url=""</code> → &ldquo;Coming Soon&rdquo;</td>
+</tr>
+<tr>
+<td><strong>프롬프트 뷰어</strong></td>
+<td><code>initPrompts(container, prompts)</code></td>
+<td><strong>AI 프롬프트 체인 전문을 공개</strong> (PROMPT 1..n)</td>
+<td>⏳ 데이터 없음</td>
+</tr>
+</tbody>
+</table>
+<p><strong>자동 초기화:</strong> <code>DOMContentLoaded</code>에서 <code>[data-loopback="quiz|bgm|webtoon|prompts"]</code> 속성을 스캔해 자동 init.<br>
+→ <strong>새 루프백 콘텐츠 추가 = <code>data-url</code> / <code>data-module</code> / <code>data-prompts</code> 한 속성만 채우면 된다. 코드 수정 불필요.</strong></p>
+<h3 id="14-4">1.4 퀴즈 4모듈 (내장 데이터)</h3>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>이름</th>
+<th>테마색</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>democracy-fantasy</code></td>
+<td>민주주의 판타지</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>bluff-liberal-arts</code></td>
+<td>허세교양</td>
+<td><code>#ff6b35</code></td>
+</tr>
+<tr>
+<td><code>halfblood-language</code></td>
+<td>하프블러드 어학</td>
+<td><code>#6baaff</code></td>
+</tr>
+<tr>
+<td><code>edit-obsession</code></td>
+<td>편집강박</td>
+<td><code>#a78bfa</code></td>
+</tr>
+</tbody>
+</table>
+<p>각 5문항 · true/false · 점수 → 판정(verdict).</p>
+<h3 id="15">1.5 채널 페이지의 나머지 (루프백 아닌 부분)</h3>
+<ul>
+<li>태그: <code>BGM · Audio · Lyria3 · Music · With-AI</code></li>
+<li>모듈 카드 4장: <code>korean-parksy</code>(KR Merit) · <code>국어</code>(고교교재·Lyria3) · <code>Prompt → Essay</code>(With-AI) · <code>Chalkboard</code>(Tistory)</li>
+<li>YouTube 박스: <code>@musician-parksy</code> 구독 버튼</li>
+<li>Latest Videos: <code>Coming Soon</code> ×2 (<strong>API 연동 안 됨 — <code>/api/v1/youtube.json</code>이 원천인데 연결 미구현</strong>)</li>
+</ul>
+<h3 id="16">1.6 역 전체에서의 위치</h3>
+<p><code>parksy.kr</code> 로비 = 5개 채널: <code>philosopher</code> · <code>blogger</code> · <code>visualizer</code> · <strong><code>musician</code></strong> · <code>technician</code><br>
+→ <strong>YouTube 인증된 5채널에만</strong> 프로그램 페이지가 있다 (<code>docs/CHANNEL-PAGES.md</code>).<br>
+데이터 원천은 <code>/api/v1/youtube.json</code> (handle·youtubeUrl·contentType·persona).</p>
+<p><strong>층 구조(역 전체):</strong> 1F Lobby → B1 Channels → B2 Studio → B3 Console → B4 Office(🔒)</p>
+<h3 id="17">1.7 트릴로지에서의 위치</h3>
+<pre><code>parksy.kr (개체/날것) → dtslib.kr (회사/상품) → eae.kr (교육/구조)
+       ↑ musician 채널은 여기, 1층 로비에서 4번째 문
+</code></pre>
+<p>역 문서가 이미 선언한 <strong>YouTube 전략 3줄</strong> (<code>docs/STATION-ARCHITECTURE.md</code>):<br>
+| 용도 | 내용 |<br>
+|&mdash;|&mdash;|<br>
+| <strong>찌라시</strong> | 홍보용 짧은 클립 → 방송국으로 유입 |<br>
+| <strong>루프백</strong> | 방송국 콘텐츠 → 숏츠 → 다시 방송국 |<br>
+| 레포 설명 강의 | 레포 구조/코드 설명 교육 |</p>
+<hr>
+<h2 id="2-boss">2. 채널 정체 — 되어가는 과정의 기록 <code>[Boss]</code></h2>
+<ul>
+<li><strong>옛 업로드 (2019~2026년 초)</strong> = 음악가가 되기 전의 <strong>그냥 습작</strong>. → <strong>지우지 않는다.</strong></li>
+<li><strong>지금부터</strong> = AI를 붙들고 <strong>진짜 음악가가 되어가는 과정 자체를 오픈</strong>한다.</li>
+<li><strong>채널의 성격</strong> = 완성된 음악가의 쇼룸이 <strong>아니다</strong>. <strong>되어가는 과정의 기록</strong>이다.</li>
+</ul>
+<hr>
+<h2 id="3-boss-118">3. 어디로 가는가 <code>[Boss · 118]</code></h2>
+<pre><code>퍼블릭 도메인 원곡 → 내 편곡 → 내가 만든 가상악기 → 내가 만든 가상보컬 → 레이블
+</code></pre>
+<ul>
+<li><strong>진짜 병목은 녹음이 아니라 편집</strong>(SFZ 저작·벨로시티 레이어·루프 포인트) — 118.</li>
+<li>물리적 입구 확보: <strong>바순(조카)</strong> = Slot A.</li>
+</ul>
+<h3 id="4">여기서 ④가 다시 필요해진다 — 저작권</h3>
+<p>원곡이 퍼블릭 도메인이면 ③(YouTube)으로 간다.<br>
+<strong>아직 PD가 아니거나 Content ID가 걸리는 것</strong>은 ③에 못 올린다 → <strong>④로 가서 앱으로 만든다.</strong><br>
+이것이 Boss가 말한 &ldquo;저작권 문제가 생길 때 영상이 아닌 앱으로&rdquo; 의 정확한 의미다.</p>
+<hr>
+<h2 id="4-boss-2026-10-06">4. 공개/비공개 레저 — 두 레인 <code>[Boss 지시 2026-10-06]</code></h2>
+<p>정본: <code>configs/publish-policy.json</code> · <code>configs/publish-ledger.json</code> · 집행 <code>scripts/ytch.py</code></p>
+<table>
+<thead>
+<tr>
+<th>레인</th>
+<th>주체</th>
+<th>상태</th>
+<th>privacy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A. 습작 자동화</strong></td>
+<td>파이프라인·AI</td>
+<td><code>draft</code> → <code>review</code></td>
+<td><strong>비공개</strong></td>
+</tr>
+<tr>
+<td><strong>B. 결재 후 포스팅</strong></td>
+<td><strong>Boss</strong></td>
+<td><code>approved</code> → <code>published</code></td>
+<td>→ <strong>공개</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>approved_by</code>·<code>approved_at</code> 없이는 공개 전이가 코드에서 거부된다</strong> (실측).</p>
+<p><strong>레저는 ③(YouTube)에만 적용된다.</strong> ④(parksy.kr)는 Git이 곧 원장이므로<br>
+<code>draft → main</code> 병합 = Boss 결재로 갈음한다.</p>
+<hr>
+<h2 id="5-boss">5. 기준선 규칙 <code>[Boss 정정]</code></h2>
+<blockquote>
+<p>&ldquo;AIVA, Gemini Song은 내가 옛날에 구독해서 생성했던 <strong>AI 생성물의 수준을 베이스라인</strong>으로<br>
+설정하려고 한 거야. <strong>이거보다 좋은 게 무조건 나와야</strong> 되는 거라 샘플로 넣어놓은 거야.&rdquo;</p>
+</blockquote>
+<ul>
+<li><code>Ref.</code> = 참조가 아니라 <strong>넘어야 할 기준선(reference bar)</strong>.</li>
+<li><strong>규칙: [박씨 렌더링]의 결과물은 항상 이 둘보다 좋아야 한다.</strong></li>
+</ul>
+<hr>
+<h2 id="6-2026-10-06-boss">6. 재생목록 (2026-10-06 Boss 수작업 반영) <code>[실측]</code></h2>
+<table>
+<thead>
+<tr>
+<th>재생목록</th>
+<th>ID</th>
+<th>칸</th>
+<th>시청자 노출</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[박씨 렌더링]</td>
+<td><code>PLjxh2pH0uEjrZCK0DDK6TGH1PFT06lrVi</code></td>
+<td>24</td>
+<td><strong>15</strong> (9편 비공개)</td>
+</tr>
+<tr>
+<td>Parksy BGM</td>
+<td><code>PLjxh2pH0uEjqkF-ta-4ySDzQ9kow4NI6j</code></td>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Ref.Gemini Song</td>
+<td><code>PLjxh2pH0uEjrFDjfuPEmkmzSsUAX_LbbN</code></td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Ref.AIVA</td>
+<td><code>PLjxh2pH0uEjoNUxa0KW4nim_9GpI9ki1X</code></td>
+<td>9</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>중복 0 · 공개 미분류 0</li>
+<li><strong>규칙: 비공개(draft/review/approved)는 공개 재생목록에 넣지 않는다.</strong></li>
+</ul>
+<hr>
+<h2 id="7">7. 동기화 표 — 무엇이 어디에 사는가</h2>
+<table>
+<thead>
+<tr>
+<th>자산</th>
+<th>① 폰 수첩</th>
+<th>② parksy-image</th>
+<th>③ YouTube</th>
+<th>④ parksy.kr</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>채널 정체·소개글</td>
+<td>이 문서 §2</td>
+<td><code>MUSICIAN-CHANNEL-CHARTER.md</code></td>
+<td>소개글 968자 ✅</td>
+<td><code>channel/musician/index.html</code></td>
+</tr>
+<tr>
+<td>발행 레저</td>
+<td>§4 + <code>configs/</code></td>
+<td>동일</td>
+<td>API로 집행</td>
+<td>— (Git이 원장)</td>
+</tr>
+<tr>
+<td>기준선 규칙</td>
+<td>§5</td>
+<td>동일</td>
+<td>재생목록 2개</td>
+<td>—</td>
+</tr>
+<tr>
+<td>재생목록 지도</td>
+<td>§6</td>
+<td>동일</td>
+<td>실물</td>
+<td>—</td>
+</tr>
+<tr>
+<td>루프백 구조</td>
+<td>§1</td>
+<td>—</td>
+<td>—</td>
+<td>실제 코드 + <code>docs/</code></td>
+</tr>
+<tr>
+<td>프롬프트 체인</td>
+<td>—</td>
+<td>—</td>
+<td>영상에 언급</td>
+<td><strong><code>data-prompts</code>로 전문 공개</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>④의 &ldquo;AI PROMPTS USED&rdquo; 칸은 <strong>비어 있다.</strong> Boss가 &ldquo;프롬프트 체인 전문 공개&rdquo;를<br>
+채널 서사로 잡았으므로, 실제 프롬프트 원장을 여기로 흘려보내면 <strong>YouTube가 못 하는 것</strong>을<br>
+그대로 채우게 된다. — 다음 작업 후보.</p>
+</blockquote>
+<hr>
+<h2 id="8-2026-10-06">8. 노드별 현재 상태 <code>[실측 2026-10-06]</code></h2>
+<table>
+<thead>
+<tr>
+<th>노드</th>
+<th>상태</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① 폰 수첩</td>
+<td>이 문서 · 커버리지 gap 0</td>
+</tr>
+<tr>
+<td>② parksy-image</td>
+<td>이 정본 커밋 (폰 클론은 git 브랜치 손상 → API 경유 push)</td>
+</tr>
+<tr>
+<td>③ YouTube</td>
+<td>소개글 968자 ✅ · 재생목록 4개 ✅ · 게시물 탭 실재(API 없음→Paste Pipeline)</td>
+</tr>
+<tr>
+<td>④ parksy.kr</td>
+<td><strong>건물 완성</strong> · 루프백 엔진 4종 中 1종만 데이터 있음(퀴즈) · BGM/웹툰/프롬프트 전부 <code>Coming Soon</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="9">9. 함정 기록</h2>
+<table>
+<thead>
+<tr>
+<th>함정</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>사각형 깨짐</td>
+<td>YouTube만 고치면 소개글·수첩·레포가 옛 값을 들고 있는다 → <strong>한 번에 넷</strong></td>
+</tr>
+<tr>
+<td>폰 parksy-image 클론</td>
+<td><code>fatal: your current branch appears to be broken</code> — 폰 클론 신뢰 금지</td>
+</tr>
+<tr>
+<td><strong>clone 타임아웃</strong></td>
+<td>폰에서 <code>git clone parksy.kr</code>(18MB)가 2분 초과 — <strong>API 경유가 정답</strong></td>
+</tr>
+<tr>
+<td>폰 화면 뺏기</td>
+<td><strong>ADB로 폰 GUI를 잡으면 Boss 작업을 뺏는다</strong> → 게시물은 Paste Pipeline</td>
+</tr>
+<tr>
+<td>커뮤니티 탭 오진</td>
+<td>&ldquo;구독자 500 미달이라 탭 없음&rdquo;은 <strong>낡은 정보</strong>. 탭은 실재. 단 API에 게시물 엔드포인트 없음</td>
+</tr>
+<tr>
+<td>루프백 오해</td>
+<td>④는 &ldquo;YouTube 대피소&rdquo;가 아니다. <strong>YouTube가 할 수 있는 건 ③에 둔다</strong> — 중복 금지</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><em>agent mark <code>_Claude</code> · 2026-10-06 · 사각형: 폰 수첩 ① → parksy-image ② → YouTube ③(송출) → parksy.kr ④(루프백)</em></p>
+  </article>
+  <nav class="wz-pager">
+    <a class="" href="119-musician-parksy-youtube-archive-ops_Claude.html">
+          <span class="dir">Previous</span>
+          <span class="title">@musician-parksy 배포 아카이브 — 운영 정본 (폰 상주 런북)</span>
+        </a>
+    <a class="next" href="78-pd-pipeline-whitepaper_Claude.html">
+          <span class="dir">Next</span>
+          <span class="title">78 pd pipeline whitepaper Claude</span>
+        </a>
+  </nav>
+  <div class="wz-related">
+          <h2>같은 섹션</h2>
+          <div class="grid"><a href="00-INDEX.html"><strong>📖 S21 Phone 업무 수첩 — 전체 목차</strong>구축: 2026-07-23 ~ 2026-08-14 (23일)</a><a href="01-arch.html"><strong>전체 시스템 아키텍처</strong>Notebook</a><a href="02-discord.html"><strong>디스코드 서버/봇/위젯</strong>Notebook</a><a href="03-telegram.html"><strong>텔레그램 봇/회의실</strong>Notebook</a><a href="04-github-pages.html"><strong>GitHub Pages + Giscus + WidgetBot</strong>Notebook</a><a href="05-tistory.html"><strong>블로그 포트폴리오 + 자동화 전략</strong>Notebook</a></div>
+        </div>
+  <footer class="wz-foot">
+    <div>S21 PHONE · Webzine lakme-audio</div>
+    <div class="gold">모든 계정은 누나 명의입니다.</div>
+    <p style="margin-top:12px"><a href="../index.html">← Back to landing</a></p>
+  </footer>
+</main>
+<div class="wz-float">
+  <button type="button" id="wzTop" aria-label="Top">↑</button>
+  <button type="button" data-theme-toggle aria-label="Theme">◐</button>
+</div>
+<script src="../assets/webzine.js"></script>
+</body>
+</html>
