@@ -708,6 +708,7 @@
 <li><a href="#11-10-op9-no2-_claude">⑪ 10호 — 쇼팽 《야상곡 Op.9 No.2 내림마장조》 (감상 = 신뢰+슬픔) (_Claude)</a></li>
 <li><a href="#12-11-21-c-op53-1-_claude">⑫ 11호 — 베토벤 《피아노 소나타 21번 C장조 Op.53》 1악장 (낙관 = 기대+기쁨) (_Claude)</a></li>
 <li><a href="#13-13-op10-no12-_claude">⑬ 13호 — 쇼팽 《혁명 에튀드》 Op.10 No.12 (분노 · 격분) (_Claude)</a></li>
+<li><a href="#14-14-op-posth-66-_claude">⑭ 14호 — 쇼팽 《환상즉흥곡》 Op. posth. 66 (기대 · 기대) (_Claude)</a></li>
 </ul>
 </li>
 </ul>
@@ -11923,6 +11924,98 @@ LUFS −18.4(5위) · LRA 8.8(8위) · 1초최고 −14.66(6위) · 40초폭 2.8
 <strong>어디에 어떻게 남길지는 Boss 결정 사항이라 임의로 바꾸지 않았다.</strong> (devlog와 텔레그램에 올린다.)</p>
 <p><strong>다음.</strong> 12호(막힘 — 소재 결정 필요) · 14호 환상즉흥곡(기대·기대)부터는 안 막혀 있다.<br>
 미정 9칸(39 멸시 · 41 불신 · 42 기쁨[3차] · 43 수치 · 44 격분[3차] · 45 비관 · 46 병적 · 47 지배 · 48 불안[3차])도 여전히 Boss 결정 대기.</p>
+<h3 id="14-14-op-posth-66-_claude">⑭ 14호 — 쇼팽 《환상즉흥곡》 Op. posth. 66 (기대 · 기대) (_Claude)</h3>
+<p><strong>① ★ 13호와 정확히 반대편 — 이웃한 두 곡이 이 시리즈의 양 극단이다.</strong><br>
+13호는 4초 밀도가 <strong>29~87(3.0배)</strong>로 <strong>가장 좁은</strong> 곡이었다. 이 곡은 <strong>2~84(42.0배)</strong>다.<br>
+곧 한 곡은 “쉬지 않고”, 한 곡은 “숨 죽였다 몰아치고”. <strong>연달아 놓으니 대비가 가장 선명하다.</strong><br>
+- 이 비율을 <strong>셀 수 있는 곡이 열세 곡 중 다섯뿐</strong>이다(나머지 여덟은 바닥이 0이라 나눗셈이 안 선다).<br>
+  짐노페디 4.5 · 바흐 16.0 · 발췌 8.7 · <strong>13호 3.0</strong> · <strong>이 곡 42.0</strong>.<br>
+- ⚠️ <strong>처음에 facts.json의 <code>density_trough=2 @308.0</code>을 그대로 쓸 뻔했다.</strong> 다시 재 보니<br>
+  4초 슬라이딩 창의 최소는 <strong>0</strong>(315.0–319.5, 곡이 끝난 뒤)이었다.<br>
+<code>pd_measure.py</code>는 <strong>고정 4초 격자에서 첫·마지막 버킷을 뺀다</strong>(<code>cnt[1:-1]</code>) — 설계대로다.<br>
+  그래서 <strong>2는 “음악 안의 최저”로 맞는 값</strong>이고, 대신 <strong>바닥값 하나로는 아무 말도 못 한다</strong>는 걸 확인했다.<br>
+  → <strong>비율로 읽어야 한다</strong>는 결론. 열세 곡을 같은 자로 쟀다는 점이 유일한 비교 근거라 그렇게 적었다.</p>
+<p><strong>② ★ 2음 자리가 “채보 구멍”인지 대역 에너지로 확인 — 이번엔 진짜 죽은 자리.</strong><br>
+304–308 <strong>−55.7dB</strong> · 308–312 <strong>−60.7dB</strong> · 316–320 <strong>−69.0dB</strong>, 곡 평균 <strong>−24.2dB</strong>.<br>
+<strong>30dB 넘게 내려간 자리</strong>라 실제로 소리가 없다. 반대로 가장 넓은 칸 8.490초(3:08)는<br>
+저음 대역이 <strong>−36.9dB</strong>로 앞 3초(−52.0dB)보다 <strong>15dB 세다</strong> — 13호와 같은 방법으로 <strong>“구멍 아님”</strong> 판정.<br>
+<strong>같은 자, 같은 절차, 두 번 다 통과.</strong></p>
+<p><strong>③ ★ 가장 중요한 검증 — 마지막 화음에서 우리 값과 위키백과가 일치했다.</strong><br>
+마지막 세 음 <strong>314.496/314.514/314.533초(0.037초 간격 = 굴려 침)</strong>, 음높이 <strong>바3(F)·올림사3(G♯)·올림다4(C♯)</strong>.<br>
+올림다단조이므로 3도는 <strong>올림마(E♯, 건반에서는 바)</strong> — 곧 <strong>올림다장조 = 피카르디 3도</strong>.<br>
+나중에 영어 위키백과를 확인하니 <strong>“resolves and gently ends on a rolled C♯ major chord (a Picardy third)”</strong> —<br>
+<strong>우리가 독립적으로 잰 것과 같은 화음, 같은 “굴려 침”</strong>이다. 서로 다른 길로 같은 자리에 왔다.<br>
+<strong>13호도 피카르디 3도(다장조)로 끝났다</strong> — 쇼팽 두 곡 연속 같은 방식으로 끝난 것도 처음 확인했다.</p>
+<p><strong>④ ★ 위키백과가 말한 구조를 우리 채보가 확인해 줬다 — 가운데 경계를 우리가 쟀다.</strong><br>
+위키백과: <strong>allegro agitato → largo → moderato cantabile(D♭장조) → presto</strong>.<br>
+우리가 4초 밀도를 밀어 재니 <strong>1:08에 70음 안팎 → 22음</strong>, <strong>3:14에 22음 → 72음</strong>으로 꺾인다.<br>
+가운데 126초는 <strong>4초당 평균 23.7음</strong>(곡 전체 평균 39.1음) — <strong>시간 40%에 음은 24%</strong>.<br>
+그리고 가운데 구간의 <strong>첫 저음이 올림사1(G♯1) = 이 곡의 최저음</strong>이고 D♭장조의 딸림음(내림가)과 <strong>같은 건반</strong>.<br>
+위키백과가 “끝에서 왼손이 moderato 주제 첫 음들을 되풀이한다”고 한 대목도,<br>
+우리 데이터에서는 <strong>마지막 저음 올림사2(G♯2)가 311.863→317.5초</strong>로 홀로 깔리는 것이 <strong>그 음</strong>이다.<br>
+<strong>서술 → 측정 → 일치.</strong> 이번 곡은 위키백과와 우리 자가 서로를 검산했다.</p>
+<p><strong>⑤ ★ 13호와 반대로, 도구가 악보와 다른 조를 골랐다.</strong><br>
+도구는 <strong>올림사장조(G♯ major)</strong>라 했고 악보 첫 장은 <strong>올림표 넷 = 올림다단조</strong>다.<br>
+올림사장조면 <strong>올림마(E♯)</strong>를 써야 하는데 우리 채보 상위 여섯 음은 전부 올림다단조 음이고<br>
+<strong>마(E)가 227번</strong> 나온다(올림사장조면 나오면 안 되는 음). <strong>조 정렬이 스케일 밖 565음(18.4%)을 옮겼다.</strong><br>
+<strong>13호에서 “도구가 좋아졌다고 쓰지 않는다, 쉬운 문제를 맞힌 것”이라고 적어 둔 그 유보가 옳았다</strong> —<br>
+곧바로 다음 곡에서 틀렸다. <strong>왜 그런지는 모른다</strong>(도구 속을 안 열었다). 다만 이 곡이 <strong>조를 옮기는 곡</strong>이라<br>
+딸림음이 과하게 세어졌을 수 있다는 <strong>추측</strong>만 적고 “추측”이라고 표시했다.<br>
+<strong>이 오답이 페이지 숫자에 영향은 없다</strong> — 조 정렬은 원본 전사 뒤의 일이고 그림·띠·수치·렌더는 전부 <code>_raw.mid</code> 기준.</p>
+<p><strong>⑥ ★ 우리가 두 번 틀릴 뻔한 것을 원본 해상도로 잘라서 잡았다.</strong><br>
+줄여 놓은 악보 그림을 눈으로 훑고 넘겼으면 <strong>틀린 채로 페이지에 들어갔다.</strong><br>
+- 연도 표기를 처음에 <strong>“(vers 1854)”</strong>로 읽었다 → 4,864×6,098 원본을 잘라 보니 <strong>“(vers 1834)”</strong>.<br>
+- 박자표를 처음에 <strong>공통박자(C)</strong>로 읽었다 → 잘라 보니 <strong>¢(alla breve, 2분의 2박자)</strong>.<br>
+  위키백과의 “cut time (2/2)”와 일치.<br>
+13호에서 세운 <strong>“그림은 원본 크기를 확인하고 읽을 자리는 잘라서 다시 본다”</strong> 규칙이 <strong>이 곡에서 실제로 두 번 일했다.</strong></p>
+<p><strong>⑦ ★ 사후 출판 — 이 시리즈에서 처음 만난 사정.</strong><br>
+작곡 <strong>1834</strong>, 출판 <strong>1855</strong>, <strong>Op. posth. 66</strong>. 위키백과: <strong>“쇼팽이 미출판 원고는 하나도 출판하지 말라고 지시했는데도”</strong> 나왔다.<br>
+그런데 우리가 읽은 <strong>표지(1855, 파리 J. Meissonnier fils, btv1b10072747z 01/12)</strong>에는<br>
+<strong>“AVEC AUTORISATION DE SA FAMILLE(가족의 허락을 받아) · PAR JULES FONTANA”</strong>라고 적혀 있다.<br>
+<strong>둘이 어긋난다.</strong> 어느 쪽이 사실인지 <strong>가릴 자료를 보지 못했으므로 가르지 않고 둘 다 적었다.</strong><br>
+<strong>왜 내놓지 않았는지도 위키백과가 “알 수 없다”고 적는다</strong> — 그래서 우리도 모른다고 썼다.<br>
+허니커의 “느끼하다” 평 · 오스터의 월광 소나타 해석 · 모셀레스 Op.89 · 1960년 루빈스타인이 산 바론테스 데스테 앨범은<br>
+전부 <strong>“전해진다”</strong>로 적었다. <strong>자필에 1835년이라 적혀 있었다는데 작곡 연도는 1834년이라는 불일치도 가르지 않았다.</strong></p>
+<p><strong>⑧ ★ 사진 연도를 바로잡았다 — 1847이 아니라 1849.</strong><br>
+초상으로 쓴 비송의 다게레오타이프를 처음에 <strong>1847년</strong>으로 적었다(내가 기억한 값).<br>
+Commons <code>imageinfo</code>를 확인하니 <code>File:Frederic Chopin photo.jpeg</code>의 설명은 <strong>“1849년, 쇼팽의 사진으로 알려진 두 장 중 더 나은 것”</strong>이었다.<br>
+<strong>1847년은 다른 한 장</strong>(<code>Chopin1847 R SW.jpg</code>)의 해다. → 파일명 <code>chopin-bisson-1847.jpg</code>를 <strong><code>chopin-bisson-1849.jpg</code>로 바꾸고</strong><br>
+hero·사람 절·출처를 전부 고쳤다. <strong>파일명에 틀린 연도를 남겨 두면 다음 사람이 그대로 물려받는다.</strong><br>
+덧붙여 원본 바이트 수도 내가 기억한 2.11MB가 아니라 <strong>1,453,748B(1.39MB)</strong>였다 — 출처 목록에 정정 사실을 함께 적었다.</p>
+<p><strong>⑨ 출처는 13호와 같은 계획, 다른 사람 — 그리고 그게 이 시리즈에 주는 의미.</strong><br>
+머소픈 《Set Chopin Free》 재사용. 13호가 <strong>에드워드 니먼</strong>, 이 곡은 <strong>프랭크 레비</strong>.<br>
+13호에서 “한 사람의 연주만 계속 쓰면 채널이 그 음악의 음반이 된다”고 적어 뒀는데,<br>
+<strong>한 곡 만에 같은 계획 안에서 다른 연주자를 쓸 수 있다는 것이 실증됐다.</strong><br>
+파일 FLAC 96k/24/stereo 326.887083초 · SHA-1 <code>64f6dd762daae6a157b596369d9f3232e90159e5</code> <strong>일치 확인.</strong></p>
+<p><strong>수치.</strong> 3073음(3위) · 9.77/s(4위) · 229칸(3위) · 326.9초(4위) · 칸 중앙 1.125초(7위) · 최소 0.020/최대 8.490 ·<br>
+4초최고 <strong>84(5위)@0:16</strong> · 4초최저 <strong>2@5:08</strong> · 진폭 <strong>42.0배(측정 가능한 곡 중 최대)</strong> ·<br>
+음역 사1–마7(G1–E7) · 최다음 올림사3 292번(중앙간격 0.591 · 최대공백 <strong>9.58초</strong>@0:32, 두 번째 9.53초@4:56) ·<br>
+BPM 121.3 · 격자 15.4% · 어긋남 12.2%(판정 사람 연주) · LUFS −15.2(3위) · LRA 15.9(6위) ·<br>
+1초최고 <strong>−10.94(2위, 1위 발라드와 0.2dB 차)</strong> · 40초폭 13.17(4위) · TP −0.0(5위) · 앞여백 0.98 · 꼬리 3.527.<br>
+<strong>13호(밀도 1위·세기 5~8위)와 달리 이 곡은 “많이” 3·4·3·5위, “세기” 2·3·4·6위로 두 묶음이 같은 높이에 있다.</strong></p>
+<p><strong>납품.</strong></p>
+<ul>
+<li>페이지 <strong>64,665B</strong> · <code>pd_page.py</code> <strong>축 OK · 독 OK</strong> (길이 10:50 · 원곡끝 5:23 · 침묵끝 5:25 · 칸 229).</li>
+<li><code>pd_check_pages.py midi_lane/pd/_localtest 8791</code> → <strong>13곡 × 4해상도 = 52회 전부 통과</strong><br>
+  (14호: notes=3073 blocks=229 dock=112/92, 콘솔 에러 0).<br>
+  검사 중 뜬 <code>ConnectionResetError</code> 트레이스백은 브라우저가 소켓을 닫아 생기는 <strong>정상 잡음</strong>이고,<br>
+  파이썬이 stdout을 버퍼링해 <strong>✓ 줄이 끝날 때까지 안 보였다</strong> — 파일을 폴링해서 확인했다.</li>
+<li>대시보드 QUEUE 14행 슬러그 채움 → <strong>완성 12→13 / 예정 35 / 곡 미정 9</strong>, 라이브 <code>href="14-chopin-fantaisie-impromptu/"</code> 확인.</li>
+<li><code>parksy.kr</code> main <code>9da51a3948</code>(텍스트 29파일 1.4MB) → 미디어 별도 커밋.</li>
+<li>음원 텔레그램 전송 — 아래 참고.</li>
+</ul>
+<p><strong>⑩ 도구가 못 한 것 — 이번엔 “가장 유명한 특징”이 사라진다.</strong><br>
+단선율 전사기라 <strong>동시발음 979개를 접었다</strong>(3073→2094). <strong>그런데 이 곡은 그게 더 아프다</strong> —<br>
+<strong>오른손 16분음표와 왼손 3연음의 엇갈림(‘4 대 3’)</strong>이 이 곡의 표정인데,<br>
+<strong>그것은 “언제 몇 번 쳤는가”에 남지 않는다.</strong> 접어도 안 접어도 남지 않는다.<br>
+그래서 페이지는 그 특징을 <strong>숫자로 말하지 않고 문장으로만</strong> 적고, 「확인하지 못한 것」에 명시했다.<br>
+못 한 것 다섯: ①42배는 우리 채보 위의 값(곡끼리 비교로만) ②“왜 올림사장조라 했나”는 추측<br>
+③가운데 경계는 우리가 정한 기준(4초당 45음)으로 자른 것 — <strong>마디는 세지 않았으므로 마디 번호로 말하지 않았다</strong><br>
+④쇼팽이 왜 안 냈는지 모름 ⑤4 대 3은 우리 자로 못 잼.</p>
+<p><strong>⚠️ 구조적 위험은 그대로다 (고치지 않음).</strong> <code>midi_lane/</code>은 work 레포에서 gitignore이고 자체 git도 없다 →<br>
+<strong>14호치 재료(page.py·facts.json·_raw.mid)도 이 폰에만 있다.</strong> 13호 항목에 적은 그대로, <strong>Boss 결정 사항이라 임의로 바꾸지 않았다.</strong></p>
+<p><strong>다음.</strong> 12호(막힘 — 소재 결정 필요) · 15호 장송행진곡 Op.35 3악장부터는 안 막혀 있다.<br>
+미정 9칸(39 멸시 · 41 불신 · 42 기쁨[3차] · 43 수치 · 44 격분[3차] · 45 비관 · 46 병적 · 47 지배 · 48 불안[3차])은 여전히 Boss 결정 대기.</p>
   </article>
   <nav class="wz-pager">
     <a class="" href="session-2026-07-26_Grok.html">
