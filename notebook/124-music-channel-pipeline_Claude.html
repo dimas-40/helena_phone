@@ -114,6 +114,15 @@
 </ul>
 </li>
 <li><a href="#5">5. 남은 일</a></li>
+<li><a href="#6-1-2026-10-06">6. 1호 다크 이식 + 모바일 최적화 (2026-10-06)</a><ul>
+<li><a href="#61">6.1 공용 자산이 곡마다 달라지는 것들</a></li>
+<li><a href="#62">6.2 빨강 칸의 정의 — 실측으로 바꿨다</a></li>
+<li><a href="#63-scriptspd_check_pagespy">6.3 검사 하네스 — scripts/pd_check_pages.py</a></li>
+<li><a href="#64">6.4 이번에 잡은 것 (눈으로만 봤으면 전부 놓쳤다)</a></li>
+<li><a href="#65">6.5 납품</a></li>
+<li><a href="#66">6.6 남은 정직</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav>
@@ -573,19 +582,105 @@ python3 scripts/parksy_push.py &lt;로컬폴더&gt; &quot;channel/musician/piano
 <li>[x] ~~2호 — Bach Prelude in C BWV 846~~ → <strong>완성·납품</strong> (§1.5)</li>
 <li>[x] ~~공개 경로~~ → <strong>parksy.kr/channel/musician/piano/</strong> (Boss 확정, §4.5)</li>
 <li>[x] ~~미리보기 서버~~ → 납품지는 parksy.kr (로컬 서버 불필요, 정리 대상)</li>
-<li>[ ] <strong>Boss 판정</strong> — RAW vs 조정렬 / 딜레이 유지 여부 / 페이지 문구 / <strong>다크 테마 수용 여부</strong></li>
-<li>[ ] <strong>1호를 새 디자인으로 이식할지</strong> — Boss 가 &ldquo;촌스럽다&rdquo;고 한 건 1호 테마다.<br>
-      2호만 새 옷을 입으면 채널 안에서 두 곡이 따로 논다. <strong>Boss 판단 대기.</strong></li>
+<li>[x] ~~1호를 새 디자인으로 이식~~ → <strong>완료·납품</strong> (§6). 다크 + 모바일 최적화.</li>
+<li>[ ] <strong>Boss 판정</strong> — RAW vs 조정렬 / 딜레이 유지 여부 / 페이지 문구</li>
 <li>[ ] <strong>1호 렌더 엔진 확정</strong> — 랩탑 SSH 키가 막혀 못 봤다(§1 ⚠️). <code>~/tmp/sal/run.sh</code></li>
 <li>[ ] <strong>사본 정리</strong> — <code>helena_phone:music-channel/</code> 을 버릴지 Boss 판단</li>
 <li>[ ] <strong><code>midi_lane/</code> 은 gitignored</strong> — 42곡 소재(원본 ogg·MIDI·렌더)가 <strong>폰에만</strong> 있다.<br>
       폰이 죽으면 소재가 사라진다. 42곡 다 모이기 전에 어디론가 올려야 한다. <strong>Boss 판단 대기.</strong></li>
 <li>[ ] 이미지 자동 수급 스크립트 — 지금은 손으로 Commons API</li>
-<li>[ ] 42곡 소재 목록 확정 (<code>_notebook/122</code> §3은 6곡까지만)</li>
+<li>[ ] 48곡 소재 목록 확정 (<code>_notebook/122</code> §3은 6곡까지만)</li>
 <li>[ ] 3호 — <code>_notebook/122</code> §3 우선순위 3</li>
 </ul>
 <hr>
-<p><em><code>_Claude</code> · 2026-10-06 · 1호 완성 · 2호부터 이 레시피를 그대로 쓴다</em></p>
+<h2 id="6-1-2026-10-06">6. 1호 다크 이식 + 모바일 최적화 (2026-10-06)</h2>
+<p>Boss 지시로 1호를 2호의 다크 테마로 옮겼다. 작업의 실체는 <strong>공용 자산을 데이터 구동으로 바꾼 것</strong>이다.</p>
+<h3 id="61">6.1 공용 자산이 곡마다 달라지는 것들</h3>
+<table>
+<thead>
+<tr>
+<th>무엇</th>
+<th>어디서 오나</th>
+<th>왜</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>음역 <code>LO</code>/<code>HI</code></td>
+<td><code>data.js</code> 의 <code>notes[][2]</code> 에서 뽑음 (±2, 21~108 클램프)</td>
+<td>상수로 박으면 다음 곡에서 잘린다</td>
+</tr>
+<tr>
+<td>칸 경계 <code>BLOCKS</code>·<code>NB</code></td>
+<td><code>P.blocks</code> (저음 변화) 또는 <code>--grid N</code></td>
+<td>74칸과 35마디가 같은 코드로 돈다</td>
+</tr>
+<tr>
+<td>단위 <code>BARUNIT</code></td>
+<td><code>P.barUnit</code> (<code>저음 블록</code> / <code>마디</code>)</td>
+<td><strong>모르면 &ldquo;마디&rdquo;라고 우기지 않는다</strong></td>
+</tr>
+<tr>
+<td>강조칸</td>
+<td><code>&lt;svg id="wheel" data-here="N" data-note="…"&gt;</code></td>
+<td>페이지가 말하고 스크립트는 공용</td>
+</tr>
+<tr>
+<td>폰 안내문</td>
+<td><code>matchMedia('(hover:hover)')</code></td>
+<td>마우스 없는 기기에 &ldquo;올려보세요&rdquo;는 거짓말</td>
+</tr>
+</tbody>
+</table>
+<h3 id="62">6.2 빨강 칸의 정의 — 실측으로 바꿨다</h3>
+<p>&ldquo;가장 성긴 칸&rdquo; → <strong>&ldquo;중앙값에서 가장 튀는 칸&rdquo;</strong>.<br>
+짐노페디에서 가장 성긴 칸은 t=58.52초의 <strong>1음짜리 옥타브 이동</strong>이라 보여줄 게 없었다.<br>
+바꾼 뒤: 1호 = E2 가 14.6초 붙은 <strong>38음</strong> 칸(2:38), 2호 = 마지막 <strong>4음</strong> 마디. 둘 다 곡의 실제 사건이다.</p>
+<h3 id="63-scriptspd_check_pagespy">6.3 검사 하네스 — <code>scripts/pd_check_pages.py</code></h3>
+<pre><code class="language-bash">python3 scripts/pd_check_pages.py midi_lane/pd/_localtest 8801   # 로컬
+python3 scripts/pd_check_pages.py . 0 --live                     # 라이브
+</code></pre>
+<p>2곡 × 폭 4종(360·414·768·1280)을 실제로 열어 콘솔 에러·가로 넘침·독 높이·<strong>칩 줄바꿈</strong>·<br>
+클릭 점프·수레바퀴 강조칸을 숫자로 본다. 조립은 <code>scripts/pd_build_deploy.sh</code>.</p>
+<p><strong>⚠️ 로컬 검사에는 Range 지원 서버가 필요하다.</strong> 파이썬 <code>http.server</code> 는 항상 200 을 주고,<br>
+그러면 <code>audio.seekable</code> 이 비어서 <code>currentTime = X</code> 가 <strong>조용히 무시</strong>된다 — 클릭이 안 먹는 것처럼 보인다.<br>
+<strong>라이브는 멀쩡하다.</strong> 하네스가 206 을 직접 만든다.</p>
+<h3 id="64">6.4 이번에 잡은 것 (눈으로만 봤으면 전부 놓쳤다)</h3>
+<table>
+<thead>
+<tr>
+<th>증상</th>
+<th>실체</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>360 화면에서 가로 넘침 10~74px</td>
+<td>인라인 <code>style="max-width:22rem"</code>(352px)이 <strong>인라인이라</strong> 스타일시트의 <code>max-width:100%</code> 를 이긴다 → <code>min(22rem,100%)</code></td>
+</tr>
+<tr>
+<td>1호 수레바퀴가 <strong>기쁨(Joy)</strong> 을 켬</td>
+<td>2호에 <code>data-here</code> 를 안 붙여서 <code>parseInt(null\|\|'0')</code> = 0 → 신뢰(Trust)=1 로 수정</td>
+</tr>
+<tr>
+<td>독 칩 &ldquo;원곡 · 이시자카&rdquo;가 네 줄</td>
+<td><code>#which</code> 를 46px 열에 넣었다 → <code>grid-column:1/3</code> + <code>white-space:nowrap</code></td>
+</tr>
+<tr>
+<td>수레바퀴가 폰에서 반응 없음</td>
+<td><code>mouseenter</code> 만 있었고 <code>click</code> 이 없었다</td>
+</tr>
+</tbody>
+</table>
+<h3 id="65">6.5 납품</h3>
+<pre><code>https://parksy.kr/channel/musician/piano/01-satie-gymnopedie/
+</code></pre>
+<p>라이브 4폭 × 2곡 전부 통과. 목록 페이지 카운터 &ldquo;2 / 42&rdquo; → <strong>&ldquo;2 / 48&rdquo;</strong>(정본 48, <code>_notebook/123</code>).</p>
+<h3 id="66">6.6 남은 정직</h3>
+<p>1호 렌더 엔진은 <strong>여전히 미확정</strong> — 그래서 다크 페이지 푸터에 엔진을 <strong>새로 쓰지 않았다</strong>.<br>
+살라만더 샘플 표기만 남겼다. 모르는 걸 새로 쓰면 그것도 거짓말이다.</p>
+<hr>
+<p><em><code>_Claude</code> · 2026-10-06 · 1호·2호 다크 통일 · 3호부터 이 레시피 그대로</em></p>
   </article>
   <nav class="wz-pager">
     <a class="" href="123-bgm-emotion-master_Claude.html">
