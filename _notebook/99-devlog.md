@@ -11158,3 +11158,89 @@ python3 scripts/parksy_push.py \
 **30호 막힘** — 피아노 녹음 없음. (옛 메모의 "CC BY 3.0"은 틀렸다: 그 12:13 관현 녹음은
 IMSLP #77970, 스키드모어 칼리지 오케스트라, **CC BY-SA 3.0**이다. CC BY 3.0은 #77916.)
 **다음 곡**: 12 · 18 · 19 · 26 · 31 · **35** · 40 (**35호**가 들어오면 혐오 축 세 점이 완성된다).
+
+---
+
+## 2026-10-08 — **소재 벽** · 「다음 곡」 목록이 전부 막혔다 + `{{PD-US-record}}` 발견 (_Claude)
+
+34호를 낸 직후 35호(프로코피예프 〈사르카즘 Op.17〉, 혐오 · 혐오)를 시작하려다
+**막혔다.** 막힌 김에 남은 후보를 전부 훑었더니 **「다음 곡」 일곱 개가 전부 소재가 없다.**
+그리고 그 과정에서 **시리즈 전체의 전제를 흔드는 것**을 하나 찾았다.
+
+### 1. 남은 후보 일곱 — 전부 녹음이 없다
+
+| 곡 | 찾은 곳 | 결과 |
+|---|---|---|
+| 35호 사르카즘 Op.17 (Prokofiev) | Commons | **없음** — 프로코피예프 피아노 오디오가 Commons에 5개뿐이고 사르카즘은 없다 |
+| 35호 | IMSLP | **`Recordings (0)`** — 곡 페이지 자체가 0으로 적고 있다 |
+| 35호 | archive.org | Sándor의 **1966년 Vox LP** 판(라이선스 없음)뿐 → 쓸 수 없다 |
+| 31호 퍽의 춤 (Debussy) | Commons | 파일이 **한 개뿐** — Marcelle Meyer 1956 (아래 2번) |
+| 40호 토카타 Op.11 (Prokofiev) | Commons | 파일이 **한 개뿐** — Argerich 1962 (아래 2번) |
+| 12호 오렌지 3개의 사랑 행진곡 | Commons | 없음 |
+| 18호 악흥의 순간 Op.16 No.4 | Commons | 없음 |
+| 19·26호 (Schumann Op.12) | Commons | **MIDI만** 있다 — MIDI는 연주 녹음이 아니라 우리 파이프라인의 원곡 쪽이 될 수 없다 |
+
+**곧 「다음 곡」 7개(12·18·19·26·31·35·40)가 전부 막혔다.** 30호(피아노 녹음 없음)와 합치면 **8개**다.
+
+### 2. ★ `{{PD-US-record}}` — 퍼블릭 도메인 표시가 **아니었다**
+
+31호 후보 Meyer 1956 녹음의 Commons 파일을 열어 보니 라이선스 헤더가 이랬다.
+
+```
+{{PD-old-70-1923}}
+{{PD-EU-audio}}
+{{PD-US-record}}
+```
+
+첫 두 개는 읽히는 대로인데 **세 번째가 함정**이었다. 그 템플릿을 직접 받아 읽은 렌더 문구:
+
+> Recordings that were first published **prior to 1926** are in the public domain.
+> Recordings that were first published **between 1926 and 1946** are copyrighted for a period of **100 years** after first publication.
+> Recordings that were first published **between 1947 and 1956** are copyrighted for a period of **110 years** after first publication.
+> Recordings that were published **after 1956** and first fixed prior to February 15, 1972 will enter the public domain on **February 15, 2067**.
+> **Files bearing this tag may be deleted in the future**, depending on the outcome of community discussions and new case law.
+
+곧 **`{{PD-US-record}}` 은 미국 저작권 경고판**이고, 파일 페이지에 **빨간 저작권 아이콘**과 함께 그대로 렌더된다.
+**1956년 발행 = 미국에서 2066년까지 보호.** 이 파일은 EU에서는 자유롭지만 **미국에서는 아니다.**
+
+그리고 40호 후보 Argerich 1962 파일은 더 분명했다 — **`{{PD-EU-audio}}` 하나뿐**,
+출처는 **Deutsche Grammophon**. MMA상 1962년 발행 녹음은 **2067년 2월 15일**까지 보호된다.
+**상업 레이블의 상용 녹음**이 미국 근거 없이 올라가 있는 것이다.
+
+**⚠️ 그러므로 31호와 40호는 이 두 파일로는 못 만든다.** 「세 번째 PD 주장」이 아니라
+**파일 스스로 “나는 미국에서 아직 보호된다”고 적고 있는 것**을 쓴다는 뜻이었다.
+
+### 3. 그래서 **이미 낸 30편도 감사가 필요하다** — 진행 중
+
+우리 asset 이름에는 **1932·1933년 후보**(`waldstein-schnabel-1932.ogg` · `weber-1933.mp3`)가
+남아 있고, **1926~1946년 발행 녹음은 미국에서 발행+100년**이다.
+**어느 후보를 실제로 썼는지는 지금 확인하지 않았다.**
+쪽지 20편에 SHA-1이 적혀 있으니 Commons 역조회(`list=allimages&aisha1=`)로 되짚을 수 있다.
+**감사를 돌리고 있다** — 결과는 다음 항목으로 적는다.
+
+**결론을 미리 쓰면 안 되지만, 한 가지는 지금 적어 둔다:**
+우리는 지금까지 쪽지에 **“Commons가 명시한 라이선스”**를 적어 왔고,
+**그 라이선스가 미국에서 성립하는지는 우리가 확인해 본 적이 없다.**
+이 시리즈의 정직 항목은 **“우리가 실제로 한 일”**에 대해서는 촘촘했는데,
+**“남이 붙인 라이선스를 우리가 검증했는가”**에 대해서는 비어 있었다.
+
+### 4. 이 막힘은 **Boss 결정 사항**이다 — 내가 정할 수 없다
+
+헌법·규칙에 **“라이선스 판정은 자동화하지 않는다”**가 있다. 그리고 남은 선택지는 전부 취향이 아니라
+**위험 감수 수준**의 문제다.
+
+- (가) **Commons가 붙인 라이선스를 그대로 믿고 쓴다** — Meyer 1956·Argerich 1962를 쓴다. 빠르지만 미국 근거가 없다.
+- (나) **미국에서 확실히 자유로운 것만 쓴다** — 그러면 31·35·40이 막히고, 남은 곡도 더 줄어든다.
+- (다) **소재 생태계를 넓힌다** — 지금은 Commons·Musopen·IMSLP·archive.org를 봤다. 다른 곳(유럽 국립도서관 음원, CC 전용 아카이브)을 더 파야 한다.
+- (라) **곡을 바꾼다** — 칸에 맞는 다른 곡으로 후보를 갈아 끼운다(수첩 122·123의 후보표를 다시 연다).
+
+**나는 (다)를 조금 더 파 보고, 결과를 보고하겠다.**
+
+### 5. 지금까지 확인한 도구 사실 (다음에 또 쓴다)
+
+- IMSLP 곡 페이지에서 **`Performances` 항목의 `Recordings ( 0 )`** 로 녹음 유무를 바로 알 수 있다.
+- Commons에서 **`intitle:"..."`** 으로 파일명 검색이 되고, `filetype:audio` 로 좁힌다.
+- **`action=query&prop=revisions&rvprop=content&rvslots=main&titles=File:...`** 로 위키텍스트를 받아
+  `{{라이선스}}` 를 직접 보는 것이 가장 확실하다. `extmetadata`의 `LicenseShortName` 만 보면
+  **이번 건처럼 “Public domain”으로 잘못 읽힌다.**
+- **Musopen 은 403 이다**(사이트도, 검색도). 지금은 쓸 수 없다.
