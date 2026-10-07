@@ -11344,3 +11344,21 @@ IMSLP #77970, 스키드모어 칼리지 오케스트라, **CC BY-SA 3.0**이다.
 미국 기준 위험을 알 수 없다.
 
 **34호 정정판 검사 통과.** `pd_check_pages.py` — 38곡 × 4해상도 **전부 통과**.
+
+### 덧 — **11호는 고칠 수 있다** (같은 날 저녁)
+
+감사에서 유일하게 `위험` 으로 나온 **11호 발트슈타인 1악장**의 대안을 찾았다.
+
+- ✅ **`File:Michael Hawley - 01 - Sonata No 21 in C Major Waldstein Op 53 - I Allegro con brio.ogg`
+  — `{{cc0}}`**, 14,792,845 B, sha1 `92ee1769…`. 2009-04-30, 출처 **Free Music Archive**,
+  **연주자 본인이 권리를 전부 포기한 등급**(권리자 = 라이선서). **미국 안전.**
+  같은 연주자의 2·3악장도 함께 있다(3파일).
+- ❌ `Piano Sonata N° 21 … (Beethoven, Schnabel).ogg` — `{{PD-EU-audio}}` **단독**. 1932년반, 미국 아님.
+- ❌ `Klaviersonate Nr. 21 … I. Allegro con brio.ogg` — `{{PD-EU-audio}}` **단독**. 미국 아님.
+- ⚠️ `Ludwig van Beethoven - sonata no. 21 … i. allegro con br.ogg` — `{{PD-old-100}}` + `{{musopen}}`.
+  **작곡가 기준 딱지라 녹음 권리의 근거로는 약하다**(04·05호가 쓴 것과 같은 등급).
+- `Beethoven Waldstein 1st movement.ogg` — 출처 `piano-midi.de`, **라이선스 템플릿 없음**. 쓰지 않는다.
+
+**→ 11호 처리 (가)/(나)/(다) 를 Boss 에게 올렸다.** 나는 **(가) 먼저, 나중에 (나)** 를 권했다.
+바꾸려면 11호를 처음부터 다시 만들어야 한다(받기→채보→계측→렌더→쪽지·음원 재배포).
+**판정은 내가 하지 않는다.**
