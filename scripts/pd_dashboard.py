@@ -52,7 +52,7 @@ QUEUE = [
     ("33", "라 캄파넬라", "Franz Liszt, 1851", "놀람 · 경악", "33-liszt-campanella"),
     ("34", "짐노페디 No.3", "Erik Satie, 1888", "혐오 · 권태", None),
     ("35", "사르카즘 Op.17", "Sergei Prokofiev, 1914", "혐오 · 혐오", None),
-    ("36", "알레그로 바르바로", "Béla Bartók, 1911", "혐오 · 역겨움", None),
+    ("36", "알레그로 바르바로", "Béla Bartók, 1911", "혐오 · 역겨움", "36-bartok-allegro-barbaro"),
     ("37", "전주곡 Op.28 No.22", "Frédéric Chopin, 1839", "분노 · 짜증", "37-chopin-prelude-22"),
     ("38", "비들로", "Modest Mussorgsky, 1874", "비난 (놀람+슬픔)", None),
     ("39", "미정", "", "멸시 (혐오+분노)", None),

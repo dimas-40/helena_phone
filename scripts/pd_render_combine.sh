@@ -24,6 +24,14 @@ RENDER=/root/src/sfizz/build/library/bin/sfizz_render
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
+# sfizz 가 정리 단계에서 죽어도 "렌더가 됐는지"를 가릴 기준 — midi 길이의 절반.
+MIDI_SEC=$(python3 - "$MIDI" <<'PY'
+import sys, mido
+m = mido.MidiFile(sys.argv[1])
+print("%.3f" % (m.length))
+PY
+)
+
 [ -x "$RENDER" ] || { echo "sfizz_render 없음: $RENDER"; exit 1; }
 [ -f "$SFZ" ] || { echo "SFZ 없음: $SFZ"; exit 1; }
 
@@ -38,8 +46,29 @@ else
 fi
 
 # -v 는 스레드 스케줄 경고를 쏟는다. 경고가 로그를 덮으면 실패를 못 본다.
-"$RENDER" --sfz "$SFZ" --midi "$MIDI" --wav "$TMP/r.wav" \
-          --samplerate 44100 -p 128 --use-eot 2>/dev/null
+# sfizz 1.2.3 은 정리 단계에서 assert 로 죽는 일이 **간헐적으로** 있다
+# (Voice.cpp:902 "Missing promise during fillWithData"). 그때도 wav 는 대부분 써졌지만
+# **끝자락(0.5~1초)이 잘린다** — 조용히 잘린 트랙을 내보내면 안 된다.
+# 그래서 실패하면 최대 2번 더 시도하고, 그래도 안 되면 그때만 "잘렸다"고 알리며 통과시킨다.
+# (2026-10-07 바르톡 36호 실측: -p 256 은 매번 죽고, -p 128 은 부하가 겹칠 때만 죽었다.)
+RC=1
+for try in 1 2 3; do
+  set +e
+  "$RENDER" --sfz "$SFZ" --midi "$MIDI" --wav "$TMP/r.wav" \
+            --samplerate 44100 -p 128 --use-eot 2>/dev/null
+  RC=$?
+  set -e
+  [ "$RC" -eq 0 ] && break
+  echo "  (sfizz 종료코드 $RC — $try번째 시도 실패. 다시 친다)" >&2
+done
+if [ "$RC" -ne 0 ]; then
+  RW=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$TMP/r.wav" 2>/dev/null || echo 0)
+  if awk -v a="$RW" -v b="$MIDI_SEC" 'BEGIN{exit !(a > b*0.7)}'; then
+    echo "  ⚠ sfizz 가 세 번 다 죽었다(종료코드 $RC). wav ${RW}s — **끝자락이 잘렸을 수 있다**" >&2
+  else
+    echo "sfizz 실패 (종료코드 $RC, wav ${RW}s)" >&2; exit 1
+  fi
+fi
 ffmpeg -v error -y -i "$TMP/r.wav" -af "loudnorm=I=-16:TP=-1.5:LRA=11" \
        -ar 44100 -ac 2 "$TMP/b.wav"
 
