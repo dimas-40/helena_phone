@@ -32,7 +32,7 @@ QUEUE = [
     ("13", "혁명 에튀드 Op.10 No.12", "Frédéric Chopin, 1831", "분노 · 격분", "13-chopin-revolutionary"),
     ("14", "환상즉흥곡 Op.66", "Frédéric Chopin, 1834", "기대 · 기대", "14-chopin-fantaisie-impromptu"),
     ("15", "장송행진곡 Op.35 3악장", "Frédéric Chopin, 1839", "절망 (공포+슬픔)", "15-chopin-funeral-march"),
-    ("16", "군대 폴로네즈 Op.40 No.1", "Frédéric Chopin, 1838", "자부심 (분노+기쁨)", None),
+    ("16", "군대 폴로네즈 Op.40 No.1", "Frédéric Chopin, 1838", "자부심 (분노+기쁨)", "16-chopin-military-polonaise"),
     ("17", "침몰한 대성당", "Claude Debussy, 1910", "경외 (공포+놀람)", None),
     ("18", "악흥의 순간 Op.16 No.4", "Sergei Rachmaninoff, 1896", "시기 (슬픔+분노)", None),
     ("19", "왜? Op.12 No.3", "Robert Schumann, 1837", "죄책감 (기쁨+공포)", None),
