@@ -40,7 +40,7 @@ QUEUE = [
     ("21", "터키행진곡 K.331 3악장", "Wolfgang A. Mozart, 1783", "기쁨 · 기쁨", None),
     ("22", "물레돌리는 노래 Op.67 No.4", "Felix Mendelssohn, 1845", "기쁨 · 환희", None),
     ("23", "캐논 (피아노 편)", "Johann Pachelbel, 1680경", "신뢰 · 존경", None),
-    ("24", "전주곡 Op.28 No.6", "Frédéric Chopin, 1839", "순종 (신뢰+공포)", None),
+    ("24", "전주곡 Op.28 No.6", "Frédéric Chopin, 1839", "순종 (신뢰+공포)", "24-chopin-prelude-6"),
     ("25", "아라베스크 No.1", "Claude Debussy, 1891", "호기심 (신뢰+놀람)", None),
     ("26", "도약 Op.12 No.2", "Robert Schumann, 1837", "기대 · 관심", None),
     ("27", "트롤하우겐의 결혼식날", "Edvard Grieg, 1896", "기대 · 경계", "27-grieg-troldhaugen"),
