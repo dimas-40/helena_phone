@@ -49,7 +49,7 @@ QUEUE = [
     ("30", "민둥산의 하룻밤 (피아노 편)", "Modest Mussorgsky, 1867", "공포 · 극공", None),
     ("31", "퍽의 춤", "Claude Debussy, 1908", "놀람 · 산만", None),
     ("32", "놀람 교향곡 2악장 (피아노 편)", "Joseph Haydn, 1791", "놀람 · 놀람", None),
-    ("33", "라 캄파넬라", "Franz Liszt, 1851", "놀람 · 경악", None),
+    ("33", "라 캄파넬라", "Franz Liszt, 1851", "놀람 · 경악", "33-liszt-campanella"),
     ("34", "짐노페디 No.3", "Erik Satie, 1888", "혐오 · 권태", None),
     ("35", "사르카즘 Op.17", "Sergei Prokofiev, 1914", "혐오 · 혐오", None),
     ("36", "알레그로 바르바로", "Béla Bartók, 1911", "혐오 · 역겨움", None),
