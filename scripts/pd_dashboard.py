@@ -27,7 +27,7 @@ QUEUE = [
     ("08", "발라드 No.1", "Frédéric Chopin, 1835", "회한 (슬픔+혐오)", "08-chopin-ballade1"),
     ("09", "리스트 9번 4악장 발췌", "Beethoven–Liszt, 편곡 1850 · 연주 1972", "희망 (기대+신뢰)", "09-beethoven-liszt-9th"),
     ("10", "야상곡 Op.9 No.2", "Frédéric Chopin, 1832", "감상 (신뢰+슬픔)", "10-chopin-nocturne9-2"),
-    ("11", "발트슈타인 1악장", "Ludwig van Beethoven, 1804", "낙관 (기대+기쁨)", None),
+    ("11", "발트슈타인 1악장", "Ludwig van Beethoven, 1804", "낙관 (기대+기쁨)", "11-beethoven-waldstein-1"),
     ("12", "오렌지 3개의 사랑 — 행진곡", "Sergei Prokofiev, 1919", "냉소 (혐오+기대)", None),
     ("13", "혁명 에튀드 Op.10 No.12", "Frédéric Chopin, 1831", "분노 · 격분", None),
     ("14", "환상즉흥곡 Op.66", "Frédéric Chopin, 1834", "기대 · 기대", None),
