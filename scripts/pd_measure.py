@@ -82,10 +82,13 @@ def level(x):
 
 
 def ebur128(path):
+    # errors="replace" — 27호에서 터졌다: ogg 메타데이터에 든 라틴1 바이트(0xfc)를
+    # ffmpeg 이 stderr 로 되뱉는데 text=True 의 utf-8 디코더가 그 자리에서 죽었다.
+    # 재는 값과는 무관한 줄이므로 그 줄만 깨지고 나머지는 그대로 읽으면 된다.
     s = subprocess.run(
         ["ffmpeg", "-hide_banner", "-nostats", "-i", str(path),
          "-af", "ebur128=peak=true", "-f", "null", "-"],
-        capture_output=True, text=True).stderr.splitlines()
+        capture_output=True, text=True, encoding="utf-8", errors="replace").stderr.splitlines()
     out = {}
     for k, ln in enumerate(s):
         if "Integrated loudness" in ln and k + 1 < len(s):

@@ -43,7 +43,7 @@ QUEUE = [
     ("24", "전주곡 Op.28 No.6", "Frédéric Chopin, 1839", "순종 (신뢰+공포)", None),
     ("25", "아라베스크 No.1", "Claude Debussy, 1891", "호기심 (신뢰+놀람)", None),
     ("26", "도약 Op.12 No.2", "Robert Schumann, 1837", "기대 · 관심", None),
-    ("27", "트롤하우겐의 결혼식날", "Edvard Grieg, 1896", "기대 · 경계", None),
+    ("27", "트롤하우겐의 결혼식날", "Edvard Grieg, 1896", "기대 · 경계", "27-grieg-troldhaugen"),
     ("28", "전주곡 Op.28 No.2", "Frédéric Chopin, 1839", "공포 · 불안", None),
     ("29", "전주곡 Op.28 No.24", "Frédéric Chopin, 1839", "공포 · 공포", None),
     ("30", "민둥산의 하룻밤 (피아노 편)", "Modest Mussorgsky, 1867", "공포 · 극공", None),
