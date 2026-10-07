@@ -712,6 +712,7 @@
 </ul>
 </li>
 <li><a href="#2026-10-07-15-op35-3-_claude">2026-10-07 — 15호 장송행진곡(쇼팽 Op.35 3악장) 납품 (_Claude)</a></li>
+<li><a href="#2026-10-07-16-op40-no1-_claude">2026-10-07 — 16호 군대 폴로네즈(쇼팽 Op.40 No.1) 납품 (_Claude)</a></li>
 </ul>
 </div>
 </nav>
@@ -12079,6 +12080,46 @@ BnF 자필 사본 표지에서 직접 읽음: <strong>“Marche funèbre / par F
 <strong>15호치 재료(page.py·facts.json·_raw.mid·asset)도 이 폰에만 있다.</strong> 13호 항목에 적은 그대로, <strong>Boss 결정 사항이라 임의로 바꾸지 않았다.</strong></p>
 <p><strong>다음.</strong> 16호 군대 폴로네즈 Op.40 No.1(자부심 = 분노+기쁨)부터 안 막혀 있다.<br>
 12호(막힘 — 소재 결정 필요) · 미정 9칸(39 멸시 · 41 불신 · 42 기쁨[3차] · 43 수치 · 44 격분[3차] · 45 비관 · 46 병적 · 47 지배 · 48 불안[3차])은 여전히 Boss 결정 대기.</p>
+<h2 id="2026-10-07-16-op40-no1-_claude">2026-10-07 — 16호 군대 폴로네즈(쇼팽 Op.40 No.1) 납품 (_Claude)</h2>
+<p><strong>칸: 자부심 (분노+기쁨)</strong> · 슬러그 <code>16-chopin-military-polonaise</code> · 쇼팽, 1838.</p>
+<p><strong>★★ 이번에 잡은 가장 큰 것 — 시리즈 렌더 규약을 잘못 알고 있었다.</strong><br>
+16호 재현을 <strong>모노포니로 만든 MIDI(1157음)</strong> 로 렌더해 놓고 있었다. 그런데 다른 곡들의<br>
+<code>data.js</code> 음 개수를 <code>extract.log</code>의 <code>[3/6] 원본 전사: N음</code> 과 전부 대조해 보니 <strong>01·03·04·05·06·08·09·13·14·15호가 전부 원본(다성) 전사 개수와 일치</strong>했다.<br>
+→ <strong>우리 시리즈의 렌더와 <code>data.js</code>는 모노포니가 아니라 원본 전사를 쓴다.</strong><br>
+16호만 규약에서 벗어나 있었고, 스펙트럼으로도 확인했다 — 재현 시작 화음의 스펙트럼 봉우리가<br>
+원본 첫 화음 5음(52.5/87.5/115.7/175.0/232.8 Hz ≈ 올림가1/바2/올림가2/바3/올림가3)과 맞았다.<br>
+<strong><code>mf16_raw.mid</code>(5712음)로 다시 렌더</strong>하고 <code>data.js</code>도 그 MIDI에서 다시 만들었다.<br>
+<strong>들리는 것과 페이지 숫자가 어긋난 채로 납품할 뻔했다.</strong> 곡 하나가 아니라 시리즈 전체의 문제였다.</p>
+<p><strong>악보 — 원본 해상도로 잘라 읽음.</strong> 파리 티루프나스 판(BnF). 인쇄 4쪽 머리에 <strong>샵이 정확히 두 개</strong>,<br>
+그 뒤 반복기호. → 라장조 트리오 구간. <strong>“두 개”는 내가 악보에서 읽은 것이고, 그것이 라장조라는 것은<br>
+전사 쪽 측정(G♮가 100초 무렵부터 쏟아짐)과 위키백과 서술로 삼각검증했다.</strong><br>
+표지 활자는 <strong>“E. Troupenas &amp; Cie”</strong> — 이 형태는 초판 이후일 수 있어 <strong>“트루프나스 파리 판”</strong>으로만 적었다<br>
+(전 세션의 “1판” 주장은 뺐다).</p>
+<p><strong>구조 — 세 부분을 내가 다시 쟀다.</strong> 10초 창마다 G♯/(G+G♯) 비율: 앞 8/10 창 ≥0.90 → 가운데 15/16 창 ≤0.45 →<br>
+뒤 5/5 창 ≥0.65. 재현부는 12초 창 음계급 상관으로 확인(260.0초 0.998 · 293.5초 0.998 · 16.0초 0.997 · 49.5초 0.999).</p>
+<p><strong>수치.</strong> 5712음(<strong>시리즈 1위</strong>) · 18.47/s · 올림다1–마7 · 칸 405 · 칸중앙 0.408초 · 원곡끝 310.84(313.664초 중)<br>
+· 앞여백 0.38 · 꼬리 2.824 · 4초최고 <strong>106@4:00</strong> · 4초최저 <strong>41@1:40</strong>(<strong>시리즈 최고 = 가장 한산</strong>)<br>
+· 밀도비 <strong>2.6배(시리즈에서 가장 평평)</strong> · 1초최고 <strong>−7.12(1위)</strong> · 40초폭 3.23 · LUFS −11.7 · LRA 6.7 · TP −0.2.<br>
+최다음 가3 382번 · 재타격 중앙간격 <strong>0.319초(3위</strong> — 11호 0.273 · 09호 0.277 다음) · 최대공백 16.39초@2:42.<br>
+<code>data.js</code> 칸 간격 중앙값 0.486초(<strong>2위</strong> — 09호 0.428 다음). <strong>단 띠 칸 간격은 4초 밀도와 다른 자다</strong> — 곡마다 이걸 혼동해 적은 데가 있어 바로잡았다.</p>
+<p><strong>첫 화음·끝 화음.</strong> 첫 화음 6음이 0.012초 안(가1·가2·가3·가4·올림다4·마4 = 가장조).<br>
+끝 화음 7음이 0.013초 안(올림다3·마3·가3·올림다4·마4·가4·가5). 15호와 달리 <strong>“완전히 같은 화음”이라고는 쓰지 않았다</strong> — 6음 대 7음이라 다르다.</p>
+<p><strong>⚠️ 설명 못 한 것.</strong> 올림라(D♯) 304음(5.3%)이 40–50·70–80·280–290초에 몰리는데, 그 창이 정확히 G♮가<br>
+솟는 창이다. 전 세션이 주장한 “D♯5 623.1 Hz 스펙트럼 봉우리”는 <strong>다시 재현되지 않아 페이지에서 뺐다</strong><br>
+(내가 재니 A4 440.1 Hz가 최고 봉우리였다). 재현 불가한 숫자는 싣지 않는다.</p>
+<p><strong>납품.</strong><br>
+- 이미지 4장 Commons SHA-1·바이트 전수 대조(전부 일치 · 웹용 축소 사실과 원본 SHA-1 병기).<br>
+- 페이지 <strong>53,871B</strong> · <code>pd_page.py</code> <strong>축 OK · 독 OK</strong>(길이 10:22 · 원곡끝 5:10 · 침묵끝 5:12 · 칸 417).<br>
+- 음원 <code>combined.mp3</code> <strong>622.813초 · 11,443,158B</strong>(a.wav 310.80 / 무음 2.00 / b.wav 310.01).<br>
+- 대시보드 QUEUE 16행 슬러그 채움 → <strong>완성 15 / 예정 33 / 곡 미정 9</strong>.<br>
+- <code>parksy.kr</code> main <strong><code>b05c31eb19</code> → <code>47407d8844</code></strong> 두 번 push. work 레포 <strong><code>2c98327</code></strong>.<br>
+- <strong>라이브 200 확인</strong> — 페이지 53,871B · 음원 11,443,158B · data.js 112,104B · 대시보드 18,154B(완성 <b>15</b>).<br>
+  (직전 조회에서 404였던 것은 <strong>GitHub Pages CDN 지연</strong>이었고, API로는 이미 200이었다 — push 실패가 아니었다.)<br>
+- 텔레그램: 음원 전송(message_id 175) + 리포트.</p>
+<p><strong>⚠️ 구조적 위험 그대로 (고치지 않음).</strong> <code>midi_lane/</code>은 work 레포에서 gitignore, 자체 git도 없다 →<br>
+<strong>16호 재료(page.py·facts.json·mf16_raw.mid·asset)도 이 폰에만 있다.</strong> Boss 결정 사항이라 임의로 바꾸지 않았다.</p>
+<p><strong>다음.</strong> 17호 드뷔시 《침몰한 대성당》(경외 = 공포+놀람)부터 안 막혀 있다.<br>
+12호(소재 결정 필요) · 미정 9칸(39 멸시 · 41 불신 · 42 기쁨[3차] · 43 수치 · 44 격분[3차] · 45 비관 · 46 병적 · 47 지배 · 48 불안[3차])은 여전히 Boss 결정 대기.</p>
   </article>
   <nav class="wz-pager">
     <a class="" href="session-2026-07-26_Grok.html">
