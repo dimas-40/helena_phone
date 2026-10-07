@@ -713,6 +713,7 @@
 </li>
 <li><a href="#2026-10-07-15-op35-3-_claude">2026-10-07 — 15호 장송행진곡(쇼팽 Op.35 3악장) 납품 (_Claude)</a></li>
 <li><a href="#2026-10-07-16-op40-no1-_claude">2026-10-07 — 16호 군대 폴로네즈(쇼팽 Op.40 No.1) 납품 (_Claude)</a></li>
+<li><a href="#2026-10-07-17-_claude">2026-10-07 — 17호 침몰한 대성당(드뷔시) 납품 (_Claude)</a></li>
 </ul>
 </div>
 </nav>
@@ -12119,6 +12120,61 @@ BnF 자필 사본 표지에서 직접 읽음: <strong>“Marche funèbre / par F
 <p><strong>⚠️ 구조적 위험 그대로 (고치지 않음).</strong> <code>midi_lane/</code>은 work 레포에서 gitignore, 자체 git도 없다 →<br>
 <strong>16호 재료(page.py·facts.json·mf16_raw.mid·asset)도 이 폰에만 있다.</strong> Boss 결정 사항이라 임의로 바꾸지 않았다.</p>
 <p><strong>다음.</strong> 17호 드뷔시 《침몰한 대성당》(경외 = 공포+놀람)부터 안 막혀 있다.<br>
+12호(소재 결정 필요) · 미정 9칸(39 멸시 · 41 불신 · 42 기쁨[3차] · 43 수치 · 44 격분[3차] · 45 비관 · 46 병적 · 47 지배 · 48 불안[3차])은 여전히 Boss 결정 대기.</p>
+<h2 id="2026-10-07-17-_claude">2026-10-07 — 17호 침몰한 대성당(드뷔시) 납품 (_Claude)</h2>
+<p><strong>경외(공포+놀람) 칸.</strong> 드뷔시 《프렐류드 제1권》 10번, 1910. 슬러그 <code>17-debussy-cathedrale-engloutie</code>.</p>
+<p><strong>소재 — 시리즈에서 가장 강한 라이선스.</strong> 이반 일리치(Ivan Ilić)가 2006년 4월 파리에 녹음해<br>
+<strong>연주자 본인이 위키미디어 공용에 직접 올린 것</strong>(출처 표기 <code>Own</code>, <strong>CC BY 3.0</strong>, VRTS 티켓 있음).<br>
+<strong>권리자 = 라이선서</strong>인 경우라 이 시리즈가 골라 쓰는 조건에 정확히 맞는다. 원본 5,710,500B · 324.92초 ·<br>
+SHA-1 <code>9b81c957…bf55</code> — 내려받아 공용 표기와 <strong>둘 다 일치</strong> 확인.</p>
+<p><strong>재현 규약 재확인.</strong> 트랙과 <code>data.js</code>에 싣는 것은 <strong>원본 전사(1643음)</strong>이지 단선율(494음)이 아니다.<br>
+16호에서 한 번 어겼다가 되돌린 그 규약을 17호에서도 그대로 적용했다.</p>
+<p><strong>내가 다시 확인한 것 — 위키백과 문장을 믿지 않고 채보에서 재현.</strong><br>
+“첫 화음이 열린 5도(사·라)”라는 서술을 내 채보로 재현했다: 첫 소리 <strong>1.306초</strong>,<br>
+그 안 <strong>0.034초</strong>에 <strong>사1·라2·사2·라6·라7</strong> 다섯 음. <strong>3도가 없다.</strong> 열여섯 곡을 같은 자로 재면<br>
+<strong>첫 화음에 3도가 없는 곡은 이 곡뿐</strong>이다. 곧 이 문장은 인용이 아니라 측정이다.</p>
+<p><strong>구조 — 악보가 아니라 파형과 음표로 쟀다.</strong> 5초 창 음계급 집계로 1:00의 조 바뀜을 잡았다:<br>
+0:55–1:00 올림바 0 · 나 5 · 마 11 → 1:00–1:05 올림바 <strong>15</strong> · 나 <strong>12</strong> · 마 <strong>0</strong>.<br>
+<strong>올림바가 0에서 15로 뛰는 같은 순간 마가 0이 된다.</strong> 그 뒤 1:00–1:25 마는 한 번도 안 나온다.<br>
+그 밖에 1:20 시작 40초 창 −14.82dB(이 곡 최대) · 2:50의 5초 −39.8dB(25초 만에 22dB 낙폭) ·<br>
+3:50 중간 음높이 32(나0 언저리) · 4:05–4:45 높은 음 <strong>0개</strong> · 4:50 중간 음높이 69~72.</p>
+<p><strong>수치.</strong> 1643음 · 5.36/s · <strong>나0–사7(80반음)</strong> · 칸 <strong>311</strong>(pd_measure <code>n_blocks</code>는 302 — <code>pd_build_data.py</code>가<br>
+저음 끊긴 자리에 경계를 하나 더 넣기 때문, 알고 쓰는 차이다) · 칸중앙 0.428초 · 원곡끝 322.26(324.92초 중)<br>
+· 앞여백 1.30 · 꼬리 2.66 · 4초최고 <strong>56@1:20</strong> · 4초최저 <strong>0@308.0</strong>(곡 끝 꼬리) · 1초최고 <strong>−11.35</strong><br>
+· <strong>40초폭 19.85(2위)</strong> · <strong>LRA 22.4(2위)</strong> · LUFS −18.1 · TP −0.7. 최다음 다2 64번.<br>
+<strong>순위를 다시 세어 바로잡은 것: 1초최고는 6위, LUFS 7위다</strong> — 이 곡은 <strong>제일 큰 곡이 아니라 제일 넓은 곡</strong>이다.<br>
+(16호가 1초최고 1위·40초폭 최하위인 것과 정확히 반대편.)</p>
+<p><strong>⚠️ 정직하게 적은 세 가지.</strong><br>
+1. <strong>음역 1위를 자랑으로 쓰지 않았다.</strong> 80반음은 pitch 23(×3)·103(×1)이 만든 값이다. 5회 이상 나온 음만 세면 74반음.<br>
+<strong>양 끝이 흔들리는 값 위에 순위를 세우면 순위도 흔들린다</strong> — 페이지에 그렇게 적었다.<br>
+2. <strong>4초최저 0음은 이 곡의 특징이 아니다.</strong> 그 자리는 곡이 끝난 꼬리(5:08)이고, 열여섯 곡 중 <strong>아홉 곡이 어느 4초에서 0음</strong>까지 떨어진다. 소리가 나는 동안 가장 빈 자리는 <strong>2:48의 1음</strong>(최고 56음의 1/56)이다.<br>
+3. <strong>0:19–0:49 저음 구멍을 확정하지 않았다.</strong> 채보에 MIDI 50 이하가 하나도 없는데 그 구간 스펙트럼에<br>
+<strong>48.4Hz·100.0Hz 봉우리</strong>가 남아 있다. 아는 것(채보에 없다·파형에 흔적이 있다)과 모르는 것(긴 지속음인지 페달 잔향인지)을 갈라 적고 <strong>판정하지 않았다</strong>. 이 구멍이 만드는 23.63초 칸 간격을 “연주가 멈췄다”고 읽으면 <strong>틀린다</strong> — 그 구간에도 음은 계속 왔다(0:30–0:45에 22·15·15·18음).</p>
+<p><strong>악보 — 초판 스캔이 아니다.</strong> 공용의 두 장(1–2마디 2205×679 · 22–28마디 1787×1037)은<br>
+<strong>1910년 판을 다시 조판한 그림</strong>(올린 사람 Spencerpiers)이다. <strong>“초판”이라고 쓰지 않았다.</strong><br>
+마디 번호는 <strong>그림에 인쇄된 22·25 둘만</strong> 옮겼다. 전체 아홉 마디만 봤으므로<br>
+1:00·3:50·4:05·4:50 자리는 <strong>악보가 아니라 오디오 측정으로만</strong> 말한다.<br>
+초상 2장(나다르 1908년 무렵 PD-old-100 / 1909년 LIFE) 전부 SHA-1·바이트 실측, 축소분은 축소 사실 병기.</p>
+<p><strong>🐞 잡은 버그 — 공용 CSS가 360px에서 18px 넘쳤다.</strong> <code>pd_check_pages.py</code>가 17호 360×740에서만<br>
+<strong>가로넘침 18px</strong>을 잡았다. 재현해 보니 범인은 <strong><code>&lt;code&gt;piano_transcription_inference&lt;/code&gt;</code></strong><br>
+(28자, 안 끊기는 한 덩어리)가 본문 상자를 밀어 문서 전체 스크롤을 만든 것이었다 —<br>
+독(dock)이 아니라 채보 섹션 문단이었다. <code>piano.css</code>에 인라인 <code>code</code> 규칙을 넣고<br>
+<strong><code>overflow-wrap:anywhere</code></strong>를 걸었다(줄바꿈뿐 아니라 min-content까지 줄여야 상자가 안 밀린다).<br>
+공용 CSS를 고쳤으므로 <strong>16곡 전부 다시 검사</strong> → <strong>64/64 ✓ · “전부 통과”</strong>.<br>
+곧 이 수정은 17호만이 아니라 <strong>앞의 16곡도 같이 고친 것</strong>이다.</p>
+<p><strong>납품.</strong><br>
+- 페이지 <strong>45,043B</strong> · <code>pd_page.py</code> <strong>축 OK · 독 OK</strong>(길이 10:46 · 원곡끝 5:22 · 침묵끝 5:24 · 칸 311).<br>
+- 음원 <code>combined.mp3</code> <strong>646.681950초 · 12,891,932B</strong> (a.wav 322.26 / 무음 2.00 / b.wav 322.42).<br>
+- 대시보드 QUEUE 17행 슬러그 채움 → <strong>완성 16 / 예정 32 / 곡 미정 9</strong>.<br>
+- <code>parksy.kr</code> <strong>두 번 push</strong> — <code>adad55d572</code>(deploy 35파일) → <code>7dae7e54c3</code>(17호 그림·음원 9파일).<br>
+<strong><code>__pycache__/page.cpython-314.pyc</code>가 딸려 올라간 것을 발견하고 Contents API로 삭제</strong>(<code>f0284fe4</code>) + 로컬 <code>__pycache__</code> 제거.<br>
+- <strong>라이브 200 확인</strong> — 페이지 45,043B · 음원 12,891,932B · 대시보드 <strong>18,191B(완성 16)</strong> · piano.css 17,074B.<br>
+  (직후 첫 조회 404는 <strong>Pages CDN 지연</strong>이었다 — 16호 때와 같은 현상.)<br>
+- 텔레그램: 음원 전송(<strong>message_id 177</strong>) + 리포트.</p>
+<p><strong>⚠️ 구조적 위험 그대로 (고치지 않음).</strong> <code>midi_lane/</code>은 work 레포에서 gitignore, 자체 git도 없다 →<br>
+<strong>17호 재료(page.py·facts.json·mf17_raw.mid·asset)와 공용 CSS 수정도 이 폰에만 있다.</strong><br>
+Boss 결정 사항이라 임의로 바꾸지 않았다.</p>
+<p><strong>다음.</strong> 18호 라흐마니노프 《악흥의 순간 Op.16 No.4》(시기 = 슬픔+분노)부터 안 막혀 있다.<br>
 12호(소재 결정 필요) · 미정 9칸(39 멸시 · 41 불신 · 42 기쁨[3차] · 43 수치 · 44 격분[3차] · 45 비관 · 46 병적 · 47 지배 · 48 불안[3차])은 여전히 Boss 결정 대기.</p>
   </article>
   <nav class="wz-pager">
