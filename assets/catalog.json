@@ -1376,6 +1376,14 @@
     "deck": "2026-10-06 · `_Claude`"
   },
   {
+    "src": "_notebook/125-pd-piano-substitute-candidates_Claude.md",
+    "out": "notebook/125-pd-piano-substitute-candidates_Claude.html",
+    "title": "125 · 48칸 시리즈 — 막힌 칸의 대체곡 후보표",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "⚠️ **이 표는 제안이다. 곡을 바꾸는 것은 Boss가 정한다.**"
+  },
+  {
     "src": "_notebook/78-pd-pipeline-whitepaper_Claude.md",
     "out": "notebook/78-pd-pipeline-whitepaper_Claude.html",
     "title": "🎬 PD Pipeline 기술 백서 — URL 하나로 숏폼 자동 제작",

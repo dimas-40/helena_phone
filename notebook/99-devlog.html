@@ -897,6 +897,9 @@
 <li><a href="#5_3">5. 지금까지 확인한 도구 사실 (다음에 또 쓴다)</a></li>
 </ul>
 </li>
+<li><a href="#2026-10-08-34-747-bpm-_claude">2026-10-08 — 34호 쪽지에서 재현되지 않는 수 하나를 지웠다 (74.7 BPM) (_Claude)</a></li>
+<li><a href="#2026-10-08-34-_claude">2026-10-08 — 라이선스 전수 감사 완료 — 완성 34편 음원·이미지 (_Claude)</a></li>
+<li><a href="#2026-10-08-_claude">2026-10-08 — (다) 소재 확장 조사 — 벽은 안 뚫렸다, 대신 쓸 수 있는 풀을 찾았다 (_Claude)</a></li>
 </ul>
 </div>
 </nav>
@@ -13883,6 +13886,115 @@ Recordings that were published <strong>after 1956</strong> and first fixed prior
 <strong>이번 건처럼 “Public domain”으로 잘못 읽힌다.</strong></li>
 <li><strong>Musopen 은 403 이다</strong>(사이트도, 검색도). 지금은 쓸 수 없다.</li>
 </ul>
+<h2 id="2026-10-08-34-747-bpm-_claude">2026-10-08 — 34호 쪽지에서 <strong>재현되지 않는 수 하나를 지웠다</strong> (74.7 BPM) (_Claude)</h2>
+<p><strong>계기.</strong> 34호를 낸 뒤 쪽지의 머릿수를 하나씩 다시 세다가, 「이 곡에서 잰 빠르기는 <strong>74.7 BPM</strong>」<br>
+이라는 문장을 만났다. 그 수를 <strong>우리 자료 어디에서도 다시 낼 수 없었다.</strong></p>
+<p><strong>확인한 것.</strong><br>
+- 어떤 <code>*.facts.json</code> 에도 <strong>tempo/bpm 필드가 없다</strong> — 시리즈 전체에 없다. <code>pd_measure.py</code> 가<br>
+  BPM 을 산출하지 않는다.<br>
+- <code>mf34_raw.mid</code> 의 <code>set_tempo</code> 는 <strong>500000 µs/beat = 120 BPM</strong>, <code>time_signature</code> 는 <strong>4/4</strong> 다.<br>
+  그런데 이 곡의 <strong>초판(1888)에 인쇄된 박자는 3/4</strong> 다. 즉 채보 파일에 적힌 4/4 는<br>
+<strong>도구가 붙인 기본값</strong>이고 곡의 박자가 아니다.<br>
+- 실제 자료에서 다시 쟀다: <strong>음 시작점</strong> 격자 최적합 <strong>1.033초</strong>(적중 29.9%),<br>
+<strong>저음이 바뀌는 자리</strong> 격자 최적합 <strong>1.058초</strong>(적중 63.9%). 74.7 BPM(=0.803초)은 어디에도 없다.</p>
+<p><strong>고친 것 (사이트 반영 완료, 커밋 <code>5845a84fd0</code>).</strong><br>
+1. 61칸 카드 제목: <code>평균 간격이 3/4 한 마디와 0.06초 차</code> → <strong><code>그리고 우리 채보 파일의 박자표는
+   곡의 박자가 아니다</code></strong>. 본문도 다시 씀 — 덩어리 53개 · 61칸, 덩어리 중앙값 2.31초,<br>
+   칸 평균 2.349초·중앙값 2.189초, <strong>61개 경계 가운데 63.9%가 약 1.06초의 배수 자리</strong>.<br>
+<strong>&ldquo;61마디&rdquo;라고는 적지 않는다</strong> — 마디를 읽은 적이 없기 때문이다.<br>
+2. 채보 절 「말하지 않는 것」 ② 를 다시 씀: 61칸은 저음이 바뀐 자리이지 마디가 아니다.<br>
+3. <strong>주의 ⑪ 을 새로 넣었다</strong> — 이 쪽지의 이전 판에 74.7 BPM 이 적혀 있었고, 다시 낼 수 없어서<br>
+   지웠다고 <strong>밝힌다.</strong> &ldquo;재현되지 않는 수는 싣지 않는다&rdquo;가 이 시리즈의 규칙이다.<br>
+   다른 곡 쪽지들이 도구의 BPM 을 실을 때 「도구가 음 간격에서 추정」이라고 딱지를 붙이는데,<br>
+<strong>이 곡만 그 딱지를 안 붙이고 있었다</strong> — 그래서 눈에 띄지 않고 통과했다.</p>
+<p><strong>배운 것.</strong> 쪽지가 스스로 밝히지 않은 수는, 나중에 <strong>아무도 출처를 못 찾는다.</strong> 도구가 낸 수에<br>
+딱지를 붙이는 규칙이 왜 필요한지가 이 한 건으로 증명됐다.</p>
+<h2 id="2026-10-08-34-_claude">2026-10-08 — <strong>라이선스 전수 감사 완료</strong> — 완성 34편 음원·이미지 (_Claude)</h2>
+<p>앞 항목에서 「완성분 전수 감사를 해야 한다」고 적은 것을 <strong>끝냈다.</strong> 방법: 각 곡 <code>page.py</code> 안의<br>
+40자 SHA-1 을 전부 뽑아 Commons 에 <code>list=allimages&amp;aisha1=</code> 로 <strong>역조회</strong>하고, 각 파일의<br>
+<strong>위키텍스트를 직접 읽어</strong> <code>{{라이선스}}</code> 를 눈으로 확인했다(<code>extmetadata</code> 만 보면 틀린다).</p>
+<p><strong>결과 — 위험 1건.</strong><br>
+- <strong>11호 발트슈타인 1악장</strong> — 1932년 <strong>아르투어 슈나벨</strong> 녹음. 라이선스가 <code>{{PD-EU-audio}}</code><br>
+<strong>하나뿐</strong>이다. 이 딱지는 <em>유럽에서만 자유</em>라는 뜻이고, 미국에서는 <strong>1932+100 = 2032년</strong>까지<br>
+  보호된다. 11호 쪽지에는 이미 「연주권 만료(PD-EU)」라고만 적혀 있었다 — 즉 <strong>알고 있었지만<br>
+  미국 기준으로는 부족하다는 것을 적지 않았다.</strong><br>
+- <strong>나머지 33편에는 <code>{{PD-EU-audio}}</code> 단독 파일이 한 개도 없다.</strong></p>
+<p><strong>확인 불가 4건</strong> — 20 · 24 · 25 · 36호. 출처가 <strong>IMSLP</strong> 라 Commons 에서 대조할 수 없다.<br>
+쪽지에는 CC BY-SA 4.0 · CC BY 3.0 · CC BY-SA 4.0 · CC BY 3.0 로 적혀 있으나 <strong>근거는 미확인</strong>.</p>
+<p><strong>01~10호 — 이번에 메웠다.</strong> 이 10편은 <code>page.py</code> 가 없어(초기 형식) 감사에서 빠졌었다.<br>
+<code>index.html</code> 의 「출처와 라이선스」 절을 직접 읽어 확인한 결과 <strong>전부 안전 등급</strong>:<br>
+- 02호 <strong>Kimiko Ishizaka = CC0 1.0</strong> (권리 전부 포기) · 10호 <strong>Peter Johnston = CC0 1.0</strong><br>
+- 06호 <strong>라흐마니노프 본인 연주</strong>, 에디슨 다이아몬드 디스크 <strong>1920년 12월</strong><br>
+  → <strong>1926년 이전</strong>이라 미국 퍼블릭 도메인 (미국 사운드레코딩법 기준을 통과한다)<br>
+- 07호 <strong>마사 골드스타인 = CC BY-SA 2.0</strong>. <strong>버린 후보</strong> 바크하우스 1923(1926년 이전 = 안전) ·<br>
+<strong>베버 1933</strong>(쓰였다면 미국 PD 가 2033년이었을 것)은 <strong>채택되지 않았다</strong> — 쪽지가 그 사실을<br>
+  기록으로 남기고 있다.<br>
+- 01 · 04 · 05 · 08 · 09호 = <strong>권리자가 스스로 퍼블릭 도메인으로 공개한 녹음</strong><br>
+  (09호는 Commons 가 VRT 권리허락 확인을 거친 파일로 분류한다)</p>
+<p><strong>이미지</strong> — 1830~1927년 판화·사진과 PD-Art 스캔뿐, <strong>위험 없음</strong>. Commons 에서 못 찾은 SHA 4장은<br>
+우리가 줄여 만든 사본이다.</p>
+<p><strong>한 줄 결론.</strong> 상업 레이블(DG · HMV) 녹음은 <strong>11호 슈나벨 하나뿐</strong>이고,<br>
+<strong><code>{{PD-US-record}}</code> 가 달린 음원은 시리즈 전체에 0건</strong>이다.</p>
+<p><strong>남는 판단(Boss).</strong> 11호를 (가) 그대로 두고 위험을 쪽지에 적는다 / (나) 미국에서 안전한 다른<br>
+연주로 갈아 끼운다 / (다) 곡 자체를 바꾼다. <strong>라이선스 판정은 내가 하지 않는다</strong> — 헌법.</p>
+<h2 id="2026-10-08-_claude">2026-10-08 — <strong>(다) 소재 확장 조사 — 벽은 안 뚫렸다, 대신 쓸 수 있는 풀을 찾았다</strong> (_Claude)</h2>
+<p>앞 항목에서 「(다)를 조금 더 파 보고 결과를 올리겠다」고 적은 것의 결과다.<br>
+<strong>IMSLP 연주 목록까지 전부 뒤졌다.</strong> 막힌 8곡 중 실제로 열린 것 <strong>0곡.</strong></p>
+<table>
+<thead>
+<tr>
+<th>곡</th>
+<th>IMSLP</th>
+<th>무엇이 막는가</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>26호 도약</td>
+<td>있음</td>
+<td><strong>기오마르 노바에스, Vox 1957</strong> — <code>Public Domain - Non-PD US</code>. 11호와 같은 문제(미국 아님)</td>
+</tr>
+<tr>
+<td>19호 왜?</td>
+<td>있음</td>
+<td><strong>Bui-Nguyen Trieu-Tuong, CC BY-NC 4.0</strong> — 비영리 한정. 2차물을 만드는 우리에겐 Boss 판단</td>
+</tr>
+<tr>
+<td>31호 퍽의 춤</td>
+<td>있음</td>
+<td><strong>Carolus, CC BY-NC-ND 3.0</strong> — <strong>ND(변경금지)가 치명적</strong>. 우리 일 자체가 2차물이라 못 쓴다</td>
+</tr>
+<tr>
+<td>18호</td>
+<td>부분</td>
+<td>Op.16 중 <strong>No.3만</strong> 있음. 필요한 건 No.4</td>
+</tr>
+<tr>
+<td>12 · 30 · 35 · 40</td>
+<td>0건</td>
+<td>30호는 <strong>관현악 4건뿐, 피아노 편 없음</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>IMSLP 녹음 유무 확인법(다시).</strong> 곡 페이지에서 <code>Recordings ( N )</code>. <strong>페이지 제목의 숫자 표기가<br>
+함정이다</strong> — <code>Préludes,_Livre_I_(Debussy,_Claude)</code> 는 24KB 동음이의 페이지였고,<br>
+<strong><code>Préludes,_Livre_1_(...)</code></strong>(아라비아 숫자 1)가 1.2MB 본문에 <code>Recordings ( 47 )</code> 을 담고 있었다.<br>
+24KB 안팎 응답은 <strong>표가 없는 페이지</strong>라는 신호로 읽으면 된다.</p>
+<p><strong>대신 쓸 수 있는 풀을 찾았다(막힌 곡의 대체 후보).</strong><br>
+1. <strong>김미코 이시자카 《골드버그 변주곡》 31트랙 전곡 — <code>{{cc-zero}}</code></strong> (Commons, 2012).<br>
+   변주 25(Adagio, 사단조 — 「검은 진주」) · 변주 30 콰들리베트 등이 각각 다른 감정에 붙는다.<br>
+2. <strong>판도라/알 골드스타인 컬렉션 — <code>Category:Pandora Music</code> 639파일, 전부 <code>{{cc-by-sa-2.0}}</code>.</strong><br>
+   표본 4개를 위키텍스트로 확인한 결과 <strong>삭제 태그가 하나도 없다</strong>(2007~08년 대량 삭제 논의는<br>
+   라흐마니노프 작품에 한정됐고 종결됐다). 22호에 쓴 랜돌프 호칸슨이 여기 있다.<br>
+   - <strong>호칸슨(46파일)</strong>: 모차르트 K.310 가단조 소나타 · 베토벤 Op.90 · 쇼팽 발라드 4번 ·<br>
+     슈베르트 즉흥곡 Op.90·142 · 리스트 《빈의 저녁들》·《샘가의 물가에서》 · 바흐 신포니아 1~15<br>
+   - <strong>골드스타인(154파일)</strong>: 쇼팽 연습곡 Op.10·Op.25 대부분 · 리스트 헝가리 광시곡 2번 ·<br>
+     브람스 헨델 변주곡 전곡 · 바흐 이탈리아 협주곡 · 라모 가보트와 변주</p>
+<p><strong>Boss 에게 올린 판단 요청 2건.</strong> ① 막힌 8칸 + 미정 9칸에 <strong>대체곡을 넣어도 되는지</strong>(곡을 바꾸는 건<br>
+내가 정할 일이 아니다) ② <strong>11호를 어떻게 할지</strong> — 나는 <strong>(가) 그대로 두고 쪽지에 미국 위험을<br>
+명시</strong>하는 쪽을 권했다. 지금 쪽지에는 「연주권 만료(PD-EU)」라고만 적혀 있어 읽는 사람이<br>
+미국 기준 위험을 알 수 없다.</p>
+<p><strong>34호 정정판 검사 통과.</strong> <code>pd_check_pages.py</code> — 38곡 × 4해상도 <strong>전부 통과</strong>.</p>
   </article>
   <nav class="wz-pager">
     <a class="" href="session-2026-07-26_Grok.html">
