@@ -858,6 +858,23 @@
 <li><a href="#_102">남은 것</a></li>
 </ul>
 </li>
+<li><a href="#2026-10-08-23-_claude">2026-10-08 — 23호 「캐논」 완성 — 실패를 기록으로 남긴 첫 곡 (_Claude)</a><ul>
+<li><a href="#_103">왜 이 쪽지는 성과가 아니라 실패를 적는가</a></li>
+<li><a href="#_104">도구가 스스로 예고했고, 그대로 됐다</a></li>
+<li><a href="#_105">무엇을 잡고 무엇을 놓쳤는지 (우리가 따로 잰 것)</a></li>
+<li><a href="#4_7">★ 4초 밀도비를 적지 않았다 — 시리즈 처음</a></li>
+<li><a href="#0_1">★ 조 정렬이 옮긴 음 0개 — 놓침의 증거일 수 있다</a></li>
+<li><a href="#_106">★★ 이 세션에서 가장 큰 발견 — &ldquo;(피아노 편)&rdquo; 칸 셋이 전부 같은 벽</a></li>
+<li><a href="#60_1">소스 선정 — 후보 넷을 60초씩 同모델로 전사해 비교</a></li>
+<li><a href="#mp3-mjpeg-librosa">★ 디버깅 — mp3 안에 든 표지 그림(mjpeg)이 librosa 디코드를 망가뜨린다는 가설 → 반증</a></li>
+<li><a href="#_107">이 곡의 다른 얼굴 — 사본이 하나뿐이고, 얼굴이 없다</a></li>
+<li><a href="#_108">사람 — 태어난 날도 죽은 날도 모른다</a></li>
+<li><a href="#23">신뢰 계열 하위 일곱 자리 중 넷 — 그러나 23호는 빼고 세야 한다</a></li>
+<li><a href="#_109">납품</a></li>
+<li><a href="#_110">이 세션에서 배운 도구 사용법</a></li>
+<li><a href="#_111">남은 것</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav>
@@ -13445,6 +13462,160 @@ push 커밋 <code>dc51272f53</code> · TG 오디오 message_id 200 + 문자 보�
 <p><strong>Boss 결정 대기 9건 그대로</strong>(a~i). <strong>(g) SA 조건이 다섯 곡으로 늘었다</strong> — 20 · 21 · 25 · 38 · <strong>22</strong>.<br>
 <strong>9칸 미정 그대로</strong>(39·41·42·43·44·45·46·47·48). <strong>30호는 피아노 녹음이 없어 막혀 있다.</strong><br>
 <strong>다음 곡</strong>: 12 · 18 · 19 · 23 · 26 · 31 · 32 · 34 · 35 · 39~48.</p>
+<hr>
+<h2 id="2026-10-08-23-_claude">2026-10-08 — 23호 「캐논」 완성 — <strong>실패를 기록으로 남긴 첫 곡</strong> (_Claude)</h2>
+<h3 id="_103">왜 이 쪽지는 성과가 아니라 실패를 적는가</h3>
+<p>222.0초에 <strong>328음</strong>, <strong>초당 1.56음</strong>. 스물아홉 편 가운데 <strong>음 수도 속도도 꼴찌</strong>다.<br>
+그런데 이 값은 <strong>곡의 성질이 아니라 우리 도구가 못 적은 정도</strong>다.</p>
+<p><strong>원본 녹음은 0초부터 220초까지 내내 −20dB 안팎으로 꽉 차 있다 — 빈 대목이 없다.</strong><br>
+그런데 우리가 받아 적은 음은 구간마다 5~28개로 줄어든다.<br>
+<strong>소리는 그대로인데 우리 기록만 줄었다.</strong> 그래서 이 쪽지에는<br>
+&ldquo;이 곡은 성긴 곡이다&rdquo;라고 쓰지 않았다 — 우리가 가진 것은 <strong>성긴 기록</strong>이다.</p>
+<h3 id="_104">도구가 스스로 예고했고, 그대로 됐다</h3>
+<p><code>mf23.verdict.json</code> 원문:</p>
+<blockquote>
+<p>&ldquo;온셋이 흩어져 있다. 템포·성부 추출이 부정확해진다. (음 328개, 간격 327개 기준)&rdquo;</p>
+</blockquote>
+<p><strong>원인은 파라미터가 아니라 도메인 불일치다.</strong> 채보 도구는<br>
+<code>piano_transcription_inference</code> — MAESTRO <strong>솔로 피아노</strong>로 학습된 모델이다.<br>
+이 곡의 원래 편성은 <strong>바이올린 셋 + 계속저음</strong>. 활로 긋는 소리는 음의 시작이 흐릿하고<br>
+셋이 겹치면 서로를 가린다. 곧 <strong>우리 도구의 정반대편에 있는 곡</strong>이다.<br>
+(게다가 우리가 쓴 음원은 2004년 <strong>관현 편곡</strong>이라, 바로크 편성도 피아노도 아닌 제3의 편성이다.)</p>
+<h3 id="_105">무엇을 잡고 무엇을 놓쳤는지 (우리가 따로 잰 것)</h3>
+<p><strong>잡음 — 저음.</strong> 라3(D3) 이하 <strong>150음</strong>. 그 음이름을 시간순으로 놓으면<br>
+<strong>문헌이 적는 계속저음 여덟 음(라–가–나–올림바–사–라–사–가)이 그대로 나온다.</strong><br>
+곡 처음부터 끝까지 이어지고 <strong>최대 공백 8.3초</strong>.</p>
+<p><strong>놓침 — 윗성부.</strong> 20초 단위 음 수 = <strong>59 · 102 · 30 · 25 · 12 · 19 · 14 · 14 · 22 · 11 · 20</strong>.<br>
+<strong>처음 40초에 161음</strong>이 몰리고 그 뒤로 떨어진다. 해석: 성부가 하나씩 들어올 때는<br>
+서로를 덜 가려 붙잡고, <strong>겹치기 시작하면 놓친다.</strong> ⚠️ <strong>정답지가 없으므로 이것은 가설이다</strong> —<br>
+우리가 확인한 것은 <strong>분포 하나</strong>뿐이다.</p>
+<h3 id="4_7">★ 4초 밀도비를 <strong>적지 않았다</strong> — 시리즈 처음</h3>
+<p><code>pd_density.py</code>: 최대 <strong>31음 @30.5초</strong>, 최소 <strong>0음 @71.0초</strong>. <strong>0으로는 나눌 수 없다.</strong><br>
+4초 창 413개 가운데 <strong>31개가 통째로 비었다</strong>(71.0 · 88.0 · 93.0초 등).<br>
+내부 정의(첫 음 0.544초 이후)로도 같은 답이다.<br>
+<strong>그 0은 곡의 침묵이 아니라 우리 기록의 구멍이다</strong> — 같은 71.0초에서 원본은 −20dB로 소리가 난다.</p>
+<p>22호의 1.84배 · 21호의 2.02배 같은 값을 <strong>이 곡에는 쓰지 않는다.</strong></p>
+<h3 id="0_1">★ 조 정렬이 옮긴 음 <strong>0개</strong> — 놓침의 증거일 수 있다</h3>
+<p>받아 적은 328음의 음이름: <strong>가113 · 라62 · 사46 · 나38 · 올림바38 · 올림다18 · 마12 · 올림라1</strong>.<br>
+곧 <strong>조 밖의 음이 올림라(D♯) 하나뿐</strong> — 327/328이 이미 라장조 안이다. 그래서 &ldquo;스케일 밖 0음 이동&rdquo;.<br>
+(22호는 맞는 조인데도 185음을 옮겼다. 21호는 틀린 조를 잡았다.)</p>
+<p><strong>⚠️ 이것을 &ldquo;도구가 정확했다&rdquo;로 읽으면 안 된다.</strong> 윗성부를 놓치고 나니<br>
+<strong>남은 음이 화성적으로 안정된 저음뿐</strong>이었을 수 있다. 곧 <strong>조용한 조 정렬이<br>
+놓침의 증거</strong>일 가능성. <strong>어느 쪽인지 우리는 가릴 수 없다</strong> — 쪽지에 그대로 적었다.</p>
+<h3 id="_106">★★ 이 세션에서 가장 큰 발견 — &ldquo;(피아노 편)&rdquo; 칸 셋이 <strong>전부 같은 벽</strong></h3>
+<p>23호 캐논 · <strong>30호 민둥산의 하룻밤</strong> · <strong>32호 놀람 교향곡 2악장</strong>.<br>
+셋 다 <strong>원래 피아노 곡이 아니라 우리가 피아노로 옮기려는 칸</strong>이다.<br>
+그런데 셋 다 <strong>막혀 있다</strong> — 30호는 피아노 녹음 자체를 못 구했고, 23호는 도구가 못 적었고, 32호도 같은 자리.</p>
+<p><strong>곧 &ldquo;(피아노 편)&rdquo;이라는 우리 표기가 실제로는 &ldquo;우리 도구가 못 하는 곡&rdquo;이라는 표시였다.</strong><br>
+48칸을 채우려면 이 벽을 넘어야 하고 방법은 셋뿐 —<br>
+<strong>① 다른 도구를 들인다 ② 원래 피아노인 녹음을 찾는다 ③ 칸의 뜻을 바꾼다.</strong><br>
+<strong>어느 쪽으로 할지는 Boss가 정할 일이다.</strong></p>
+<h3 id="60_1">소스 선정 — 후보 넷을 60초씩 同모델로 전사해 비교</h3>
+<table>
+<thead>
+<tr>
+<th>후보</th>
+<th>라이선스</th>
+<th>60초 전사</th>
+<th>저음역</th>
+<th>판정</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>USAFB 스트롤링 스트링즈</strong></td>
+<td><strong>퍼블릭 도메인</strong></td>
+<td>188음 (3.13/s)</td>
+<td>79음</td>
+<td><strong>채택</strong> — 저음에서 정본 계속저음 일치 확인</td>
+</tr>
+<tr>
+<td>Mathsci 릴리파운드 합성</td>
+<td>CC BY 4.0</td>
+<td>130음 (2.17/s)</td>
+<td>75음</td>
+<td>미채택</td>
+</tr>
+<tr>
+<td>Kevin MacLeod 하프+바이올린</td>
+<td>CC BY 3.0</td>
+<td>389음 (6.48/s)</td>
+<td>242음</td>
+<td><strong>4.1% 일치 — 캐논 원형이 아님</strong></td>
+</tr>
+<tr>
+<td>Raul654</td>
+<td>CC BY-SA 3.0</td>
+<td>261음 (4.35/s)</td>
+<td>82음</td>
+<td>미채택</td>
+</tr>
+</tbody>
+</table>
+<p>Commons 전체를 <strong>다섯 가지 표현</strong>으로 뒤져도 <strong>솔로 피아노 캐논은 없다</strong><br>
+(유일한 히트가 농담 리믹스 <code>Pachelbel's Howitzer.wav</code>). 곧 피아노 편으로 갈 길이 원래 없다.</p>
+<p><strong>채택 소스</strong>: 《The Strolling Strings 50th Anniversary》(2004) 22번 트랙.<br>
+<strong>퍼블릭 도메인 · 저작자표시 불필요 · 동일조건 없음 — 시리즈에서 가장 깨끗한 곡.</strong><br>
+(편곡 Frank Hudson · 연주 미 공군 밴드 스트롤링 스트링즈 · 녹음 United States Air Force · 출처 music.af.mil)<br>
+받은 값 10,842,858 B · 228.811956초 · sha1 <code>65ac159d…</code> — <strong>공용이 적어 둔 값과 우리가 대조했다.</strong></p>
+<p><strong>기각한 것도 적어 둔다</strong> — <code>_dl/</code>에 후보 셋(1.8MB · 3.8MB · 5.2MB)이 그대로 있다. 납품물이 아니다.</p>
+<h3 id="mp3-mjpeg-librosa">★ 디버깅 — mp3 안에 든 <strong>표지 그림(mjpeg)이 librosa 디코드를 망가뜨린다</strong>는 가설 → <strong>반증</strong></h3>
+<p>이 파일은 mp3에 <strong>mjpeg 표지 스트림</strong>이 붙어 있다. 그래서 librosa 로드가 이상해진다고 의심했는데,<br>
+직접 재 보니 <strong>librosa vs ffmpeg 파형 상관 0.999999</strong>, 둘 다 5,045,184 샘플 / 228.81초 / RMS 0.0883.<br>
+<strong>mp3 로딩은 무죄다.</strong> 원인은 끝까지 <strong>모델 도메인 불일치</strong>였다.</p>
+<p><em>(이 세션에서 또 하나 배운 것 — proot에서 <code>ps</code>가 안 보여도 작업은 돌고 있다.<br>
+출력 mp3 크기를 25초 간격으로 두 번 재서 8,650,752 → 9,177,837 B로 확인했다.)</em></p>
+<h3 id="_107">이 곡의 다른 얼굴 — <strong>사본이 하나뿐</strong>이고, <strong>얼굴이 없다</strong></h3>
+<ul>
+<li><strong>1838~1842년 필사본 한 부</strong>가 전부다 — <strong>Mus.ms. 16481/8, 베를린 국립도서관</strong>.<br>
+  원본도 자필도 없다. <strong>19세기 내내 잊혀 있다가 1919년 베크만의 논문으로 처음 출판</strong>됐고,<br>
+<strong>1968년 파야르</strong>의 (오블리가토를 덧붙인, 훨씬 느린) 녹음이 판을 바꿨다.<br>
+  곧 <strong>우리가 아는 &ldquo;캐논&rdquo;의 모습은 20세기 산물</strong>이다. 우리 음원도 그 계보 위의 2004년 관현 편곡이다.</li>
+<li><strong>초상을 안 실었다.</strong> 돌아다니는 &ldquo;파헬벨 초상&rdquo;에는 <strong>공용이 직접 경고문</strong>을 붙여 뒀다 —<br>
+  &ldquo;모든 정황은 이것이 요한 파헬벨이 <strong>아니라는</strong> 것을 가리킨다 … 그 작곡가는 1706년에 죽었는데,<br>
+  그것은 이 스케치가 내부적으로 제시하는 연도보다 <strong>42년 앞선다</strong>.&rdquo;<br>
+  우리가 따로 확인: 영어 위키 〈요한 파헬벨〉 항목(42,929자)에 <strong>portrait·likeness·depict·image가 0회</strong>.<br>
+  → <strong>hero는 악보 사본.</strong> (시리즈에서 초상이 아닌 것은 이 곡이 처음)</li>
+<li><strong>원고에서 읽은 것 / 안 읽은 것을 갈랐다.</strong> 읽은 것 — 표제 &ldquo;Canon a 3 Violini con Basso.<br>
+  di Joh. Pachelbel.&rdquo;, 청구기호 Mus. ms. 16481 / 8, 성부 4단(<strong>Violino 1º · 2º · 3º · Cembalo</strong>),<br>
+<strong>알라 브레베</strong>(세로줄 그은 C), <strong>올림바 하나</strong>, <strong>Staatsbibliothek Musikabteilung Berlin</strong> 인장.<br>
+<strong>안 읽은 것 — 음.</strong> 328음은 2004년 녹음에서 나온 것이고 원고에서 나온 것이 아니다.<br>
+  쪽지에 그 경계를 그어 뒀다. (필사본의 꼬리·빔은 활자 악보와 달라 <strong>읽었다고 주장하지 않는다.</strong>)</li>
+<li><strong>파일 메타데이터의 &ldquo;1680&rdquo;과 문헌의 &ldquo;1838–1842&rdquo;가 충돌한다 — 우리는 해소하지 않는다.</strong></li>
+<li>작곡 연대: 1694년 결혼설(슐체)은 벨터가 <strong>&ldquo;순전한 추측&rdquo;</strong>이라 일축, 1696년 이후설(브루어)은<br>
+  비버와의 대응에서 나온 것. <strong>어느 설도 채택하지 않고 &ldquo;1680–1706년경 추정&rdquo;까지만 적었다.</strong></li>
+</ul>
+<h3 id="_108">사람 — <strong>태어난 날도 죽은 날도 모른다</strong></h3>
+<p>남은 기록이 <strong>세례일(1653)과 매장일(1706)</strong>이다. 그래서 쪽지에 &ldquo;태어났다/죽었다&rdquo;고 쓰지 않고<br>
+<strong>&ldquo;세례 1653년 · 매장 1706년&rdquo;</strong>으로 적었다. JSON-LD에도 연도만(<code>1653</code>/<code>1706</code>) 넣었다 —<br>
+<strong>기계 눈에 세례일을 생일로 새기지 않으려고.</strong></p>
+<h3 id="23">신뢰 계열 하위 일곱 자리 중 넷 — <strong>그러나 23호는 빼고 세야 한다</strong></h3>
+<p>느린 순: <strong>23호(1.56)</strong> · 05호(2.51) · 01호(2.67) · 04호(3.45) · 28호(3.54) · 02호(3.64) · 24호(4.04).<br>
+신뢰 계열이 넷(23·05·02·24)이다. <strong>그런데 23호의 1.56은 도구 실패값이라 이 관찰에 넣으면 안 된다</strong> —<br>
+넣으면 <strong>우리 실패가 우리 관찰을 떠받치는</strong> 꼴이 된다. <strong>관찰은 05·02·24 세 곡으로만 세운다.</strong><br>
+<strong>세 점으로 그은 선은 선이 아니다</strong> — 경향이라고 부르지 않는다.</p>
+<h3 id="_109">납품</h3>
+<p>쪽지 <strong>64,529B</strong> · data.js 10,025B · 칸 105 · 음 328 · 합친 음원 <strong>9,177,837B / 444.775329초</strong>.<br>
+대시보드 <strong>완성 29/48</strong> · 곡 미정 9. 검사 <strong>전부 통과(38편 × 4 해상도, 실패 0)</strong>.<br>
+라이브 <strong>5종 HTTP 200 · 바이트 로컬과 일치</strong> — push 커밋 <code>840e400fb9</code> · TG 오디오 <strong>message_id 204</strong>.</p>
+<h3 id="_110">이 세션에서 배운 도구 사용법</h3>
+<ul>
+<li><strong><code>_localtest</code>가 곧 서빙 루트다.</strong> 슬러그는 <code>_localtest/&lt;slug&gt;/</code>에 바로 있고<br>
+<code>_deploy/</code>에는 <code>channel/musician/piano</code> 중첩 경로가 <strong>없다</strong>. <code>parksy_push.py</code>의 ROOT는 <code>_localtest</code>.</li>
+<li><strong><code>pd_page.py</code>는 곡 폴더 경로를 받는다</strong>(슬러그 아님): <code>scripts/pd_page.py midi_lane/pd/23-pachelbel-canon</code>.</li>
+<li><strong>TG 오디오 캡션 상한 1024자.</strong> 넘기면 <code>400 Bad Request: message caption is too long</code>.<br>
+  긴 보고는 캡션에 넣지 말고 <code>tg.sh</code>로 따로 보낸다.</li>
+<li><strong><code>tg.sh</code>는 환경변수를 스스로 안 읽는다</strong> — <code>.secrets.env</code>를 먼저 export해야 한다.<br>
+  (<code>tg_send_audio.py</code>는 스스로 읽는다.)</li>
+<li><strong>검사기 로그의 <code>ConnectionResetError</code> 다발은 정상 잡음</strong>이다(중단된 range 요청). 실패로 읽지 말 것.</li>
+<li>22호 검사에서 <strong>자산 복사 전에 돌리면 404</strong>가 찍힌다 — <code>pd_build_deploy.sh</code>를 먼저 끝낸다.</li>
+</ul>
+<h3 id="_111">남은 것</h3>
+<p><strong>Boss 결정 대기 9건 그대로</strong>(a~i). <strong>(g) SA 조건 다섯 곡</strong> — 20 · 21 · 25 · 38 · 22.<br>
+<strong>9칸 미정 그대로</strong>(39·41·42·43·44·45·46·47·48).<br>
+<strong>30호 막힘</strong> — 피아노 녹음 없음. (옛 메모의 &ldquo;CC BY 3.0&rdquo;은 틀렸다: 그 12:13 관현 녹음은<br>
+IMSLP #77970, 스키드모어 칼리지 오케스트라, <strong>CC BY-SA 3.0</strong>이다. CC BY 3.0은 #77916.)<br>
+<strong>다음 곡</strong>: 12 · 18 · 19 · 26 · 31 · 34 · 35 · 40 (곡 미정 9칸은 30·32호 벽과 함께 Boss 판단 필요).</p>
   </article>
   <nav class="wz-pager">
     <a class="" href="session-2026-07-26_Grok.html">
