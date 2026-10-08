@@ -3,6 +3,8 @@
 
     nohup python3 -u scripts/pd_chain.py > /tmp/pd_chain.log 2>&1 &
 
+    python3 scripts/pd_chain.py 46      # 한 곡만 (번호를 인자로)
+
 왜 체인인가:
     채보는 **한 번에 하나만** 돌려야 한다(직렬 규칙 — 둘을 같이 돌려 둘 다 느려진
     2026-10-08 실수를 되풀이하지 않는다). 그런데 사람이 곡마다 앉아 있을 수 없다.
@@ -47,7 +49,12 @@ SONGS = [
     ("41", "41-schumann-kreisleriana-1", "kreis41.ogg",    150.52),
     ("31", "31-debussy-golliwog",        "golliwog.wav",   160.50),
     ("47", "47-bach-italian-concerto-1", "italian1.ogg",   222.88),
-    ("46", "46-schumann-kreisleriana-8", "kreis46.ogg",    269.07),   # ⚠ 3번/8번 설명 뒤바뀜 의혹
+    # ⚠ 46호 — 2026-10-08 에 **파일 제목이 뒤바뀐 것**을 확인했다. 제목이 N8 인 파일은
+    #    내용이 No.3 이었고, 제목이 N3 인 파일이 실제 No.8 이다(소리 크로마 DTW 0.0885 대
+    #    0.2835 · 채보 앞 21음 순서까지 일치 · 통제 0.2793). 그래서 원곡 파일을 바꿨다.
+    #    근거 전문은 `midi_lane/pd/46-schumann-kreisleriana-8/_dl/SOURCE.txt`,
+    #    No.3 자산은 같은 폴더 `_was-no3/` 에 남겨 두었다(버리지 않는다).
+    ("46", "46-schumann-kreisleriana-8", "kreis46_n8_N3titled.ogg", 222.44),
     ("12", "12-ravel-alborada-del-gracioso", "alborada.flac", 357.26),
     ("26", "26-schubert-impromptu-90-3", "imp26.ogg",      357.84),
     ("43", "43-ravel-le-gibet",          "legibet.flac",   424.72),
@@ -189,10 +196,19 @@ def wait_for_others():
 
 
 def main():
+    # 인자를 주면 **그 번호만** 돌린다 (예: `pd_chain.py 46`). 한 곡만 다시 돌릴 때
+    # 목록을 복사해 두 번째 체인 스크립트를 만들지 않으려고 여기에 붙였다 —
+    # 2026-10-08 46호 제목 뒤바뀜을 고치며. 인자가 없으면 예전과 똑같이 전곡이다.
+    only = set(sys.argv[1:])
+    songs = [s for s in SONGS if not only or s[0] in only]
+    if only:
+        missing = only - {s[0] for s in SONGS}
+        if missing:
+            raise SystemExit(f"목록에 없는 번호: {sorted(missing)}")
     wait_for_others()
-    log(f"체인 시작 — {len(SONGS)}곡 (짧은 순)")
+    log(f"체인 시작 — {len(songs)}곡 (짧은 순)" + (f" · 지정 {sorted(only)}" if only else ""))
     tally = {}
-    for no, slug, audio, dur in SONGS:
+    for no, slug, audio, dur in songs:
         try:
             r = do_song(no, slug, audio, dur)
         except Exception as e:
