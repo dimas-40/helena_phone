@@ -97,8 +97,13 @@
    https://parksy.kr/channel/musician/piano/44-chopin-ballade4/
 45 · 비관 (슬픔+기대) · 골드버그 변주곡 제25변주
    https://parksy.kr/channel/musician/piano/45-bach-goldberg-var25/
-46 · 병적 (혐오+기쁨) · 크라이슬레리아나 No.8
+46 · 병적 (혐오+기쁨) · 크라이슬레리아나 No.8   ⏳ 재채보 대기
    https://parksy.kr/channel/musician/piano/46-schumann-kreisleriana-8/
+   ⚠️ 2026-10-08 — Commons 파일 제목 N8/N3이 뒤바뀐 것을 소리로 확인했다.
+      제목 N8 파일은 내용이 No.3 이었고(채보·렌더까지 끝냈음), 제목 N3 파일이 진짜 No.8.
+      No.3 자산은 midi_lane/pd/46-schumann-kreisleriana-8/_was-no3/ 에 보존.
+      원곡을 교체해 앞 체인이 끝나는 대로 자동 재채보한다(워처 pid 10439).
+      근거 전문: 같은 폴더 _dl/SOURCE.txt · _notebook/99-devlog.md
 47 · 지배 (분노+신뢰) · 이탈리아 협주곡 1악장
    https://parksy.kr/channel/musician/piano/47-bach-italian-concerto-1/
 48 · 불안[3차] (기대+공포) · 즉흥곡 Op.90 No.1 다단조
