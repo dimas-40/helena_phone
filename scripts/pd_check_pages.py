@@ -3,6 +3,11 @@
 
     python3 scripts/pd_check_pages.py midi_lane/pd/_localtest 8791
     python3 scripts/pd_check_pages.py . 0 --live      # 라이브 parksy.kr 검사
+    python3 scripts/pd_check_pages.py midi_lane/pd/_localtest 8791 --only=18,46
+
+전편 검사는 46편 × 4해상도라 오래 걸린다. 쪽지 한 장을 고친 뒤 그 곡만 보려면
+--only=NN,NN 을 쓴다. **다만 이때 마지막 줄은 '전부 통과'가 아니라 '고른 N편 통과'다** —
+부분 검사를 전편 검사로 오해하지 않게 그렇게 적는다.
 
 검사: 콘솔 에러 / 가로 넘침 / 독 높이·칩 줄바꿈 / 노트 로드 수 / barhint 문구 /
       타임라인 클릭 이동 / 감정 수레바퀴 하이라이트 / 폰에서 칸 누르기.
@@ -14,7 +19,6 @@
 """
 import http.server
 import os
-import socketserver
 import sys
 import threading
 import functools
@@ -29,6 +33,17 @@ BASE = "https://parksy.kr/channel/musician/piano"
 _LANE = Path("/root/work/midi_lane/pd")
 # 곡 폴더만 — [0-9][0-9]- 로 좁히지 않으면 site/assets/ 가 곡으로 잡힌다.
 PAGES = [(p.name[:2], p.name) for p in sorted(_LANE.glob("*/site/[0-9][0-9]-*/"))]
+# --only=18,46 — 쪽지 한 장 고친 뒤 그 곡만 다시 본다. '=붙임' 꼴이라야 한다:
+# positional 인자(ROOT·PORT)를 밀어내지 않으려고 값을 한 토큰에 담는다.
+ONLY = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--only=")), None)
+if ONLY:
+    want = {s.strip().zfill(2) for s in ONLY.split(",") if s.strip()}
+    PAGES = [p for p in PAGES if p[0] in want]
+    if not PAGES:
+        print("--only=%s 에 맞는 곡이 없다 (아는 곡: %s)"
+              % (ONLY, " ".join(sorted(p.name[:2] for p in
+                                      _LANE.glob("*/site/[0-9][0-9]-*/")))))
+        sys.exit(2)
 WIDTHS = [(360, 740), (414, 896), (768, 1024), (1280, 900)]
 
 
@@ -90,18 +105,29 @@ class Q(http.server.SimpleHTTPRequestHandler):
         left = getattr(self, "_range_left", None)
         if left is None:
             return http.server.SimpleHTTPRequestHandler.copyfile(self, src, dst)
-        while left > 0:
-            chunk = src.read(min(65536, left))
-            if not chunk:
-                break
-            dst.write(chunk)
-            left -= len(chunk)
+        try:
+            while left > 0:
+                chunk = src.read(min(65536, left))
+                if not chunk:
+                    break
+                dst.write(chunk)
+                left -= len(chunk)
+        except (ConnectionResetError, BrokenPipeError):
+            # 오디오를 실어 보내는 중에 브라우저가 **정상적으로** 끊는 일이 있다
+            # (탐색·재로드). 예전에는 이때 서버 스레드가 트레이스백을 쏟았고,
+            # 그게 페이지 콘솔에 net::ERR_CONNECTION_ABORTED 로 뜨면서
+            # **17호를 3개 해상도에서 없는 실패로 만들었다**(1280 에서는 ✓).
+            # 끊긴 것은 끊긴 것일 뿐 결함이 아니므로 조용히 넘긴다.
+            pass
 
 
 def serve():
     h = functools.partial(Q, directory=str(ROOT))
-    socketserver.TCPServer.allow_reuse_address = True
-    srv = socketserver.TCPServer(("127.0.0.1", PORT), h)
+    # ⚠️ 단일 스레드 서버로는 모자라다. 페이지 하나가 오디오 range 요청과
+    # 문서 요청을 겹쳐 보내는데, 그걸 한 줄로 세우면 큰 음원(46호 9MB)에서
+    # 연결이 끊기고 위의 가짜 ERR 로 이어진다. 스레드로 받는다.
+    srv = http.server.ThreadingHTTPServer(("127.0.0.1", PORT), h)
+    srv.daemon_threads = True
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     return srv
 
@@ -290,7 +316,15 @@ def main():
             print("  · %s" % s)
         print("  (보류 NN.HOLD 거나 쪽지(page.py)를 아직 안 쓴 곡이다 — 배포 묶음 "
               "`pd_build_deploy.sh` 출력과 대조할 것)")
-    print("\n%s" % ("전부 통과" if not bad else "%d개 조합에서 문제" % bad))
+    if bad:
+        print("\n%s" % ("%d개 조합에서 문제" % bad
+                        if not ONLY else "고른 %d편에서 %d개 조합 문제" % (len(PAGES), bad)))
+    elif ONLY:
+        # 부분 검사를 전편 검사로 읽으면 안 된다 — 그렇게 읽히지 않게 적는다.
+        print("\n고른 %d편 통과 (%s) — ⚠️ 전편 검사가 아니다"
+              % (len(PAGES), ONLY))
+    else:
+        print("\n전부 통과")
     return 1 if bad else 0
 
 
