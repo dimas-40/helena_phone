@@ -1384,6 +1384,22 @@
     "deck": "⚠️ **이 표는 제안이었고, Boss가 대체를 허락했다.**"
   },
   {
+    "src": "_notebook/126-pd-piano-progress-2026-10-08_Claude.md",
+    "out": "notebook/126-pd-piano-progress-2026-10-08_Claude.html",
+    "title": "126 · 48칸 피아노 시리즈 — 진행률 중간 보고 + 재부팅 대비 인수인계",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "Boss 지시 — *“업무 스텝에다가 이거 바로 저장해 놔 이거 다시 재부팅해야 돼.”*"
+  },
+  {
+    "src": "_notebook/127-pd-piano-decisions-2026-10-08_Claude.md",
+    "out": "notebook/127-pd-piano-decisions-2026-10-08_Claude.html",
+    "title": "127 · 48칸 피아노 — Boss 결정 3건 + 30호 채보 실패 판정",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "이 문서는 **왜 이렇게 했는지**를 남긴다. 진행률·URL 목록은 수첩 126(인수인계)에 있다."
+  },
+  {
     "src": "_notebook/78-pd-pipeline-whitepaper_Claude.md",
     "out": "notebook/78-pd-pipeline-whitepaper_Claude.html",
     "title": "🎬 PD Pipeline 기술 백서 — URL 하나로 숏폼 자동 제작",
