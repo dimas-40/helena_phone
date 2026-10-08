@@ -48,6 +48,13 @@ SONGS = [
     ("35", "35-chopin-etude-25-6",       "etude35.flac",   130.19),
     ("41", "41-schumann-kreisleriana-1", "kreis41.ogg",    150.52),
     ("31", "31-debussy-golliwog",        "golliwog.wav",   160.50),
+    # ⚠ 23호 — 2026-10-08 **Boss 지시로 소재를 바꿨다.** "피아노곡 전용곡으로 추출해 가지고
+    #    피아노 렌더링을 해야지. 바이올린 들어가 있잖아요. 캐논 다시 추출 렌더링해."
+    #    옛 소재(USAF 현악 녹음)의 채보·실측·음원은 같은 폴더 `_was-violin/` 으로 옮겨 두었다.
+    #    새 소재는 피아노 편곡 판(Lee Galloway 연주)이다.
+    #    🔴 라이선스는 GFDL+CC BY-SA 3.0 이고 **편곡이 Galloway 것**이라 Boss 판정 대기다.
+    #       판정 전에는 새 렌더를 배포하지 않는다(체인은 소리까지만 만든다).
+    ("23", "23-pachelbel-canon",         "canon-piano-galloway.ogg", 171.08),
     ("47", "47-bach-italian-concerto-1", "italian1.ogg",   222.88),
     # ⚠ 46호 — 2026-10-08 에 **파일 제목이 뒤바뀐 것**을 확인했다. 제목이 N8 인 파일은
     #    내용이 No.3 이었고, 제목이 N3 인 파일이 실제 No.8 이다(소리 크로마 DTW 0.0885 대
@@ -55,6 +62,9 @@ SONGS = [
     #    근거 전문은 `midi_lane/pd/46-schumann-kreisleriana-8/_dl/SOURCE.txt`,
     #    No.3 자산은 같은 폴더 `_was-no3/` 에 남겨 두었다(버리지 않는다).
     ("46", "46-schumann-kreisleriana-8", "kreis46_n8_N3titled.ogg", 222.44),
+    # ⚠ 18호 — 2026-10-08 에 **폴더 자체가 없었다.** 수첩 125 §3-A 가 대체곡(라흐마니노프 전주곡 Op.23 No.5 · CC BY-SA 3.0)으로 확정해 두었는데
+    #    음원을 받아 두지 않아 체인 목록에 없었다. 그래서 이 실행에서 받아 넣었다(sha1 79413f4f… 대조함 · 249.14초).
+    ("18", "18-rachmaninoff-prelude-23-5", "rach18.oga", 249.14),
     ("12", "12-ravel-alborada-del-gracioso", "alborada.flac", 357.26),
     ("26", "26-schubert-impromptu-90-3", "imp26.ogg",      357.84),
     ("43", "43-ravel-le-gibet",          "legibet.flac",   424.72),
