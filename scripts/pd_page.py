@@ -203,7 +203,12 @@ def main():
     ok_axis = fmt(data["origEnd"]) in body and fmt(data["gapEnd"]) in body
     ok_dock = ("0:00 / " + fmt(data["duration"])) in body
     print("→ %s (%d 바이트)" % (out, len(body.encode())))
-    print("   길이 %s · 원곡끝 %s · 침묵끝 %s · 칸 %d"
+    # ⚠️ data["blocks"] 는 **칸의 수가 아니라 칸 경계 표시의 수**다.
+    #    pd_build_data.bass_blocks() 가 끊김(>1.0초)마다 끝 표시를 하나 더 넣기 때문에
+    #    경계 = 칸 + 끊김 이 된다.  여기서 "칸"이라고 찍으면 다음 사람이
+    #    페이지에 적힌 칸 수(facts.json 의 n_blocks)를 보고 **틀렸다고 고친다.**
+    #    실제로 18호에서 397 대 376 으로 갈려 이 주석이 생겼다.
+    print("   길이 %s · 원곡끝 %s · 침묵끝 %s · 경계표시 %d(칸 수 아님 — 정본은 facts.json)"
           % (fmt(data["duration"]), fmt(data["origEnd"]), fmt(data["gapEnd"]),
              len(data["blocks"])))
     print("   축 %s · 독 %s" % ("OK" if ok_axis else "실패!", "OK" if ok_dock else "실패!"))
