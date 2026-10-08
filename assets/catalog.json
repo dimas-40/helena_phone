@@ -1400,6 +1400,14 @@
     "deck": "이 문서는 **왜 이렇게 했는지**를 남긴다. 진행률·URL 목록은 수첩 126(인수인계)에 있다."
   },
   {
+    "src": "_notebook/128-pd-piano-progress-2026-10-09_Claude.md",
+    "out": "notebook/128-pd-piano-progress-2026-10-09_Claude.html",
+    "title": "128 · 48칸 피아노 — 진행률 (2026-10-09) · 남은 셋은 전부 **사람 판정 대기**",
+    "section": "Notebook",
+    "kind": "md",
+    "deck": "이어받는 사람에게 — **§2의 재개 명령 세 줄이면 상태를 다시 세울 수 있다.**"
+  },
+  {
     "src": "_notebook/78-pd-pipeline-whitepaper_Claude.md",
     "out": "notebook/78-pd-pipeline-whitepaper_Claude.html",
     "title": "🎬 PD Pipeline 기술 백서 — URL 하나로 숏폼 자동 제작",
