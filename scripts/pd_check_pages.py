@@ -110,6 +110,12 @@ def main():
     if not LIVE:
         serve()
     bad = 0
+    # 서버 뿌리에 없는 곡(보류 NN.HOLD · 쪽지 미작성)은 **검사 대상이 아니다.**
+    # 배포 묶음에 들어가는지는 pd_build_deploy.sh 가 정하고, 여기서는 검사한 곡만
+    # 문제로 센다 — 지금 채보 중인 곡 때문에 게이트가 영원히 빨간불이 되면
+    # 사람이 검사기를 무시하게 된다(그게 진짜 손해다). 대신 **조용히 넘기지 않는다**:
+    # 무엇을 못 봤는지 마지막에 이름으로 남긴다.
+    absent = []
     with sync_playwright() as pw:
         b = pw.chromium.launch()
         for tag, slug in PAGES:
@@ -123,6 +129,16 @@ def main():
                 pg.on("console", lambda m: errs.append(m.text) if m.type == "error" else None)
                 pg.on("pageerror", lambda e: errs.append("pageerror: %s" % e))
                 pg.goto(url, wait_until="load")
+                # #au 가 없으면 **여기서 멈추지 말고 이 곡을 실패로 보고한다.**
+                # 2026-10-08: 서버 뿌리에 없는 곡(보류·쪽지 미작성)을 열면 404 페이지가
+                # 뜨는데, 예전 코드는 그 자리에서 null.readyState 로 **예외를 던져
+                # 검사 전체를 죽였다.** 게다가 죽은 곡이 아니라 그 **다음** 곡 이름을
+                # 가리켜서(로그상 42호로 보였다) 없는 버그를 쫓게 만들었다 — 실제로는
+                # 39호(보류)가 묶음에 없어서 난 것이었다. 이제 원인을 그 자리에서 말한다.
+                if not pg.evaluate("() => !!document.getElementById('au')"):
+                    absent.append(slug)
+                    ctx.close()
+                    continue
                 # 파이썬 http.server 는 Range 를 지원하지 않는다 — 앞으로 감기는
                 # 버퍼가 차야 먹는다. 브라우저에서 재생 준비를 기다린다.
                 pg.evaluate("""() => new Promise(r => {
@@ -244,6 +260,13 @@ def main():
                     print("      shot → %s" % out)
                 ctx.close()
         b.close()
+    if absent:
+        uniq = sorted(set(absent))
+        print("\n묶음에 없어 검사하지 못한 곡 %d:" % len(uniq))
+        for s in uniq:
+            print("  · %s" % s)
+        print("  (보류 NN.HOLD 거나 쪽지(page.py)를 아직 안 쓴 곡이다 — 배포 묶음 "
+              "`pd_build_deploy.sh` 출력과 대조할 것)")
     print("\n%s" % ("전부 통과" if not bad else "%d개 조합에서 문제" % bad))
     return 1 if bad else 0
 

@@ -26,16 +26,35 @@ cp "$SRC_ASSETS/piano.css" "$SRC_ASSETS/piano.js" _deploy/assets/
 # 목록 페이지 정본
 cp 02-bach-prelude-c/site/index.html _deploy/index.html
 
+# 쪽지(index.html)가 아직 없는 곡과 **보류(NN.HOLD)된 곡**은 배포 묶음에서 뺀다.
+# 왜: 채보만 끝나고 쪽지를 아직 안 쓴 곡이 하나만 있어도 cp 가 실패해
+# **모든 곡의 배포가 멈췄다**(2026-10-08, 39호 때문에). 한 곡이 전체를 막지 않게 한다.
+SHIP=()
+SKIPPED=()
 for p in "${PIECES[@]}"; do
+  d="$(ls -d */site/"$p" | head -1)"
+  no="${p%%-*}"
+  root="${d%%/site/*}"                 # i=39-mussorgsky-goldenberg/site/39-... → 39-mussorgsky-goldenberg
+  if [ -f "$root/$no.HOLD" ]; then SKIPPED+=("$p (보류 — $no.HOLD)"); continue; fi
+  if [ ! -f "$d/index.html" ]; then SKIPPED+=("$p (쪽지 없음)"); continue; fi
+  SHIP+=("$p")
+done
+
+for p in "${SHIP[@]}"; do
   d="$(ls -d */site/"$p" | head -1)"
   mkdir -p "_deploy/$p"
   cp "$d/index.html" "$d/data.js" "_deploy/$p/"
 done
 
 cp -r _deploy/. _localtest/
-for p in "${PIECES[@]}"; do
+for p in "${SHIP[@]}"; do
   d="$(ls -d */site/"$p" | head -1)"
   cp -r "$d/img" "$d/audio" "_localtest/$p/"
 done
+echo "배포 ${#SHIP[@]}곡"
+if [ ${#SKIPPED[@]} -gt 0 ]; then
+  printf '뺀 곡 %d:\n' "${#SKIPPED[@]}"
+  printf '  · %s\n' "${SKIPPED[@]}"
+fi
 echo "deploy:"; find _deploy -type f | sort | sed 's/^/  /'
 echo "localtest: $(find _localtest -type f | wc -l) files"

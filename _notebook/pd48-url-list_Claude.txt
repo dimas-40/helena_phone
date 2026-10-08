@@ -1,0 +1,105 @@
+박씨 렌더링 — 퍼블릭 도메인 피아노 48칸 · URL 전량
+대시보드: https://parksy.kr/channel/musician/piano/
+============================================================================
+
+■ 지금 쓰는 링크 — 라이브 32개 (전부 HTTP 200 실측)
+----------------------------------------------------------------------------
+01 · 슬픔 · 생각에 잠김
+   https://parksy.kr/channel/musician/piano/01-satie-gymnopedie/
+02 · 신뢰 · 수용
+   https://parksy.kr/channel/musician/piano/02-bach-prelude-c/
+03 · 슬픔 · 슬픔
+   https://parksy.kr/channel/musician/piano/03-chopin-raindrop/
+04 · 슬픔 · 비통
+   https://parksy.kr/channel/musician/piano/04-beethoven-moonlight/
+05 · 신뢰 · 신뢰
+   https://parksy.kr/channel/musician/piano/05-schumann-traumerei/
+06 · 분노 · 분노
+   https://parksy.kr/channel/musician/piano/06-rachmaninoff-csm/
+07 · 사랑 (기쁨+신뢰)
+   https://parksy.kr/channel/musician/piano/07-liszt-liebestraum/
+08 · 회한 (슬픔+혐오)
+   https://parksy.kr/channel/musician/piano/08-chopin-ballade1/
+09 · 희망 (기대+신뢰)
+   https://parksy.kr/channel/musician/piano/09-beethoven-liszt-9th/
+10 · 감상 (신뢰+슬픔)
+   https://parksy.kr/channel/musician/piano/10-chopin-nocturne9-2/
+11 · 낙관 (기대+기쁨)
+   https://parksy.kr/channel/musician/piano/11-beethoven-waldstein-1/
+13 · 분노 · 격분
+   https://parksy.kr/channel/musician/piano/13-chopin-revolutionary/
+14 · 기대 · 기대
+   https://parksy.kr/channel/musician/piano/14-chopin-fantaisie-impromptu/
+15 · 절망 (공포+슬픔)
+   https://parksy.kr/channel/musician/piano/15-chopin-funeral-march/
+16 · 자부심 (분노+기쁨)
+   https://parksy.kr/channel/musician/piano/16-chopin-military-polonaise/
+17 · 경외 (공포+놀람)
+   https://parksy.kr/channel/musician/piano/17-debussy-cathedrale-engloutie/
+19 · 죄책감 (기쁨+공포)
+   https://parksy.kr/channel/musician/piano/19-schumann-furchtenmachen/
+20 · 기쁨 · 평온
+   https://parksy.kr/channel/musician/piano/20-schumann-happy-farmer/
+21 · 기쁨 · 기쁨
+   https://parksy.kr/channel/musician/piano/21-mozart-turkish-march/
+22 · 기쁨 · 환희
+   https://parksy.kr/channel/musician/piano/22-mendelssohn-spinnerlied/
+23 · 신뢰 · 존경
+   https://parksy.kr/channel/musician/piano/23-pachelbel-canon/
+24 · 순종 (신뢰+공포)
+   https://parksy.kr/channel/musician/piano/24-chopin-prelude-6/
+25 · 호기심 (신뢰+놀람)
+   https://parksy.kr/channel/musician/piano/25-debussy-arabesque-1/
+27 · 기대 · 경계
+   https://parksy.kr/channel/musician/piano/27-grieg-troldhaugen/
+28 · 공포 · 불안
+   https://parksy.kr/channel/musician/piano/28-chopin-prelude-2/
+29 · 공포 · 공포
+   https://parksy.kr/channel/musician/piano/29-chopin-prelude-24/
+32 · 놀람 · 놀람
+   https://parksy.kr/channel/musician/piano/32-bach-goldberg-quodlibet/
+33 · 놀람 · 경악
+   https://parksy.kr/channel/musician/piano/33-liszt-campanella/
+34 · 혐오 · 권태
+   https://parksy.kr/channel/musician/piano/34-satie-gymnopedie-3/
+36 · 혐오 · 역겨움
+   https://parksy.kr/channel/musician/piano/36-bartok-allegro-barbaro/
+37 · 분노 · 짜증
+   https://parksy.kr/channel/musician/piano/37-chopin-prelude-22/
+38 · 비난 (놀람+슬픔)
+   https://parksy.kr/channel/musician/piano/38-mussorgsky-bydlo/
+
+■ 아직 없는 링크 — 16개 (페이지 미제작 → 지금 붙이면 404)
+----------------------------------------------------------------------------
+12 · 냉소 (혐오+기대) · 어릿광대의 아침노래 (《미로르》 중)
+   https://parksy.kr/channel/musician/piano/12-ravel-alborada-del-gracioso/
+18 · 시기 (슬픔+분노) · 전주곡 Op.23 No.5 사단조
+   https://parksy.kr/channel/musician/piano/18-rachmaninoff-prelude-23-5/
+26 · 기대 · 관심 · 즉흥곡 Op.90 No.3 내림사장조
+   https://parksy.kr/channel/musician/piano/26-schubert-impromptu-90-3/
+30 · 공포 · 극공 · 닭발 위의 오두막 (《전람회의 그림》 중)
+   https://parksy.kr/channel/musician/piano/30-mussorgsky-baba-yaga/
+31 · 놀람 · 산만 · 꼬마 흑인
+   https://parksy.kr/channel/musician/piano/31-debussy-golliwog/
+35 · 혐오 · 혐오 · 연습곡 Op.25 No.6 올림사단조
+   https://parksy.kr/channel/musician/piano/35-chopin-etude-25-6/
+39 · 멸시 (혐오+분노) · 골덴베르크와 슈무일레 (《전람회의 그림》 중)
+   https://parksy.kr/channel/musician/piano/39-mussorgsky-goldenberg/
+40 · 공격성 (분노+기대) · 연습곡 Op.8 No.12 올림라단조
+   https://parksy.kr/channel/musician/piano/40-scriabin-etude-8-12/
+41 · 불신 (놀람+혐오) · 크라이슬레리아나 No.1
+   https://parksy.kr/channel/musician/piano/41-schumann-kreisleriana-1/
+42 · 기쁨[3차] (기쁨+놀람) · 연습곡 Op.10 No.5 내림사장조 「흑건」
+   https://parksy.kr/channel/musician/piano/42-chopin-black-key/
+43 · 수치 (공포+혐오) · 교수대 (《밤의 가스파르》 중)
+   https://parksy.kr/channel/musician/piano/43-ravel-le-gibet/
+44 · 격분[3차] (놀람+분노) · 발라드 No.4
+   https://parksy.kr/channel/musician/piano/44-chopin-ballade4/
+45 · 비관 (슬픔+기대) · 골드버그 변주곡 제25변주
+   https://parksy.kr/channel/musician/piano/45-bach-goldberg-var25/
+46 · 병적 (혐오+기쁨) · 크라이슬레리아나 No.8
+   https://parksy.kr/channel/musician/piano/46-schumann-kreisleriana-8/
+47 · 지배 (분노+신뢰) · 이탈리아 협주곡 1악장
+   https://parksy.kr/channel/musician/piano/47-bach-italian-concerto-1/
+48 · 불안[3차] (기대+공포) · 즉흥곡 Op.90 No.1 다단조
+   https://parksy.kr/channel/musician/piano/48-schubert-impromptu-90-1/
