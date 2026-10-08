@@ -929,6 +929,13 @@
 <li><a href="#_126">지금 상태</a></li>
 </ul>
 </li>
+<li><a href="#2026-10-09-43-_claude">2026-10-09 — 시리즈에 틈 자가 둘이었다 (43호 쪽지의 잘못된 견주기를 잡았다) (_Claude)</a><ul>
+<li><a href="#_127">계기</a></li>
+<li><a href="#47">47호는 틀리지 않았다</a></li>
+<li><a href="#_128">여섯 곡을 두 자로 다 재 봤다</a></li>
+<li><a href="#_129">내가 한 잘못 두 가지</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav>
@@ -14432,6 +14439,91 @@ URL 목록에도 그렇게 적혀 있었다.</p>
 <li>43호 배포 완료 — 커밋 <code>2cd2121b9f</code> (85파일, <code>channel/musician/piano/</code>)</li>
 <li>48호 채보 진행 중 · 끝나면 감시자가 <code>pd_chain.py 23 46 18</code> 을 잇는다</li>
 </ul>
+<h2 id="2026-10-09-43-_claude">2026-10-09 — <strong>시리즈에 틈 자가 둘이었다</strong> (43호 쪽지의 잘못된 견주기를 잡았다) (_Claude)</h2>
+<h3 id="_127">계기</h3>
+<p>43호 쪽지에 이런 문장을 써 두었다 —</p>
+<blockquote>
+<p>발행된 12호 쪽지의 “53곳 중 10곳”과는 맞지만, 47호 쪽지가 적은<br>
+“10곳이 전부 가짜”는 <strong>이번 셈에서 2곳이 진짜로 나왔다.</strong><br>
+<strong>두 수가 다른 이유는 우리가 아직 모른다.</strong></p>
+</blockquote>
+<p>47호 쪽지가 틀렸다는 뜻으로 읽힌다. 확인해 보려고 47호를 다시 쟀다.</p>
+<h3 id="47">47호는 틀리지 않았다</h3>
+<p>47호 쪽지가 적은 숫자를 그대로 재현했다 — <strong>틈 10곳 · 온셋 2328 · 0.25초 초과 129곳 ·<br>
+최장 틈 771밀리초 · 차이 −2.53dB ~ +1.54dB · “29.363초의 틈이 앞 1초보다 1.54dB 크다”</strong>.<br>
+<strong>소수점까지 같다.</strong></p>
+<p>다른 것은 <strong>자(定義)</strong> 였다. 47호는<br>
+<strong>Δ = (틈 전체의 RMS) − (틈 직전 1초의 RMS)</strong>, 문턱 <strong>5dB</strong> 를 썼다.<br>
+내가 43호에 쓴 자는<br>
+<strong>Δ = (틈 안 0.25초 창들의 최소 RMS) − (틈 직전 1초의 RMS)</strong>, 문턱 <strong>10dB</strong> 다.<br>
+<strong>“틈 전체가 조용했나”와 “틈 안에 조용한 순간이 하나라도 있었나”는 다른 질문이다.</strong></p>
+<h3 id="_128">여섯 곡을 두 자로 다 재 봤다</h3>
+<table>
+<thead>
+<tr>
+<th>호</th>
+<th>쪽지 발행값</th>
+<th>자A (틈 전체 vs 앞 1초, 5dB)</th>
+<th>자B (틈 내 최소창 vs 앞 1초, 10dB)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>12</td>
+<td>53곳 중 <strong>10</strong></td>
+<td>8</td>
+<td><strong>10 ✓</strong></td>
+</tr>
+<tr>
+<td>26</td>
+<td>19곳 중 <strong>1</strong></td>
+<td>5</td>
+<td><strong>1 ✓</strong></td>
+</tr>
+<tr>
+<td>31</td>
+<td>12곳 중 <strong>6</strong></td>
+<td><strong>5</strong></td>
+<td>10</td>
+</tr>
+<tr>
+<td>41</td>
+<td>4곳 중 <strong>0</strong></td>
+<td>0 ✓</td>
+<td>0 ✓</td>
+</tr>
+<tr>
+<td>43</td>
+<td>345곳 중 <strong>62</strong></td>
+<td>78</td>
+<td><strong>62 ✓</strong></td>
+</tr>
+<tr>
+<td>47</td>
+<td>10곳 중 <strong>0</strong></td>
+<td><strong>0 ✓</strong></td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>쪽지와 맞는 쪽: 12·26·41·43호는 자B, 47호는 자A.</strong> 31호는 자A로 6곳 중 <strong>5곳이<br>
+소수점까지 재현</strong>(+17.31 · +14.94 · +9.44 · +8.75 · +6.58dB — 쪽지 기재와 같다).<br>
+6번째(110.078초)는 <strong>지금 가진 채보에 그 틈이 아예 없다</strong>(대신 155.807초에 틈이 있고 +2.91dB).<br>
+<strong>왜 채보가 달라졌는지는 모른다</strong> — 그래서 31호는 “5곳까지 확인”으로 적었다.</p>
+<h3 id="_129">내가 한 잘못 두 가지</h3>
+<ol>
+<li><strong>서로 다른 자를 견주고 “47호가 다르다”고 썼다.</strong> 자가 다르면 수가 다른 게 당연하다.<br>
+   → 43호 쪽지를 고쳤다: 두 자를 표로 나란히 적고, <strong>“47호 쪽지는 틀린 것이 아니다”</strong>,<br>
+   그리고 내가 처음에 잘못 적었음을 쪽지에 명시했다.</li>
+<li><strong>재는 스크립트에서 부호를 두 번 뒤집었다.</strong> 자A를 처음에 <code>틈 − 앞 &gt; 5</code>로 썼는데<br>
+   맞는 것은 <code>앞 − 틈 &gt; 5</code> 다(쪽지가 적은 “차이”는 틈−앞이고, “조용해졌다”는 그게 음수인 것).<br>
+<strong>이 실수 때문에 한 번은 “자A로 43호 62 ✓”라는 틀린 표가 나왔다</strong> — 부호를 고치니 78이 됐다.</li>
+</ol>
+<blockquote>
+<p>교훈: <strong>같은 이름의 자(“틈”)가 두 개면, 두 쪽지의 숫자를 견주는 것 자체가 무의미하다.</strong><br>
+견주기 전에 <strong>정의를 먼저 맞춰라.</strong> 그리고 <strong>정의를 맞출 때는 부호까지 맞춰라</strong> —<br>
+“조용해졌다”는 어느 쪽에서 어느 쪽을 뺀 것인지가 뒤집히면 정반대 수가 나온다.</p>
+</blockquote>
   </article>
   <nav class="wz-pager">
     <a class="" href="session-2026-07-26_Grok.html">
