@@ -13,7 +13,29 @@
 import sys
 from pathlib import Path
 
-HOLD = {"30", "39"}   # NN.HOLD 파일이 있는 칸 — 배포 묶음에서 빠진다
+LANE = Path("/root/work/midi_lane/pd")
+
+
+def _holds():
+    """보류 칸은 **디스크의 `NN.HOLD` 파일에서 읽는다** — 손으로 적은 목록이 아니다.
+
+    왜: 예전에는 여기에 {"30","39"} 가 박혀 있었다. 그래서 **23호처럼 파일 없이
+    보류하기로 한 곡이 목록에 없으면 대시보드가 그 곡을 "완성"으로 세고 링크까지 걸었다**
+    (2026-10-09 실제로 그랬다 — 라이선스 판정 대기로 배포 금지였는데 라이브에 있었다).
+    표식 파일 하나가 정본이고, 대시보드는 그것을 읽기만 한다.
+    """
+    out = {}
+    for f in sorted(LANE.glob("[0-9][0-9]-*/*.HOLD")):
+        no = f.stem[:2]
+        try:
+            first = f.read_text(encoding="utf-8").splitlines()[0].strip()
+        except Exception:
+            first = "보류"
+        out[no] = first
+    return out
+
+
+HOLD = _holds()   # 번호 → 사유 첫 줄. 파일이 없으면 빈 dict (그게 정상이다)
 
 OUT = Path("/root/work/midi_lane/pd/02-bach-prelude-c/site/index.html")
 
@@ -182,6 +204,17 @@ TAIL = """  </ul>
 def row(no, title, meta, cell, slug):
     done = slug is not None
     mark = "" if title != "미정" else " — 미정"
+    if no in HOLD:
+        # 보류 — **링크를 걸지 않는다.** 쪽지가 있어도 지금 라이브에 없거나
+        # 있어서는 안 되는 곡이라, 걸면 404 로 보내거나 잘못된 것을 가리킨다.
+        inner = ('<span class="tt">%s</span>'
+                 '<span class="mm">%s · ⛔ %s</span></span>'
+                 % (title, meta or "후보 탐색 중", HOLD[no]))
+        return ('    <li class="hold"><div class="row">\n'
+                '      <span class="no">%s</span>\n'
+                '      <span>%s\n'
+                '      <span class="tag">%s</span>\n'
+                '    </div></li>\n' % (no, inner, cell))
     if done:
         return ('    <li class="built"><a class="row" href="%s/">\n'
                 '      <span class="no">%s</span>\n'
@@ -205,8 +238,9 @@ def main():
     assert len(set(cells)) == 48, "칸이 겹친다"
     pieces = [q[1] for q in QUEUE if q[1] != "미정"]
     assert len(set(pieces)) == len(pieces), "같은 곡이 두 칸에 있다"
-    built = sum(1 for q in QUEUE if q[4])
-    holds = sum(1 for q in QUEUE if q[0] in HOLD and not q[4])
+    # 보류 칸은 **완성으로 세지 않는다** — 쪽지가 있어도 배포되지 않은 곡이다.
+    built = sum(1 for q in QUEUE if q[4] and q[0] not in HOLD)
+    holds = sum(1 for q in QUEUE if q[0] in HOLD)
     html = HEAD % (built, holds) + "".join(row(*q) for q in QUEUE) + TAIL
     if "--check" in sys.argv:
         print("칸 48 · 완성 %d · 보류 %d · 곡 %d" % (built, holds, len(pieces)))
