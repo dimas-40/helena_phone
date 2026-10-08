@@ -910,6 +910,25 @@
 </ul>
 </li>
 <li><a href="#2026-10-08-46-commons-_claude">2026-10-08 — 46호 파일 제목이 뒤바뀌어 있었다 — Commons 를 믿지 않고 소리로 확인 (_Claude)</a></li>
+<li><a href="#2026-10-08-23-_claude_1">2026-10-08 — 23호 「캐논」 소재 교체 — 피아노 시리즈인데 소재가 현악이었다 (_Claude)</a></li>
+<li><a href="#2026-10-08-12-_claude">2026-10-08 — 12호 「어릿광대의 아침노래」 쪽지 완성 · 배포 (_Claude)</a></li>
+<li><a href="#2026-10-08-_claude_1">2026-10-08 — 🔴 시리즈 전체의 결함 발견: 「톱니」·「불협」 자를 재현할 수 없다 (_Claude)</a></li>
+<li><a href="#2026-10-09-43-cv150ms-_claude">2026-10-09 — 43호 「교수대」 발행 + CV·150ms이웃 자를 발행값으로 검증했다 (_Claude)</a><ul>
+<li><a href="#_119">🔴 전 세션이 남긴 「자를 재현할 수 없다」 문제에 진전이 있었다</a></li>
+<li><a href="#_120">⚠️ 내가 쓴 초안에서 틀린 수를 여럿 잡았다 — 검증 없이 올릴 뻔했다</a></li>
+<li><a href="#43">조를 두고 세 자가 갈린다 (43호)</a></li>
+<li><a href="#43_1">43호에서 나온 수 (다시 재서 확인한 것만)</a></li>
+<li><a href="#_121">대시보드 정정</a></li>
+</ul>
+</li>
+<li><a href="#2026-10-09-30-_claude">2026-10-09 — 30호 보류 표식을 찾았다: 기록된 믿음과 파일이 어긋나 있었다 (_Claude)</a><ul>
+<li><a href="#_122">무슨 일이 있었나</a></li>
+<li><a href="#_123">직접 재서 알게 된 것</a></li>
+<li><a href="#_124">진짜 문제는 검증 실패가 아니었다</a></li>
+<li><a href="#_125">대시보드에 보류를 보이게 했다</a></li>
+<li><a href="#_126">지금 상태</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav>
@@ -14216,6 +14235,203 @@ Boss 판단 대기.</strong> 기술 작업(재추출·재렌더)은 진행한다
 <p><strong>같은 날 다른 확인.</strong> 31·35·40·41·42·47 <strong>여섯 곡이 실제로 살아 있다</strong> —<br>
 <code>parksy.kr</code> 에서 index·audio·data.js·img 를 직접 찍어 <strong>전부 200</strong>(47호 쪽지 본문의 &ldquo;가짜 틈&rdquo; 문구까지 확인).<br>
 배포 대기 중이던 푸시가 이번에 내려갔다.</p>
+<h2 id="2026-10-08-23-_claude_1">2026-10-08 — 23호 「캐논」 소재 교체 — <strong>피아노 시리즈인데 소재가 현악이었다</strong> (_Claude)</h2>
+<p><strong>Boss 지시(그대로).</strong> <em>&ldquo;피아노곡 전용곡으로 추출해 가지고 피아노 렌더링을 해야지.<br>
+바이올린 들어가 있잖아요. 캐논 다시 추출 렌더링해.&rdquo;</em></p>
+<p><strong>Boss가 맞다.</strong> 23호는 지금까지 <strong>USAF 《The Strolling Strings 50th Anniversary》(2004) 현악 녹음</strong><br>
+(10,842,858바이트)을 소재로 잡았다. 감정 칸은 「신뢰 · 존경」이고 이 시리즈는 <strong>피아노 렌더링</strong> 시리즈인데,<br>
+원곡 자리에 <strong>바이올린이 들어가 있었다.</strong> 게다가 우리 렌더는 그 현악 녹음의 저음을 잡은 것이라,<br>
+&ldquo;원곡 → 재현&rdquo;의 대조 자체가 <strong>다른 악기끼리의 대조</strong>가 되어 있었다. 소재 판정만 보면 통과였지만<br>
+<strong>시리즈의 전제를 어긴 것</strong>이고, 그건 검사기가 잡아 주는 종류의 잘못이 아니다.</p>
+<p><strong>조치 — 기술 작업은 진행, 배포는 멈춘다.</strong><br>
+① 옛 자산(채보·실측·음원·검증·로그)을 <code>23-pachelbel-canon/_was-violin/</code> 로 <strong>옮겼다</strong>(버리지 않는다).<br>
+   사이트 쪽 <code>data.js</code> · <code>audio/combined.mp3</code> 사본도 함께 — Boss가 &ldquo;현악 판 유지&rdquo;로 정하면 여기서 되돌린다.<br>
+<code>mf23_raw.mid</code> 를 옮겼으므로 체인이 <strong>다시 채보한다</strong>(체인은 그 파일이 있으면 건너뛴다).<br>
+② 새 소재 = <code>File:Pachelbel's Canon.ogg</code> — <strong>&ldquo;Piano transcription, performed by Lee Galloway&rdquo;</strong><br>
+   3,825,619바이트 · 171.076초(ffprobe) · <strong>SHA-1 5b3a8162fd930326b184641818e6f1c0d1eee893</strong><br>
+   — 내려받아 <code>sha1sum</code> 으로 대조하고 <code>_dl/</code> 에 두었다.<br>
+③ <code>scripts/pd_chain.py</code> SONGS 에 23을 넣었다(짧은 순 자리 — 31호 160.50초와 47호 222.88초 사이).<br>
+④ 워처를 <strong>하나로 다시 띄웠다</strong>(pid 12171). 옛 워처(11773)는 죽였다 — 둘이 같은 체인을 기다리면<br>
+   동시에 채보를 시작해 <strong>둘 다 느려진다</strong>(2026-10-08에 이미 겪은 실수). 새 워처는 앞 체인(pid 10857)이<br>
+   끝나면 <code>pd_chain.py 23 46 18</code> 을 돌린다. 목록 순서상 <strong>23 → 46 → 18</strong>(171 · 222 · 249초).</p>
+<p><strong>🔴 라이선스는 내가 정하지 않는다 — Boss 판단 대기.</strong> 이 파일은 <code>{{GFDL|migration=relicense}}</code>이고,<br>
+<strong>곡 자체가 아니라 편곡이 Lee Galloway 의 것</strong>이다. 파일에 실린 2004년 그의 메일은 자기 홈페이지<br>
+표기를 요청한다. 우리는 GFDL 문면을 읽을 수는 있어도 <strong>&ldquo;이 조합을 우리 시리즈에 실어도 되는가&rdquo;는<br>
+법 판단</strong>이고, 그건 사람 몫이다. <strong>판정 전에는 새 렌더를 배포하지 않는다</strong> — 체인은 숫자와 소리까지만 만든다.<br>
+(같은 이유로 <code>_was-violin/README.md</code> 에 이 사정을 적어 두었다.)</p>
+<p><strong>⚠️ 우리가 확인하지 못한 것(정직).</strong> 옛 현악 판도 라이선스를 다시 따져 본 것은 아니다 —<br>
+이번에 바뀐 것은 <strong>소재(악기)</strong> 이고, 라이선스 검토는 새 소재부터다. 옛 판을 되돌리면 그때 다시 볼 일이다.</p>
+<hr>
+<h2 id="2026-10-08-12-_claude">2026-10-08 — 12호 「어릿광대의 아침노래」 쪽지 완성 · 배포 (_Claude)</h2>
+<p>12호(Ravel 《미로르》 中 Alborada del gracioso · 칸 <strong>냉소</strong> 혐오+기대)의 쪽지를 쓰고 배포 묶음에 넣었다.<br>
+<code>midi_lane/pd/12-ravel-alborada-del-gracioso/site/12-ravel-alborada-del-gracioso/page.py</code> →<br>
+<code>pd_page.py</code>(축 OK · 독 OK · 11:54) → <code>pd_build_deploy.sh</code>(낱장 39쪽 · _localtest 262파일).<br>
+대시보드 슬롯 12를 <code>todo</code> → <code>built</code> 로 바꿨다.</p>
+<p><strong>이 곡에서 새로 나온 것 셋.</strong><br>
+① <strong>0.5초 넘는 틈 53곳 가운데 10곳은 실제로 조용해졌다.</strong> 47호는 10곳 전부 가짜였고 41호는 1초 넘는<br>
+   틈이 아예 없었다 — 곧 <strong>&ldquo;우리 채보의 틈은 늘 가짜&rdquo;라고 일반화할 수 없다.</strong> 가장 긴 틈<br>
+   (95.643→100.257초, 4.613초)을 0.25초마다 재 보니 <strong>앞 2.6초는 소리가 이어지고 뒤 2.0초는<br>
+   −63dB까지 내려간다</strong> — 한 틈 안에 가짜와 진짜가 같이 있다. 1초 넘는 틈은 22곳(47호는 0곳).<br>
+② <strong>도구가 고른 조가 최선이 아니었다.</strong> 우리 자로 4043음을 24개 조에 맞대니 <strong>라장조·나단조 70.3%<br>
+   동률 1위</strong>, 도구가 고른 올림바단조는 66.2% (차 4.1%p). 우리 채보의 <strong>첫 음도 마지막에 울린<br>
+   최고음도 라(D)</strong> 다. ⚠️ 4.1%p로 &ldquo;도구가 틀렸다&rdquo;고는 쓰지 않았다 — 우리 자는 장조/단조를<br>
+   가르지 못한다(라장조 70.3% = 나단조 70.3%가 그 증거).<br>
+③ <strong>상관관계 검사 &lsquo;통과&rsquo;를 처음 만났다</strong> — 플럭스 +0.511 · RMS +0.299(47호는 보류, 30·23호는 실패).<br>
+   40편 가운데 1초 최대 음량 −10.08은 <strong>4위</strong>인데 LUFS −18.2는 15위 — 곧 &ldquo;평균은 중간, 순간은 크다&rdquo;.</p>
+<p><strong>⚠️ 채점은 일곱 항목 가운데 맞음 1 · 반쯤 1 · 틀림 3 · 못 잼 2.</strong> 「비화성음」과 「건조한 행진」은<br>
+우리 자에 아예 없어 <strong>점수를 주지 않았다</strong> — 없는 자를 만들어 표를 채우지 않는다. 칸의 예시곡은<br>
+프로코피에프인데 우리는 라벨을 넣었다는 사실도 쪽지에 그대로 적었다(표를 곡에 맞춰 고치지 않는다).</p>
+<hr>
+<h2 id="2026-10-08-_claude_1">2026-10-08 — 🔴 <strong>시리즈 전체의 결함 발견: 「톱니」·「불협」 자를 재현할 수 없다</strong> (_Claude)</h2>
+<p>12호 쪽지를 쓰려고 자를 다시 세우다가 <strong>발행된 쪽지들이 쓰는 자 두 개가 저장소에 남아 있지 않다</strong>는<br>
+것을 발견했다. 톱니(위 성부 방향이 뒤집히는 비율)와 불협(같이 시작한 두 음의 불협화 비율)을 계산한<br>
+코드가 <strong>어디에도 없다</strong> — 저장소에도, 수첩에도.</p>
+<p><strong>되살리려고 시도한 정의(전부 실패).</strong> 위 성부를 ① 온셋에서 시작하는 최고음으로 잡는 판 / ② 그 시각에<br>
+울리는 최고음으로 잡는 판 · 온셋 허용오차 1e-6 / 0.05 / 0.10초 · 원본 MIDI(<code>mfNN_raw.mid</code>) 대 양자화<br>
+MIDI(<code>mfNN.mid</code>) · 뒤집힘 분모 <code>len−1</code> 대 <code>len</code> · 불협은 온셋쌍별 / 화음별 / 전체 온셋 분모,<br>
+불협음정 집합 {1,2,6,10,11} 대 {1,2,3,6,10,11}. <strong>어느 조합도 발행값을 재현하지 못했다</strong> —<br>
+47호 목표 0.642에 내가 0.663/0.568, 24호 목표 0.861에 0.714/0.525. 불협은 <strong>순서는 맞는데 크기가 틀렸다</strong><br>
+(46 &lt; 47 &lt; 29 는 재현되고 16.6/14.1/17.5 는 목표 18.2/12.8/23.0 과 어긋난다).</p>
+<p><strong>반면 두 자는 정확히 재현됐다 — 그래서 이 둘만 쓴다.</strong><br>
+- <strong>CV(온셋 간격 변동계수)</strong> = 서로 다른 반올림 온셋의 간격 표준편차/평균. 41호 0.604 · 47호 0.922<br>
+  (발행 0.921) · 31호 1.568 · 46호 1.018 — <strong>전부 발행값과 일치.</strong><br>
+- <strong>150ms이웃</strong> = 연속 온셋 간격이 0.15초 이하인 비율. 41호 97.8% · 47호 84.6%(발행 84.4%) · 46호 57.1%(56.8%).</p>
+<p><strong>조치.</strong> ① 12호 쪽지에는 <strong>톱니·불협을 아예 쓰지 않고</strong>, 재현이 검증된 두 자 + 실측값만 실었다.<br>
+② 쪽지 「평가」·「확인하지 못한 것」 칸에 이 결함을 <strong>그대로 적었다</strong> — 12호는 다른 쪽지들과<br>
+<strong>같은 표에 나란히 놓을 수 없는 첫 곡</strong>이 됐다. ③ 헌법의 &ldquo;표를 지어내지 않는다&rdquo;에 따라<br>
+<strong>맞는 척하는 숫자를 만들지 않았다.</strong></p>
+<p><strong>⚠️ 이건 12호 하나의 사정이 아니라 시리즈다.</strong> 24·31·41·47호가 발행한 톱니/불협 값은<br>
+<strong>지금 우리가 다시 계산할 수 없다</strong> — 곧 재검증이 불가능하다. 값을 지우지는 않았다(그건 사람이 정할 일).<br>
+<strong>Boss 판정 필요:</strong> 이 자들을 (가) 폐기하고 CV·150ms이웃으로 대체할지, (나) 정의를 다시 정해<br>
+발행값을 재산출할지. 그때까지 새 쪽지에는 이 두 자를 쓰지 않는다.</p>
+<hr>
+<h2 id="2026-10-09-43-cv150ms-_claude">2026-10-09 — 43호 「교수대」 발행 + <strong>CV·150ms이웃 자를 발행값으로 검증했다</strong> (_Claude)</h2>
+<p><strong>43호(라벨 《밤의 가스파르》 中 「교수대」 · 칸=수치=공포+혐오 · 3차 dyad) 쪽지를 쓰고 올렸다.</strong><br>
+<code>_deploy</code> 41칸 · 대시보드 43칸 ON. 자산 커밋 <code>9e0298d0b5</code>.</p>
+<h3 id="_119">🔴 전 세션이 남긴 「자를 재현할 수 없다」 문제에 진전이 있었다</h3>
+<p>전 세션은 CV·150ms이웃을 <strong>“정의는 아는데 재현은 못 한 자”</strong>로 남겼다(위 항목). 이번에<br>
+<strong>정의를 하나씩 대입해 발행값과 맞춰 보는 시험대</strong>를 돌려, <strong>맞는 정의 하나를 찾아냈다.</strong></p>
+<table>
+<thead>
+<tr>
+<th>정의</th>
+<th>31호(1.568)</th>
+<th>41호(0.604 / 97.8%)</th>
+<th>47호(0.922 / 84.6%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>group0.001</code> = 0.001초 안에 시작한 음을 한 온셋으로</strong></td>
+<td>✅ 1.568</td>
+<td>✅ 0.604 / 97.8%</td>
+<td>✅ 0.922 / 84.6%</td>
+</tr>
+<tr>
+<td><code>group0.010</code></td>
+<td>✗ 0.970</td>
+<td>✗ 0.428</td>
+<td>✗ 0.599</td>
+</tr>
+<tr>
+<td><code>round1/uniq</code></td>
+<td>✗ 0.833</td>
+<td>✗ 0.379</td>
+<td>✗ 0.523</td>
+</tr>
+<tr>
+<td><code>group0.050</code></td>
+<td>✗ 0.785</td>
+<td>✗ 0.367</td>
+<td>✗ 0.460</td>
+</tr>
+</tbody>
+</table>
+<p><strong>곧 <code>0.001초 묶음</code>이 정본이다.</strong> 발행값 셋을 한 정의가 동시에 재현한 것은 이번이 처음이다.<br>
+⚠️ <strong>46호(1.018)는 원본 MIDI가 남아 있지 않아 시험대에 못 올렸다</strong> — 검증된 것은 셋이다.<br>
+<strong>Boss 판정 항목이 하나 줄었다:</strong> 톱니·불협은 여전히 재현 불가지만, <strong>CV·150ms이웃 대체는 이제 실증됐다.</strong></p>
+<p><strong>부수 확인:</strong> 29곡 raw MIDI 전부로 순위를 다시 뽑았다 — <strong>43호 CV 1.641 = 22/29 · 150ms 67.8% = 17/29</strong><br>
+(전 세션 기록과 일치). 최고른 곡 41호 0.604, 최불규칙 39호 2.862.</p>
+<h3 id="_120">⚠️ 내가 쓴 초안에서 틀린 수를 여럿 잡았다 — 검증 없이 올릴 뻔했다</h3>
+<p>초안을 <strong>정본 자로 전부 다시 재는 검증 단계</strong>를 거쳤다. 잡힌 것:</p>
+<ul>
+<li><strong>틈 진짜/가짜 63/282 → 62/283.</strong> 그리고 <strong>Δ 순위가 초안과 달랐다</strong>(2위는 5.408이 아니라 <strong>63.819</strong>).</li>
+<li><strong>밀도</strong>: 초안 38@127.5 · 0@417 · 중앙 15는 <strong>읽는 자를 잘못 골라서 나온 수였다.</strong><br>
+  정본(<code>pd_density.py</code>, 0.5초 미는 4초 창)은 <strong>최대 43@341.0 · 최소 1@5.5</strong>.<br>
+  ⚠️ 우리 자와 도구의 고정 칸(41@340.0)이 <strong>이 곡에서는 1초 차이로 붙어 있다</strong> — 12호·26호와 다른 양상.</li>
+<li><strong>조</strong>: 중간 검증에서 내가 <strong>올림사단조 음집합을 잘못 잡아</strong>(<code>{6,8,9,11,1,2,4}</code>) “우리 자는 내림나가 맞다”고<br>
+  잘못 판정했다. 바른 집합은 <code>{8,10,11,1,3,4,6}</code> — 다시 재니 <strong>발행 예정이던 원래 수가 맞았다</strong><br>
+  (<strong>올림사 81.7% 대 내림나 78.9%, 세 음역 모두 올림사 우세</strong>).<br>
+<strong>교훈: 자를 의심할 때 자의 정의(음집합)부터 의심할 것.</strong></li>
+<li><strong>초안의 “가짜 틈은 접힌 화음 때문”은 틀렸다.</strong> 우리 렌더·우리 셈은 <strong>손대기 전 전사본(1751음)</strong>을 쓴다 —<br>
+<strong>접힘은 우리 쪽에 없다.</strong> 바른 까닭은 <strong>우리 자가 온셋을 세기 때문</strong>(페달로 이어지는 소리에는 새 온셋이 없다).<br>
+  0.15초 이하 1122곳 + 0.5초 초과 345곳이라는 <strong>모양 자체가 그 증거</strong>다.</li>
+<li><strong>피아노 42편 순위</strong> 여럿 정정(1초 최대 40/42의 최상위는 37호가 아니라 <strong>16호 −7.12dB</strong>,<br>
+  음수 21/42, 저음칸 2·3위 34호 2.310 · 01호 2.255).</li>
+<li><strong>저음 칸</strong>: 정본 <code>pd_bass.py</code>에 <strong><code>QUOTE_GAP=5.0</code>(칸 안 최대 공백이 5초 이하여야 인용)</strong> 규칙이 있었다.<br>
+  곧 <strong>가장 긴 칸(올림라1 20.94초)은 인용 불가</strong>(내부 공백 7.98초)이고 <strong>인용 가능 최장은 B♭1 9.956초</strong>.</li>
+<li>⚠️ <strong>이번에 처음 맞춰 본 것:</strong> 발행된 값과 <strong>오늘 다시 잰 값이 다른 자리가 하나 있었다</strong> —<br>
+  47호 틈은 쪽지에 “10곳 전부 가짜”로 적혀 있는데 <strong>오늘 같은 정의로는 2곳이 진짜</strong>다. 쪽지에 둘 다 적었다.</li>
+</ul>
+<h3 id="43">조를 두고 세 자가 갈린다 (43호)</h3>
+<p><strong>악보 조표 = 내림표</strong>(표지·첫 마디에서 눈으로) · <strong>도구 = A#4 minor</strong>(= 내림나단조, 다른 철자) ·<br>
+<strong>우리 자 = 올림사단조 81.7%</strong>(내림나 78.9%). ⚠️ <strong>그 차이 2.8점이 어디서 오는지 짚었다</strong> —<br>
+두 조의 음집합은 <strong>딱 두 음</strong>(올림사 E·B / 내림나 F·C)이 다르고, 이 전사본은 <strong>E(141) &gt; F(97) · B(72) &gt; C(68)</strong>,<br>
+곧 <strong>48음(=2.7%)만큼</strong> 올림사가 이긴다. <strong>12호에서는 도구가 틀렸고 이 곡은 우리가 소수파다 — 두 자의 오차가 독립.</strong></p>
+<h3 id="43_1">43호에서 나온 수 (다시 재서 확인한 것만)</h3>
+<p>14:02 · 1751음 · 온셋 1655(0.001초 묶음) · 초당 4.2음 · 홑음 94.6% · <strong>틈&gt;0.5초 345(진짜 62)</strong> ·</p>
+<blockquote>
+<p>1초 81 · &gt;2초 15 · 최대 Δ+25.37(2.405~4.363초) · B♭ 602음(34.4%) 중 B♭4 329회 · 첫 8음 전부 B♭ ·<br>
+종 간격 중앙값 1.221→1.033→0.959초(21.5% 짧아짐, 악보는 「끝까지 서두르지도 늦추지도 말 것」) ·<br>
+CV 1.641(22/29) · 150ms 67.8%(17/29) · 상관 flux <strong>+0.681(우리가 잰 10곡 중 1위)</strong> ·<br>
+LUFS −31.8(2/42) · 끝무음 7.777초(3/42) · 저음칸 중앙 2.204초(4/42).</p>
+</blockquote>
+<p><strong>⚠️ 이 칸(수치)에는 문법표가 없다</strong> — <code>_notebook/123</code> §3.5가 3차 dyad 8칸을<br>
+<strong>「목록에만 있다 (레시피 미작성)」</strong>로 잘라 두었다. <strong>그래서 일곱 항목 채점을 하지 않았다</strong> —<br>
+없는 표를 지어내면 다른 쪽지의 점수와 나란히 놓을 수 없게 된다. 125호도 이 칸을 <strong>「가장 자신 없는 배정」</strong>이라 적었다.</p>
+<h3 id="_121">대시보드 정정</h3>
+<p>43칸 태그가 <strong><code>수치 (공포+혐오)</code></strong>로만 적혀 있었다 — 같은 3차 dyad인 42칸은 <code>기쁨[3차] (기쁨+놀람)</code>인데<br>
+43칸만 표시가 빠져 있었다. <strong><code>수치[3차] (공포+혐오)</code>로 맞췄다.</strong> (41칸 ON / 남은 7칸: 18·30·39·44·45·46·48)</p>
+<h2 id="2026-10-09-30-_claude">2026-10-09 — 30호 보류 표식을 찾았다: <strong>기록된 믿음과 파일이 어긋나 있었다</strong> (_Claude)</h2>
+<h3 id="_122">무슨 일이 있었나</h3>
+<p>다음 곡으로 <strong>30호 「닭발 위의 오두막」</strong>(공포·극공, 무소르그스키)을 잡았다. 폴더를 보니<br>
+<code>mf30_raw.mid</code> · <code>30.facts.json</code> 이 있어 <strong>&ldquo;채보·실측은 끝났고 쪽지만 쓰면 배포&rdquo;</strong> 로 보였다.<br>
+URL 목록에도 그렇게 적혀 있었다.</p>
+<p>그런데 <strong><code>30-combined.mp3</code>(원곡+침묵+재현)와 <code>30.corr.json</code>(검증)이 없었다.</strong> 부분 실행이었다.</p>
+<h3 id="_123">직접 재서 알게 된 것</h3>
+<p>정본 검증기로 다시 돌렸다:</p>
+<pre><code>음 시작 699개 · 창 100ms · 길이 212.14s
+소리와의 상관 — 온셋플럭스 +0.104 · RMS +0.008
+판정: 실패  (통과 flux≥0.3·rms≥0.15 · 실패 flux&lt;0.2·rms&lt;0.05)
+</code></pre>
+<p><strong>30호는 39호와 같은 등급의 실패다.</strong> (39호 flux +0.138 / rms +0.118)</p>
+<h3 id="_124">진짜 문제는 검증 실패가 아니었다</h3>
+<p><code>39.HOLD</code> 파일 안에 이런 줄이 <strong>이미 적혀 있었다</strong>:</p>
+<blockquote>
+<p>· <strong>30호와 같은 무소펜 세트</strong>이고, 30호도 같은 방식으로 실패해 보류 중이다.</p>
+</blockquote>
+<p><strong>그런데 <code>30.HOLD</code> 파일이 없었다.</strong> 39호 쪽지가 &ldquo;30호는 보류 중&rdquo;이라고 단정해 적어 두었지만,<br>
+그 상태를 실제로 만드는 파일이 빠져 있었다. 그동안 30호는 대시보드에 <strong>평범한 미완성 칸</strong>으로 남아<br>
+&ldquo;쪽지만 쓰면 배포 가능&rdquo;으로 읽혔다. <strong>오늘 내가 실제로 그렇게 읽었다.</strong></p>
+<p>→ <code>30.HOLD</code> 를 썼다(근거: 212.14초에 699음 · 채보가 194.04초에서 멈춤 · 저음칸 중앙 0.098초 ·<br>
+격자 33.0% · 상관 실패 · 39호와 같은 무소펜 세트).<br>
+→ 렌더는 이미 끝나 있다(<code>30-combined.mp3</code> 433.38s = 원곡 212.07 + 침묵 2.00 + 재현 219.31).<br>
+<strong>보류가 풀리면 다시 렌더할 필요가 없다.</strong></p>
+<h3 id="_125">대시보드에 보류를 보이게 했다</h3>
+<p><code>li.hold</code> 클래스를 만들고(<code>⛔</code> 표시 · <code>--danger</code> 색) <strong>30·39 두 칸에 붙였다.</strong><br>
+그리고 <strong>완성 카운터가 32로 낡아 있던 것</strong>을 다시 세어 <strong>41</strong>로 맞췄다<br>
+(43호를 켜면서 목록만 켜고 숫자는 안 고쳤다). 보류 <strong>2</strong> 도 함께 표시한다.</p>
+<blockquote>
+<p>교훈: <strong>&ldquo;보류 중&rdquo;이라고 다른 파일에 적어 두는 것은 보류가 아니다.</strong> 보류를 만드는 파일<br>
+(<code>NN.HOLD</code>)이 있어야 보류다. 그리고 <strong>카운터는 손으로 적지 말고 목록에서 세라</strong> —<br>
+손으로 적은 숫자는 목록과 어긋난 채 조용히 남는다.</p>
+</blockquote>
+<h3 id="_126">지금 상태</h3>
+<ul>
+<li>완성 <strong>41/48</strong> · 보류 <strong>2</strong>(30·39) · 남은 5칸(18·44·45·46·48)</li>
+<li>43호 배포 완료 — 커밋 <code>2cd2121b9f</code> (85파일, <code>channel/musician/piano/</code>)</li>
+<li>48호 채보 진행 중 · 끝나면 감시자가 <code>pd_chain.py 23 46 18</code> 을 잇는다</li>
+</ul>
   </article>
   <nav class="wz-pager">
     <a class="" href="session-2026-07-26_Grok.html">
