@@ -1010,6 +1010,7 @@
 <li><a href="#push-12">⚠️ push 직후 1~2분은 옛 내용이 보인다</a></li>
 </ul>
 </li>
+<li><a href="#2026-10-09-5-url-41-45-_claude">2026-10-09 (5) — URL 목록이 낡아 있었다(41개라고 적힌 동안 45개였다) · 생성기를 만들었다 (_Claude)</a></li>
 </ul>
 </div>
 </nav>
@@ -15256,6 +15257,19 @@ sha1 <code>3341148f5896c1006e359f6d7d63d3f3b038e011</code>).<br>
 <p>23호를 내린 직후 다시 열어보니 <strong>아직 200</strong>이었고, 대시보드도 옛 판(19,904B)이었다.<br>
 <strong>Pages 전파 지연</strong>이고 실제로는 내려가 있었다(2분 뒤 404 · 20,150B).<br>
 <strong>이 창을 &ldquo;실패&rdquo;로 읽으면 없는 버그를 쫓는다</strong> — 오늘도 두 번 겪었다(배포 직후 404 포함).</p>
+<hr>
+<h2 id="2026-10-09-5-url-41-45-_claude">2026-10-09 (5) — URL 목록이 <strong>낡아 있었다</strong>(41개라고 적힌 동안 45개였다) · 생성기를 만들었다 (_Claude)</h2>
+<p><code>_notebook/pd48-url-list_Claude.txt</code> 는 Boss 가 쓰는 <strong>살아 있는 주소 목록</strong>인데,<br>
+2026-10-09 00:10 판이 <strong>&ldquo;지금 쓰는 링크 — 41개&rdquo;</strong> 로 멈춰 있었다 — 그 뒤 18·44·45·46·48호가 들어왔고<br>
+23호는 내려갔다. <strong>목록의 요점은 &ldquo;이 주소가 진짜 열리는가&rdquo;인데, 그걸 손으로 적고 있었다.</strong></p>
+<p>→ <strong><code>scripts/pd_url_list.py</code></strong> 를 만들었다. 곡 정본은 <code>pd_dashboard.py</code> 의 QUEUE 이고<br>
+(여기서 베껴 적지 않는다), <strong>한 줄씩 실제로 두드려 HTTP 코드를 확인한 뒤에</strong> 적는다.<br>
+보류 칸은 <code>NN.HOLD</code> 표식에서 읽어 &ldquo;라이브에 없어야 정상&rdquo;이라고 적는다.<br>
+결과: <strong>링크 45(전부 200) · 보류 3 · 미제작 0.</strong></p>
+<p>⚠️ 만들다가 <strong>주석 두 개를 날렸다.</strong> 옛 파일의 <code>↳ …</code> 주석(26호·43호)을 살리는 코드가<br>
+<strong>&ldquo;곡 머리줄 바로 아래&rdquo;라는 순서 하나만 가정</strong>했는데, 내가 만든 중간 파일은 주석을<br>
+머리줄과 URL 줄 <strong>사이</strong>에 넣어서 못 찾았다. 위로 두 줄까지 훑게 고치고,<br>
+<strong>되돌이 시험</strong>(두 번 돌려 같은 파일이 나오는지 · md5 비교)까지 했다 — 통과.</p>
   </article>
   <nav class="wz-pager">
     <a class="" href="session-2026-07-26_Grok.html">

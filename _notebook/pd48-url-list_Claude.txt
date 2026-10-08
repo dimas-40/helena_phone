@@ -2,8 +2,8 @@
 대시보드: https://parksy.kr/channel/musician/piano/
 ============================================================================
 
-■ 지금 쓰는 링크 — 41개 (`_deploy` 에 들어간 곡)
-----------------------------------------------------------------------------
+■ 지금 쓰는 링크 — 45개 (전부 두드려서 확인한 코드)
+--------------------------------------------------------------------------
 01 · 슬픔 · 생각에 잠김 · 짐노페디 제1번 (Erik Satie, 1888)
    https://parksy.kr/channel/musician/piano/01-satie-gymnopedie
 02 · 신뢰 · 수용 · 프렐류드 C장조, BWV 846 (J. S. Bach, 1722)
@@ -38,6 +38,8 @@
    https://parksy.kr/channel/musician/piano/16-chopin-military-polonaise
 17 · 경외 (공포+놀람) · 침몰한 대성당 (Claude Debussy, 1910)
    https://parksy.kr/channel/musician/piano/17-debussy-cathedrale-engloutie
+18 · 시기 (슬픔+분노) · 전주곡 Op.23 No.5 사단조 (Sergei Rachmaninoff, 1901)
+   https://parksy.kr/channel/musician/piano/18-rachmaninoff-prelude-23-5
 19 · 죄책감 (기쁨+공포) · 무서운 이야기 Op.15 No.11 (Robert Schumann, 1838)
    https://parksy.kr/channel/musician/piano/19-schumann-furchtenmachen
 20 · 기쁨 · 평온 · 즐거운 농부 Op.68 No.10 (Robert Schumann, 1848)
@@ -46,11 +48,6 @@
    https://parksy.kr/channel/musician/piano/21-mozart-turkish-march
 22 · 기쁨 · 환희 · 물레돌리는 노래 Op.67 No.4 (Felix Mendelssohn, 1845)
    https://parksy.kr/channel/musician/piano/22-mendelssohn-spinnerlied
-23 · 신뢰 · 존경 · 캐논 (피아노 편) (Johann Pachelbel, 1680–1706경)
-   https://parksy.kr/channel/musician/piano/23-pachelbel-canon
-   ⚠️ 소재 교체 중 (Boss 지시 2026-10-08: "바이올린 들어가 있잖아요. 캐논 다시 추출 렌더링해")
-      지금 걸린 링크는 **교체 전** 파일이다.
-      🔴 새 렌더는 라이선스(GFDL+CC BY-SA 3.0 · 편곡=Galloway) **Boss 판정 전까지 배포 금지.**
 24 · 순종 (신뢰+공포) · 전주곡 Op.28 No.6 (Frédéric Chopin, 1839)
    https://parksy.kr/channel/musician/piano/24-chopin-prelude-6
 25 · 호기심 (신뢰+놀람) · 아라베스크 No.1 (Claude Debussy, 1891)
@@ -89,23 +86,29 @@
 43 · 수치[3차] (공포+혐오) · 교수대 (《밤의 가스파르》 중) (Maurice Ravel, 1908)
    https://parksy.kr/channel/musician/piano/43-ravel-le-gibet
    ↳ 2026-10-09 쪽지 완성 · 배포. 틈 345곳 가운데 진짜 62곳 · CV 1.641(29편 중 22번째).
-      조를 두고 악보(내림표)·도구(A#4 minor)와 우리 자(올림사단조 81.7%)가 갈린다 — 이번엔 우리가 소수파.
+44 · 격분[3차] (놀람+분노) · 발라드 No.4 (Frédéric Chopin, 1842)
+   https://parksy.kr/channel/musician/piano/44-chopin-ballade4
+45 · 비관 (슬픔+기대) · 골드버그 변주곡 제25변주 (J. S. Bach, 1741)
+   https://parksy.kr/channel/musician/piano/45-bach-goldberg-var25
+46 · 병적 (혐오+기쁨) · 크라이슬레리아나 No.8 (Robert Schumann, 1838)
+   https://parksy.kr/channel/musician/piano/46-schumann-kreisleriana-8
 47 · 지배 (분노+신뢰) · 이탈리아 협주곡 1악장 (J. S. Bach, 1735)
    https://parksy.kr/channel/musician/piano/47-bach-italian-concerto-1
-
-■ 아직 없는 링크 — 7개 (페이지 미제작 → 지금 붙이면 404)
-----------------------------------------------------------------------------
-18 · 시기 (슬픔+분노) · 전주곡 Op.23 No.5 사단조 (Sergei Rachmaninoff, 1901)
-30 · 공포 · 극공 · 닭발 위의 오두막 (《전람회의 그림》 중) (Modest Mussorgsky, 1874)
-   ⛔ `30.HOLD` — 전사 검증 실패(flux +0.104 · rms +0.008). 사람 판정 전까지 배포하지 않는다.
-      (2026-10-09 확인. 39.HOLD 는 "30호도 보류 중"이라고 적어 두었는데 표식 파일이 없었다.)
-      렌더는 끝나 있다 — `30-combined.mp3` 433.38s. 보류가 풀리면 다시 렌더할 필요 없다.
-39 · 멸시 (혐오+분노) · 골덴베르크와 슈무일레 (《전람회의 그림》 중) (Modest Mussorgsky, 1874)
-   ⛔ `39.HOLD` — 전사 검증 실패(flux +0.138 · rms +0.118). 사람 판정 전까지 배포하지 않는다.
-      **30호와 같은 무소펜(Musopen) 세트다.** 그 세트의 이 두 파일이 무엇인지부터 사람이 볼 것.
-44 · 격분[3차] (놀람+분노) · 발라드 No.4 (Frédéric Chopin, 1842)
-45 · 비관 (슬픔+기대) · 골드버그 변주곡 제25변주 (J. S. Bach, 1741)
-46 · 병적 (혐오+기쁨) · 크라이슬레리아나 No.8 (Robert Schumann, 1838)
 48 · 불안[3차] (기대+공포) · 즉흥곡 Op.90 No.1 다단조 (Franz Schubert, 1827)
+   https://parksy.kr/channel/musician/piano/48-schubert-impromptu-90-1
 
-생성: 2026-10-09 · `midi_lane/pd/02-bach-prelude-c/site/index.html` 에서 기계적으로 뽑았다.
+■ 보류 — 3개 (표식 파일 NN.HOLD 가 있는 칸. **라이브에 없어야 정상**)
+--------------------------------------------------------------------------
+23 · 신뢰 · 존경 · 캐논 (피아노 편) (Johann Pachelbel, 1680–1706경)
+   ⛔ 23호 보류 — 원본 녹음의 권리가 미확정(GFDL + 이 갤러웨이 편곡). 사람이 판정할 때까지 내보내지 않는다.
+30 · 공포 · 극공 · 닭발 위의 오두막 (《전람회의 그림》 중) (Modest Mussorgsky, 1874)
+   ⛔ 30호 보류 — 검증 실패 (flux +0.104 · rms +0.008)
+39 · 멸시 (혐오+분노) · 골덴베르크와 슈무일레 (《전람회의 그림》 중) (Modest Mussorgsky, 1874)
+   ⛔ 39호 보류 — 검증 실패 (flux +0.138 · rms +0.118)
+
+■ 페이지 미제작 — 0개
+
+생성: 스크립트 `scripts/pd_url_list.py` · 곡 정본은 `scripts/pd_dashboard.py` QUEUE.
+      링크는 **한 줄씩 실제로 두드려** HTTP 코드를 확인한 것이다 — 지어낸 주소는 없다.
+      보류 칸은 `midi_lane/pd/*/NN.HOLD` 에서 읽는다. 라이브에 있으면 안 된다
+      (`scripts/pd_check_live.py` 가 그걸 검사한다).
