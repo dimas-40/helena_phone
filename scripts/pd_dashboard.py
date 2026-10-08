@@ -13,6 +13,8 @@
 import sys
 from pathlib import Path
 
+HOLD = {"30", "39"}   # NN.HOLD 파일이 있는 칸 — 배포 묶음에서 빠진다
+
 OUT = Path("/root/work/midi_lane/pd/02-bach-prelude-c/site/index.html")
 
 # (번호, 곡, 작곡가·연도, 칸, 슬러그)  — 슬러그가 있으면 완성된 페이지
@@ -28,7 +30,7 @@ QUEUE = [
     ("09", "리스트 9번 4악장 발췌", "Beethoven–Liszt, 편곡 1850 · 연주 1972", "희망 (기대+신뢰)", "09-beethoven-liszt-9th"),
     ("10", "야상곡 Op.9 No.2", "Frédéric Chopin, 1832", "감상 (신뢰+슬픔)", "10-chopin-nocturne9-2"),
     ("11", "발트슈타인 1악장", "Ludwig van Beethoven, 1804", "낙관 (기대+기쁨)", "11-beethoven-waldstein-1"),
-    ("12", "어릿광대의 아침노래 (《미로르》 중)", "Maurice Ravel, 1905", "냉소 (혐오+기대)", None),
+    ("12", "어릿광대의 아침노래 (《미로르》 중)", "Maurice Ravel, 1905", "냉소 (혐오+기대)", "12-ravel-alborada-del-gracioso"),
     ("13", "혁명 에튀드 Op.10 No.12", "Frédéric Chopin, 1831", "분노 · 격분", "13-chopin-revolutionary"),
     ("14", "환상즉흥곡 Op.66", "Frédéric Chopin, 1834", "기대 · 기대", "14-chopin-fantaisie-impromptu"),
     ("15", "장송행진곡 Op.35 3악장", "Frédéric Chopin, 1839", "절망 (공포+슬픔)", "15-chopin-funeral-march"),
@@ -42,12 +44,12 @@ QUEUE = [
     ("23", "캐논 (피아노 편)", "Johann Pachelbel, 1680–1706경", "신뢰 · 존경", "23-pachelbel-canon"),
     ("24", "전주곡 Op.28 No.6", "Frédéric Chopin, 1839", "순종 (신뢰+공포)", "24-chopin-prelude-6"),
     ("25", "아라베스크 No.1", "Claude Debussy, 1891", "호기심 (신뢰+놀람)", "25-debussy-arabesque-1"),
-    ("26", "즉흥곡 Op.90 No.3 내림사장조", "Franz Schubert, 1827", "기대 · 관심", None),
+    ("26", "즉흥곡 Op.90 No.3 내림사장조", "Franz Schubert, 1827", "기대 · 관심", "26-schubert-impromptu-90-3"),
     ("27", "트롤하우겐의 결혼식날", "Edvard Grieg, 1896", "기대 · 경계", "27-grieg-troldhaugen"),
     ("28", "전주곡 Op.28 No.2", "Frédéric Chopin, 1839", "공포 · 불안", "28-chopin-prelude-2"),
     ("29", "전주곡 Op.28 No.24", "Frédéric Chopin, 1839", "공포 · 공포", "29-chopin-prelude-24"),
     ("30", "닭발 위의 오두막 (《전람회의 그림》 중)", "Modest Mussorgsky, 1874", "공포 · 극공", None),
-    ("31", "꼬마 흑인", "Claude Debussy, 1909", "놀람 · 산만", None),
+    ("31", "골리워그의 케이크워크", "Claude Debussy, 1909", "놀람 · 산만", "31-debussy-golliwog"),
     ("32", "골드버그 변주곡 제30변주 콰들리베트", "J. S. Bach, 1741", "놀람 · 놀람", "32-bach-goldberg-quodlibet"),
     ("33", "라 캄파넬라", "Franz Liszt, 1851", "놀람 · 경악", "33-liszt-campanella"),
     ("34", "짐노페디 No.3", "Erik Satie, 1888", "혐오 · 권태", "34-satie-gymnopedie-3"),
@@ -57,14 +59,14 @@ QUEUE = [
     ("38", "비들로", "Modest Mussorgsky, 1874", "비난 (놀람+슬픔)", "38-mussorgsky-bydlo"),
     ("39", "골덴베르크와 슈무일레 (《전람회의 그림》 중)", "Modest Mussorgsky, 1874", "멸시 (혐오+분노)", None),
     ("40", "연습곡 Op.8 No.12 올림라단조", "Alexander Scriabin, 1894", "공격성 (분노+기대)", "40-scriabin-etude-8-12"),
-    ("41", "크라이슬레리아나 No.1", "Robert Schumann, 1838", "불신 (놀람+혐오)", None),
+    ("41", "크라이슬레리아나 No.1", "Robert Schumann, 1838", "불신 (놀람+혐오)", "41-schumann-kreisleriana-1"),
     ("42", "연습곡 Op.10 No.5 내림사장조 「흑건」", "Frédéric Chopin, 1830", "기쁨[3차] (기쁨+놀람)", "42-chopin-black-key"),
-    ("43", "교수대 (《밤의 가스파르》 중)", "Maurice Ravel, 1908", "수치 (공포+혐오)", None),
+    ("43", "교수대 (《밤의 가스파르》 중)", "Maurice Ravel, 1908", "수치[3차] (공포+혐오)", "43-ravel-le-gibet"),
     ("44", "발라드 No.4", "Frédéric Chopin, 1842", "격분[3차] (놀람+분노)", None),
     ("45", "골드버그 변주곡 제25변주", "J. S. Bach, 1741", "비관 (슬픔+기대)", None),
     ("46", "크라이슬레리아나 No.8", "Robert Schumann, 1838", "병적 (혐오+기쁨)", None),
-    ("47", "이탈리아 협주곡 1악장", "J. S. Bach, 1735", "지배 (분노+신뢰)", None),
-    ("48", "즉흥곡 Op.90 No.1 다단조", "Franz Schubert, 1827", "불안[3차] (기대+공포)", None),
+    ("47", "이탈리아 협주곡 1악장", "J. S. Bach, 1735", "지배 (분노+신뢰)", "47-bach-italian-concerto-1"),
+    ("48", "즉흥곡 Op.90 No.1 다단조", "Franz Schubert, 1827", "불안[3차] (기대+공포)", "48-schubert-impromptu-90-1"),
 ]
 
 HEAD = """<!DOCTYPE html>
@@ -115,6 +117,11 @@ HEAD = """<!DOCTYPE html>
   li.built .tag{border-color:rgba(217,164,65,.4);color:var(--gold)}
   a.row:hover .tag{color:var(--gold);border-color:rgba(217,164,65,.45)}
   li.done .tt::after{content:" ✓";color:var(--gold)}
+  /* 보류 — 검증에 실패해 사람 판정을 기다리는 칸. 2026-10-09 30호에서 표식이
+     없어 "배포 가능"으로 잘못 읽힐 뻔했다(39.HOLD 는 있었는데 30.HOLD 가 없었다). */
+  li.hold .tt::after{content:" ⛔";color:var(--danger)}
+  li.hold .tag{border-color:rgba(194,82,63,.5);color:var(--danger)}
+  li.hold .no{color:var(--danger)}
   .note{font-family:var(--sans);font-size:.82rem;color:var(--faint);padding:2rem .9rem;
     margin:0 -.9rem;line-height:1.9;border-top:1px solid var(--line2)}
   .note b{color:var(--dim)}
@@ -134,6 +141,7 @@ HEAD = """<!DOCTYPE html>
   </p>
   <p class="count">
     <span>완성 <b>%d</b> / 48</span>
+    <span>· 보류 <b>%d</b></span>
     <span>· 기본 8감정 × 강도 3단 <b>24</b></span>
     <span>· dyad 1차 <b>8</b> · 2차 <b>8</b> · 3차 <b>8</b></span>
   </p>
@@ -183,11 +191,12 @@ def row(no, title, meta, cell, slug):
                 '    </a></li>\n' % (slug, no, title, meta, cell))
     inner = ('<span class="tt">%s</span><span class="mm">%s</span></span>'
              % ('미정' if title == "미정" else title, meta or "후보 탐색 중"))
-    return ('    <li class="todo"><div class="row">\n'
+    return ('    <li class="todo%s"><div class="row">\n'
             '      <span class="no">%s</span>\n'
             '      <span>%s\n'
             '      <span class="tag">%s</span>\n'
-            '    </div></li>\n' % (no, inner, cell))
+            '    </div></li>\n'
+            % (' hold' if no in HOLD else '', no, inner, cell))
 
 
 def main():
@@ -197,14 +206,15 @@ def main():
     pieces = [q[1] for q in QUEUE if q[1] != "미정"]
     assert len(set(pieces)) == len(pieces), "같은 곡이 두 칸에 있다"
     built = sum(1 for q in QUEUE if q[4])
-    html = HEAD % built + "".join(row(*q) for q in QUEUE) + TAIL
+    holds = sum(1 for q in QUEUE if q[0] in HOLD and not q[4])
+    html = HEAD % (built, holds) + "".join(row(*q) for q in QUEUE) + TAIL
     if "--check" in sys.argv:
-        print("칸 48 · 완성 %d · 곡 %d" % (built, len(pieces)))
+        print("칸 48 · 완성 %d · 보류 %d · 곡 %d" % (built, holds, len(pieces)))
         return
     OUT.write_text(html, encoding="utf-8")
     print("→ %s" % OUT)
-    print("   칸 48 · 완성 %d · 예정 %d · 곡 미정 %d"
-          % (built, 48 - built, sum(1 for q in QUEUE if q[1] == "미정")))
+    print("   칸 48 · 완성 %d · 보류 %d · 예정 %d · 곡 미정 %d"
+          % (built, holds, 48 - built, sum(1 for q in QUEUE if q[1] == "미정")))
 
 
 if __name__ == "__main__":
