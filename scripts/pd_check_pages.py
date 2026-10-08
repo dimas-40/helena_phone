@@ -183,17 +183,25 @@ def main():
                   };
                 }""")
 
-                # 타임라인 클릭 → 이동
-                jumped = pg.evaluate("""() => {
-                  const li = document.querySelectorAll('.tl li');
-                  const target = li[Math.floor(li.length/2)];
-                  const t = parseFloat(target.getAttribute('data-t'));
-                  target.click();
-                  return {t: t, at: document.getElementById('au').currentTime};
-                }""")
-                pg.wait_for_timeout(350)
-                after = pg.evaluate("() => document.getElementById('au').currentTime")
-                ok_jump = abs(after - jumped["t"]) < 0.5
+                # 타임라인 클릭 → 이동.
+                # ⚠️ `.tl` 은 0.5초 넘는 틈·저음 칸을 적어 둔 **손으로 쓴** 목록이다(자동 생성 아님).
+                #    2026-10-09: 18호·46호에 이 목록이 없어 li.length 가 0 이 되었고,
+                #    li[0] 이 undefined 라 target.getAttribute 에서 **검사 전체가 죽었다** —
+                #    18호 이후 곡들의 판정을 아무도 못 봤다(46호는 그 전 세션에 이미 배포됐다).
+                #    이제 없으면 **그 사실을 문제로 적고** 넘어간다.
+                tl_n = pg.evaluate("() => document.querySelectorAll('.tl li').length")
+                jumped = after = None
+                if tl_n:
+                    jumped = pg.evaluate("""() => {
+                      const li = document.querySelectorAll('.tl li');
+                      const target = li[Math.floor(li.length/2)];
+                      const t = parseFloat(target.getAttribute('data-t'));
+                      target.click();
+                      return {t: t, at: document.getElementById('au').currentTime};
+                    }""")
+                    pg.wait_for_timeout(350)
+                    after = pg.evaluate("() => document.getElementById('au').currentTime")
+                ok_jump = bool(tl_n) and abs(after - jumped["t"]) < 0.5
 
                 # 재현 구간으로 보내 칩의 **가장 긴 문구**("재현 · 살라만더")를 재본다.
                 # 로드 직후엔 "원곡 · 이시자카"라 길이가 짧아서 넘침을 못 잡는다.
@@ -201,13 +209,22 @@ def main():
                   const w = document.getElementById('wheel');
                   if (!w) return null;
                   const n = document.getElementById('wheelnote');
+                  if (!n) return null;
                   const initial = n.textContent.trim();
                   const gs = [...w.querySelectorAll('.spoke')];
+                  // 스포크가 둘 미만이면 고를 칸이 없다 — 여기서 죽지 말고 보고한다.
+                  // 2026-10-09: 18호에서 bars 가 canvas 가 아니라 piano.js 가 첫 줄에서
+                  // 예외를 던졌고(getContext is not a function), 바퀴가 아예 안 그려져
+                  // 스포크 0개 → gs[-1].dispatchEvent 로 **검사가 또 죽었다.**
+                  if (gs.length < 2) return {initial: initial, after: null, changed: false,
+                                             spokes: gs.length};
                   const hot = gs.findIndex(x => x.classList.contains('hot'));
                   const other = gs.findIndex((x, i) => i !== hot && i !== 0);
+                  if (other < 0) return {initial: initial, after: null, changed: false,
+                                         spokes: gs.length};
                   gs[other].dispatchEvent(new MouseEvent('click', {bubbles: true}));
                   return {initial: initial, after: n.textContent.trim().slice(0, 20),
-                          changed: n.textContent.trim() !== initial};
+                          changed: n.textContent.trim() !== initial, spokes: gs.length};
                 }""")
                 if tap:
                     info["wheelNoteInit"] = tap["initial"]
@@ -229,16 +246,22 @@ def main():
                     flag.append("PIECE 없음")
                 if not info["barhint"]:
                     flag.append("barhint 빈값")
+                if info["spokes"] == 0:
+                    # #roll/#bars 가 <canvas> 가 아니면 piano.js 가 첫 줄에서 죽고
+                    # 바퀴가 아예 안 그려진다 — 그때 여기서 이름을 붙여 준다.
+                    flag.append("바퀴 스포크 0개 — piano.js 가 중간에 죽었다")
                 if not ok_jump:
-                    flag.append("클릭이동 실패 %.2f→%.2f" % (jumped["t"], after))
+                    flag.append("타임라인(.tl) 없음" if not tl_n
+                                else "클릭이동 실패 %.2f→%.2f" % (jumped["t"], after))
                 if w < 700 and info["dockh"] and info["dockh"] > h * 0.3:
                     flag.append("독 %.0fpx 과대" % info["dockh"])
                 if w < 700 and info["whichH"] > 30:
                     flag.append("독 칩 %dpx — 줄바꿈(%s)" % (info["whichH"], info["whichTxt"]))
-                if tap and not tap["changed"]:
-                    flag.append("휠 칸을 눌러도 설명이 안 바뀐다")
-                if w < 700 and tap and "눌러보세요" not in tap["initial"]:
-                    flag.append("폰인데 '마우스를 올려보세요' (%s)" % tap["initial"][:24])
+                if tap and tap["spokes"] >= 2:
+                    if not tap["changed"]:
+                        flag.append("휠 칸을 눌러도 설명이 안 바뀐다")
+                    if w < 700 and "눌러보세요" not in tap["initial"]:
+                        flag.append("폰인데 '마우스를 올려보세요' (%s)" % tap["initial"][:24])
                 if info["spokes"] and (info["wheelHere"] is None
                                        or info["wheelHot"] != int(info["wheelHere"])):
                     flag.append("휠 하이라이트 %s≠%s (data-here 누락?)"
